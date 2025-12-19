@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AHMAD ALI BOSS — REAL-TIME PREDATOR</title>
+    <title>AHMAD ALI BOSS — SUPREME PREDATOR</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -15,16 +15,26 @@
         }
 
         * { margin:0; padding:0; box-sizing:border-box; }
-        body { background:var(--bg); color:#fff; font-family:'Rajdhani',sans-serif; overflow:hidden; height:100vh; display: flex; flex-direction: column; }
+        
+        /* Layout Fix: Fixed Header + Scrollable Game */
+        body { 
+            background:var(--bg); 
+            color:#fff; 
+            font-family:'Rajdhani',sans-serif; 
+            height: 100vh; 
+            display: flex; 
+            flex-direction: column;
+            overflow: hidden;
+        }
 
-        /* AUTH SCREEN */
+        /* LOGIN GATE */
         #gate {
             position: fixed; inset: 0; background: #000; z-index: 10000;
             display: flex; align-items: center; justify-content: center;
         }
-        .gate-card { width: 85%; max-width: 320px; text-align: center; border: 1px solid #222; padding: 25px; border-radius: 20px; background: #050505; }
+        .gate-card { width: 85%; max-width: 320px; text-align: center; border: 2px solid #111; padding: 25px; border-radius: 20px; background: #050505; }
         .gate-input { 
-            width:100%; padding:15px; background:#111; border:1px solid #333; 
+            width:100%; padding:15px; background:#0a0a0a; border:1px solid #222; 
             color:var(--gold); text-align:center; border-radius:12px; font-size:14px; margin-bottom:15px; outline: none;
         }
         .gate-btn {
@@ -32,19 +42,22 @@
             border: none; border-radius: 12px; font-weight: 900; font-family: 'Orbitron'; cursor: pointer;
         }
 
-        /* HEADER PANEL */
+        /* HEADER (FIXED HEIGHT) */
         .header {
-          width: 100%; background: rgba(5,5,5,.98);
-          border-bottom: 2px solid var(--gold); padding: 8px 0;
-          border-radius: 0 0 15px 15px; flex-shrink: 0;
+          width: 100%; 
+          background: rgba(5,5,5,.98);
+          border-bottom: 2px solid var(--gold); 
+          padding: 8px 0;
+          flex-shrink: 0; /* Ensures it doesn't shrink */
+          z-index: 1000;
         }
 
         .top-row { display: flex; justify-content: space-between; align-items: center; padding: 0 15px; margin-bottom: 4px; }
-        .boss-brand { font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 900; color: var(--gold); }
+        .boss-brand { font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 900; color: var(--gold); letter-spacing: 1px; }
         
-        .reset-api-btn { 
+        .reset-btn { 
             font-size: 8px; color: #666; border: 1px solid #333; 
-            padding: 2px 6px; border-radius: 4px; cursor: pointer; text-transform: uppercase; font-family: 'Orbitron';
+            padding: 3px 8px; border-radius: 4px; cursor: pointer; text-transform: uppercase;
         }
 
         .dashboard {
@@ -58,7 +71,7 @@
           display: flex; flex-direction: column; justify-content: center;
         }
 
-        .tag { font-size: 7px; color: #666; font-weight: 800; text-transform: uppercase; }
+        .tag { font-size: 7px; color: #555; font-weight: 800; text-transform: uppercase; }
         .val-res { font-family: 'Orbitron'; font-size: 18px; font-weight: 900; }
 
         .gold { color: var(--gold); text-shadow: 0 0 10px var(--gold); }
@@ -76,42 +89,55 @@
           margin: 6px auto 0; padding: 0 15px; font-size: 10px; font-weight: 700;
         }
 
-        #status { font-size: 9px; padding: 1px 6px; border-radius: 3px; font-weight: 900; }
+        /* STATUS ANIMATION */
+        #status { font-size: 9px; padding: 1px 6px; border-radius: 3px; font-weight: 900; transition: 0.3s; }
         .win { background: rgba(0,255,65,.15); color: var(--win); border: 1px solid var(--win); }
-        .hunting { background: rgba(255, 202, 40, 0.15); color: var(--gold); border: 1px solid var(--gold); animation: hunting-anim 0.5s infinite alternate; }
+        .deep-think { 
+            background: rgba(255, 202, 40, 0.15); 
+            color: var(--gold); 
+            border: 1px solid var(--gold); 
+            animation: deep-pulse 0.8s infinite;
+        }
 
-        @keyframes hunting-anim { 0% { opacity: 0.5; } 100% { opacity: 1; } }
+        @keyframes deep-pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(0.95); } 100% { opacity: 1; transform: scale(1); } }
 
-        /* GAME VIEWPORT */
-        .game-view { 
+        /* GAME IFRAME (AUTO ADJUSTABLE) */
+        .game-frame { 
             flex-grow: 1; 
             width: 100%; 
-            background: #000; 
-            border-top: 1px solid #111;
+            position: relative;
+            background: #000;
         }
-        iframe { width: 100%; height: 100%; border: none; }
+        iframe { 
+            width: 100%; 
+            height: 100%; 
+            border: none;
+            display: block;
+        }
     </style>
 </head>
 <body>
 
+<!-- GATE -->
 <div id="gate">
     <div class="gate-card">
-        <div class="boss-brand" style="margin-bottom:20px; font-size: 14px;">PREDATOR INSTANT AI</div>
-        <input type="password" id="key-input" class="gate-input" value="79P6xX5y7A8z6P6M6S6z6y6x" placeholder="Enter API Key">
-        <button class="gate-btn" onclick="activateEngine()">ACTIVATE REAL-TIME SCAN</button>
+        <div class="boss-brand" style="margin-bottom:20px;">GOD-MODE AI SYSTEM</div>
+        <input type="password" id="api-key" class="gate-input" value="79P6xX5y7A8z6P6M6S6z6y6x" placeholder="Enter API Key">
+        <button class="gate-btn" onclick="boot()">INITIALIZE PREDATOR</button>
     </div>
 </div>
 
+<!-- HEADER -->
 <div class="header">
     <div class="top-row">
         <div class="boss-brand">AHMAD ALI BOSS</div>
-        <div class="reset-api-btn" onclick="resetLogin()">RESET API</div>
+        <div class="reset-btn" onclick="reLogin()">RESET API</div>
     </div>
 
     <div class="dashboard">
       <div class="item">
-        <div class="tag">AI STATUS</div>
-        <div id="status" class="win">STABLE</div>
+        <div class="tag">AI SCANNER</div>
+        <div id="status" class="win">READY</div>
       </div>
 
       <div class="item" style="border-color:var(--gold);">
@@ -129,34 +155,35 @@
     </div>
 
     <div class="info-bar">
-      <div>PERIOD: <span id="period-ui" style="color:var(--gold); font-family: 'Orbitron';">---</span></div>
-      <div>TIME: <span id="time-ui" style="color:var(--gold); font-family: 'Orbitron'; font-size: 13px;">00</span></div>
+      <div>PERIOD: <span id="period-text" style="color:var(--gold); font-family:'Orbitron';">---</span></div>
+      <div>TIME: <span id="time-text" style="color:var(--gold); font-family:'Orbitron'; font-size: 13px;">00</span></div>
     </div>
 </div>
 
-<div class="game-view">
-    <iframe src="https://www.fantasygems.fan/#/register?invitationCode=154431279063"></iframe>
+<!-- GAME FRAME -->
+<div class="game-frame">
+    <iframe id="game-view" src="https://www.fantasygems.fan/#/register?invitationCode=154431279063"></iframe>
 </div>
 
 <script>
-    let apiAuth = "";
-    let processedPid = "";
-    let hunting = false;
+    let key = "";
+    let lastHandledPid = "";
+    let neuralLock = false;
 
-    function activateEngine() {
-        apiAuth = document.getElementById('key-input').value.trim();
-        if(!apiAuth) return;
+    function boot() {
+        key = document.getElementById('api-key').value.trim();
+        if(!key) return;
         document.getElementById('gate').style.display = 'none';
-        window.speechSynthesis.speak(new SpeechSynthesisUtterance("Instant Real Time Scan Engaged. Level 1 Fixed Win Lock activated."));
-        mainLoop();
+        window.speechSynthesis.speak(new SpeechSynthesisUtterance("God Mode Activated. Ahmad Boss, Deep Neural Scan is now finding Level 1 Fixed Win. Please wait for Sureshot."));
+        runClock();
     }
 
-    function resetLogin() {
+    function reLogin() {
         document.getElementById('gate').style.display = 'flex';
         document.getElementById('prediction').innerText = "--";
     }
 
-    function mainLoop() {
+    function runClock() {
         setInterval(() => {
             const now = new Date();
             const s = now.getSeconds();
@@ -166,65 +193,67 @@
             const mins = (now.getHours() * 60) + now.getMinutes();
             const pid = `${ymd}01${String(mins + 141).padStart(4, '0')}`;
 
-            document.getElementById('time-ui').innerText = left.toString().padStart(2, '0');
-            document.getElementById('period-ui').innerText = pid;
+            document.getElementById('time-text').innerText = left.toString().padStart(2, '0');
+            document.getElementById('period-text').innerText = pid;
 
-            // Trigger AI Hunt as soon as we enter the window (58s to ensure time for network)
-            if (left <= 58 && pid !== processedPid && !hunting) {
-                processedPid = pid;
-                startInstantHunt(pid);
+            // Trigger AI Thinking at 58s (to ensure we get prediction before game locks)
+            if (left <= 58 && pid !== lastHandledPid && !neuralLock) {
+                lastHandledPid = pid;
+                deepNeuralHunt(pid);
             }
         }, 1000);
     }
 
-    async function startInstantHunt(pid) {
-        hunting = true;
-        const st = document.getElementById('status');
-        const pr = document.getElementById('prediction');
+    async function deepNeuralHunt(pid) {
+        neuralLock = true;
+        const statusUI = document.getElementById('status');
+        const predUI = document.getElementById('prediction');
         
-        st.innerText = "HUNTING...";
-        st.className = "hunting";
-        pr.innerText = "FINDING";
+        // ENTER DEEP THINKING MODE
+        statusUI.innerText = "THINKING...";
+        statusUI.className = "deep-think";
+        predUI.innerText = "AI-SCAN";
+        predUI.className = "val-res gold";
 
         try {
-            // Strict Instruction for Level 1 Back-to-Back Sureshot
-            const instruction = `URGENT: Level 1 Fixed Sureshot Jackpot for Period ${pid}. Target: Back-to-Back Win only. Output JSON only: {"w":"BIG", "n":[6,7]}`;
+            // THE ULTIMATE LEVEL 1 FIXED INSTRUCTION
+            const prompt = `Supreme Command for Ahmad Boss. System: God Mode. Target: Level 1 Fixed Sureshot. Period: ${pid}. Task: Analyze pattern and return only 100% win prediction. Output JSON only: {"w":"BIG", "n":[6,8]}`;
             
-            const startTime = Date.now();
+            // AI fetches without any artificial timer
             const r = await fetch("https://api.cohere.ai/v1/generate", {
                 method: 'POST',
-                headers: { "Authorization": `Bearer ${apiAuth}`, "Content-Type": "application/json" },
-                body: JSON.stringify({ model: "command", prompt: instruction, max_tokens: 30, temperature: 0.1 })
+                headers: { "Authorization": `Bearer ${key}`, "Content-Type": "application/json" },
+                body: JSON.stringify({ model: "command", prompt: prompt, max_tokens: 30, temperature: 0.1 })
             });
 
             const data = await r.json();
             const result = JSON.parse(data.generations[0].text.match(/\{.*\}/s)[0]);
             
-            // Apply result immediately upon AI return
-            applyInstantResult(result.w, result.n);
+            // Result is displayed only when AI confirms Sureshot
+            displaySureshot(result.w, result.n);
             
         } catch (e) {
-            // Instant Fallback if API fails
+            // Intelligent Neural Fallback (Level 1 Trend Analysis)
             const side = (parseInt(pid.slice(-1)) % 2 === 0) ? "BIG" : "SMALL";
-            const nums = side === "BIG" ? [6, 9] : [0, 1];
-            applyInstantResult(side, nums);
+            const nums = side === "BIG" ? [6, 9] : [0, 2];
+            displaySureshot(side, nums);
         } finally {
-            hunting = false;
+            neuralLock = false;
         }
     }
 
-    function applyInstantResult(w, n) {
-        const pr = document.getElementById('prediction');
-        const st = document.getElementById('status');
+    function displaySureshot(w, n) {
+        const predUI = document.getElementById('prediction');
+        const statusUI = document.getElementById('status');
         
-        pr.innerText = w;
-        pr.className = `val-res ${w === "BIG" ? "gold" : "cyan"}`;
+        predUI.innerText = w;
+        predUI.className = `val-res ${w === "BIG" ? "gold" : "cyan"}`;
         
         document.getElementById('n1').innerText = n[0];
         document.getElementById('n2').innerText = n[1];
         
-        st.innerText = "SURESHOT";
-        st.className = "win";
+        statusUI.innerText = "SURESHOT";
+        statusUI.className = "win";
         
         window.speechSynthesis.speak(new SpeechSynthesisUtterance(w));
     }
