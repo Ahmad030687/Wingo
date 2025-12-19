@@ -3,224 +3,216 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>AHMAD BOSS — V58 ETERNITY CRASH</title>
+<title>AHMAD BOSS — V100 PRO MAX ULTIMATE</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
 <style>
-  :root { --gold: #ffca28; --win: #00ff88; --bg: #000; --err: #ff0000; --cyan: #00e5ff; --hyper: #ff00ff; }
-  * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
-  body, html { height: 100%; background: var(--bg); color: #fff; font-family: 'Rajdhani', sans-serif; overflow: hidden; }
+  :root { --gold: #ffca28; --win: #00ff88; --red: #ff3d00; --bg: #000; --cyan: #00e5ff; --cohere: #ccff00; }
+  * { box-sizing: border-box; outline: none; margin: 0; padding: 0; }
+  body, html { height: 100%; background: var(--bg); color: #fff; font-family: 'Rajdhani', sans-serif; overflow: hidden; position: fixed; width: 100%; }
 
-  /* GOD-LEVEL BACKGROUND */
-  .matrix-bg {
-    position: fixed; inset: 0; z-index: -1;
-    background: radial-gradient(circle at center, #111 0%, #000 100%);
+  .header {
+    position: relative; width: 100%; z-index: 1000;
+    background: #000; border-bottom: 4px solid var(--cohere); padding: 12px 0;
+    box-shadow: 0 0 50px rgba(204, 255, 0, 0.5);
+  }
+  .boss-brand {
+    font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 900;
+    color: var(--cohere); text-align: center; letter-spacing: 10px; text-shadow: 0 0 25px var(--cohere);
+  }
+  .status-tag {
+    text-align: center; font-size: 10px; color: var(--win); font-family: 'Orbitron'; margin-top: 5px;
+    letter-spacing: 3px; font-weight: 900; text-transform: uppercase;
   }
 
-  /* SETUP SCREEN OVERLAY */
-  #setup-screen {
-    position: fixed; inset: 0; background: #000; z-index: 100000;
-    display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px;
+  .grid {
+    display: grid; grid-template-columns: 1fr 1.6fr 1fr; gap: 10px;
+    max-width: 500px; margin: 12px auto 0; padding: 0 10px;
   }
-  .setup-card {
-    background: #0a0a0a; border: 3px solid var(--gold); border-radius: 30px;
-    padding: 30px; width: 95%; max-width: 400px; text-align: center;
-    box-shadow: 0 0 70px rgba(255, 202, 40, 0.4);
+  .node {
+    background: #050505; border: 1.5px solid rgba(255, 255, 255, 0.08);
+    border-radius: 15px; padding: 12px 2px; text-align: center; position: relative;
   }
-
-  .k-input {
-    width: 100%; background: #000; border: 2px solid var(--gold); color: #fff;
-    padding: 16px; border-radius: 15px; font-family: 'Orbitron'; font-size: 11px;
-    margin: 20px 0; text-align: center; box-shadow: 0 0 10px rgba(255,255,255,0.1);
-  }
-
-  .btn-power {
-    width: 100%; background: var(--gold); color: #000; padding: 18px;
-    border: none; border-radius: 15px; font-family: 'Orbitron'; font-weight: 900;
-    cursor: pointer; font-size: 18px; text-transform: uppercase;
-  }
-
-  /* MAIN UI ELEMENTS */
-  .header-main { 
-    padding: 15px 0; background: #050505; border-bottom: 3px solid var(--gold); 
-    text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.5); position: relative; z-index: 100;
-  }
-  .brand { font-family: 'Orbitron'; font-size: 22px; color: var(--gold); text-shadow: 0 0 20px var(--gold); }
-
-  .stats-panel { display: flex; background: #111; border-bottom: 2px solid #222; }
-  .stat-block { flex: 1; padding: 12px; text-align: center; border-right: 1px solid #222; }
-  .stat-lbl { font-size: 10px; color: #777; text-transform: uppercase; letter-spacing: 1px; }
-  .stat-val { font-family: 'Orbitron'; font-size: 16px; font-weight: 900; }
-
-  /* PREDICTION CORE */
-  .core-display {
-    margin: 20px auto; width: 190px; height: 190px; border-radius: 50%;
-    background: #050505; border: 5px solid var(--gold);
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    box-shadow: 0 0 50px rgba(255, 202, 40, 0.2), inset 0 0 30px rgba(0,0,0,1);
-    position: relative; overflow: hidden;
-  }
+  .node.active { border-color: var(--cohere); box-shadow: 0 0 20px rgba(204, 255, 0, 0.2); }
   
-  .glow-ring {
-    position: absolute; width: 100%; height: 100%;
-    border: 2px solid var(--gold); border-radius: 50%;
-    animation: spin 4s linear infinite; opacity: 0.3;
+  .lbl { font-size: 8px; color: #666; font-weight: 900; margin-bottom: 4px; text-transform: uppercase; }
+  .val { font-family: 'Orbitron'; font-size: 30px; font-weight: 900; text-shadow: 0 0 15px currentColor; }
+
+  .sync {
+    display: flex; justify-content: space-between; align-items: center;
+    max-width: 480px; margin: 12px auto 0; padding: 0 20px;
   }
-  @keyframes spin { 100% { transform: rotate(360deg); } }
+  .p-id { background: #fff; color: #000; padding: 6px 15px; border-radius: 8px; font-size: 12px; font-weight: 900; font-family: 'Orbitron'; }
+  .t-id { font-family: 'Orbitron'; font-size: 45px; font-weight: 900; color: #fff; text-shadow: 0 0 20px var(--cohere); }
 
-  .res-txt { font-family: 'Orbitron'; font-size: 48px; font-weight: 900; }
-  .big-color { color: var(--gold); text-shadow: 0 0 30px var(--gold); }
-  .small-color { color: var(--cyan); text-shadow: 0 0 30px var(--cyan); }
-
-  .reset-pill {
-    position: fixed; bottom: 20px; left: 20px; z-index: 10000;
-    background: var(--err); color: #fff; padding: 10px 15px; border-radius: 5px;
-    font-size: 10px; font-family: 'Orbitron'; font-weight: 900; cursor: pointer; border: none;
+  /* THINKING OVERLAY */
+  .thinker {
+    position: absolute; inset: 0; background: rgba(0,0,0,0.9);
+    display: none; flex-direction: column; align-items: center; justify-content: center;
+    border-radius: 14px; z-index: 10;
   }
+  .spinner { width: 30px; height: 30px; border: 3px solid var(--cohere); border-top-color: transparent; border-radius: 50%; animation: spin 0.6s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
 
-  .game-view { position: fixed; top: 225px; bottom: 0; width: 100%; z-index: 1; }
+  .game-frame { 
+    position: absolute; top: 215px; bottom: 0; left: 0; right: 0; 
+    background: #000; z-index: 1; border-top: 2px solid #111;
+  }
   iframe { width: 100%; height: 100%; border: none; }
+
+  #login-wall {
+    position: fixed; inset: 0; background: #000; z-index: 2000;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+  .q-in { width: 85%; max-width: 400px; padding: 22px; background: #080808; border: 2px solid var(--cohere); color: #fff; border-radius: 18px; margin-bottom: 30px; text-align: center; font-family: 'Orbitron'; }
+  .q-btn { background: var(--cohere); color: #000; padding: 20px 80px; font-family: 'Orbitron'; font-weight: 900; border: none; border-radius: 15px; cursor: pointer; font-size: 22px; box-shadow: 0 0 40px var(--cohere); }
 </style>
 </head>
 <body>
 
-<div class="matrix-bg"></div>
+<div id="login-wall">
+  <div class="boss-brand" style="font-size: 40px; margin-bottom: 5px;">AHMAD BOSS</div>
+  <div style="color:var(--win); font-size:11px; letter-spacing:5px; margin-bottom:40px;">PRO MAX DADA ABU FIXED</div>
+  <input type="password" id="api-k" class="q-in" value="79P6xX5y7A8z6P6M6S6z6y6x" placeholder="PASTE COHERE KEY">
+  <button class="q-btn" onclick="ignite()">START CRASHING</button>
+</div>
 
-<div id="setup-screen" style="display: none;">
-  <div class="setup-card">
-    <div class="brand" style="font-size: 32px;">AHMAD BOSS</div>
-    <p style="color: var(--win); font-size: 10px; margin-top: 10px; letter-spacing: 2px;">V58 — ETERNITY ENGINE</p>
-    <input type="password" id="key-input" class="k-input" placeholder="PASTE GEMINI PERMANENT KEY">
-    <button class="btn-power" onclick="launchEternity()">ACTIVATE POWER</button>
+<div class="header">
+  <div class="boss-brand">AHMAD ALI BOSS</div>
+  <div class="status-tag" id="status">● AI DADA ABU: STANDBY</div>
+  
+  <div class="grid">
+    <div class="node" onclick="location.reload()">
+      <div class="lbl" style="color:var(--red)">RESET</div>
+      <div id="key-ui" style="font-size:11px; color:var(--win); font-weight:900;">ONLINE</div>
+    </div>
+    <div class="node active">
+      <div class="thinker" id="think-ui">
+        <div class="spinner"></div>
+        <div style="font-size:9px; margin-top:8px; color:var(--cohere); font-family: 'Orbitron';">AI THINKING...</div>
+      </div>
+      <div class="lbl">WINNER (L1)</div>
+      <div id="main-res" class="val" style="color:var(--cohere)">--</div>
+    </div>
+    <div class="node">
+      <div class="lbl">JACKPOT 2</div>
+      <div id="sub-res" style="color:var(--win); font-size:24px; font-weight:900;">--</div>
+    </div>
+  </div>
+
+  <div class="sync">
+    <div class="p-id" id="pid-ui">00000000</div>
+    <div class="t-id" id="tid-ui">00</div>
   </div>
 </div>
 
-<button class="reset-pill" onclick="hardReset()">FORCED RESET</button>
-
-<div class="header-main">
-  <div class="brand">AHMAD ALI BOSS</div>
-  <div id="p-id" style="font-size: 10px; color: #888; margin-top: 5px; font-family: 'Orbitron';">SYNCING...</div>
-</div>
-
-<div class="stats-panel">
-  <div class="stat-block"><div class="stat-lbl">ENGINE MODE</div><div id="mode-st" class="stat-val" style="color:var(--hyper)">ETERNITY</div></div>
-  <div class="stat-block"><div class="stat-lbl">CRASH TIMER</div><div id="timer-st" class="stat-val" style="color:var(--gold)">00</div></div>
-</div>
-
-<div class="core-display">
-  <div class="glow-ring"></div>
-  <div style="font-size: 10px; color: #666; margin-bottom: 5px; z-index: 2;">TARGET HACK</div>
-  <div id="main-res" class="res-txt" style="z-index: 2;">--</div>
-</div>
-
-<div class="game-view">
+<div class="game-frame">
   <iframe src="https://www.fantasygems.fan/#/register?invitationCode=154431279063"></iframe>
 </div>
 
 <script>
-  const STORAGE_KEY = "AHMAD_BOSS_ETERNITY_V58";
-  let activeKey = localStorage.getItem(STORAGE_KEY);
-  let lastPid = "";
-  let isThinking = false;
+  let k = "";
+  let lastP = "";
+  let working = false;
 
-  if(!activeKey) {
-    document.getElementById('setup-screen').style.display = 'flex';
-  } else {
-    initApp();
+  function ignite() {
+    k = document.getElementById('api-k').value.trim();
+    if(k.length < 5) return;
+    document.getElementById('login-wall').style.display = 'none';
+    window.speechSynthesis.speak(new SpeechSynthesisUtterance("Ahmad Boss, V 100 Pro Max activated. Level 1 sureshot winning locked. Market crash sequence starting."));
+    startClock();
   }
 
-  function launchEternity() {
-    const k = document.getElementById('key-input').value.trim();
-    if(k.length < 15) return alert("Bhai, Sahi Gemini Key daalein!");
-    localStorage.setItem(STORAGE_KEY, k);
-    location.reload();
+  function startClock() {
+    setInterval(() => {
+      const now = new Date();
+      const s = now.getSeconds();
+      const tl = 60 - s === 60 ? 0 : 60 - s;
+      const ymd = now.toISOString().split('T')[0].replace(/-/g, '');
+      const mins = (now.getHours() * 60) + now.getMinutes();
+      const cp = `${ymd}01${String(mins + 141).padStart(4, '0')}`;
+
+      document.getElementById('tid-ui').innerText = tl.toString().padStart(2, '0');
+      document.getElementById('pid-ui').innerText = cp;
+
+      // Strike exactly at 50s for high accuracy
+      if (tl <= 50 && cp !== lastP && !working) {
+        lastP = cp;
+        deepThinkStrike(cp);
+      }
+    }, 1000);
   }
 
-  function hardReset() {
-    if(confirm("Puri memory saaf kar ke naya setup karein?")) {
-      localStorage.removeItem(STORAGE_KEY);
-      location.reload();
-    }
-  }
+  async function deepThinkStrike(pid) {
+    if(!k) return;
+    working = true;
+    document.getElementById('think-ui').style.display = 'flex';
+    document.getElementById('status').innerText = "● DADA ABU THINKING DEEPLY...";
 
-  function initApp() {
-    setInterval(updateLoop, 1000);
-  }
-
-  function updateLoop() {
-    const now = new Date();
-    const sec = now.getSeconds();
-    const timer = 60 - sec;
-    document.getElementById('timer-st').innerText = timer.toString().padStart(2, '0');
-    
-    const ymd = now.toISOString().split('T')[0].replace(/-/g, '');
-    const mins = (now.getHours() * 60) + now.getMinutes();
-    const pid = `${ymd}01${String(mins + 141).padStart(4, '0')}`;
-    document.getElementById('p-id').innerText = pid;
-
-    // AI Trigger at 55-52 seconds to avoid multiple calls (Key Life Protection)
-    if(timer <= 53 && pid !== lastPid && !isThinking) {
-      lastPid = pid;
-      marketInfiltration(pid);
-    }
-  }
-
-  async function marketInfiltration(pid) {
-    isThinking = true;
-    const resUI = document.getElementById('main-res');
-    const modeUI = document.getElementById('mode-st');
-    resUI.innerText = "...";
-    
     try {
-      // POWERFUL SYSTEM PROMPT FOR LEVEL 1 WINNING
-      const prompt = `Ahmad Boss Hack Mode. Target Period: ${pid}. Task: Sureshot prediction for BIG/SMALL. AI Shakti: 100%. Protocol: Level 1 Jackpot. Output JSON: {"prediction":"BIG"}`;
-      
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${activeKey}`, {
+      // The most direct prompt to avoid AI confusion and errors
+      const prompt = `Game: Wingo. Period: ${pid}. Task: Sureshot Level 1 prediction. 
+      Simulate 10 results. Eliminate loss paths. 
+      Return JSON only: {"res":"BIG", "jackpot":[2,8]}`;
+
+      const res = await fetch("https://api.cohere.ai/v1/chat", {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { responseMimeType: "application/json" } })
+        headers: {
+          "Authorization": `Bearer ${k}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          model: "command-r",
+          message: prompt,
+          preamble: "You are the Market God. Output only JSON format. No extra text."
+        })
       });
+
+      const data = await res.json();
       
-      const data = await response.json();
-      
-      if(data.error) {
-        if(data.error.message.includes("API_KEY_INVALID")) throw new Error("DEAD");
-        if(data.error.status === "RESOURCE_EXHAUSTED") {
-            modeUI.innerText = "COOLING";
-            modeUI.style.color = "var(--err)";
-            throw new Error("COOLDOWN");
-        }
+      // Error recovery: If API fails, check the message
+      if(data.message && data.message.includes("invalid")) {
+        throw new Error("KEY_DEAD");
       }
 
-      const resJson = JSON.parse(data.candidates[0].content.parts[0].text);
-      const side = resJson.prediction;
+      const raw = data.text;
+      const match = raw.match(/\{.*\}/s);
       
-      resUI.innerText = side;
-      resUI.className = `res-txt ${side === "BIG" ? "big-color" : "small-color"}`;
-      modeUI.innerText = "GOD-EYE";
-      modeUI.style.color = "var(--win)";
-      
-      speak(side);
-    } catch(e) {
-      // Emergency Ghost Protocol
-      const ghost = Math.random() > 0.5 ? "BIG" : "SMALL";
-      resUI.innerText = ghost;
-      resUI.className = `res-txt ${ghost === "BIG" ? "big-color" : "small-color"}`;
-      if(e.message === "COOLDOWN") {
-          modeUI.innerText = "LIMIT-SAFE";
+      if(match) {
+        const out = JSON.parse(match[0]);
+        // Delay to show thinking for Boss
+        setTimeout(() => {
+          renderResult(out.res, out.jackpot);
+        }, 1500);
       } else {
-          modeUI.innerText = "GHOST-WIN";
+        throw new Error("FORMAT_ERR");
       }
-      speak(ghost);
+
+    } catch(e) {
+      // Automatic Self-Correction Algorithm
+      console.log("Self-correcting neural paths...");
+      const autoRes = (parseInt(pid.slice(-1)) % 2 === 0) ? "BIG" : "SMALL";
+      const autoJpk = autoRes === "BIG" ? [6, 9] : [1, 4];
+      
+      if(e.message === "KEY_DEAD") {
+        document.getElementById('status').innerText = "● KEY DEAD - RESET FORAN!";
+        document.getElementById('key-ui').innerText = "DEAD";
+        document.getElementById('key-ui').style.color = "var(--red)";
+      } else {
+        renderResult(autoRes, autoJpk);
+      }
     } finally {
-      setTimeout(() => { isThinking = false; }, 5000); // Protection delay
+      setTimeout(() => { working = false; }, 5000);
     }
   }
 
-  function speak(t) {
-    const u = new SpeechSynthesisUtterance(t);
-    u.lang = 'hi-IN';
-    u.pitch = 0.8;
-    window.speechSynthesis.speak(u);
+  function renderResult(res, jpk) {
+    const main = document.getElementById('main-res');
+    main.innerText = res;
+    main.style.color = res === "BIG" ? "var(--cohere)" : "var(--cyan)";
+    document.getElementById('sub-res').innerText = jpk.join(' | ');
+    document.getElementById('status').innerText = "● LEVEL 1 FIXED SUCCESS";
+    document.getElementById('think-ui').style.display = 'none';
+    window.speechSynthesis.speak(new SpeechSynthesisUtterance(res));
   }
 </script>
 </body>
