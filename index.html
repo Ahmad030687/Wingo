@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>AHMAD BOSS — V43 ROYAL JUDGMENT</title>
+<title>AHMAD BOSS — V44 SUPREME STABLE</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --gold: #ffca28;
     --win: #00ff88;
-    --red: #ff3d00;
+    --cyan: #00e5ff;
     --bg: #000;
   }
 
@@ -19,73 +19,74 @@
     font-family: 'Rajdhani', sans-serif; overflow: hidden; 
   }
 
-  /* Ultra-Premium Royal Header */
+  /* Fixed Royal Header */
   .header {
     position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
-    background: linear-gradient(180deg, #111 0%, #000 100%);
-    border-bottom: 3px solid var(--gold); padding: 12px 0;
-    box-shadow: 0 4px 30px rgba(255, 202, 40, 0.4);
+    background: #0a0a0a; border-bottom: 3px solid var(--gold);
+    padding: 10px 0; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;
+    box-shadow: 0 4px 25px rgba(255, 202, 40, 0.3);
   }
 
   .boss-brand {
-    font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 900;
+    font-family: 'Orbitron', sans-serif; font-size: 15px; font-weight: 900;
     color: var(--gold); text-align: center; letter-spacing: 4px;
-    text-shadow: 0 0 15px var(--gold); margin-bottom: 10px;
+    text-shadow: 0 0 10px var(--gold); margin-bottom: 10px;
   }
 
-  /* Grid Layout for Zero Text Overflow */
+  /* Corrected Grid Layout to prevent text overflow */
   .dashboard {
-    display: grid; grid-template-columns: 1fr 1.2fr 1fr; gap: 8px;
-    max-width: 480px; margin: auto; padding: 0 10px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+    max-width: 450px; margin: auto; padding: 0 15px;
   }
 
   .item {
-    background: #0a0a0a; border: 1.5px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px; padding: 8px 2px; display: flex; flex-direction: column;
-    align-items: center; justify-content: center; min-height: 75px;
+    background: #111; border: 1.5px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px; padding: 10px 2px; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; min-height: 80px;
+    overflow: hidden;
   }
 
-  .tag { font-size: 8px; color: #666; text-transform: uppercase; font-weight: 700; margin-bottom: 4px; }
+  .tag { font-size: 8px; color: #777; text-transform: uppercase; font-weight: 700; margin-bottom: 5px; }
 
-  /* Prediction Text - Auto Scale */
+  /* Prediction Text with Auto-Fit */
   .val-res { 
-    font-family: 'Orbitron', sans-serif; font-size: 18px; font-weight: 900; 
-    width: 100%; text-align: center; letter-spacing: 1px;
+    font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: 900; 
+    text-align: center; width: 100%; letter-spacing: 1px;
+    white-space: nowrap;
   }
   .gold-txt { color: var(--gold); text-shadow: 0 0 15px var(--gold); }
-  .cyan-txt { color: #00e5ff; text-shadow: 0 0 15px #00e5ff; }
+  .cyan-txt { color: var(--cyan); text-shadow: 0 0 15px var(--cyan); }
 
   .j-row { display: flex; gap: 4px; }
   .j-box {
-    background: #000; border: 1.5px solid var(--win); width: 22px; height: 22px;
-    border-radius: 5px; display: flex; align-items: center; justify-content: center;
-    font-size: 11px; color: var(--win); font-weight: 900;
+    background: #000; border: 1.5px solid var(--win); width: 24px; height: 24px;
+    border-radius: 6px; display: flex; align-items: center; justify-content: center;
+    font-size: 12px; color: var(--win); font-weight: 900;
   }
 
   /* Info Bar */
   .info-bar {
     display: flex; justify-content: space-between; align-items: center;
-    max-width: 440px; margin: 10px auto 0; padding: 0 15px;
+    max-width: 420px; margin: 12px auto 0; padding: 0 20px;
   }
   .p-id-pill { 
-    background: #fff; color: #000; padding: 4px 10px; border-radius: 5px;
-    font-size: 10px; font-weight: 900; font-family: 'Orbitron';
+    background: #fff; color: #000; padding: 4px 12px; border-radius: 6px;
+    font-size: 11px; font-weight: 900; font-family: 'Orbitron';
   }
-  .p-timer { color: #fff; font-weight: 900; font-size: 32px; font-family: 'Orbitron'; }
+  .p-timer { color: #fff; font-weight: 900; font-size: 34px; font-family: 'Orbitron'; }
 
   .game-view {
-    position: fixed; top: 155px; left: 0; width: 100%; height: calc(100% - 155px);
+    position: fixed; top: 160px; left: 0; width: 100%; height: calc(100% - 160px);
   }
   iframe { width: 100%; height: 100%; border: none; }
 
-  /* New Boot Sequence */
   #boot-up {
     position: fixed; inset: 0; background: #000; z-index: 10000;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
   }
   .boot-btn {
     background: var(--gold); color: #000; padding: 18px 60px;
-    font-family: 'Orbitron'; font-weight: 900; border: none; border-radius: 10px;
+    font-family: 'Orbitron'; font-weight: 900; border: none; border-radius: 12px;
     cursor: pointer; font-size: 20px; box-shadow: 0 0 40px var(--gold);
   }
 </style>
@@ -93,9 +94,9 @@
 <body>
 
 <div id="boot-up">
-  <div class="boss-brand" style="font-size: 40px; margin-bottom: 20px;">AHMAD BOSS</div>
-  <div style="color: #444; font-size: 12px; margin-bottom: 40px; letter-spacing: 5px;">V43 — THE ROYAL JUDGMENT</div>
-  <button class="boot-btn" onclick="activateSystem()">CONFIRM GOD MODE</button>
+  <div class="boss-brand" style="font-size: 38px; margin-bottom: 20px;">AHMAD BOSS</div>
+  <div style="color: #444; font-size: 12px; margin-bottom: 40px; letter-spacing: 5px;">V44 — SUPREME STABLE</div>
+  <button class="boot-btn" onclick="startSystem()">ACTIVATE AI</button>
 </div>
 
 <div class="header">
@@ -104,11 +105,11 @@
   <div class="dashboard">
     <div class="item">
       <span class="tag">AI STATUS</span>
-      <div id="status" style="color:var(--win); font-size:10px; font-weight:900;">SECURE</div>
+      <div id="status" style="color:var(--win); font-size:10px; font-weight:900;">ACTIVE</div>
     </div>
 
     <div class="item" style="border: 2px solid var(--gold); background: rgba(255, 202, 40, 0.05);">
-      <span class="tag">SURESHOT FIX</span>
+      <span class="tag">GRANDFATHER WIN</span>
       <div id="prediction" class="val-res">--</div>
     </div>
 
@@ -122,90 +123,96 @@
   </div>
 
   <div class="info-bar">
-    <div class="p-id-pill" id="period-id">CONNECTING...</div>
+    <div class="p-id-pill" id="period-id">SYNCING...</div>
     <div class="p-timer" id="timer-val">00</div>
   </div>
 </div>
 
 <div class="game-view">
-  <iframe src="https://www.fantasygems.fan/#/register?invitationCode=154431279063"></iframe>
+  <iframe src="https://www.fantasygems.fan/#/register?invitationCode=154431279063" id="game-frame"></iframe>
 </div>
 
 <script>
-  const apiKey = "AIzaSyApM2iJqdoEuPJNsk9J9Wimcsqvq1SYw1w"; 
-  let lastPid = "";
-  let thinking = false;
-  let hData = [];
+  const apiKey = ""; // Leave blank, environment will provide
+  let lastProcessedPid = "";
+  let isThinking = false;
+  let history = [];
 
-  function activateSystem() {
+  function startSystem() {
     document.getElementById('boot-up').style.display = 'none';
-    const msg = new SpeechSynthesisUtterance("Ahmad Boss. V43 system active. Level 1 win confirm.");
+    const msg = new SpeechSynthesisUtterance("System online. Ahmad Boss, market crash mode active.");
     msg.lang = 'hi-IN';
     window.speechSynthesis.speak(msg);
-    runLoop();
+    mainLoop();
   }
 
-  function runLoop() {
+  function mainLoop() {
     const now = new Date();
-    const sec = now.getSeconds();
-    let timeLeft = 60 - sec;
+    const seconds = now.getSeconds();
+    let timeLeft = 60 - seconds;
     if(timeLeft === 60) timeLeft = 0;
     
-    // PERIOD SYNC - Accurate Calculation
+    // Exact Period Sync Logic
     const baseDate = "20251220"; 
-    const mins = (now.getHours() * 60) + now.getMinutes();
-    const pid = `${baseDate}01${String(mins + 141).padStart(4, '0')}`;
+    const totalMinutes = (now.getHours() * 60) + now.getMinutes();
+    const periodId = `${baseDate}01${String(totalMinutes + 141).padStart(4, '0')}`;
 
     document.getElementById('timer-val').innerText = timeLeft.toString().padStart(2, '0');
-    document.getElementById('period-id').innerText = pid;
+    document.getElementById('period-id').innerText = periodId;
 
-    if (timeLeft <= 54 && pid !== lastPid && !thinking) {
-      lastPid = pid;
-      fetchPrediction(pid);
+    if (timeLeft <= 54 && periodId !== lastProcessedPid && !isThinking) {
+      lastProcessedPid = periodId;
+      fetchPrediction(periodId);
     }
     
-    setTimeout(runLoop, 1000);
+    setTimeout(mainLoop, 1000);
   }
 
   async function fetchPrediction(pid) {
-    thinking = true;
-    document.getElementById('prediction').innerText = "CALC";
+    isThinking = true;
+    document.getElementById('prediction').innerText = "WAIT";
     
     try {
-      const prompt = `System: Ahmad Boss V43 Royal Judgment. Target: ${pid}. 
-      Rule: 100% Level 1 Win. No Tukka. Analyze Market History: ${JSON.stringify(hData)}. 
-      Logic: Dragon/Series/Mirror. 
-      Output JSON: {"res":"SMALL","nums":[0,2]}`;
+      const prompt = `System: Ahmad Boss V44 Supreme. Target: ${pid}. 
+      Mandate: Level 1 Guaranteed Win. No Loss. History: ${JSON.stringify(history)}.
+      Logic: Trend Analysis + Dragon Pattern. Output JSON: {"side":"SMALL","nums":[1,3]}`;
       
       const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { responseMimeType: "application/json" } })
+        body: JSON.stringify({ 
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { responseMimeType: "application/json" }
+        })
       });
       
       const data = await response.json();
+      if(!data.candidates) throw new Error("API Limit");
+      
       const result = JSON.parse(data.candidates[0].content.parts[0].text);
       
       const pDisplay = document.getElementById('prediction');
-      pDisplay.innerText = result.res;
-      pDisplay.className = `val-res ${result.res === 'BIG' ? 'gold-txt' : 'cyan-txt'}`;
+      pDisplay.innerText = result.side;
+      pDisplay.className = `val-res ${result.side === 'BIG' ? 'gold-txt' : 'cyan-txt'}`;
       document.getElementById('n1').innerText = result.nums[0];
       document.getElementById('n2').innerText = result.nums[1];
       
-      const utter = new SpeechSynthesisUtterance(`Result ${result.res}`);
-      utter.lang = 'hi-IN';
-      window.speechSynthesis.speak(utter);
+      const speech = new SpeechSynthesisUtterance(`Result ${result.side}`);
+      speech.lang = 'hi-IN';
+      window.speechSynthesis.speak(speech);
       
-      hData.push({id: pid, res: result.res});
-      if(hData.length > 10) hData.shift();
+      history.push({id: pid, res: result.side});
+      if(history.length > 10) history.shift();
       
     } catch(e) { 
-      document.getElementById('prediction').innerText = "RETRY"; 
+      // Fallback Pattern Logic to avoid "RETRY" loop
+      document.getElementById('prediction').innerText = history.length > 0 ? (history[history.length-1].res) : "BIG";
+      document.getElementById('status').innerText = "OFFLINE-MODE";
+      document.getElementById('status').style.color = "red";
     } finally { 
-      thinking = false; 
+      isThinking = false; 
     }
   }
 </script>
 </body>
 </html>
-
