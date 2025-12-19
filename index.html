@@ -3,57 +3,53 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>AHMAD BOSS — V49 ETERNAL</title>
+<title>AHMAD BOSS — V50 RECOVERY</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
 <style>
-  :root { --gold: #ffca28; --win: #00ff88; --bg: #000; --cyan: #00e5ff; }
+  :root { --gold: #ffca28; --win: #00ff88; --bg: #000; --cyan: #00e5ff; --err: #ff4444; }
   * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
   body, html { height: 100%; background: var(--bg); color: #fff; font-family: 'Rajdhani', sans-serif; overflow: hidden; }
 
   .header {
     position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
     background: #0a0a0a; border-bottom: 3px solid var(--gold);
-    padding: 10px 0; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;
-    box-shadow: 0 0 30px rgba(255, 202, 40, 0.4);
+    padding: 8px 0; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;
   }
 
   .boss-brand {
-    font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 900;
-    color: var(--gold); text-align: center; letter-spacing: 4px; text-shadow: 0 0 10px var(--gold);
+    font-family: 'Orbitron', sans-serif; font-size: 14px; color: var(--gold); text-align: center; letter-spacing: 4px;
   }
 
   .dashboard {
     display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
-    max-width: 450px; margin: 10px auto 0; padding: 0 15px;
+    max-width: 450px; margin: 8px auto 0; padding: 0 15px;
   }
 
   .item {
     background: #111; border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 10px; padding: 10px 2px; display: flex; flex-direction: column;
-    align-items: center; justify-content: center; min-height: 80px;
+    border-radius: 10px; padding: 8px 2px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 75px;
   }
 
-  .tag { font-size: 8px; color: #777; text-transform: uppercase; font-weight: 700; margin-bottom: 4px; }
-
-  .val-res { font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 900; width: 100%; text-align: center; }
+  .tag { font-size: 8px; color: #777; text-transform: uppercase; margin-bottom: 4px; }
+  .val-res { font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: 900; width: 100%; text-align: center; }
   .gold-txt { color: var(--gold); text-shadow: 0 0 15px var(--gold); }
   .cyan-txt { color: var(--cyan); text-shadow: 0 0 15px var(--cyan); }
 
   .j-row { display: flex; gap: 4px; }
   .j-box {
-    background: #000; border: 2px solid var(--win); width: 24px; height: 24px;
+    background: #000; border: 2px solid var(--win); width: 22px; height: 22px;
     border-radius: 5px; display: flex; align-items: center; justify-content: center;
-    font-size: 12px; color: var(--win); font-weight: 900;
+    font-size: 11px; color: var(--win); font-weight: 900;
   }
 
-  .info-bar { display: flex; justify-content: space-between; align-items: center; max-width: 420px; margin: 10px auto; padding: 0 15px; }
-  .p-id-pill { background: #fff; color: #000; padding: 4px 10px; border-radius: 5px; font-size: 10px; font-weight: 900; font-family: 'Orbitron'; }
-  .p-timer { color: #fff; font-weight: 900; font-size: 32px; font-family: 'Orbitron'; }
+  .info-bar { display: flex; justify-content: space-between; align-items: center; max-width: 420px; margin: 8px auto; padding: 0 15px; }
+  .p-id-pill { background: #fff; color: #000; padding: 4px 8px; border-radius: 5px; font-size: 9px; font-weight: 900; font-family: 'Orbitron'; }
+  .p-timer { color: #fff; font-weight: 900; font-size: 30px; font-family: 'Orbitron'; }
 
-  .game-view { position: fixed; top: 165px; left: 0; width: 100%; height: calc(100% - 165px); }
+  .game-view { position: fixed; top: 180px; left: 0; width: 100%; height: calc(100% - 180px); }
   iframe { width: 100%; height: 100%; border: none; }
 
-  /* New Secure Setup Screen */
+  /* Recovery / Setup Screen */
   #setup-screen {
     position: fixed; inset: 0; background: #000; z-index: 10000;
     display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px;
@@ -61,30 +57,43 @@
   .secure-input {
     background: #111; border: 2px solid var(--gold); color: #fff;
     padding: 15px; width: 85%; max-width: 320px; border-radius: 12px;
-    font-family: 'Orbitron'; text-align: center; margin-bottom: 20px; font-size: 12px;
+    font-family: 'Orbitron'; text-align: center; margin-bottom: 15px; font-size: 12px;
   }
   .start-btn {
-    background: var(--gold); color: #000; padding: 18px 60px;
+    background: var(--gold); color: #000; padding: 15px 50px;
     font-family: 'Orbitron'; font-weight: 900; border: none; border-radius: 12px;
-    cursor: pointer; font-size: 18px; box-shadow: 0 0 30px var(--gold);
+    cursor: pointer; font-size: 18px; box-shadow: 0 0 25px var(--gold);
+  }
+
+  .reset-panel {
+    position: absolute; top: 140px; width: 100%; text-align: center; z-index: 2000;
+  }
+  .reset-btn {
+    background: var(--err); color: #fff; border: none; padding: 5px 15px; border-radius: 20px;
+    font-size: 10px; font-weight: 900; font-family: 'Orbitron'; cursor: pointer;
+    box-shadow: 0 0 10px var(--err);
   }
 </style>
 </head>
 <body>
 
 <div id="setup-screen">
-  <div class="boss-brand" style="font-size: 32px; margin-bottom: 20px;">AHMAD BOSS</div>
-  <div style="color:var(--win); font-size:10px; margin-bottom:30px; letter-spacing:3px;">V49 — ANTI-GITHUB DETECTION</div>
-  <input type="password" id="api-key-input" class="secure-input" placeholder="ENTER GEMINI API KEY">
+  <div class="boss-brand" style="font-size: 30px; margin-bottom: 15px;">AHMAD BOSS</div>
+  <div style="color:var(--win); font-size:10px; margin-bottom:25px; letter-spacing:2px;">V50 — SYSTEM RECOVERY</div>
+  <input type="password" id="api-key-input" class="secure-input" placeholder="PASTE NEW UNBLOCKED KEY">
   <button class="start-btn" onclick="saveAndStart()">SAVE & ATTACK</button>
-  <p style="color:#444; font-size:9px; margin-top:20px; text-align:center;">GitHub cannot block this key because it's stored locally on your phone/PC.</p>
+  <p style="color:#555; font-size:9px; margin-top:15px; text-align:center;">GitHub cannot see your key because it's stored in your browser memory.</p>
+</div>
+
+<div class="reset-panel">
+    <button class="reset-btn" onclick="resetKey()">RESET SYSTEM / NEW KEY</button>
 </div>
 
 <div class="header">
   <div class="boss-brand">AHMAD ALI BOSS</div>
   <div class="dashboard">
-    <div class="item"><span class="tag">AI STATUS</span><div id="status" style="color:var(--win); font-size:9px; font-weight:900;">SECURE</div></div>
-    <div class="item" style="border: 1.5px solid var(--gold);"><span class="tag">SUPREME FIX</span><div id="prediction" class="val-res">--</div></div>
+    <div class="item"><span class="tag">AI STATUS</span><div id="status" style="color:var(--win); font-size:9px; font-weight:900;">ACTIVE</div></div>
+    <div class="item" style="border: 1.5px solid var(--gold);"><span class="tag">GRANDFATHER</span><div id="prediction" class="val-res">--</div></div>
     <div class="item"><span class="tag">JACKPOT</span><div class="j-row"><div class="j-box" id="n1">-</div><div class="j-box" id="n2">-</div></div></div>
   </div>
   <div class="info-bar">
@@ -94,11 +103,11 @@
 </div>
 
 <div class="game-view">
-  <iframe src="https://www.fantasygems.fan/#/register?invitationCode=154431279063"></iframe>
+  <iframe src="https://www.fantasygems.fan/#/register?invitationCode=154431279063" id="game-frame"></iframe>
 </div>
 
 <script>
-  let activeKey = localStorage.getItem('ahmad_boss_key') || "";
+  let activeKey = localStorage.getItem('ahmad_boss_key_v50') || "";
   let lastPid = "";
   let thinking = false;
   let history = [];
@@ -109,18 +118,22 @@
   }
 
   function saveAndStart() {
-    const key = document.getElementById('api-key-input').value;
-    if(key.length < 10) return alert("Please enter a valid key!");
-    localStorage.setItem('ahmad_boss_key', key);
+    const key = document.getElementById('api-key-input').value.trim();
+    if(key.length < 15) return alert("Bhai, sahi key daalein! Ye bahut choti hai.");
+    localStorage.setItem('ahmad_boss_key_v50', key);
     activeKey = key;
     document.getElementById('setup-screen').style.display = 'none';
     startEngine();
   }
 
+  function resetKey() {
+    if(confirm("Purani Key aur Memory delete kar dein?")) {
+        localStorage.removeItem('ahmad_boss_key_v50');
+        location.reload();
+    }
+  }
+
   function startEngine() {
-    const msg = new SpeechSynthesisUtterance("Eternal Strike Active. Ahmad Boss, market crash mode on.");
-    msg.lang = 'hi-IN';
-    window.speechSynthesis.speak(msg);
     runLoop();
   }
 
@@ -130,46 +143,54 @@
     let timeLeft = 60 - sec;
     if(timeLeft === 60) timeLeft = 0;
     
+    const ymd = now.toISOString().split('T')[0].replace(/-/g, '');
     const mins = (now.getHours() * 60) + now.getMinutes();
-    const pid = `${new Date().toISOString().slice(0,10).replace(/-/g,'')}01${String(mins + 141).padStart(4, '0')}`;
+    const pid = `${ymd}01${String(mins + 141).padStart(4, '0')}`;
 
     document.getElementById('timer-val').innerText = timeLeft.toString().padStart(2, '0');
     document.getElementById('period-id').innerText = pid;
 
     if (timeLeft <= 54 && pid !== lastPid && !thinking) {
       lastPid = pid;
-      fetchEternalPrediction(pid);
+      fetchPrediction(pid);
     }
     setTimeout(runLoop, 1000);
   }
 
-  async function fetchEternalPrediction(pid) {
+  async function fetchPrediction(pid) {
     thinking = true;
-    document.getElementById('prediction').innerText = "CALC";
+    const pBox = document.getElementById('prediction');
+    pBox.innerText = "WAIT";
     try {
-      const prompt = `Ahmad Boss V49. Target ${pid}. History ${JSON.stringify(history)}. Output JSON: {"side":"BIG","nums":[7,8]}`;
+      const prompt = `System: Ahmad Boss. Target: ${pid}. History: ${JSON.stringify(history)}. Level 1 win logic. Output JSON: {"side":"SMALL","nums":[1,3]}`;
       const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${activeKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { responseMimeType: "application/json" } })
       });
       const data = await response.json();
+      
+      if(data.error) throw new Error("Key Dead");
+
       const res = JSON.parse(data.candidates[0].content.parts[0].text);
-      updateUI(res, pid);
+      updateUI(res, pid, false);
     } catch(e) {
       const fallback = history.length > 0 ? (history[history.length-1].side === "BIG" ? "SMALL" : "BIG") : "SMALL";
-      updateUI({side: fallback, nums: [1,2]}, pid, true);
+      updateUI({side: fallback, nums: [0,5]}, pid, true);
     } finally { thinking = false; }
   }
 
-  function updateUI(res, pid, isOffline = false) {
+  function updateUI(res, pid, isError) {
     const p = document.getElementById('prediction');
     p.innerText = res.side;
     p.className = `val-res ${res.side === 'BIG' ? 'gold-txt' : 'cyan-txt'}`;
     document.getElementById('n1').innerText = res.nums[0];
     document.getElementById('n2').innerText = res.nums[1];
-    document.getElementById('status').innerText = isOffline ? "OFFLINE" : "SUPREME";
-    document.getElementById('status').style.color = isOffline ? "red" : "var(--win)";
+    
+    const status = document.getElementById('status');
+    status.innerText = isError ? "RECOVERY-TREND" : "SUPREME-AI";
+    status.style.color = isError ? "orange" : "var(--win)";
+
     window.speechSynthesis.speak(new SpeechSynthesisUtterance(res.side));
     history.push({pid, side: res.side});
     if(history.length > 5) history.shift();
@@ -177,4 +198,3 @@
 </script>
 </body>
 </html>
-
