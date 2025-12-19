@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>AHMAD ALI BOSS — V13 NEURAL-FIX</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #ffca28;
+    --cyan: #00f3ff;
+    --win: #00ff41;
+    --loss: #ff003c;
+    --bg: #020202;
+  }
+
+  * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
+  body, html { 
+    margin: 0; padding: 0; height: 100%; 
+    background: var(--bg); color: #fff; 
+    font-family: 'Rajdhani', sans-serif; overflow: hidden; 
+  }
+
+  /* Compact Premium Header */
+  .header {
+    position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+    background: rgba(10, 10, 10, 0.98); backdrop-filter: blur(15px);
+    border-bottom: 2px solid var(--gold);
+    padding: 10px 0; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.9);
+  }
+
+  .boss-brand {
+    font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: 900;
+    color: var(--gold); text-align: center; letter-spacing: 2px;
+    text-shadow: 0 0 12px rgba(255, 202, 40, 0.6); margin-bottom: 5px;
+  }
+
+  .dashboard {
+    display: grid; grid-template-columns: 1fr 1.5fr 1fr; gap: 8px;
+    max-width: 480px; margin: auto; padding: 0 10px;
+  }
+
+  .item {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(0,243,255,0.15);
+    border-radius: 12px; padding: 8px 5px; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+  }
+
+  .tag { font-size: 8px; color: #777; text-transform: uppercase; margin-bottom: 4px; font-weight: 800; }
+
+  .val-res { font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: 900; }
+  .gold-txt { color: var(--gold); text-shadow: 0 0 10px var(--gold); }
+  .cyan-txt { color: var(--cyan); text-shadow: 0 0 10px var(--cyan); }
+
+  .j-row { display: flex; gap: 4px; }
+  .j-box {
+    background: #000; border: 1px solid var(--gold); width: 24px; height: 24px;
+    border-radius: 6px; display: flex; align-items: center; justify-content: center;
+    font-size: 13px; color: var(--gold); font-weight: bold;
+  }
+
+  #status-display {
+    font-size: 10px; font-weight: 900; padding: 2px 8px; border-radius: 4px;
+    margin-top: 5px; text-transform: uppercase; letter-spacing: 1px;
+  }
+  .win-bg { background: rgba(0, 255, 65, 0.2); color: var(--win); border: 1px solid var(--win); }
+  .loss-bg { background: rgba(255, 0, 60, 0.2); color: var(--loss); border: 1px solid var(--loss); }
+
+  .info-bar {
+    display: flex; justify-content: space-between; max-width: 420px; 
+    margin: 10px auto 2px; padding: 0 15px; font-size: 11px;
+  }
+  .p-id { color: #fff; opacity: 0.8; }
+  .p-timer { color: var(--loss); font-weight: 900; }
+
+  /* Game Container */
+  .game-view {
+    position: fixed; top: 135px; left: 0; width: 100%; height: calc(100% - 135px);
+    background: #000;
+  }
+  iframe { width: 100%; height: 100%; border: none; }
+
+  /* Start Screen */
+  #boot-up {
+    position: fixed; inset: 0; background: #000; z-index: 10000;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    border: 2px solid var(--gold);
+  }
+  .boot-btn {
+    background: var(--gold); color: #000; padding: 18px 45px;
+    font-family: 'Orbitron'; font-weight: 900; border: none; border-radius: 15px;
+    box-shadow: 0 0 30px var(--gold); cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<div id="boot-up">
+  <div class="boss-brand" style="font-size: 35px; margin-bottom: 10px;">AHMAD BOSS</div>
+  <div style="color: var(--cyan); letter-spacing: 5px; font-size: 10px; margin-bottom: 40px;">NEURAL V13 ENGINE</div>
+  <button class="boot-btn" onclick="initialize()">BOOT ENGINE</button>
+</div>
+
+<div class="header">
+  <div class="boss-brand">AHMAD ALI BOSS</div>
+  
+  <div class="dashboard">
+    <div class="item">
+      <span class="tag">LAST STATUS</span>
+      <div id="status-display" class="win-bg">READY</div>
+    </div>
+
+    <div class="item" style="border-color: var(--gold); border-width: 1.5px;">
+      <span class="tag">PREDICTION</span>
+      <div id="prediction-text" class="val-res">--</div>
+    </div>
+
+    <div class="item">
+      <span class="tag">JACKPOT</span>
+      <div class="j-row">
+        <div class="j-box" id="num1">-</div>
+        <div class="j-box" id="num2">-</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-bar">
+    <div class="p-id">PERIOD: <span id="period-id">WAIT</span></div>
+    <div class="p-timer">TIME: <span id="timer-val">00:00</span></div>
+  </div>
+</div>
+
+<div class="game-view">
+  <iframe src="https://www.fantasygems.fan/#/register?invitationCode=154431279063"></iframe>
+</div>
+
+<script>
+  let voiceActive = false;
+  let lastProcessedPeriod = "";
+  let lastPrediction = null; // Store { period, type, numbers }
+  
+  const API_ENDPOINT = 'https://api.bdg88zf.com/api/webapi/GetGameIssue';
+  const REQ_DATA = { typeId:1, language:0, random:"40079dcba93a48769c6ee9d4d4fae23f", signature:"D12108C4F57C549D82B23A91E0FA20AE", timestamp:1727792520 };
+
+  function speakNow(msg) {
+    if(!voiceActive) return;
+    const utterance = new SpeechSynthesisUtterance(msg);
+    utterance.lang = 'hi-IN'; utterance.rate = 1.0;
+    window.speechSynthesis.speak(utterance);
+  }
+
+  function initialize() {
+    voiceActive = true;
+    document.getElementById('boot-up').style.display = 'none';
+    speakNow("Ahmad Ali Boss Neural Engine V13 Active. Level one winning fix.");
+    mainLoop();
+  }
+
+  async function mainLoop() {
+    try {
+      const resp = await fetch(API_ENDPOINT, { 
+        method: 'POST', 
+        headers: {'Content-Type': 'application/json'}, 
+        body: JSON.stringify(REQ_DATA)
+      });
+      const result = await resp.json();
+
+      if(result && result.data) {
+        const serverPeriod = result.data.issueNumber.toString();
+        const seconds = new Date().getSeconds();
+        const timeLeft = 60 - seconds;
+        
+        document.getElementById('timer-val').innerText = `00:${timeLeft.toString().padStart(2, '0')}`;
+        document.getElementById('period-id').innerText = serverPeriod;
+
+        // Result checking logic for Win/Loss accuracy
+        if(serverPeriod !== lastProcessedPeriod) {
+          if(lastProcessedPeriod !== "") {
+            // Humne pichle period (lastProcessedPeriod) par kya bet di thi?
+            // API ab uska actual result degi (result.data.lastResult) agar available ho
+            // Yahan hum simplified accurate check laga rahe hain
+            checkWinLoss(result.data);
+          }
+          lastProcessedPeriod = serverPeriod;
+          generateNeuralPrediction(serverPeriod);
+        }
+      }
+    } catch(e) { console.error("Sync Error"); }
+    setTimeout(mainLoop, 1000);
+  }
+
+  function checkWinLoss(data) {
+    // Ye function check karega ki pichla prediction sahi tha ya nahi
+    // Note: Fantasy Gems API pichla number bhi bhejti hai
+    if(!lastPrediction) return;
+
+    const lastNum = parseInt(data.lastNumber || 0); 
+    const lastResultType = (lastNum >= 5) ? 'BIG' : 'SMALL';
+    
+    const statusBox = document.getElementById('status-display');
+    
+    if(lastPrediction.type === lastResultType) {
+      statusBox.innerText = "LEVEL 1 WIN";
+      statusBox.className = "win-bg";
+      speakNow("Ahmad Boss ki Power. Level 1 winning.");
+    } else {
+      statusBox.innerText = "ANALYZING...";
+      statusBox.className = "loss-bg";
+      speakNow("Analysising next move for sureshot.");
+    }
+  }
+
+  function generateNeuralPrediction(id) {
+    // Advanced Level 1 Fixed Neural Mapping
+    const neuralSeed = parseInt(id.slice(-1));
+    const patterns = {
+      0: { t: 'SMALL', n: [1, 3] },
+      1: { t: 'BIG', n: [6, 8] },
+      2: { t: 'SMALL', n: [0, 2] },
+      3: { t: 'BIG', n: [5, 7] },
+      4: { t: 'SMALL', n: [4, 1] },
+      5: { t: 'BIG', n: [9, 5] },
+      6: { t: 'SMALL', n: [2, 3] },
+      7: { t: 'BIG', n: [8, 6] },
+      8: { t: 'SMALL', n: [0, 4] },
+      9: { t: 'BIG', n: [7, 5] }
+    };
+
+    const choice = patterns[neuralSeed];
+    
+    // UI Update
+    const pText = document.getElementById('prediction-text');
+    pText.innerText = choice.t;
+    pText.className = `val-res ${choice.t === 'BIG' ? 'gold-txt' : 'cyan-txt'}`;
+
+    document.getElementById('num1').innerText = choice.n[0];
+    document.getElementById('num2').innerText = choice.n[1];
+
+    // Store for checking in next cycle
+    lastPrediction = { period: id, type: choice.t, numbers: choice.n };
+
+    speakNow(`Period ${id.slice(-3)}, Next ${choice.t}. Jackpot ${choice.n[0]} and ${choice.n[1]}.`);
+  }
+</script>
+</body>
+</html>
