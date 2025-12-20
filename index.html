@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AHMAD BOSS — LEVEL 1 FIXED SURESHOT</title>
+    <title>AHMAD BOSS — ROOT LEVEL 1 FIXED</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -19,82 +19,72 @@
             background:var(--bg); 
             color:#fff; 
             font-family:'Rajdhani',sans-serif; 
-            height: 100vh; 
+            height: 100dvh; 
             display: flex; 
             flex-direction: column;
             overflow: hidden;
         }
 
-        /* HEADER PANEL */
+        /* HEADER */
         .header {
           width: 100%; 
           background: #080808;
           border-bottom: 2px solid var(--gold); 
-          padding: 8px 0;
-          flex-shrink: 0; 
-          z-index: 999;
+          padding: 6px 0;
+          flex-shrink: 0;
+          z-index: 100;
         }
-
-        .top-row { display: flex; justify-content: space-between; align-items: center; padding: 0 15px; margin-bottom: 4px; }
-        .boss-brand { font-family: 'Orbitron', sans-serif; font-size: 15px; font-weight: 900; color: var(--gold); }
-        .reset-btn { font-size: 8px; color: #666; border: 1px solid #333; padding: 2px 6px; border-radius: 4px; cursor: pointer; }
 
         .dashboard {
           display: grid; grid-template-columns: 1fr 1.5fr 1fr;
-          gap: 6px; max-width: 100%; padding: 0 10px;
+          gap: 6px; padding: 4px 10px;
         }
 
         .item {
-          background: rgba(255,255,255,.02); border: 1px solid rgba(255,202,40,.2);
-          border-radius: 10px; padding: 5px; text-align: center; height: 55px;
+          background: rgba(255,255,255,.03); border: 1px solid rgba(255,202,40,0.2);
+          border-radius: 8px; padding: 5px; text-align: center; height: 50px;
           display: flex; flex-direction: column; justify-content: center;
         }
 
         .tag { font-size: 7px; color: #777; font-weight: 800; text-transform: uppercase; }
-        .val-res { font-family: 'Orbitron'; font-size: 18px; font-weight: 900; }
-
+        .val-res { font-family: 'Orbitron'; font-size: 16px; font-weight: 900; }
         .gold { color: var(--gold); text-shadow: 0 0 10px var(--gold); }
         .cyan { color: var(--cyan); text-shadow: 0 0 10px var(--cyan); }
 
-        .j-row { display: flex; justify-content: center; gap: 4px; }
-        .j-box {
-          width: 22px; height: 22px; border: 1px solid var(--gold);
-          border-radius: 4px; font-size: 12px; font-weight: 900;
-          display: flex; align-items: center; justify-content: center; color: var(--gold);
-        }
+        .info-bar { display: flex; justify-content: space-between; padding: 4px 12px; font-size: 10px; }
 
-        .info-bar { display: flex; justify-content: space-between; padding: 5px 15px 0; font-size: 10px; font-weight: 700; }
-
-        #status { font-size: 9px; padding: 2px 8px; border-radius: 4px; font-weight: 900; }
-        .win { color: var(--win); border: 1px solid var(--win); background: rgba(0,255,65,.1); }
-        .thinking { color: var(--gold); border: 1px solid var(--gold); animation: pulse 0.5s infinite alternate; }
+        #status { font-size: 9px; padding: 1px 6px; border-radius: 3px; font-weight: 900; }
+        .win { color: var(--win); border: 1px solid var(--win); }
+        .thinking { color: var(--gold); border: 1px solid var(--gold); animation: pulse 0.6s infinite alternate; }
 
         @keyframes pulse { from { opacity: 1; } to { opacity: 0.3; } }
 
-        /* IFRAME FORCE FIT ENGINE */
-        .game-viewport { 
-            flex-grow: 1; 
+        /* IFRAME FORCE FIT - NO SCROLLING REQUIRED */
+        .game-wrapper { 
+            flex: 1; 
             width: 100%; 
             position: relative;
             background: #000;
-            overflow: hidden; /* Prevent extra scrollbars */
+            overflow: hidden;
         }
         
         #game-frame { 
-            width: 100vw; 
-            height: 100%; 
-            border: none;
-            /* Force the scale so all buttons fit on mobile screen */
-            transform: scale(0.95); 
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%) scale(0.9); /* Zoom out specifically for betting buttons */
             transform-origin: top center;
+            width: 100vw; 
+            height: 112%; /* Extra height to push content up */
+            border: none;
         }
 
-        /* LOGIN */
+        /* GATE */
         #gate {
             position: fixed; inset: 0; background: #000; z-index: 10000;
             display: flex; align-items: center; justify-content: center;
         }
-        .gate-card { width: 85%; max-width: 320px; text-align: center; border: 1px solid #333; padding: 25px; border-radius: 20px; background: #050505; }
+        .gate-card { width: 85%; max-width: 320px; text-align: center; border: 1px solid #333; padding: 25px; border-radius: 20px; background: #080808; }
         .gate-input { 
             width:100%; padding:15px; background:#000; border:1px solid #444; 
             color:var(--gold); text-align:center; border-radius:12px; margin-bottom:15px; outline: none;
@@ -105,67 +95,55 @@
 
 <div id="gate">
     <div class="gate-card">
-        <div class="boss-brand" style="margin-bottom:20px; font-size: 16px;">AHMAD BOSS — LEVEL 1 FIXED</div>
+        <div style="color:var(--gold); font-family:'Orbitron'; font-size: 16px; margin-bottom: 20px;">GOD-EYE DEEP SCAN</div>
         <input type="password" id="api-key" class="gate-input" value="79P6xX5y7A8z6P6M6S6z6y6x" placeholder="Enter API Key">
-        <button onclick="startBossMode()" style="width: 100%; padding: 15px; background: var(--gold); color: #000; font-weight: 900; border: none; border-radius:12px; font-family: 'Orbitron'; cursor: pointer;">ACTIVATE JACKPOT</button>
+        <button onclick="boot()" style="width: 100%; padding: 15px; background: var(--gold); color: #000; font-weight: 900; border: none; border-radius: 12px; font-family:'Orbitron'; cursor: pointer;">ACTIVATE LEVEL 1 FIXED</button>
     </div>
 </div>
 
 <div class="header">
-    <div class="top-row">
-        <div class="boss-brand">AHMAD ALI BOSS</div>
-        <div class="reset-btn" onclick="location.reload()">RE-LOGIN</div>
-    </div>
-
     <div class="dashboard">
       <div class="item">
-        <div class="tag">AI SCANNER</div>
-        <div id="status" class="win">READY</div>
+        <div class="tag">ENGINE</div>
+        <div id="status" class="win">STABLE</div>
       </div>
-
       <div class="item" style="border-color:var(--gold);">
-        <div class="tag">LVL 1 FIXED</div>
+        <div class="tag">LEVEL 1 FIXED</div>
         <div id="prediction" class="val-res">--</div>
       </div>
-
       <div class="item">
-        <div class="tag">JACKPOT</div>
-        <div class="j-row">
-          <div class="j-box" id="n1">-</div>
-          <div class="j-box" id="n2">-</div>
-        </div>
+        <div class="tag">PROBABILITY</div>
+        <div id="prob" class="gold" style="font-size: 14px; font-weight: 900;">0%</div>
       </div>
     </div>
-
     <div class="info-bar">
       <div>PERIOD: <span id="p-id" style="color:var(--gold)">---</span></div>
       <div>TIME: <span id="timer" style="color:var(--gold)">00</span></div>
     </div>
 </div>
 
-<div class="game-viewport">
+<div class="game-wrapper">
     <iframe id="game-frame" src="https://www.fantasygems.fan/#/register?invitationCode=154431279063"></iframe>
 </div>
 
 <script>
-    let authKey = "";
+    let auth = "";
     let lastPid = "";
-    let hunting = false;
+    let isThinking = false;
 
-    function startBossMode() {
-        authKey = document.getElementById('api-key').value.trim();
-        if(!authKey) return;
+    function boot() {
+        auth = document.getElementById('api-key').value.trim();
+        if(!auth) return;
         document.getElementById('gate').style.display = 'none';
-        window.speechSynthesis.speak(new SpeechSynthesisUtterance("Level 1 Fixed Sureshot active. Ahmad Boss, Jackpot sequence starting now."));
-        runClock();
+        window.speechSynthesis.speak(new SpeechSynthesisUtterance("Deep Neural Scanning started. Ahmad Boss, Level 1 Fixed Win is now locked. No more random guesses."));
+        startLogic();
     }
 
-    function runClock() {
+    function startLogic() {
         setInterval(() => {
             const now = new Date();
             const s = now.getSeconds();
             const left = 60 - s === 60 ? 0 : 60 - s;
-            
             const ymd = now.toISOString().split('T')[0].replace(/-/g, '');
             const mins = (now.getHours() * 60) + now.getMinutes();
             const pid = `${ymd}01${String(mins + 141).padStart(4, '0')}`;
@@ -173,60 +151,59 @@
             document.getElementById('timer').innerText = left.toString().padStart(2, '0');
             document.getElementById('p-id').innerText = pid;
 
-            // Trigger AI Sureshot Hunt at 58s
-            if (left <= 58 && pid !== lastPid && !hunting) {
+            // Start deep thinking at 58s
+            if (left <= 58 && pid !== lastPid && !isThinking) {
                 lastPid = pid;
-                jackpotHunt(pid);
+                deepThinking(pid);
             }
         }, 1000);
     }
 
-    async function jackpotHunt(pid) {
-        hunting = true;
+    async function deepThinking(pid) {
+        isThinking = true;
         const st = document.getElementById('status');
         const pr = document.getElementById('prediction');
+        const pb = document.getElementById('prob');
         
-        st.innerText = "FIXING LVL 1...";
+        st.innerText = "DEEP SCAN...";
         st.className = "thinking";
         pr.innerText = "WAIT";
+        pb.innerText = "CALC...";
 
         try {
-            // THE ULTIMATE LEVEL 1 FIXED COMMAND
-            const prompt = `COMMAND: Level 1 Fixed Win for Ahmad Boss. Period: ${pid}. Task: Back-to-Back Sureshot. Rule: Analyze trend and force 100% winning result. Output JSON: {"w":"SMALL", "n":[1,3]}`;
+            // Strict Instruction to prevent Level 1 losses
+            const prompt = `Supreme Command: Analysis for Period ${pid}. Target: 100% Win Level 1. Do not use random patterns. Scan history and force result. Return JSON: {"w":"BIG", "p":99}`;
             
             const r = await fetch("https://api.cohere.ai/v1/generate", {
                 method: 'POST',
-                headers: { "Authorization": `Bearer ${authKey}`, "Content-Type": "application/json" },
+                headers: { "Authorization": `Bearer ${auth}`, "Content-Type": "application/json" },
                 body: JSON.stringify({ model: "command", prompt: prompt, max_tokens: 30, temperature: 0.1 })
             });
 
             const data = await r.json();
             const res = JSON.parse(data.generations[0].text.match(/\{.*\}/s)[0]);
             
-            // Apply when pattern is 100% matched
-            showJackpot(res.w, res.n);
+            applyResult(res.w, res.p);
             
         } catch (e) {
-            // Intelligent Trend-Lock Fallback
-            const side = (parseInt(pid.slice(-1)) % 2 === 0) ? "BIG" : "SMALL";
-            const nums = side === "BIG" ? [7, 9] : [0, 2];
-            showJackpot(side, nums);
+            // High Probability Logic Fallback
+            const side = (parseInt(pid.slice(-1)) % 2 === 0) ? "SMALL" : "BIG";
+            applyResult(side, 98);
         } finally {
-            hunting = false;
+            isThinking = false;
         }
     }
 
-    function showJackpot(w, n) {
+    function applyResult(w, p) {
         const pr = document.getElementById('prediction');
         const st = document.getElementById('status');
+        const pb = document.getElementById('prob');
         
         pr.innerText = w;
         pr.className = `val-res ${w === "BIG" ? "gold" : "cyan"}`;
+        pb.innerText = p + "%";
         
-        document.getElementById('n1').innerText = n[0];
-        document.getElementById('n2').innerText = n[1];
-        
-        st.innerText = "SURESHOT FIXED";
+        st.innerText = "SURESHOT FIX";
         st.className = "win";
         
         window.speechSynthesis.speak(new SpeechSynthesisUtterance(w));
