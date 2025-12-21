@@ -17,7 +17,6 @@
   * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
   body, html { margin: 0; padding: 0; height: 100%; background: var(--bg); color: #fff; font-family: 'Rajdhani', sans-serif; overflow: hidden; }
 
-  /* Minimalist Strip Header - Zero Interference */
   .header {
     position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
     background: #050505; border-bottom: 2px solid var(--gold);
@@ -59,7 +58,6 @@
   .p-id { color: var(--cyan); }
   .p-timer { color: var(--loss); }
 
-  /* Frame Optimization */
   .game-view { position: fixed; top: 75px; left: 0; width: 100%; height: calc(100% - 75px); }
   iframe { width: 100%; height: 100%; border: none; }
 
@@ -117,7 +115,7 @@
     synth.cancel();
     const utterance = new SpeechSynthesisUtterance(msg);
     utterance.lang = 'hi-IN';
-    utterance.rate = 1.5; // Fast and clear
+    utterance.rate = 1.5;
     synth.speak(utterance);
   }
 
@@ -157,9 +155,6 @@
 
     setTimeout(() => {
       const p = parseInt(pid);
-      
-      // V17 CHECKSUM LOGIC - Highest Precision
-      // This formula is designed to catch the "Server Switch"
       const logicIndex = (p * 13 + 5) % 10;
       
       const masterData = [
@@ -182,4 +177,3 @@
 </script>
 </body>
 </html>
-
