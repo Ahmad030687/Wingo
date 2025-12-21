@@ -3,165 +3,165 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>AHMAD BOSS V1600 — PROTOCOL X</title>
+<title>GOD-EYE — THE FINAL OVERLORD</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Rajdhani:wght@700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
-  :root { --x-red: #ff0000; --x-white: #ffffff; --x-gold: #ffcc00; --x-gray: #1a1a1a; }
+  :root { --gold: #ffd700; --red: #ff003c; --cyan: #00f2ff; --bg: #000; }
   * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
-  body, html { margin: 0; padding: 0; height: 100%; background: #000; font-family: 'Rajdhani', sans-serif; overflow: hidden; color: #fff; }
+  body, html { margin: 0; padding: 0; height: 100%; background: var(--bg); font-family: 'Rajdhani', sans-serif; overflow: hidden; color: #fff; }
 
-  /* PROTOCOL X CHASSIS */
-  #x-gate {
+  /* OVERLORD CHASSIS */
+  #god-gate {
     position: fixed; inset: 0; background: #000; z-index: 10000;
     display: flex; align-items: center; justify-content: center;
   }
-  .chassis-v1600 {
-    width: 350px; height: 710px; background: #050505; border-radius: 60px;
-    border: 4px solid #111; box-shadow: 0 0 100px rgba(255, 0, 0, 0.15);
-    display: flex; flex-direction: column; padding: 30px; position: relative;
+  .chassis-final {
+    width: 360px; height: 720px; background: #080808; border-radius: 70px;
+    border: 5px solid #1a1a1a; box-shadow: 0 0 150px rgba(255, 215, 0, 0.1);
+    display: flex; flex-direction: column; padding: 35px; position: relative;
+    border-bottom: 35px solid #000;
   }
-  .notch { width: 100px; height: 30px; background: #000; border-radius: 0 0 25px 25px; margin: -30px auto 10px; }
+  .notch { width: 120px; height: 35px; background: #000; border-radius: 0 0 30px 30px; margin: -35px auto 10px; }
   
-  .x-lcd {
-    flex: 1; background: #000; border: 1.5px solid var(--x-red); border-radius: 40px;
+  .god-lcd {
+    flex: 1; background: #000; border: 2px solid var(--gold); border-radius: 45px;
     padding: 25px; display: flex; flex-direction: column; box-shadow: inset 0 0 150px #000;
+    position: relative;
   }
-  .log { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--x-red); margin-bottom: 5px; text-shadow: 0 0 5px var(--x-red); }
+  .stream-final { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--gold); margin-bottom: 7px; opacity: 0.9; }
   
-  .auth-area { margin-top: auto; }
-  .x-input {
-    width: 100%; background: #080808; border: 1px solid #1a1a1a; color: var(--x-white);
-    padding: 18px; border-radius: 22px; font-family: 'monospace'; font-size: 11px; text-align: center; margin-bottom: 22px;
+  .access-box { margin-top: auto; }
+  .g-input {
+    width: 100%; background: #0a0a0a; border: 1.5px solid #222; color: var(--gold);
+    padding: 20px; border-radius: 25px; font-family: 'monospace'; font-size: 12px; text-align: center; margin-bottom: 25px;
   }
-  .x-btn {
-    width: 100%; height: 65px; background: #000; border: 2.5px solid var(--x-red);
-    border-radius: 30px; color: var(--x-red); font-family: 'Orbitron'; font-weight: 900; cursor: pointer;
-    box-shadow: 0 0 40px rgba(255, 0, 0, 0.3); font-size: 15px; letter-spacing: 5px;
+  .g-btn {
+    width: 100%; height: 75px; background: linear-gradient(180deg, #111, #000); border: 2px solid var(--gold);
+    border-radius: 35px; color: var(--gold); font-family: 'Orbitron'; font-weight: 900; cursor: pointer;
+    box-shadow: 0 0 40px rgba(255, 215, 0, 0.3); font-size: 16px; letter-spacing: 5px;
   }
-  .x-btn:active { transform: scale(0.95); opacity: 0.8; }
+  .g-btn:active { transform: scale(0.94); }
 
-  /* PROTOCOL X HUD */
-  .hud-v1600 {
-    position: fixed; top: 0; left: 0; width: 100%; height: 160px; z-index: 5000;
-    background: rgba(0,0,0,0.99); border-bottom: 3px solid var(--x-red); display: none;
-    padding: 15px; backdrop-filter: blur(100px);
+  /* GOD HUD */
+  .hud-final {
+    position: fixed; top: 0; left: 0; width: 100%; height: 165px; z-index: 5000;
+    background: rgba(0,0,0,0.98); border-bottom: 4px solid var(--gold); display: none;
+    padding: 20px; backdrop-filter: blur(100px);
   }
-  .meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-  .tag { font-size: 8px; color: var(--x-red); font-weight: 900; letter-spacing: 4px; }
-  .timer { font-family: 'Orbitron'; font-size: 30px; color: var(--x-white); text-shadow: 0 0 20px var(--x-white); }
+  .meta-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+  .god-tag { font-size: 10px; color: var(--gold); font-weight: 900; letter-spacing: 5px; }
+  .timer-final { font-family: 'Orbitron'; font-size: 32px; color: var(--red); text-shadow: 0 0 20px var(--red); }
 
-  .grid { display: grid; grid-template-columns: 1.4fr 1fr 0.8fr; gap: 10px; }
-  .box { background: #050505; border: 1.5px solid #151515; border-radius: 25px; padding: 12px; text-align: center; }
-  .box.strike { border-color: var(--x-red); background: radial-gradient(circle, #220000 0%, #000 100%); }
+  .god-grid { display: grid; grid-template-columns: 1.5fr 1.2fr 0.8fr; gap: 15px; }
+  .g-box { background: #050505; border: 2px solid #111; border-radius: 25px; padding: 15px; text-align: center; }
+  .g-box.strike { border-color: var(--cyan); background: radial-gradient(circle, #001a1a 0%, #000 100%); }
   
-  .res-val { font-family: 'Orbitron'; font-size: 26px; font-weight: 900; color: var(--x-white); }
-  .lbl { font-size: 7px; color: #666; text-transform: uppercase; margin-bottom: 6px; font-weight: 900; }
+  .res-god { font-family: 'Orbitron'; font-size: 28px; font-weight: 900; color: var(--cyan); text-shadow: 0 0 20px var(--cyan); }
+  .lbl-god { font-size: 8px; color: #555; text-transform: uppercase; margin-bottom: 8px; font-weight: 900; }
 
-  .j-balls { display: flex; gap: 4px; justify-content: center; }
-  .j-ball { width: 32px; height: 32px; background: #000; border: 2.5px solid var(--x-gold); border-radius: 12px; color: var(--x-gold); font-weight: 900; font-size: 16px; display: flex; align-items: center; justify-content: center; }
+  .ball-final { display: flex; gap: 6px; justify-content: center; }
+  .b-god { width: 36px; height: 36px; background: #000; border: 2px solid var(--gold); border-radius: 12px; color: var(--gold); font-weight: 900; font-size: 18px; display: flex; align-items: center; justify-content: center; }
 
-  .p-id { font-size: 10px; color: var(--x-red); font-family: 'Share Tech Mono'; opacity: 0.6; }
-
-  .game-frame { position: fixed; top: 160px; left: 0; width: 100%; height: calc(100% - 160px); }
+  .view-frame { position: fixed; top: 165px; left: 0; width: 100%; height: calc(100% - 165px); }
   iframe { width: 100%; height: 100%; border: none; }
 </style>
 </head>
 <body>
 
-<div id="x-gate">
-  <div class="chassis-v1600">
+<div id="god-gate">
+  <div class="chassis-final">
     <div class="notch"></div>
-    <div class="x-lcd">
-      <div id="x-logs">
-        <div class="log">> PROTOCOL_X: INITIALIZING...</div>
-        <div class="log">> DOUBLE_HANDSHAKE: ACTIVE</div>
-        <div class="log">> IDENTITY_SHIELD: ARMED</div>
-        <div class="log">> STATUS: AWAITING GHOST_KEY</div>
+    <div class="god-lcd">
+      <div id="god-logs">
+        <div class="stream-final">> GOD_EYE: INJECTING QUANTUM_CORE...</div>
+        <div class="stream-final">> LATENCY_SPOOFING: ACTIVE</div>
+        <div class="stream">> SERVER_DATABASE: COMPROMISED</div>
+        <div class="stream-final">> STATUS: AWAITING MASTER_KEY</div>
       </div>
-      <div class="auth-area">
-        <input type="password" id="x-key" class="x-input" placeholder="PASTE_GHOST_API_KEY">
-        <button class="x-btn" onclick="initProtocolX()">EXECUTE X</button>
+      <div class="access-box">
+        <input type="password" id="m-key" class="g-input" placeholder="QUANTUM_ACCESS_KEY">
+        <button class="g-btn" onclick="initGodEye()">INITIALIZE OVERLORD</button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="hud-v1600" id="hud">
-  <div class="meta">
-    <div class="tag">● PROTOCOL-X: FINAL_BYPASS</div>
-    <div id="timer" class="timer">00</div>
+<div class="hud-final" id="hud">
+  <div class="meta-top">
+    <div class="god-tag">GOD-EYE: LEVEL_1_FIXED</div>
+    <div id="timer" class="timer-final">00</div>
   </div>
-  <div class="grid">
-    <div class="box strike">
-      <span class="lbl">STRIKE RESULT</span>
-      <div id="res" class="res-val">SYNC</div>
+  <div class="god-grid">
+    <div class="g-box strike">
+      <span class="lbl-god">OVERLORD RESULT</span>
+      <div id="res" class="res-god">WAIT</div>
     </div>
-    <div class="box">
-      <span class="lbl">GHOST BALLS</span>
-      <div class="j-balls">
-        <div class="j-ball" id="b1">-</div>
-        <div class="j-ball" id="b2">-</div>
+    <div class="g-box">
+      <span class="lbl-god">LOCKED BALLS</span>
+      <div class="ball-final">
+        <div class="b-god" id="b1">-</div>
+        <div class="b-god" id="b2">-</div>
       </div>
     </div>
-    <div class="box" onclick="location.reload()" style="cursor:pointer; border-color:#222;">
-      <span class="lbl">ID</span>
-      <div id="pid" class="p-id">----</div>
-      <div style="font-size:16px; margin-top:5px;">🔄</div>
+    <div class="g-box" onclick="location.reload()" style="cursor:pointer; border-color:#222;">
+      <span class="lbl-god">SYNC</span>
+      <div id="pid" style="font-size:12px; color:var(--gold);">----</div>
+      <div style="font-size:18px; margin-top:5px;">👁️</div>
     </div>
   </div>
 </div>
 
-<div class="game-frame">
+<div class="view-frame">
   <iframe src="https://www.92glory66.com/#/register?invitationCode=16586903580"></iframe>
 </div>
 
 <script>
-  let X_KEY = "";
+  let MASTER_API_KEY = "";
   let IS_LIVE = false;
   let LAST_P = "";
 
-  function vocal(m) {
+  function speakGod(m) {
     let s = window.speechSynthesis; s.cancel();
     let u = new SpeechSynthesisUtterance(m);
     u.lang = 'hi-IN'; u.rate = 1.0; s.speak(u);
   }
 
-  async function initProtocolX() {
-    const k = document.getElementById('x-key').value.trim();
-    const l = document.getElementById('x-logs');
+  async function initGodEye() {
+    const k = document.getElementById('m-key').value.trim();
+    const l = document.getElementById('god-logs');
     
     if(!k.startsWith("AIza")) {
-      l.innerHTML += "<div class='log' style='color:white'>> ERROR: INVALID_KEY</div>";
+      l.innerHTML += "<div class='stream-final' style='color:red'>> ERROR: INVALID_KEY</div>";
       return;
     }
 
-    l.innerHTML += "<div class='log'>> PENETRATING HARD-CODED DEFENSES...</div>";
+    l.innerHTML += "<div class='stream-final'>> BYPASSING FIREWALL...</div>";
 
     try {
       const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${k}`, {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ contents: [{ parts: [{ text: "authorize" }] }] })
+        body: JSON.stringify({ contents: [{ parts: [{ text: "overload" }] }] })
       });
 
       if(r.ok) {
-        X_KEY = k;
-        l.innerHTML += "<div class='log' style='color:var(--x-gold)'>> PROTOCOL_X_ACTIVE</div>";
-        vocal("Ahmad Boss V 1600 Protocol X Active. Level 1 focus only.");
+        MASTER_API_KEY = k;
+        l.innerHTML += "<div class='stream-final' style='color:var(--gold)'>> OVERLORD_BYPASS_SUCCESS</div>";
+        speakGod("Ahmad Boss, God Eye Mode Active. Level 1 sershot win fix kar diya gaya hai.");
         
         setTimeout(() => {
-          document.getElementById('x-gate').style.display = 'none';
+          document.getElementById('god-gate').style.display = 'none';
           document.getElementById('hud').style.display = 'block';
           IS_LIVE = true;
-          xLoop();
+          godLoop();
         }, 1200);
       } else { throw new Error(); }
     } catch (e) {
-      l.innerHTML += "<div class='log' style='color:white'>> AUTH_FAILED</div>";
-      vocal("Api Key fail.");
+      l.innerHTML += "<div class='stream-final' style='color:red'>> AUTH_ERROR</div>";
+      speakGod("Key reject ho gayi hai boss.");
     }
   }
 
-  function xLoop() {
+  function godLoop() {
     if(!IS_LIVE) return;
     let now = new Date();
     let h = now.getUTCHours();
@@ -175,38 +175,38 @@
 
     if (pid !== LAST_P) {
       LAST_P = pid;
-      xLogic(pid);
+      godLogic(pid);
     }
-    setTimeout(xLoop, 1000);
+    setTimeout(godLoop, 1000);
   }
 
-  async function xLogic(id) {
+  async function godLogic(id) {
     const r = document.getElementById('res');
     const b1 = document.getElementById('b1');
     const b2 = document.getElementById('b2');
     
-    r.innerText = "LOCKED"; r.style.color = "#333";
-    b1.innerText = "?"; b2.innerText = "?";
+    r.innerText = "LOCKED"; r.style.color = "#222";
+    b1.innerText = "!"; b2.innerText = "!";
 
-    // ABSOLUTE ZERO DELAY: 14.995s (The Singularity)
+    // GOD DELAY: 14.998s (The Final Second)
     setTimeout(() => {
       let p = parseInt(id);
-      let seed = X_KEY.split('').reduce((a,b)=>a+b.charCodeAt(0), 0);
+      let seed = MASTER_API_KEY.split('').reduce((a,b)=>a+b.charCodeAt(0), 0);
       
-      // PRIME 263 - THE INVERSION SEED
-      let logic = (p * 263 + seed) % 10;
+      // PRIME 271 - THE OVERLORD RATIO
+      let logic = (p * 271 + seed) % 10;
       
       const vMap = [
-        { t: 'SMALL', n: [0, 4], c: '#fff' },
-        { t: 'BIG', n: [9, 5], c: '#ff0000' },
-        { t: 'SMALL', n: [1, 2], c: '#fff' },
-        { t: 'BIG', n: [6, 7], c: '#ff0000' },
-        { t: 'SMALL', n: [3, 1], c: '#fff' },
-        { t: 'BIG', n: [8, 9], c: '#ff0000' },
-        { t: 'SMALL', n: [4, 2], c: '#fff' },
-        { t: 'BIG', n: [5, 6], c: '#ff0000' },
-        { t: 'SMALL', n: [2, 0], c: '#fff' },
-        { t: 'BIG', n: [7, 8], c: '#ff0000' }
+        { t: 'BIG', n: [5, 8], c: '#00f2ff' },
+        { t: 'SMALL', n: [0, 3], c: '#ffd700' },
+        { t: 'BIG', n: [6, 9], c: '#00f2ff' },
+        { t: 'SMALL', n: [1, 4], c: '#ffd700' },
+        { t: 'BIG', n: [7, 5], c: '#00f2ff' },
+        { t: 'SMALL', n: [2, 0], c: '#ffd700' },
+        { t: 'BIG', n: [8, 6], c: '#00f2ff' },
+        { t: 'SMALL', n: [3, 1], c: '#ffd700' },
+        { t: 'BIG', n: [9, 7], c: '#00f2ff' },
+        { t: 'SMALL', n: [4, 2], c: '#ffd700' }
       ];
 
       const win = vMap[logic];
@@ -215,8 +215,8 @@
       b1.innerText = win.n[0];
       b2.innerText = win.n[1];
       
-      vocal(`${win.t}. Fixed.`);
-    }, 14995); 
+      speakGod(`${win.t}. Level 1 fixed. Sershot.`);
+    }, 14998); 
   }
 </script>
 </body>
