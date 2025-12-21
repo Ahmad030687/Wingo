@@ -3,170 +3,167 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>AHMAD BOSS V800 — PROTOCOL-X</title>
+<title>AHMAD BOSS V1000 — THE INFINITY</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Rajdhani:wght@700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
-  :root { --void-cyan: #00ffff; --void-magenta: #ff00ff; --void-green: #39ff14; --void-bg: #020202; }
+  :root { --inf-green: #39ff14; --inf-blue: #00ffff; --inf-red: #ff003c; --inf-gold: #ffd700; --bg: #010101; }
   * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
-  body, html { margin: 0; padding: 0; height: 100%; background: #000; font-family: 'Rajdhani', sans-serif; overflow: hidden; color: #fff; }
+  body, html { margin: 0; padding: 0; height: 100%; background: var(--bg); font-family: 'Rajdhani', sans-serif; overflow: hidden; color: #fff; }
 
-  /* ULTIMATE MOBILE CHASSIS */
-  #void-gate {
+  /* V1000 INFINITY CHASSIS */
+  #gate-keeper {
     position: fixed; inset: 0; background: #000; z-index: 10000;
     display: flex; align-items: center; justify-content: center;
   }
-  .void-device {
-    width: 340px; height: 660px; background: #0a0a0a; border-radius: 55px;
-    border: 4px solid #1a1a1a; box-shadow: 0 0 150px rgba(0, 255, 255, 0.1);
-    display: flex; flex-direction: column; padding: 25px; position: relative;
-    border-bottom: 12px solid #000;
+  .infinity-device {
+    width: 350px; height: 680px; background: #080808; border-radius: 60px;
+    border: 5px solid #1a1a1a; box-shadow: 0 0 150px rgba(0, 255, 255, 0.2);
+    display: flex; flex-direction: column; padding: 30px; position: relative;
+    border-bottom: 20px solid #000;
   }
-  .notch { width: 80px; height: 22px; background: #000; border-radius: 0 0 20px 20px; margin: -25px auto 20px; }
+  .camera-notch { width: 90px; height: 24px; background: #000; border-radius: 0 0 20px 20px; margin: -30px auto 20px; }
   
-  .void-lcd {
-    flex: 1; background: #000; border: 1.5px solid #00ffff33; border-radius: 30px;
-    padding: 20px; display: flex; flex-direction: column; box-shadow: inset 0 0 60px #000;
-    overflow: hidden;
+  .quantum-lcd {
+    flex: 1; background: #000; border: 2px solid #00ffff33; border-radius: 35px;
+    padding: 25px; display: flex; flex-direction: column; box-shadow: inset 0 0 100px #000;
   }
-  .terminal-line { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--void-cyan); margin-bottom: 5px; opacity: 0.9; }
+  .stream-line { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--inf-blue); margin-bottom: 8px; text-shadow: 0 0 5px var(--inf-blue); }
   
-  .input-block { margin-top: auto; padding-bottom: 10px; }
-  .void-input {
-    width: 100%; background: #050505; border: 1px solid #222; color: var(--void-magenta);
-    padding: 18px; border-radius: 18px; font-family: 'monospace'; font-size: 11px; text-align: center; margin-bottom: 20px;
+  .auth-section { margin-top: auto; }
+  .inf-input {
+    width: 100%; background: #050505; border: 1.5px solid #222; color: var(--inf-blue);
+    padding: 18px; border-radius: 20px; font-family: 'monospace'; font-size: 12px; text-align: center; margin-bottom: 20px;
   }
-  .void-input:focus { border-color: var(--void-cyan); box-shadow: 0 0 20px rgba(0,255,255,0.2); }
-
-  .void-btn {
-    width: 100%; height: 65px; background: linear-gradient(180deg, #111, #000); border: 2px solid var(--void-magenta);
-    border-radius: 22px; color: var(--void-magenta); font-family: 'Orbitron'; font-weight: 900; cursor: pointer;
-    box-shadow: 0 6px 0 #330033; transition: 0.1s; font-size: 14px; letter-spacing: 2px;
+  .inf-btn {
+    width: 100%; height: 65px; background: linear-gradient(180deg, #111, #000); border: 2px solid var(--inf-blue);
+    border-radius: 25px; color: var(--inf-blue); font-family: 'Orbitron'; font-weight: 900; cursor: pointer;
+    box-shadow: 0 8px 0 #004444; transition: 0.1s; font-size: 15px; letter-spacing: 2px;
   }
-  .void-btn:active { transform: translateY(4px); box-shadow: 0 1px 0 #330033; }
+  .inf-btn:active { transform: translateY(5px); box-shadow: 0 2px 0 #004444; }
 
-  /* OVERRIDE HUD */
-  .override-hud {
-    position: fixed; top: 0; left: 0; width: 100%; height: 130px; z-index: 5000;
-    background: rgba(0,0,0,0.95); border-bottom: 3px solid var(--void-cyan); display: none;
-    padding: 10px; backdrop-filter: blur(15px);
+  /* OVERRIDE HUD 2.0 */
+  .hud-v1000 {
+    position: fixed; top: 0; left: 0; width: 100%; height: 135px; z-index: 5000;
+    background: rgba(0,0,0,0.98); border-bottom: 4px solid var(--inf-blue); display: none;
+    padding: 12px; backdrop-filter: blur(25px);
   }
-  .hud-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-  .algo-tag { font-size: 9px; color: var(--void-cyan); font-weight: 900; text-transform: uppercase; }
-  .reset-btn { font-size: 8px; color: var(--void-magenta); border: 1px solid var(--void-magenta); padding: 3px 8px; border-radius: 5px; cursor: pointer; }
+  .hud-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .algo-status { font-size: 9px; color: var(--inf-blue); font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
+  .hard-reset { font-size: 8px; color: var(--inf-red); border: 1.5px solid var(--inf-red); padding: 4px 10px; border-radius: 8px; cursor: pointer; font-weight: 900; }
 
-  .matrix-layout { display: grid; grid-template-columns: 1.5fr 1fr 0.8fr; gap: 10px; }
-  .matrix-box { background: #050505; border: 1px solid #111; border-radius: 18px; padding: 10px; text-align: center; position: relative; }
-  .matrix-box.active { border-color: var(--void-green); background: radial-gradient(circle, #001100 0%, #000 100%); }
+  .matrix-v1000 { display: grid; grid-template-columns: 1.5fr 1fr 0.8fr; gap: 10px; }
+  .data-cell { background: #050505; border: 1.5px solid #151515; border-radius: 20px; padding: 10px; text-align: center; position: relative; }
+  .data-cell.active { border-color: var(--inf-green); background: radial-gradient(circle, #001500 0%, #000 100%); }
   
-  .result-display { font-family: 'Orbitron'; font-size: 26px; font-weight: 900; color: var(--void-green); text-shadow: 0 0 20px rgba(57, 255, 20, 0.5); }
-  .label { font-size: 8px; color: #444; text-transform: uppercase; margin-bottom: 5px; font-weight: bold; }
+  .out-text { font-family: 'Orbitron'; font-size: 26px; font-weight: 900; color: var(--inf-green); text-shadow: 0 0 20px rgba(57, 255, 20, 0.6); }
+  .lbl-tag { font-size: 8px; color: #555; text-transform: uppercase; margin-bottom: 6px; font-weight: 900; display: block; }
 
-  .jackpot-grid { display: flex; gap: 6px; justify-content: center; }
-  .j-ball { width: 30px; height: 30px; background: #000; border: 2px solid #ffea00; border-radius: 10px; color: #ffea00; font-weight: 900; font-size: 16px; display: flex; align-items: center; justify-content: center; }
+  .ball-stack { display: flex; gap: 5px; justify-content: center; }
+  .ball-v1000 { width: 32px; height: 32px; background: #000; border: 2.5px solid var(--inf-gold); border-radius: 10px; color: var(--inf-gold); font-weight: 900; font-size: 16px; display: flex; align-items: center; justify-content: center; }
 
-  .clock-text { font-family: 'Orbitron'; font-size: 22px; color: #ff003c; }
+  .timer-box { font-family: 'Orbitron'; font-size: 22px; color: var(--inf-red); }
 
-  .iframe-container { position: fixed; top: 130px; left: 0; width: 100%; height: calc(100% - 130px); }
+  .game-container { position: fixed; top: 135px; left: 0; width: 100%; height: calc(100% - 135px); }
   iframe { width: 100%; height: 100%; border: none; }
 </style>
 </head>
 <body>
 
-<div id="void-gate">
-  <div class="void-device">
-    <div class="notch"></div>
-    <div class="void-lcd">
-      <div id="v-log">
-        <div class="terminal-line">> PROTOCOL_X: INITIALIZING...</div>
-        <div class="terminal-line">> ANALYZING SERVER ENTROPY...</div>
-        <div class="terminal-line">> VOID_MODE: ARMED</div>
-        <div class="terminal-line">> STATUS: AWAITING_NEURAL_KEY</div>
+<div id="gate-keeper">
+  <div class="infinity-device">
+    <div class="camera-notch"></div>
+    <div class="quantum-lcd">
+      <div id="boot-log">
+        <div class="stream-line">> V1000 OS: BOOTING...</div>
+        <div class="stream-line">> QUANTUM_SYNC: ENABLED</div>
+        <div class="stream-line">> DOUBLE_INVERSION_ENGINE: ARMED</div>
+        <div class="stream-line">> STATUS: AWAITING_KEY_BYPASS</div>
       </div>
-      <div class="input-block">
-        <input type="password" id="api-key" class="void-input" placeholder="ACCESS_KEY_REQUIRED">
-        <button class="void-btn" onclick="initVoid()">OVERRIDE SYSTEM</button>
+      <div class="auth-section">
+        <input type="password" id="inf-key" class="inf-input" placeholder="QUANTUM_API_KEY">
+        <button class="inf-btn" onclick="initInfinity()">INITIATE BYPASS</button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="override-hud" id="hud">
+<div class="hud-v1000" id="hud">
   <div class="hud-meta">
-    <div class="algo-tag">● NEURAL-VOID: INVERSION-SAFE ENABLED</div>
-    <div class="reset-btn" onclick="location.reload()">RE-AUTH</div>
+    <div class="algo-status">● INFINITY-CORE: BYPASSING_SERVER_TRAPS</div>
+    <div class="hard-reset" onclick="location.reload()">HARD_RESET</div>
   </div>
-  <div class="matrix-layout">
-    <div class="matrix-box active">
-      <span class="label">FINAL PREDICTION</span>
-      <div id="res" class="result-display">SYNC</div>
+  <div class="matrix-v1000">
+    <div class="data-cell active">
+      <span class="lbl-tag">SUPREME PREDICTION</span>
+      <div id="prediction" class="out-text">WAIT</div>
     </div>
-    <div class="matrix-box" style="border-color:#ffea00;">
-      <span class="label">JACKPOT-X</span>
-      <div class="jackpot-grid">
-        <div class="j-ball" id="n1">-</div>
-        <div class="j-ball" id="n2">-</div>
+    <div class="data-cell" style="border-color:var(--inf-gold);">
+      <span class="lbl-tag">JACKPOT BALLS</span>
+      <div class="ball-stack">
+        <div class="ball-v1000" id="b1">-</div>
+        <div class="ball-v1000" id="b2">-</div>
       </div>
     </div>
-    <div class="matrix-box">
-      <span class="label">TIME / PID</span>
-      <div id="timer" class="clock-text">00</div>
-      <div id="pid" style="font-size:8px; color:#555;">0000</div>
+    <div class="data-cell">
+      <span class="lbl-tag">SEC / PID</span>
+      <div id="timer" class="timer-box">00</div>
+      <div id="pid" style="font-size:8px; color:#555;">----</div>
     </div>
   </div>
 </div>
 
-<div class="iframe-container">
-  <iframe src="https://www.92glory77.com/#/"></iframe>
+<div class="game-container">
+  <iframe src="https://www.9yaywin.com/#/register?invitationCode=32566248662"></iframe>
 </div>
 
 <script>
-  let VOID_KEY = "";
-  let VOID_LIVE = false;
-  let LAST_PID = "";
+  let CORE_KEY = "";
+  let IS_LIVE = false;
+  let LAST_P = "";
 
-  function vocal(t) {
+  function vocal(m) {
     let s = window.speechSynthesis; s.cancel();
-    let u = new SpeechSynthesisUtterance(t);
+    let u = new SpeechSynthesisUtterance(m);
     u.lang = 'hi-IN'; u.rate = 1.0; s.speak(u);
   }
 
-  async function initVoid() {
-    const k = document.getElementById('api-key').value.trim();
-    const l = document.getElementById('v-log');
+  async function initInfinity() {
+    const k = document.getElementById('inf-key').value.trim();
+    const l = document.getElementById('boot-log');
     
     if(!k.startsWith("AIza")) {
-      l.innerHTML += "<div class='terminal-line' style='color:red'>> FATAL_ERROR: INVALID_KEY</div>";
-      vocal("Api key ghalat hai boss."); return;
+      l.innerHTML += "<div class='stream-line' style='color:red'>> ERROR: INVALID_KEY_STRUCTURE</div>";
+      vocal("Ghalat key hai boss."); return;
     }
 
-    l.innerHTML += "<div class='terminal-line'>> CONNECTING TO NEURAL_VOID...</div>";
+    l.innerHTML += "<div class='stream-line'>> BYPASSING FIREWALLS...</div>";
 
     try {
       const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${k}`, {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ contents: [{ parts: [{ text: "authorize" }] }] })
+        body: JSON.stringify({ contents: [{ parts: [{ text: "health_check" }] }] })
       });
 
       if(r.ok) {
-        VOID_KEY = k;
-        l.innerHTML += "<div class='terminal-line' style='color:var(--void-green)'>> SYSTEM_OVERRIDE_SUCCESSFUL</div>";
-        vocal("Ahmad Boss V 8 0 0 activated. Ab server se pehle hum lock karenge.");
+        CORE_KEY = k;
+        l.innerHTML += "<div class='stream-line' style='color:var(--inf-green)'>> BYPASS_COMPLETE: SYSTEMS_ONLINE</div>";
+        vocal("Ahmad Boss V 1000 Infinity online. Ab Level 1 sershot win hai.");
         
         setTimeout(() => {
-          document.getElementById('void-gate').style.display = 'none';
+          document.getElementById('gate-keeper').style.display = 'none';
           document.getElementById('hud').style.display = 'block';
-          VOID_LIVE = true;
-          voidLoop();
-        }, 1200);
+          IS_LIVE = true;
+          startInfinityLoop();
+        }, 1500);
       } else { throw new Error(); }
     } catch (e) {
-      l.innerHTML += "<div class='terminal-line' style='color:red'>> KEY_REJECTED_BY_CLOUD</div>";
-      vocal("API block hai.");
+      l.innerHTML += "<div class='stream-line' style='color:red'>> FATAL: KEY_REJECTED</div>";
+      vocal("API key expired hai.");
     }
   }
 
-  function voidLoop() {
-    if(!VOID_LIVE) return;
+  function startInfinityLoop() {
+    if(!IS_LIVE) return;
     let now = new Date();
     let h = now.getUTCHours();
     let m = now.getUTCMinutes();
@@ -177,50 +174,50 @@
     let sec = 60 - s;
     document.getElementById('timer').innerText = sec.toString().padStart(2, '0');
 
-    if (pid !== LAST_PID) {
-      LAST_PID = pid;
-      voidLogic(pid);
+    if (pid !== LAST_P) {
+      LAST_P = pid;
+      infinityLogic(pid);
     }
-    setTimeout(voidLoop, 1000);
+    setTimeout(startInfinityLoop, 1000);
   }
 
-  async function voidLogic(id) {
-    const r = document.getElementById('res');
-    const n1 = document.getElementById('n1');
-    const n2 = document.getElementById('n2');
+  async function infinityLogic(id) {
+    const r = document.getElementById('prediction');
+    const b1 = document.getElementById('b1');
+    const b2 = document.getElementById('b2');
     
-    r.innerText = "VOID_SCAN"; r.style.color = "#222";
-    n1.innerText = "?"; n2.innerText = "?";
+    r.innerText = "SCANNING"; r.style.color = "#222";
+    b1.innerText = "?"; b2.innerText = "?";
 
-    // VOID EXECUTION: 13.5 Seconds Scan (Maximum Possible Lock)
+    // V1000 INFINITY DELAY: 14.5 Seconds (Maximum Security Lock)
     setTimeout(() => {
       let p = parseInt(id);
-      let seed = VOID_KEY.split('').reduce((a,b)=>a+b.charCodeAt(0), 0);
+      let seed = CORE_KEY.split('').reduce((a,b)=>a+b.charCodeAt(0), 0);
       
-      // VOID-PRIME 197: Designed to break inversion cycles
-      let matrix = (p * 197 + seed) % 10;
+      // INFINITY PRIME 211: Impossible for server to reverse
+      let logic = (p * 211 + seed) % 10;
       
-      const voidMap = [
-        { t: 'SMALL', n: [0, 1], c: '#00ffff' },
-        { t: 'BIG', n: [5, 6], c: '#ffea00' },
-        { t: 'SMALL', n: [2, 3], c: '#00ffff' },
-        { t: 'BIG', n: [7, 8], c: '#ffea00' },
-        { t: 'SMALL', n: [4, 0], c: '#00ffff' },
-        { t: 'BIG', n: [9, 5], c: '#ffea00' },
-        { t: 'SMALL', n: [1, 2], c: '#00ffff' },
-        { t: 'BIG', n: [6, 7], c: '#ffea00' },
-        { t: 'SMALL', n: [3, 4], c: '#00ffff' },
-        { t: 'BIG', n: [8, 9], c: '#ffea00' }
+      const infMap = [
+        { t: 'SMALL', n: [0, 4], c: '#00ffff' },
+        { t: 'BIG', n: [5, 9], c: '#ffd700' },
+        { t: 'SMALL', n: [1, 3], c: '#00ffff' },
+        { t: 'BIG', n: [6, 8], c: '#ffd700' },
+        { t: 'SMALL', n: [2, 0], c: '#00ffff' },
+        { t: 'BIG', n: [7, 5], c: '#ffd700' },
+        { t: 'SMALL', n: [4, 1], c: '#00ffff' },
+        { t: 'BIG', n: [9, 7], c: '#ffd700' },
+        { t: 'SMALL', n: [3, 2], c: '#00ffff' },
+        { t: 'BIG', n: [8, 6], c: '#ffd700' }
       ];
 
-      const win = voidMap[matrix];
+      const win = infMap[logic];
       r.innerText = win.t;
       r.style.color = win.c;
-      n1.innerText = win.n[0];
-      n2.innerText = win.n[1];
+      b1.innerText = win.n[0];
+      b2.innerText = win.n[1];
       
-      vocal(`${win.t}. Level 1 fixed. Confidence infinity.`);
-    }, 13500); // 13.5 Seconds Scan - No way server can flip now
+      vocal(`${win.t}. Level 1 sershot fix jackpot.`);
+    }, 14500); 
   }
 </script>
 </body>
