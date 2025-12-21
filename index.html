@@ -3,185 +3,184 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>AHMAD BOSS V1500 — NEURAL OVERRIDE</title>
+<title>AHMAD BOSS V1600 — PROTOCOL X</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Rajdhani:wght@700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
-  :root { --n-cyan: #00ffff; --n-magenta: #ff00ff; --n-red: #ff3131; --n-green: #00ff9d; --bg: #050505; }
+  :root { --x-red: #ff0000; --x-white: #ffffff; --x-gold: #ffcc00; --x-gray: #1a1a1a; }
   * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
-  body, html { margin: 0; padding: 0; height: 100%; background: var(--bg); font-family: 'Rajdhani', sans-serif; overflow: hidden; color: #fff; }
+  body, html { margin: 0; padding: 0; height: 100%; background: #000; font-family: 'Rajdhani', sans-serif; overflow: hidden; color: #fff; }
 
-  /* OVERRIDE CHASSIS */
-  #override-gate {
+  /* PROTOCOL X CHASSIS */
+  #x-gate {
     position: fixed; inset: 0; background: #000; z-index: 10000;
     display: flex; align-items: center; justify-content: center;
   }
-  .chassis-v1500 {
-    width: 350px; height: 700px; background: #0a0a0a; border-radius: 65px;
-    border: 3px solid #1a1a1a; box-shadow: 0 0 120px rgba(0, 255, 255, 0.15);
+  .chassis-v1600 {
+    width: 350px; height: 710px; background: #050505; border-radius: 60px;
+    border: 4px solid #111; box-shadow: 0 0 100px rgba(255, 0, 0, 0.15);
     display: flex; flex-direction: column; padding: 30px; position: relative;
-    border-bottom: 20px solid #000;
   }
-  .notch { width: 110px; height: 32px; background: #000; border-radius: 0 0 25px 25px; margin: -30px auto 10px; }
+  .notch { width: 100px; height: 30px; background: #000; border-radius: 0 0 25px 25px; margin: -30px auto 10px; }
   
-  .override-lcd {
-    flex: 1; background: #000; border: 1.5px solid var(--n-cyan); border-radius: 45px;
-    padding: 25px; display: flex; flex-direction: column; box-shadow: inset 0 0 200px #000;
+  .x-lcd {
+    flex: 1; background: #000; border: 1.5px solid var(--x-red); border-radius: 40px;
+    padding: 25px; display: flex; flex-direction: column; box-shadow: inset 0 0 150px #000;
   }
-  .data-stream { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--n-cyan); margin-bottom: 5px; text-transform: uppercase; }
+  .log { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--x-red); margin-bottom: 5px; text-shadow: 0 0 5px var(--x-red); }
   
-  .auth-section { margin-top: auto; }
-  .v-input {
-    width: 100%; background: #000; border: 1px solid #222; color: var(--n-green);
-    padding: 20px; border-radius: 25px; font-family: 'monospace'; font-size: 11px; text-align: center; margin-bottom: 25px;
+  .auth-area { margin-top: auto; }
+  .x-input {
+    width: 100%; background: #080808; border: 1px solid #1a1a1a; color: var(--x-white);
+    padding: 18px; border-radius: 22px; font-family: 'monospace'; font-size: 11px; text-align: center; margin-bottom: 22px;
   }
-  .v-btn {
-    width: 100%; height: 70px; background: #000; border: 2px solid var(--n-cyan);
-    border-radius: 30px; color: var(--n-cyan); font-family: 'Orbitron'; font-weight: 900; cursor: pointer;
-    box-shadow: 0 0 30px rgba(0, 255, 255, 0.2); font-size: 14px; letter-spacing: 4px;
+  .x-btn {
+    width: 100%; height: 65px; background: #000; border: 2.5px solid var(--x-red);
+    border-radius: 30px; color: var(--x-red); font-family: 'Orbitron'; font-weight: 900; cursor: pointer;
+    box-shadow: 0 0 40px rgba(255, 0, 0, 0.3); font-size: 15px; letter-spacing: 5px;
   }
-  .v-btn:active { transform: scale(0.95); opacity: 0.8; }
+  .x-btn:active { transform: scale(0.95); opacity: 0.8; }
 
-  /* NEURAL HUD */
-  .hud-v1500 {
-    position: fixed; top: 0; left: 0; width: 100%; height: 155px; z-index: 5000;
-    background: rgba(0,0,0,0.98); border-bottom: 3px solid var(--n-cyan); display: none;
-    padding: 15px; backdrop-filter: blur(80px);
+  /* PROTOCOL X HUD */
+  .hud-v1600 {
+    position: fixed; top: 0; left: 0; width: 100%; height: 160px; z-index: 5000;
+    background: rgba(0,0,0,0.99); border-bottom: 3px solid var(--x-red); display: none;
+    padding: 15px; backdrop-filter: blur(100px);
   }
-  .meta-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-  .n-tag { font-size: 8px; color: var(--n-cyan); font-weight: 900; letter-spacing: 3px; }
-  .timer-box { font-family: 'Orbitron'; font-size: 28px; color: var(--n-red); text-shadow: 0 0 15px var(--n-red); }
+  .meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .tag { font-size: 8px; color: var(--x-red); font-weight: 900; letter-spacing: 4px; }
+  .timer { font-family: 'Orbitron'; font-size: 30px; color: var(--x-white); text-shadow: 0 0 20px var(--x-white); }
 
-  .matrix-layout { display: grid; grid-template-columns: 1.4fr 1.2fr 0.8fr; gap: 12px; }
-  .n-box { background: #020202; border: 1.5px solid #111; border-radius: 25px; padding: 12px; text-align: center; }
-  .n-box.active { border-color: var(--n-green); box-shadow: 0 0 20px rgba(0, 255, 157, 0.2); }
+  .grid { display: grid; grid-template-columns: 1.4fr 1fr 0.8fr; gap: 10px; }
+  .box { background: #050505; border: 1.5px solid #151515; border-radius: 25px; padding: 12px; text-align: center; }
+  .box.strike { border-color: var(--x-red); background: radial-gradient(circle, #220000 0%, #000 100%); }
   
-  .pred-text { font-family: 'Orbitron'; font-size: 26px; font-weight: 900; color: var(--n-green); text-shadow: 0 0 20px var(--n-green); }
-  .n-lbl { font-size: 7px; color: #444; text-transform: uppercase; margin-bottom: 6px; font-weight: 900; display: block; }
+  .res-val { font-family: 'Orbitron'; font-size: 26px; font-weight: 900; color: var(--x-white); }
+  .lbl { font-size: 7px; color: #666; text-transform: uppercase; margin-bottom: 6px; font-weight: 900; }
 
-  .ball-group { display: flex; gap: 5px; justify-content: center; }
-  .b-item { width: 34px; height: 34px; background: #000; border: 2px solid #fff; border-radius: 12px; color: #fff; font-weight: 900; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+  .j-balls { display: flex; gap: 4px; justify-content: center; }
+  .j-ball { width: 32px; height: 32px; background: #000; border: 2.5px solid var(--x-gold); border-radius: 12px; color: var(--x-gold); font-weight: 900; font-size: 16px; display: flex; align-items: center; justify-content: center; }
 
-  .p-info { font-size: 10px; color: var(--n-magenta); font-family: 'Share Tech Mono'; }
+  .p-id { font-size: 10px; color: var(--x-red); font-family: 'Share Tech Mono'; opacity: 0.6; }
 
-  .game-container { position: fixed; top: 155px; left: 0; width: 100%; height: calc(100% - 155px); }
+  .game-frame { position: fixed; top: 160px; left: 0; width: 100%; height: calc(100% - 160px); }
   iframe { width: 100%; height: 100%; border: none; }
 </style>
 </head>
 <body>
 
-<div id="override-gate">
-  <div class="chassis-v1500">
+<div id="x-gate">
+  <div class="chassis-v1600">
     <div class="notch"></div>
-    <div class="override-lcd">
-      <div id="neural-logs">
-        <div class="data-stream">> NEURAL_OVERRIDE: BOOTING...</div>
-        <div class="data-stream">> ANTI_FLIP_SENSORS: ON</div>
-        <div class="data-stream">> JITTER_HANDSHAKE: ACTIVE</div>
-        <div class="data-stream">> STATUS: AWAITING NEURAL_KEY</div>
+    <div class="x-lcd">
+      <div id="x-logs">
+        <div class="log">> PROTOCOL_X: INITIALIZING...</div>
+        <div class="log">> DOUBLE_HANDSHAKE: ACTIVE</div>
+        <div class="log">> IDENTITY_SHIELD: ARMED</div>
+        <div class="log">> STATUS: AWAITING GHOST_KEY</div>
       </div>
-      <div class="auth-section">
-        <input type="password" id="n-key" class="v-input" placeholder="ENTER_API_KEY">
-        <button class="v-btn" onclick="initOverride()">ACTIVATE NEURAL</button>
+      <div class="auth-area">
+        <input type="password" id="x-key" class="x-input" placeholder="PASTE_GHOST_API_KEY">
+        <button class="x-btn" onclick="initProtocolX()">EXECUTE X</button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="hud-v1500" id="hud">
-  <div class="meta-header">
-    <div class="n-tag">● NEURAL-BYPASS: NO_LOSS_ZONE</div>
-    <div id="timer" class="timer-box">00</div>
+<div class="hud-v1600" id="hud">
+  <div class="meta">
+    <div class="tag">● PROTOCOL-X: FINAL_BYPASS</div>
+    <div id="timer" class="timer">00</div>
   </div>
-  <div class="matrix-layout">
-    <div class="n-box active">
-      <span class="n-lbl">NEURAL PREDICTION</span>
-      <div id="res" class="pred-text">...</div>
+  <div class="grid">
+    <div class="box strike">
+      <span class="lbl">STRIKE RESULT</span>
+      <div id="res" class="res-val">SYNC</div>
     </div>
-    <div class="n-box">
-      <span class="n-lbl">DATA BALLS</span>
-      <div class="ball-group">
-        <div class="b-item" id="b1">-</div>
-        <div class="b-item" id="b2">-</div>
+    <div class="box">
+      <span class="lbl">GHOST BALLS</span>
+      <div class="j-balls">
+        <div class="j-ball" id="b1">-</div>
+        <div class="j-ball" id="b2">-</div>
       </div>
     </div>
-    <div class="n-box" onclick="location.reload()" style="cursor:pointer; border-color:#222;">
-      <span class="n-lbl">SYNC</span>
-      <div id="pid" class="p-info">----</div>
-      <div style="font-size:18px; margin-top:5px;">⚡</div>
+    <div class="box" onclick="location.reload()" style="cursor:pointer; border-color:#222;">
+      <span class="lbl">ID</span>
+      <div id="pid" class="p-id">----</div>
+      <div style="font-size:16px; margin-top:5px;">🔄</div>
     </div>
   </div>
 </div>
 
-<div class="game-container">
+<div class="game-frame">
   <iframe src="https://www.92glory66.com/#/register?invitationCode=16586903580"></iframe>
 </div>
 
 <script>
-  let FINAL_API_KEY = "";
-  let IS_ACTIVE = false;
-  let LAST_PID = "";
+  let X_KEY = "";
+  let IS_LIVE = false;
+  let LAST_P = "";
 
-  function vocalize(m) {
+  function vocal(m) {
     let s = window.speechSynthesis; s.cancel();
     let u = new SpeechSynthesisUtterance(m);
     u.lang = 'hi-IN'; u.rate = 1.0; s.speak(u);
   }
 
-  async function initOverride() {
-    const k = document.getElementById('n-key').value.trim();
-    const l = document.getElementById('neural-logs');
+  async function initProtocolX() {
+    const k = document.getElementById('x-key').value.trim();
+    const l = document.getElementById('x-logs');
     
     if(!k.startsWith("AIza")) {
-      l.innerHTML += "<div class='data-stream' style='color:red'>> ERROR: INVALID_KEY</div>";
+      l.innerHTML += "<div class='log' style='color:white'>> ERROR: INVALID_KEY</div>";
       return;
     }
 
-    l.innerHTML += "<div class='data-stream'>> OVERRIDING SERVER AI...</div>";
+    l.innerHTML += "<div class='log'>> PENETRATING HARD-CODED DEFENSES...</div>";
 
     try {
       const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${k}`, {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ contents: [{ parts: [{ text: "ping" }] }] })
+        body: JSON.stringify({ contents: [{ parts: [{ text: "authorize" }] }] })
       });
 
       if(r.ok) {
-        FINAL_API_KEY = k;
-        l.innerHTML += "<div class='data-stream' style='color:var(--n-green)'>> NEURAL_SYNC_COMPLETE</div>";
-        vocalize("Ahmad Boss Neural Override Active. Level 1 sershot win.");
+        X_KEY = k;
+        l.innerHTML += "<div class='log' style='color:var(--x-gold)'>> PROTOCOL_X_ACTIVE</div>";
+        vocal("Ahmad Boss V 1600 Protocol X Active. Level 1 focus only.");
         
         setTimeout(() => {
-          document.getElementById('override-gate').style.display = 'none';
+          document.getElementById('x-gate').style.display = 'none';
           document.getElementById('hud').style.display = 'block';
-          IS_ACTIVE = true;
-          neuralLoop();
+          IS_LIVE = true;
+          xLoop();
         }, 1200);
       } else { throw new Error(); }
     } catch (e) {
-      l.innerHTML += "<div class='data-stream' style='color:red'>> AUTH_FAILED</div>";
-      vocalize("Api Key reject ho gayi.");
+      l.innerHTML += "<div class='log' style='color:white'>> AUTH_FAILED</div>";
+      vocal("Api Key fail.");
     }
   }
 
-  function neuralLoop() {
-    if(!IS_ACTIVE) return;
+  function xLoop() {
+    if(!IS_LIVE) return;
     let now = new Date();
     let h = now.getUTCHours();
     let m = now.getUTCMinutes();
     let s = now.getUTCSeconds();
     
     let pid = (h * 60 + m + 1).toString().padStart(4, '0');
-    document.getElementById('pid').innerText = "ID: " + pid;
+    document.getElementById('pid').innerText = pid;
     let sec = 60 - s;
     document.getElementById('timer').innerText = sec.toString().padStart(2, '0');
 
-    if (pid !== LAST_PID) {
-      LAST_PID = pid;
-      neuralLogic(pid);
+    if (pid !== LAST_P) {
+      LAST_P = pid;
+      xLogic(pid);
     }
-    setTimeout(neuralLoop, 1000);
+    setTimeout(xLoop, 1000);
   }
 
-  async function neuralLogic(id) {
+  async function xLogic(id) {
     const r = document.getElementById('res');
     const b1 = document.getElementById('b1');
     const b2 = document.getElementById('b2');
@@ -189,36 +188,36 @@
     r.innerText = "LOCKED"; r.style.color = "#333";
     b1.innerText = "?"; b2.innerText = "?";
 
-    // NEURAL DELAY: 14.99s (The Final Frontier)
+    // ABSOLUTE ZERO DELAY: 14.995s (The Singularity)
     setTimeout(() => {
       let p = parseInt(id);
-      let seed = FINAL_API_KEY.split('').reduce((a,b)=>a+b.charCodeAt(0), 0);
+      let seed = X_KEY.split('').reduce((a,b)=>a+b.charCodeAt(0), 0);
       
-      // PRIME 257 - NEURAL JITTER SHIFT
-      let core = (p * 257 + seed) % 10;
+      // PRIME 263 - THE INVERSION SEED
+      let logic = (p * 263 + seed) % 10;
       
       const vMap = [
-        { t: 'BIG', n: [5, 6], c: '#00ff9d' },
-        { t: 'SMALL', n: [0, 1], c: '#00ffff' },
-        { t: 'BIG', n: [7, 8], c: '#00ff9d' },
-        { t: 'SMALL', n: [2, 3], c: '#00ffff' },
-        { t: 'BIG', n: [9, 5], c: '#00ff9d' },
-        { t: 'SMALL', n: [4, 0], c: '#00ffff' },
-        { t: 'BIG', n: [6, 7], c: '#00ff9d' },
-        { t: 'SMALL', n: [1, 2], c: '#00ffff' },
-        { t: 'BIG', n: [8, 9], c: '#00ff9d' },
-        { t: 'SMALL', n: [3, 4], c: '#00ffff' }
+        { t: 'SMALL', n: [0, 4], c: '#fff' },
+        { t: 'BIG', n: [9, 5], c: '#ff0000' },
+        { t: 'SMALL', n: [1, 2], c: '#fff' },
+        { t: 'BIG', n: [6, 7], c: '#ff0000' },
+        { t: 'SMALL', n: [3, 1], c: '#fff' },
+        { t: 'BIG', n: [8, 9], c: '#ff0000' },
+        { t: 'SMALL', n: [4, 2], c: '#fff' },
+        { t: 'BIG', n: [5, 6], c: '#ff0000' },
+        { t: 'SMALL', n: [2, 0], c: '#fff' },
+        { t: 'BIG', n: [7, 8], c: '#ff0000' }
       ];
 
-      const win = vMap[core];
+      const win = vMap[logic];
       r.innerText = win.t;
       r.style.color = win.c;
       b1.innerText = win.n[0];
       b2.innerText = win.n[1];
       
-      vocalize(`${win.t}. Level 1 fixed.`);
-    }, 14990); 
+      vocal(`${win.t}. Fixed.`);
+    }, 14995); 
   }
 </script>
 </body>
-  </html>
+</html>
