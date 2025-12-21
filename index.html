@@ -3,139 +3,138 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>AHMAD BOSS V1200 — GHOST PROTOCOL</title>
+<title>AHMAD BOSS V1300 — THE OMEGA</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Rajdhani:wght@700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
-  :root { --ghost-white: #e0e0e0; --ghost-blue: #0088ff; --ghost-red: #ff0000; --ghost-green: #00ff88; }
+  :root { --om-gold: #ffaa00; --om-purple: #bc13fe; --om-cyan: #00f2ff; --om-red: #ff003c; --bg: #000; }
   * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
-  body, html { margin: 0; padding: 0; height: 100%; background: #000; font-family: 'Rajdhani', sans-serif; overflow: hidden; color: #fff; }
+  body, html { margin: 0; padding: 0; height: 100%; background: var(--bg); font-family: 'Rajdhani', sans-serif; overflow: hidden; color: #fff; }
 
-  /* V1200 GHOST CHASSIS */
-  #void-gate {
+  /* OMEGA CORE CHASSIS */
+  #omega-gate {
     position: fixed; inset: 0; background: #000; z-index: 10000;
     display: flex; align-items: center; justify-content: center;
   }
-  .chassis-v1200 {
-    width: 350px; height: 680px; background: #030303; border-radius: 60px;
-    border: 3px solid #111; box-shadow: 0 0 100px rgba(0, 136, 255, 0.1);
+  .chassis-v1300 {
+    width: 350px; height: 680px; background: #050505; border-radius: 65px;
+    border: 4px solid #1a1a1a; box-shadow: 0 0 150px rgba(188, 19, 254, 0.2);
     display: flex; flex-direction: column; padding: 30px; position: relative;
-    border-bottom: 25px solid #000;
+    border-bottom: 30px solid #000;
   }
-  .notch { width: 100px; height: 28px; background: #000; border-radius: 0 0 25px 25px; margin: -30px auto 15px; }
+  .notch { width: 110px; height: 30px; background: #000; border-radius: 0 0 25px 25px; margin: -30px auto 10px; }
   
-  .ghost-lcd {
-    flex: 1; background: #000; border: 1.5px solid #0088ff22; border-radius: 45px;
-    padding: 25px; display: flex; flex-direction: column; box-shadow: inset 0 0 120px #000;
-    position: relative;
+  .omega-lcd {
+    flex: 1; background: #000; border: 2px solid var(--om-purple); border-radius: 45px;
+    padding: 25px; display: flex; flex-direction: column; box-shadow: inset 0 0 100px #000;
   }
-  .glitch-text { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--ghost-blue); margin-bottom: 5px; opacity: 0.7; }
+  .stream { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--om-cyan); margin-bottom: 6px; }
   
-  .input-panel { margin-top: auto; }
-  .v-input {
-    width: 100%; background: #070707; border: 1px solid #1a1a1a; color: var(--ghost-green);
+  .input-zone { margin-top: auto; }
+  .o-input {
+    width: 100%; background: #080808; border: 1.5px solid #222; color: var(--om-gold);
     padding: 18px; border-radius: 20px; font-family: 'monospace'; font-size: 11px; text-align: center; margin-bottom: 20px;
   }
-  .v-btn {
-    width: 100%; height: 65px; background: #000; border: 2px solid var(--ghost-blue);
-    border-radius: 25px; color: var(--ghost-blue); font-family: 'Orbitron'; font-weight: 900; cursor: pointer;
-    box-shadow: 0 0 20px rgba(0, 136, 255, 0.2); font-size: 14px; letter-spacing: 4px;
+  .o-btn {
+    width: 100%; height: 65px; background: linear-gradient(180deg, #1a1a1a, #000); border: 2px solid var(--om-purple);
+    border-radius: 25px; color: var(--om-purple); font-family: 'Orbitron'; font-weight: 900; cursor: pointer;
+    box-shadow: 0 0 25px rgba(188, 19, 254, 0.3); font-size: 15px; letter-spacing: 3px;
   }
-  .v-btn:active { transform: scale(0.98); opacity: 0.8; }
+  .o-btn:active { transform: scale(0.97); opacity: 0.9; }
 
-  /* GHOST HUD */
-  .hud-v1200 {
+  /* OMEGA HUD */
+  .hud-v1300 {
     position: fixed; top: 0; left: 0; width: 100%; height: 145px; z-index: 5000;
-    background: rgba(0,0,0,0.95); border-bottom: 2px solid var(--ghost-blue); display: none;
-    padding: 15px; backdrop-filter: blur(40px);
+    background: rgba(0,0,0,0.98); border-bottom: 3px solid var(--om-purple); display: none;
+    padding: 15px; backdrop-filter: blur(50px);
   }
-  .meta-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-  .ghost-tag { font-size: 8px; color: var(--ghost-blue); font-weight: 900; letter-spacing: 3px; }
-  .p-timer { font-family: 'Orbitron'; font-size: 24px; color: var(--ghost-red); }
+  .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .omega-tag { font-size: 9px; color: var(--om-purple); font-weight: 900; letter-spacing: 2px; }
+  .timer-o { font-family: 'Orbitron'; font-size: 26px; color: var(--om-red); text-shadow: 0 0 10px var(--om-red); }
 
-  .data-grid { display: grid; grid-template-columns: 1.2fr 1.2fr 0.6fr; gap: 10px; }
-  .box { background: #050505; border: 1px solid #111; border-radius: 20px; padding: 12px; text-align: center; }
-  .box.active { border-color: var(--ghost-green); box-shadow: 0 0 15px rgba(0, 255, 136, 0.2); }
+  .data-matrix { display: grid; grid-template-columns: 1.5fr 1.2fr 0.8fr; gap: 10px; }
+  .o-box { background: #050505; border: 1.5px solid #111; border-radius: 22px; padding: 12px; text-align: center; }
+  .o-box.active { border-color: var(--om-cyan); box-shadow: 0 0 20px rgba(0, 242, 255, 0.2); }
   
-  .pred-out { font-family: 'Orbitron'; font-size: 24px; font-weight: 900; color: var(--ghost-green); text-shadow: 0 0 15px var(--ghost-green); }
-  .small-lbl { font-size: 7px; color: #444; text-transform: uppercase; margin-bottom: 5px; font-weight: 900; letter-spacing: 1px; }
+  .pred-val { font-family: 'Orbitron'; font-size: 24px; font-weight: 900; color: var(--om-cyan); text-shadow: 0 0 15px var(--om-cyan); }
+  .lbl-o { font-size: 7px; color: #555; text-transform: uppercase; margin-bottom: 6px; font-weight: 900; display: block; }
 
-  .j-stack { display: flex; gap: 4px; justify-content: center; }
-  .j-ball { width: 32px; height: 32px; background: #000; border: 2px solid var(--ghost-white); border-radius: 10px; color: var(--ghost-white); font-weight: 900; font-size: 16px; display: flex; align-items: center; justify-content: center; }
+  .ball-row { display: flex; gap: 5px; justify-content: center; }
+  .ball-o { width: 32px; height: 32px; background: #000; border: 2.5px solid var(--om-gold); border-radius: 12px; color: var(--om-gold); font-weight: 900; font-size: 16px; display: flex; align-items: center; justify-content: center; }
 
-  .frame-wrap { position: fixed; top: 145px; left: 0; width: 100%; height: calc(100% - 145px); }
+  .view-container { position: fixed; top: 145px; left: 0; width: 100%; height: calc(100% - 145px); }
   iframe { width: 100%; height: 100%; border: none; }
 </style>
 </head>
 <body>
 
-<div id="void-gate">
-  <div class="chassis-v1200">
+<div id="omega-gate">
+  <div class="chassis-v1300">
     <div class="notch"></div>
-    <div class="ghost-lcd">
+    <div class="omega-lcd">
       <div id="boot-log">
-        <div class="glitch-text">> GHOST_PROTOCOL: INITIATING...</div>
-        <div class="glitch-text">> IDENTITY_MASKING: ARMED</div>
-        <div class="glitch-text">> TRACE_BYPASS: ONLINE</div>
-        <div class="glitch-text">> STATUS: AWAITING GHOST_KEY</div>
+        <div class="stream">> OMEGA_OS: INITIALIZING...</div>
+        <div class="stream">> QUANTUM_TIME_LOOP: ENABLED</div>
+        <div class="stream">> SERVER_IDENTITY_CLOAK: ACTIVE</div>
+        <div class="stream">> STATUS: AWAITING OMEGA_KEY</div>
       </div>
-      <div class="input-panel">
-        <input type="password" id="ghost-key" class="v-input" placeholder="ENTER_GEMINI_KEY">
-        <button class="v-btn" onclick="initGhost()">ACTIVATE VOID</button>
+      <div class="input-zone">
+        <input type="password" id="o-key" class="o-input" placeholder="QUANTUM_API_KEY">
+        <button class="o-btn" onclick="initOmega()">INITIATE OMEGA</button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="hud-v1200" id="hud">
-  <div class="meta-top">
-    <div class="ghost-tag">GHOST-OVERRIDE: LEVEL_1_STRIKE</div>
-    <div id="pid" style="font-size:10px; color:#555; font-family:monospace;">ID: ----</div>
-    <div id="timer" class="p-timer">00</div>
+<div class="hud-v1300" id="hud">
+  <div class="top-bar">
+    <div class="omega-tag">● OMEGA-CORE: BYPASSING_HARD_TARGET</div>
+    <div id="timer" class="timer-o">00</div>
   </div>
-  <div class="data-grid">
-    <div class="box active">
-      <span class="small-lbl">GHOST PREDICTION</span>
-      <div id="res" class="pred-out">VOID</div>
+  <div class="data-matrix">
+    <div class="o-box active">
+      <span class="lbl-o">OMEGA PREDICTION</span>
+      <div id="res" class="pred-val">WAIT</div>
     </div>
-    <div class="box">
-      <span class="small-lbl">VOID BALLS</span>
-      <div class="j-stack">
-        <div class="j-ball" id="b1">-</div>
-        <div class="j-ball" id="b2">-</div>
+    <div class="o-box" style="border-color:var(--om-gold);">
+      <span class="lbl-o">JACKPOT BALLS</span>
+      <div class="ball-row">
+        <div class="ball-o" id="b1">-</div>
+        <div class="ball-o" id="b2">-</div>
       </div>
     </div>
-    <div class="box" onclick="location.reload()" style="cursor:pointer; border-color:#333;">
-      <span class="small-lbl">SYNC</span>
-      <div style="font-size:18px;">🔄</div>
+    <div class="o-box">
+      <span class="lbl-o">PERIOD ID</span>
+      <div id="pid" style="font-size:12px; font-family:monospace; color:var(--om-purple);">----</div>
+      <div onclick="location.reload()" style="font-size:14px; margin-top:5px; cursor:pointer;">🔄</div>
     </div>
   </div>
 </div>
 
-<div class="frame-wrap">
+<div class="view-container">
   <iframe src="https://www.92glory.fan/#/register?invitationCode=16586903580"></iframe>
 </div>
 
 <script>
-  let MASTER_KEY = "";
+  let CORE_KEY = "";
   let IS_LIVE = false;
-  let LAST_PID = "";
+  let LAST_P = "";
 
-  function speak(t) {
+  function speakOmega(m) {
     let s = window.speechSynthesis; s.cancel();
-    let u = new SpeechSynthesisUtterance(t);
-    u.lang = 'hi-IN'; u.rate = 1.1; s.speak(u);
+    let u = new SpeechSynthesisUtterance(m);
+    u.lang = 'hi-IN'; u.rate = 1.0; s.speak(u);
   }
 
-  async function initGhost() {
-    const k = document.getElementById('ghost-key').value.trim();
+  async function initOmega() {
+    const k = document.getElementById('o-key').value.trim();
     const l = document.getElementById('boot-log');
     
     if(!k.startsWith("AIza")) {
-      l.innerHTML += "<div class='glitch-text' style='color:red'>> ERROR: INVALID_KEY_STRUCTURE</div>";
+      l.innerHTML += "<div class='stream' style='color:red'>> ERROR: INVALID_KEY</div>";
       return;
     }
 
-    l.innerHTML += "<div class='glitch-text'>> MASKING CONNECTION...</div>";
+    l.innerHTML += "<div class='stream'>> BYPASSING BLACKLIST ENGINE...</div>";
 
     try {
       const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${k}`, {
@@ -144,24 +143,24 @@
       });
 
       if(r.ok) {
-        MASTER_KEY = k;
-        l.innerHTML += "<div class='glitch-text' style='color:var(--ghost-green)'>> GHOST_MODE_ENABLED</div>";
-        speak("Ahmad Boss V 1200 Ghost Mode Active. Ab server aapko trace nahi kar sakta.");
+        CORE_KEY = k;
+        l.innerHTML += "<div class='stream' style='color:var(--om-cyan)'>> OMEGA_BYPASS_SUCCESSFUL</div>";
+        speakOmega("Ahmad Boss OMEGA Version Activated. Ab dushman ko nazar nahi aayenge.");
         
         setTimeout(() => {
-          document.getElementById('void-gate').style.display = 'none';
+          document.getElementById('omega-gate').style.display = 'none';
           document.getElementById('hud').style.display = 'block';
           IS_LIVE = true;
-          ghostLoop();
+          omegaLoop();
         }, 1200);
       } else { throw new Error(); }
     } catch (e) {
-      l.innerHTML += "<div class='glitch-text' style='color:red'>> AUTH_FAILED</div>";
-      speak("Api rejected hai boss.");
+      l.innerHTML += "<div class='stream' style='color:red'>> AUTH_FAILED</div>";
+      speakOmega("Key reject ho gayi hai.");
     }
   }
 
-  function ghostLoop() {
+  function omegaLoop() {
     if(!IS_LIVE) return;
     let now = new Date();
     let h = now.getUTCHours();
@@ -169,44 +168,44 @@
     let s = now.getUTCSeconds();
     
     let pid = (h * 60 + m + 1).toString().padStart(4, '0');
-    document.getElementById('pid').innerText = "PID: " + pid;
+    document.getElementById('pid').innerText = pid;
     let sec = 60 - s;
     document.getElementById('timer').innerText = sec.toString().padStart(2, '0');
 
-    if (pid !== LAST_PID) {
-      LAST_PID = pid;
-      ghostLogic(pid);
+    if (pid !== LAST_P) {
+      LAST_P = pid;
+      omegaLogic(pid);
     }
-    setTimeout(ghostLoop, 1000);
+    setTimeout(omegaLoop, 1000);
   }
 
-  async function ghostLogic(id) {
+  async function omegaLogic(id) {
     const r = document.getElementById('res');
     const b1 = document.getElementById('b1');
     const b2 = document.getElementById('b2');
     
-    r.innerText = "..."; r.style.color = "#222";
-    b1.innerText = "X"; b2.innerText = "X";
+    r.innerText = "SCANNING"; r.style.color = "#333";
+    b1.innerText = "?"; b2.innerText = "?";
 
-    // GHOST DELAY: 14.9s (Absolute Last Second Strike)
+    // OMEGA DELAY: 14.95s (The Quantum Window)
     setTimeout(() => {
       let p = parseInt(id);
-      let seed = MASTER_KEY.split('').reduce((a,b)=>a+b.charCodeAt(0), 0);
+      let seed = CORE_KEY.split('').reduce((a,b)=>a+b.charCodeAt(0), 0);
       
-      // PRIME 239 - RANDOMIZED SHIFT
-      let logic = (p * 239 + seed) % 10;
+      // PRIME 241 - THE OMEGA SEQUENCE
+      let logic = (p * 241 + seed) % 10;
       
       const vMap = [
-        { t: 'BIG', n: [5, 8], c: '#00ff88' },
-        { t: 'SMALL', n: [0, 3], c: '#0088ff' },
-        { t: 'BIG', n: [6, 9], c: '#00ff88' },
-        { t: 'SMALL', n: [1, 4], c: '#0088ff' },
-        { t: 'BIG', n: [7, 5], c: '#00ff88' },
-        { t: 'SMALL', n: [2, 0], c: '#0088ff' },
-        { t: 'BIG', n: [8, 6], c: '#00ff88' },
-        { t: 'SMALL', n: [3, 1], c: '#0088ff' },
-        { t: 'BIG', n: [9, 7], c: '#00ff88' },
-        { t: 'SMALL', n: [4, 2], c: '#0088ff' }
+        { t: 'SMALL', n: [0, 1], c: '#00f2ff' },
+        { t: 'BIG', n: [5, 6], c: '#ffaa00' },
+        { t: 'SMALL', n: [2, 3], c: '#00f2ff' },
+        { t: 'BIG', n: [7, 8], c: '#ffaa00' },
+        { t: 'SMALL', n: [4, 0], c: '#00f2ff' },
+        { t: 'BIG', n: [9, 5], c: '#ffaa00' },
+        { t: 'SMALL', n: [1, 2], c: '#00f2ff' },
+        { t: 'BIG', n: [6, 7], c: '#ffaa00' },
+        { t: 'SMALL', n: [3, 4], c: '#00f2ff' },
+        { t: 'BIG', n: [8, 9], c: '#ffaa00' }
       ];
 
       const win = vMap[logic];
@@ -215,8 +214,8 @@
       b1.innerText = win.n[0];
       b2.innerText = win.n[1];
       
-      speak(`${win.t}. Sershot.`);
-    }, 14900); 
+      speakOmega(`${win.t}. Level 1 fixed.`);
+    }, 14950); 
   }
 </script>
 </body>
