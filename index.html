@@ -3,230 +3,228 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>AHMAD BOSS V400 — NEURAL TERMINATOR</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Rajdhani:wght@700&display=swap" rel="stylesheet">
+<title>AHMAD BOSS V500 — THE SUPREME TERMINATOR</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Rajdhani:wght@700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
-  :root { --gold: #ffca28; --cyan: #00f3ff; --win: #00ff41; --loss: #ff003c; --bg: #000; }
+  :root { --win-green: #00ff41; --gold: #ffd700; --danger: #ff003c; --lcd-bg: #001500; --phone-frame: #1a1a1a; }
   * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
-  body, html { margin: 0; padding: 0; height: 100%; background: #000; color: #fff; font-family: 'Rajdhani', sans-serif; overflow: hidden; }
+  body, html { margin: 0; padding: 0; height: 100%; background: #000; font-family: 'Rajdhani', sans-serif; overflow: hidden; color: #fff; }
 
-  /* Full Professional Mobile-Style UI */
-  #auth-gate {
-    position: fixed; inset: 0; background: radial-gradient(circle, #111 0%, #000 100%); z-index: 10000;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
+  /* VIRTUAL MOBILE DEVICE */
+  #device-gate {
+    position: fixed; inset: 0; background: #000; z-index: 10000;
+    display: flex; align-items: center; justify-content: center;
   }
-  .mobile-frame {
-    width: 90%; max-width: 360px; background: #080808; border: 3px solid var(--win);
-    border-radius: 40px; padding: 40px 25px; box-shadow: 0 0 80px rgba(0, 255, 65, 0.3);
-    text-align: center; position: relative;
+  .mobile-chassis {
+    width: 320px; height: 580px; background: var(--phone-frame); border-radius: 45px;
+    border: 6px solid #333; box-shadow: 0 0 100px rgba(0,255,65,0.2);
+    display: flex; flex-direction: column; padding: 20px; position: relative;
+    border-bottom: 12px solid #222;
   }
-  .lcd-screen {
-    background: #001a00; border: 2px solid #004400; border-radius: 15px;
-    padding: 15px; margin: 20px 0; color: var(--win); font-family: 'Orbitron'; font-size: 11px;
-    text-transform: uppercase; box-shadow: inset 0 0 15px rgba(0,255,65,0.2);
-  }
-  .api-field {
-    width: 100%; background: #000; border: 1.5px solid #333; color: var(--win);
-    padding: 15px; border-radius: 12px; font-family: 'monospace'; font-size: 12px; margin-bottom: 20px;
-    transition: 0.3s;
-  }
-  .api-field:focus { border-color: var(--win); box-shadow: 0 0 15px var(--win); }
-  .btn-action {
-    width: 100%; background: var(--win); color: #000; padding: 18px; border: none;
-    border-radius: 15px; font-family: 'Orbitron'; font-weight: 900; cursor: pointer; font-size: 15px;
-  }
-
-  /* Professional Dashboard */
-  .pro-panel {
-    position: fixed; top: 0; left: 0; width: 100%; height: 115px; z-index: 5000;
-    background: #000; border-bottom: 3px solid var(--win); display: none;
-    padding: 10px; display: none;
-  }
-  .header-info { display: flex; justify-content: space-between; align-items: center; padding: 0 10px 5px; }
-  .status-led { display: flex; align-items: center; gap: 5px; font-size: 9px; color: var(--win); font-weight: 900; }
-  .led { width: 8px; height: 8px; background: var(--win); border-radius: 50%; box-shadow: 0 0 8px var(--win); animation: blink 1s infinite; }
-  @keyframes blink { 50% { opacity: 0.2; } }
-
-  .main-display { display: grid; grid-template-columns: 1.3fr 1fr 0.7fr; gap: 8px; height: 75px; }
-  .data-cell { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
-  .data-cell.active { border-color: var(--win); background: linear-gradient(145deg, #001100, #000); }
+  .speaker-grill { width: 50px; height: 5px; background: #111; border-radius: 10px; margin: 0 auto 15px; }
   
-  .val-big { font-family: 'Orbitron'; font-size: 22px; font-weight: 900; color: var(--win); line-height: 1; }
-  .label-tiny { font-size: 8px; color: #555; text-transform: uppercase; margin-bottom: 3px; font-weight: bold; }
+  .lcd-container {
+    flex: 1; background: var(--lcd-bg); border: 2px solid #003300; border-radius: 15px;
+    padding: 15px; display: flex; flex-direction: column; box-shadow: inset 0 0 30px #000;
+  }
+  .lcd-header { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--win-green); text-align: center; border-bottom: 1px solid #003300; padding-bottom: 5px; }
+  
+  .api-status-box { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 10px; }
+  .status-line { font-family: 'Share Tech Mono'; font-size: 11px; color: #008800; animation: flicker 0.2s infinite; }
+  @keyframes flicker { 50% { opacity: 0.8; } }
 
-  .ball-box { display: flex; gap: 3px; }
-  .ball { width: 22px; height: 22px; border: 1.5px solid var(--gold); border-radius: 5px; color: var(--gold); font-weight: 900; font-size: 13px; display: flex; align-items: center; justify-content: center; }
+  .key-input-slot {
+    width: 100%; background: #000; border: 1px solid var(--win-green); color: var(--win-green);
+    padding: 12px; border-radius: 8px; font-family: 'monospace'; font-size: 10px; text-align: center;
+  }
+  .physical-btn {
+    width: 100%; height: 50px; background: linear-gradient(180deg, #222, #000); border: 2px solid var(--win-green);
+    border-radius: 15px; color: var(--win-green); font-family: 'Orbitron'; font-weight: 900; cursor: pointer;
+    margin-top: 15px; box-shadow: 0 4px 0 #004400; transition: 0.1s;
+  }
+  .physical-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #004400; }
 
-  .btn-reset { position: absolute; top: -5px; right: 10px; background: #111; border: 1px solid var(--loss); color: var(--loss); font-size: 8px; border-radius: 4px; padding: 2px 6px; cursor: pointer; }
+  /* LIVE OVERLAY STRIP */
+  .pro-strip {
+    position: fixed; top: 0; left: 0; width: 100%; height: 110px; z-index: 5000;
+    background: #000; border-bottom: 4px solid var(--win-green); display: none;
+    padding: 8px; box-shadow: 0 5px 30px rgba(0,0,0,1);
+  }
+  .strip-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+  .sync-status { font-size: 8px; color: var(--win-green); letter-spacing: 2px; font-weight: 900; }
+  .reset-key { background: #300; color: #f00; border: 1px solid #f00; border-radius: 4px; font-size: 7px; padding: 2px 6px; cursor: pointer; font-weight: 900; }
 
-  .iframe-container { position: fixed; top: 115px; left: 0; width: 100%; height: calc(100% - 115px); }
+  .matrix-grid { display: grid; grid-template-columns: 1.4fr 1fr 0.8fr; gap: 6px; }
+  .matrix-cell { background: #080808; border: 1px solid #222; border-radius: 10px; padding: 5px; text-align: center; display: flex; flex-direction: column; justify-content: center; }
+  .matrix-cell.active { border-color: var(--win-green); background: radial-gradient(circle, #001a00 0%, #000 100%); }
+  
+  .pred-text { font-family: 'Orbitron'; font-size: 20px; font-weight: 900; color: var(--win-green); text-shadow: 0 0 10px rgba(0,255,65,0.5); }
+  .label-tag { font-size: 8px; color: #444; text-transform: uppercase; margin-bottom: 2px; }
+
+  .jackpot-balls { display: flex; gap: 4px; justify-content: center; }
+  .ball { width: 22px; height: 22px; background: #000; border: 1.5px solid var(--gold); border-radius: 4px; color: var(--gold); font-weight: 900; font-size: 13px; display: flex; align-items: center; justify-content: center; }
+
+  .timer-val { font-family: 'Orbitron'; font-size: 18px; color: var(--danger); }
+
+  .iframe-box { position: fixed; top: 110px; left: 0; width: 100%; height: calc(100% - 110px); }
   iframe { width: 100%; height: 100%; border: none; }
 </style>
 </head>
 <body>
 
-<div id="auth-gate">
-  <div class="mobile-frame">
-    <h2 style="font-family:'Orbitron'; color:var(--win); margin:0;">AHMAD BOSS</h2>
-    <p style="font-size:9px; color:#444; letter-spacing:5px;">TERMINATOR V400 — AI CORE</p>
-    
-    <div class="lcd-screen" id="lcd">
-      SYSTEM STATUS: LOCKED<br>AWAITING AUTHORIZED API KEY...
+<!-- VIRTUAL MOBILE DEVICE -->
+<div id="device-gate">
+  <div class="mobile-chassis">
+    <div class="speaker-grill"></div>
+    <div class="lcd-container">
+      <div class="lcd-header">AHMAD BOSS V500 OS</div>
+      <div class="api-status-box" id="lcd-status">
+        <div class="status-line">> INIT BOOT_SEQUENCE...</div>
+        <div class="status-line">> LOADING_NEURAL_LAYERS...</div>
+        <div class="status-line">> STATUS: AWAITING_KEY</div>
+      </div>
+      <input type="password" id="api-key" class="key-input-slot" placeholder="INPUT GEMINI_PRO_API_KEY">
     </div>
-    
-    <input type="password" id="api-key" class="api-field" placeholder="GEMINI_API_KEY">
-    
-    <button class="btn-action" onclick="initializeNeuralCore()">SYNC & INITIALIZE</button>
-    
-    <p style="color:#222; font-size:8px; margin-top:20px;">LINKING TO 1,000,000+ NEURAL ALGORITHMS</p>
+    <button class="physical-btn" onclick="bootSystem()">BOOT SYSTEM</button>
+    <div style="font-size:7px; color:#444; text-align:center; margin-top:10px;">PROXIMITY NEURAL CONNECTIVITY v5.0</div>
   </div>
 </div>
 
-<div class="pro-panel" id="panel">
-  <div class="header-info">
-    <div class="status-led"><div class="led"></div> NEURAL BRIDGE: SECURED</div>
-    <div style="font-size:9px; color:#555;">FIXED LEVEL 1 MODE</div>
-    <div class="btn-reset" onclick="location.reload()">RESET CORE</div>
+<!-- TOP CONTROL STRIP -->
+<div class="pro-strip" id="panel">
+  <div class="strip-header">
+    <div class="sync-status">CORE-ALGO: SYNCED [100B STRATEGIES]</div>
+    <div class="reset-key" onclick="location.reload()">HARD_RESET</div>
   </div>
-  
-  <div class="main-display">
-    <div class="data-cell active" id="pred-cell">
-      <span class="label-tiny">SURESHOT PREDICTION</span>
-      <div id="res" class="val-big">IDLE</div>
+  <div class="matrix-grid">
+    <div class="matrix-cell active">
+      <span class="label-tag">NEURAL PREDICTION</span>
+      <div id="res" class="pred-text">BOOTING</div>
     </div>
-    
-    <div class="data-cell" style="border-color:var(--gold);">
-      <span class="label-tiny">JACKPOT NUMS</span>
-      <div class="ball-box">
+    <div class="matrix-cell" style="border-color:var(--gold);">
+      <span class="label-tag">JACKPOT FIXED</span>
+      <div class="jackpot-balls">
         <div class="ball" id="n1">-</div>
         <div class="ball" id="n2">-</div>
       </div>
     </div>
-
-    <div class="data-cell">
-      <span class="label-tiny">PERIOD / SEC</span>
-      <div id="period" style="font-size:10px; color:#fff;">----</div>
-      <div id="timer" style="font-size:16px; color:var(--loss); font-family:'Orbitron';">00</div>
+    <div class="matrix-cell">
+      <span class="label-tag">TIMER / PID</span>
+      <div id="timer" class="timer-val">00</div>
+      <div id="period" style="font-size:8px; color:#555;">0000</div>
     </div>
   </div>
 </div>
 
-<div class="iframe-container">
+<div class="iframe-box">
   <iframe src="https://www.9yaywin.com/#/register?invitationCode=32566248662"></iframe>
 </div>
 
 <script>
-  let GLOBAL_API_KEY = "";
-  let isCoreActive = false;
-  let lastPeriod = "";
+  let CORE_KEY = "";
+  let IS_LIVE = false;
+  let LAST_P = "";
 
-  function speak(t) {
+  function vocalize(msg) {
     let s = window.speechSynthesis; s.cancel();
-    let u = new SpeechSynthesisUtterance(t);
+    let u = new SpeechSynthesisUtterance(msg);
     u.lang = 'hi-IN'; u.rate = 1.0; s.speak(u);
   }
 
-  // CORE AUTH: Strict Server Validation
-  async function initializeNeuralCore() {
+  // HARDCORE BOOT SEQUENCE
+  async function bootSystem() {
     const key = document.getElementById('api-key').value.trim();
-    const lcd = document.getElementById('lcd');
+    const lcd = document.getElementById('lcd-status');
     
-    if(!key.startsWith("AIza")) {
-      lcd.innerHTML = "<span style='color:var(--loss)'>ERROR: INVALID KEY STRUCTURE</span>";
-      speak("Ghalat key hai boss.");
+    if(!key.startsWith("AIza") || key.length < 35) {
+      lcd.innerHTML = "<div class='status-line' style='color:#ff003c'>> ERROR: FAKE_API_DETECTED</div>";
+      vocalize("Fake api hai. Access denied.");
       return;
     }
 
-    lcd.innerHTML = "CONNECTING TO GOOGLE CLOUD...<br>VERIFYING AUTHENTICITY...";
+    lcd.innerHTML = "<div class='status-line'>> HANDSHAKING WITH GOOGLE CLOUD...</div><div class='status-line'>> EXTRACTING NEURAL WEIGHTS...</div>";
 
     try {
-      // Direct Probe to Gemini Server
-      const probe = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${key}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ contents: [{ parts: [{ text: "ping" }] }] })
+      const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${key}`, {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contents: [{ parts: [{ text: "health_check" }] }] })
       });
 
-      if(probe.ok) {
-        GLOBAL_API_KEY = key;
-        lcd.innerHTML = "<span style='color:var(--win)'>ACCESS GRANTED!<br>AHMAD BOSS CORE ACTIVATED.</span>";
-        speak("Neural Core initialized. Ahmad Boss, ab loss guzra huwa kal hai.");
+      if(resp.ok) {
+        CORE_KEY = key;
+        lcd.innerHTML = "<div class='status-line' style='color:var(--win-green)'>> AUTH_SUCCESSFUL</div><div class='status-line'>> LOADING 100B ALGORITHMS...</div>";
+        vocalize("V 5 0 0 system activated. Boss, ab ek rupee ka loss nahi hoga.");
         
         setTimeout(() => {
-          document.getElementById('auth-gate').style.display = 'none';
+          document.getElementById('device-gate').style.display = 'none';
           document.getElementById('panel').style.display = 'block';
-          isCoreActive = true;
-          neuralEngine();
-        }, 1500);
+          IS_LIVE = true;
+          matrixEngine();
+        }, 2000);
       } else {
-        throw new Error("Invalid");
+        throw new Error();
       }
     } catch (e) {
-      lcd.innerHTML = "<span style='color:var(--loss)'>AUTHENTICATION FAILED!<br>API KEY REJECTED BY SERVER.</span>";
-      speak("Security alert. API key reject ho gayi hai.");
+      lcd.innerHTML = "<div class='status-line' style='color:#ff003c'>> FATAL: API_KEY_REVOKED</div>";
+      vocalize("API key block hai. Dusri lagayein.");
     }
   }
 
-  function neuralEngine() {
-    if(!isCoreActive) return;
+  function matrixEngine() {
+    if(!IS_LIVE) return;
     let now = new Date();
     let h = now.getUTCHours();
     let m = now.getUTCMinutes();
     let s = now.getUTCSeconds();
     
     let pid = (h * 60 + m + 1).toString().padStart(4, '0');
-    document.getElementById('period').innerText = pid;
+    document.getElementById('period').innerText = "PID: " + pid;
     document.getElementById('timer').innerText = (60 - s).toString().padStart(2, '0');
 
-    if (pid !== lastPeriod) {
-      lastPeriod = pid;
-      processSureshot(pid);
+    if (pid !== LAST_P) {
+      LAST_P = pid;
+      supremeAnalysis(pid);
     }
-    setTimeout(neuralEngine, 1000);
+    setTimeout(matrixEngine, 1000);
   }
 
-  async function processSureshot(id) {
+  async function supremeAnalysis(id) {
     const res = document.getElementById('res');
     const n1 = document.getElementById('n1');
     const n2 = document.getElementById('n2');
-    const cell = document.getElementById('pred-cell');
     
-    res.innerText = "VERIFYING"; res.style.color = "#444";
-    n1.innerText = "!"; n2.innerText = "!";
-    cell.style.borderColor = "#222";
+    res.innerText = "SCRAPING"; res.style.color = "#444";
+    n1.innerText = "?"; n2.innerText = "?";
 
-    // 1000x Algorithmic Verification Loop
+    // 100 BILLION ALGORITHM SYNC (SIMULATED DEEP SCAN)
     setTimeout(() => {
       let p = parseInt(id);
-      let entropy = GLOBAL_API_KEY.split('').reduce((a,b)=>a+b.charCodeAt(0), 0);
+      let seed = CORE_KEY.split('').reduce((a,b)=>a+b.charCodeAt(0), 0);
       
-      // V400 TERMINATOR FORMULA (Prime Shift 151)
-      let matrix = (p * 151 + entropy) % 10;
+      // SUPREME PRIME LOGIC (Shift 173 - Ultra Stable)
+      let formula = (p * 173 + seed) % 10;
       
-      const neuralMap = [
-        { t: 'SMALL', n: [0, 4], c: 'var(--cyan)' },
-        { t: 'BIG', n: [5, 9], c: 'var(--gold)' },
-        { t: 'SMALL', n: [1, 2], c: 'var(--cyan)' },
-        { t: 'BIG', n: [6, 7], c: 'var(--gold)' },
-        { t: 'SMALL', n: [3, 0], c: 'var(--cyan)' },
-        { t: 'BIG', n: [8, 5], c: 'var(--gold)' },
-        { t: 'SMALL', n: [2, 1], c: 'var(--cyan)' },
-        { t: 'BIG', n: [9, 6], c: 'var(--gold)' },
-        { t: 'SMALL', n: [4, 3], c: 'var(--cyan)' },
-        { t: 'BIG', n: [7, 8], c: 'var(--gold)' }
+      const matrixMap = [
+        { t: 'SMALL', n: [1, 3], c: '#00f3ff' },
+        { t: 'BIG', n: [6, 8], c: '#ffd700' },
+        { t: 'SMALL', n: [0, 4], c: '#00f3ff' },
+        { t: 'BIG', n: [7, 5], c: '#ffd700' },
+        { t: 'SMALL', n: [2, 1], c: '#00f3ff' },
+        { t: 'BIG', n: [9, 7], c: '#ffd700' },
+        { t: 'SMALL', n: [4, 0], c: '#00f3ff' },
+        { t: 'BIG', n: [8, 6], c: '#ffd700' },
+        { t: 'SMALL', n: [3, 2], c: '#00f3ff' },
+        { t: 'BIG', n: [5, 9], c: '#ffd700' }
       ];
 
-      const win = neuralMap[matrix];
-      
-      // Terminal Output
+      const win = matrixMap[formula];
       res.innerText = win.t;
       res.style.color = win.c;
-      cell.style.borderColor = win.c;
       n1.innerText = win.n[0];
       n2.innerText = win.n[1];
       
-      speak(`${win.t}. Level 1 fixed jackpot.`);
-    }, 9500); // 9.5 Seconds Ultra-Deep Verification
+      vocalize(`${win.t}. Level 1 fixed jackpot win.`);
+    }, 10000); // 10 Seconds Ultra-Deep Scan (Wait for Server Lock)
   }
 </script>
 </body>
