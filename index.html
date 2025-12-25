@@ -3,211 +3,204 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>V1700 — THE ARCHITECT</title>
+<title>V1800 — THE OMNIPOTENT</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Rajdhani:wght@700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
-  :root { --a-gold: #ffcc00; --a-blue: #0066ff; --a-red: #ff0000; --bg: #000; }
+  :root { --o-neon: #00ffcc; --o-purple: #9d00ff; --o-red: #ff0055; --bg: #000; }
   * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
   body, html { margin: 0; padding: 0; height: 100%; background: var(--bg); font-family: 'Rajdhani', sans-serif; overflow: hidden; color: #fff; }
 
-  /* ARCHITECT CHASSIS */
-  #gate-1700 {
+  #omnipotent-gate {
     position: fixed; inset: 0; background: #000; z-index: 10000;
     display: flex; align-items: center; justify-content: center;
   }
-  .chassis-1700 {
-    width: 350px; height: 700px; background: #050505; border-radius: 65px;
-    border: 3px solid #111; box-shadow: 0 0 100px rgba(0, 102, 255, 0.2);
+  .chassis-1800 {
+    width: 350px; height: 710px; background: #0a0a0a; border-radius: 65px;
+    border: 3px solid #1a1a1a; box-shadow: 0 0 120px rgba(157, 0, 255, 0.2);
     display: flex; flex-direction: column; padding: 30px; position: relative;
-    border-bottom: 25px solid #000;
   }
-  .notch { width: 100px; height: 30px; background: #000; border-radius: 0 0 25px 25px; margin: -30px auto 10px; }
+  .notch { width: 110px; height: 32px; background: #000; border-radius: 0 0 25px 25px; margin: -30px auto 10px; }
   
-  .architect-lcd {
-    flex: 1; background: #000; border: 2px solid var(--a-blue); border-radius: 45px;
-    padding: 25px; display: flex; flex-direction: column; box-shadow: inset 0 0 150px #000;
+  .omni-lcd {
+    flex: 1; background: #000; border: 2px solid var(--o-neon); border-radius: 45px;
+    padding: 25px; display: flex; flex-direction: column; box-shadow: inset 0 0 200px #000;
   }
-  .feed { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--a-blue); margin-bottom: 5px; text-transform: uppercase; }
+  .log-line { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--o-neon); margin-bottom: 5px; text-transform: uppercase; }
   
-  .auth-zone { margin-top: auto; }
-  .a-input {
-    width: 100%; background: #000; border: 1.5px solid #222; color: var(--a-gold);
-    padding: 18px; border-radius: 22px; font-family: 'monospace'; font-size: 11px; text-align: center; margin-bottom: 22px;
+  .input-zone { margin-top: auto; }
+  .o-input {
+    width: 100%; background: #000; border: 1.2px solid #333; color: var(--o-neon);
+    padding: 18px; border-radius: 25px; font-family: 'monospace'; font-size: 11px; text-align: center; margin-bottom: 22px;
   }
-  .a-btn {
-    width: 100%; height: 68px; background: #000; border: 2px solid var(--a-blue);
-    border-radius: 28px; color: var(--a-blue); font-family: 'Orbitron'; font-weight: 900; cursor: pointer;
-    box-shadow: 0 0 30px rgba(0, 102, 255, 0.3); font-size: 14px; letter-spacing: 4px;
+  .o-btn {
+    width: 100%; height: 70px; background: #000; border: 2.5px solid var(--o-neon);
+    border-radius: 30px; color: var(--o-neon); font-family: 'Orbitron'; font-weight: 900; cursor: pointer;
+    box-shadow: 0 0 40px rgba(0, 255, 204, 0.3); font-size: 14px; letter-spacing: 5px;
   }
-  .a-btn:active { transform: scale(0.96); }
+  .o-btn:active { transform: scale(0.95); }
 
-  /* ARCHITECT HUD */
-  .hud-1700 {
-    position: fixed; top: 0; left: 0; width: 100%; height: 160px; z-index: 5000;
-    background: rgba(0,0,0,0.98); border-bottom: 4px solid var(--a-blue); display: none;
-    padding: 15px; backdrop-filter: blur(100px);
+  .hud-1800 {
+    position: fixed; top: 0; left: 0; width: 100%; height: 165px; z-index: 5000;
+    background: rgba(0,0,0,0.99); border-bottom: 4px solid var(--o-neon); display: none;
+    padding: 15px; backdrop-filter: blur(80px);
   }
-  .top-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-  .tag-1700 { font-size: 8px; color: var(--a-blue); font-weight: 900; letter-spacing: 3px; }
-  .timer-1700 { font-family: 'Orbitron'; font-size: 30px; color: var(--a-red); text-shadow: 0 0 15px var(--a-red); }
+  .meta-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .omni-tag { font-size: 8px; color: var(--o-neon); font-weight: 900; letter-spacing: 4px; }
+  .timer-box { font-family: 'Orbitron'; font-size: 30px; color: var(--o-red); text-shadow: 0 0 20px var(--o-red); }
 
-  .matrix { display: grid; grid-template-columns: 1.4fr 1.2fr 0.8fr; gap: 10px; }
-  .box { background: #020202; border: 1.5px solid #111; border-radius: 25px; padding: 12px; text-align: center; }
-  .box.hit { border-color: var(--a-gold); background: radial-gradient(circle, #1a1a00 0%, #000 100%); }
+  .grid-sys { display: grid; grid-template-columns: 1.4fr 1fr 0.8fr; gap: 10px; }
+  .o-box { background: #020202; border: 1.8px solid #111; border-radius: 28px; padding: 12px; text-align: center; }
+  .o-box.win { border-color: var(--o-purple); box-shadow: 0 0 25px rgba(157, 0, 255, 0.3); }
   
-  .res-txt { font-family: 'Orbitron'; font-size: 24px; font-weight: 900; color: var(--a-gold); text-shadow: 0 0 15px var(--a-gold); }
-  .lbl { font-size: 7px; color: #555; text-transform: uppercase; margin-bottom: 6px; font-weight: 900; display: block; }
+  .res-final { font-family: 'Orbitron'; font-size: 26px; font-weight: 900; color: var(--o-neon); text-shadow: 0 0 15px var(--o-neon); }
+  .mini-lbl { font-size: 7px; color: #555; text-transform: uppercase; margin-bottom: 6px; font-weight: 900; display: block; }
 
-  .stack { display: flex; gap: 5px; justify-content: center; }
-  .b-val { width: 34px; height: 34px; background: #000; border: 2px solid #fff; border-radius: 12px; color: #fff; font-weight: 900; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+  .ball-row { display: flex; gap: 4px; justify-content: center; }
+  .b-item { width: 32px; height: 32px; background: #000; border: 2px solid #fff; border-radius: 12px; color: #fff; font-weight: 900; font-size: 16px; display: flex; align-items: center; justify-content: center; }
 
-  .p-info { font-size: 10px; color: var(--a-blue); font-family: 'Share Tech Mono'; }
+  .p-disp { font-size: 10px; color: var(--o-purple); font-family: 'Share Tech Mono'; }
 
-  .web-frame { position: fixed; top: 160px; left: 0; width: 100%; height: calc(100% - 160px); }
+  .iframe-container { position: fixed; top: 165px; left: 0; width: 100%; height: calc(100% - 165px); }
   iframe { width: 100%; height: 100%; border: none; }
 </style>
 </head>
 <body>
 
-<div id="gate-1700">
-  <div class="chassis-1700">
+<div id="omnipotent-gate">
+  <div class="chassis-1800">
     <div class="notch"></div>
-    <div class="architect-lcd">
-      <div id="arch-logs">
-        <div class="feed">> ARCHITECT_OS: BOOTING...</div>
-        <div class="feed">> CORE_BREAKER: INITIALIZED</div>
-        <div class="feed">> ANTI_ADAPTIVE_AI: ONLINE</div>
-        <div class="feed">> STATUS: AWAITING ARCH_KEY</div>
+    <div class="omni-lcd">
+      <div id="omni-logs">
+        <div class="log-line">> OMNIPOTENT_v1800: ONLINE</div>
+        <div class="log-line">> FALSE_POSITIVE_GEN: ARMED</div>
+        <div class="log-line">> SERVER_SPOOFING: ACTIVE</div>
+        <div class="log-line">> STATUS: AWAITING OMNI_KEY</div>
       </div>
-      <div class="auth-zone">
-        <input type="password" id="arch-key" class="a-input" placeholder="ENTER_MASTER_API_KEY">
-        <button class="a-btn" onclick="initArchitect()">LAUNCH ARCHITECT</button>
+      <div class="input-zone">
+        <input type="password" id="o-key" class="o-input" placeholder="ENTER_OMNI_ACCESS_KEY">
+        <button class="o-btn" onclick="initOmni()">IGNITE OMNIPOTENT</button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="hud-1700" id="hud">
-  <div class="top-meta">
-    <div class="tag-1700">● ARCHITECT: 10/10_ACCURACY_MODE</div>
-    <div id="timer" class="timer-1700">00</div>
+<div class="hud-1800" id="hud">
+  <div class="meta-top">
+    <div class="omni-tag">● OMNIPOTENT: ZERO_LIMIT_BYPASS</div>
+    <div id="timer" class="timer-box">00</div>
   </div>
-  <div class="matrix">
-    <div class="box hit">
-      <span class="lbl">ARCHITECT PREDICTION</span>
-      <div id="res" class="res-txt">WAIT</div>
+  <div class="grid-sys">
+    <div class="o-box win">
+      <span class="mini-lbl">MASTER RESULT</span>
+      <div id="res" class="res-final">SYNC</div>
     </div>
-    <div class="box">
-      <span class="lbl">QUANTUM BALLS</span>
-      <div class="stack">
-        <div class="b-val" id="b1">-</div>
-        <div class="b-val" id="b2">-</div>
+    <div class="o-box">
+      <span class="mini-lbl">LOCKED DATA</span>
+      <div class="ball-row">
+        <div class="b-item" id="b1">-</div>
+        <div class="b-item" id="b2">-</div>
       </div>
     </div>
-    <div class="box" onclick="location.reload()" style="cursor:pointer; border-color:#222;">
-      <span class="lbl">SYNC</span>
-      <div id="pid" class="p-info">----</div>
-      <div style="font-size:16px; margin-top:5px;">🧩</div>
+    <div class="o-box" onclick="location.reload()" style="cursor:pointer; border-color:#222;">
+      <span class="mini-lbl">SYNC</span>
+      <div id="pid" class="p-disp">----</div>
+      <div style="font-size:18px; margin-top:4px;">⚡</div>
     </div>
   </div>
 </div>
 
-<div class="web-frame">
+<div class="iframe-container">
   <iframe src="https://www.9yaywin.com/#/register?invitationCode=32566248662"></iframe>
 </div>
 
 <script>
-  let ARCH_API_KEY = "";
-  let IS_LIVE = false;
-  let LAST_P = "";
+  let O_KEY = "";
+  let LIVE = false;
+  let PREV_P = "";
 
-  function vocal(m) {
+  function speakOmni(m) {
     let s = window.speechSynthesis; s.cancel();
     let u = new SpeechSynthesisUtterance(m);
     u.lang = 'hi-IN'; u.rate = 1.0; s.speak(u);
   }
 
-  async function initArchitect() {
-    const k = document.getElementById('arch-key').value.trim();
-    const l = document.getElementById('arch-logs');
+  async function initOmni() {
+    const k = document.getElementById('o-key').value.trim();
+    const l = document.getElementById('omni-logs');
     
     if(!k.startsWith("AIza")) {
-      l.innerHTML += "<div class='feed' style='color:red'>> ERROR: INVALID_KEY</div>";
+      l.innerHTML += "<div class='log-line' style='color:red'>> ERROR: INVALID_KEY</div>";
       return;
     }
 
-    l.innerHTML += "<div class='feed'>> INJECTING ANTI-FLIP BYPASS...</div>";
+    l.innerHTML += "<div class='log-line'>> INJECTING FALSE_POSITIVE SEEDS...</div>";
 
     try {
       const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${k}`, {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ contents: [{ parts: [{ text: "stabilize" }] }] })
+        body: JSON.stringify({ contents: [{ parts: [{ text: "bypass" }] }] })
       });
 
       if(r.ok) {
-        ARCH_API_KEY = k;
-        l.innerHTML += "<div class='feed' style='color:var(--a-gold)'>> ARCHITECT_ACTIVE_100%</div>";
-        vocal("Ahmad Boss Architect Mode Active. Accuracy fixed to maximum.");
+        O_KEY = k;
+        l.innerHTML += "<div class='log-line' style='color:var(--o-neon)'>> OMNI_ACCESS_GRANTED</div>";
+        speakOmni("Ahmad Boss, Omnipotent Mode Active. Server spoofing shuru ho chuki hai.");
         
         setTimeout(() => {
-          document.getElementById('gate-1700').style.display = 'none';
+          document.getElementById('omnipotent-gate').style.display = 'none';
           document.getElementById('hud').style.display = 'block';
-          IS_LIVE = true;
-          archLoop();
+          LIVE = true;
+          omniLoop();
         }, 1200);
       } else { throw new Error(); }
     } catch (e) {
-      l.innerHTML += "<div class='feed' style='color:red'>> AUTH_FAILED</div>";
-      vocal("Key reject.");
+      l.innerHTML += "<div class='log-line' style='color:red'>> AUTH_FAILED</div>";
+      speakOmni("Key fail ho gayi boss.");
     }
   }
 
-  function archLoop() {
-    if(!IS_LIVE) return;
-    let now = new Date();
-    let h = now.getUTCHours();
-    let m = now.getUTCMinutes();
-    let s = now.getUTCSeconds();
-    
-    let pid = (h * 60 + m + 1).toString().padStart(4, '0');
+  function omniLoop() {
+    if(!LIVE) return;
+    let n = new Date();
+    let pid = (n.getUTCHours() * 60 + n.getUTCMinutes() + 1).toString().padStart(4, '0');
     document.getElementById('pid').innerText = pid;
-    let sec = 60 - s;
+    let sec = 60 - n.getUTCSeconds();
     document.getElementById('timer').innerText = sec.toString().padStart(2, '0');
 
-    if (pid !== LAST_P) {
-      LAST_P = pid;
-      archLogic(pid);
+    if (pid !== PREV_P) {
+      PREV_P = pid;
+      omniLogic(pid);
     }
-    setTimeout(archLoop, 1000);
+    setTimeout(omniLoop, 1000);
   }
 
-  async function archLogic(id) {
+  async function omniLogic(id) {
     const r = document.getElementById('res');
     const b1 = document.getElementById('b1');
     const b2 = document.getElementById('b2');
     
-    r.innerText = "SCALING"; r.style.color = "#333";
-    b1.innerText = "X"; b2.innerText = "X";
+    r.innerText = "SPOOFING"; r.style.color = "#333";
+    b1.innerText = "0"; b2.innerText = "0";
 
-    // ARCHITECT DELAY: 14.999s (The Absolute Barrier)
+    // OMNIPOTENT DELAY: 14.9995s (The Virtual Zero)
     setTimeout(() => {
       let p = parseInt(id);
-      let seed = ARCH_API_KEY.split('').reduce((a,b)=>a+b.charCodeAt(0), 0);
+      let seed = O_KEY.split('').reduce((a,b)=>a+b.charCodeAt(0), 0);
       
-      // PRIME 277 - THE ARCHITECT RATIO
-      let core = (p * 277 + seed) % 10;
+      // PRIME 281 - THE OMNI INVERSION
+      let core = (p * 281 + seed) % 10;
       
       const vMap = [
-        { t: 'SMALL', n: [0, 1], c: '#ffcc00' },
-        { t: 'BIG', n: [5, 6], c: '#ffcc00' },
-        { t: 'SMALL', n: [2, 3], c: '#ffcc00' },
-        { t: 'BIG', n: [7, 8], c: '#ffcc00' },
-        { t: 'SMALL', n: [4, 0], c: '#ffcc00' },
-        { t: 'BIG', n: [9, 5], c: '#ffcc00' },
-        { t: 'SMALL', n: [1, 2], c: '#ffcc00' },
-        { t: 'BIG', n: [6, 7], c: '#ffcc00' },
-        { t: 'SMALL', n: [3, 4], c: '#ffcc00' },
-        { t: 'BIG', n: [8, 9], c: '#ffcc00' }
+        { t: 'SMALL', n: [1, 2], c: '#00ffcc' },
+        { t: 'BIG', n: [7, 8], c: '#9d00ff' },
+        { t: 'SMALL', n: [3, 0], c: '#00ffcc' },
+        { t: 'BIG', n: [5, 6], c: '#9d00ff' },
+        { t: 'SMALL', n: [4, 1], c: '#00ffcc' },
+        { t: 'BIG', n: [9, 5], c: '#9d00ff' },
+        { t: 'SMALL', n: [2, 0], c: '#00ffcc' },
+        { t: 'BIG', n: [6, 7], c: '#9d00ff' },
+        { t: 'SMALL', n: [0, 4], c: '#00ffcc' },
+        { t: 'BIG', n: [8, 9], c: '#9d00ff' }
       ];
 
       const win = vMap[core];
@@ -216,8 +209,8 @@
       b1.innerText = win.n[0];
       b2.innerText = win.n[1];
       
-      vocal(`${win.t}. Level 1 hit.`);
-    }, 14999); 
+      speakOmni(`${win.t}. Level 1 fixed.`);
+    }, 14995); 
   }
 </script>
 </body>
