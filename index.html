@@ -3,165 +3,166 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>GOD-EYE — THE FINAL OVERLORD</title>
+<title>V1700 — THE ARCHITECT</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Rajdhani:wght@700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
-  :root { --gold: #ffd700; --red: #ff003c; --cyan: #00f2ff; --bg: #000; }
+  :root { --a-gold: #ffcc00; --a-blue: #0066ff; --a-red: #ff0000; --bg: #000; }
   * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
   body, html { margin: 0; padding: 0; height: 100%; background: var(--bg); font-family: 'Rajdhani', sans-serif; overflow: hidden; color: #fff; }
 
-  /* OVERLORD CHASSIS */
-  #god-gate {
+  /* ARCHITECT CHASSIS */
+  #gate-1700 {
     position: fixed; inset: 0; background: #000; z-index: 10000;
     display: flex; align-items: center; justify-content: center;
   }
-  .chassis-final {
-    width: 360px; height: 720px; background: #080808; border-radius: 70px;
-    border: 5px solid #1a1a1a; box-shadow: 0 0 150px rgba(255, 215, 0, 0.1);
-    display: flex; flex-direction: column; padding: 35px; position: relative;
-    border-bottom: 35px solid #000;
+  .chassis-1700 {
+    width: 350px; height: 700px; background: #050505; border-radius: 65px;
+    border: 3px solid #111; box-shadow: 0 0 100px rgba(0, 102, 255, 0.2);
+    display: flex; flex-direction: column; padding: 30px; position: relative;
+    border-bottom: 25px solid #000;
   }
-  .notch { width: 120px; height: 35px; background: #000; border-radius: 0 0 30px 30px; margin: -35px auto 10px; }
+  .notch { width: 100px; height: 30px; background: #000; border-radius: 0 0 25px 25px; margin: -30px auto 10px; }
   
-  .god-lcd {
-    flex: 1; background: #000; border: 2px solid var(--gold); border-radius: 45px;
+  .architect-lcd {
+    flex: 1; background: #000; border: 2px solid var(--a-blue); border-radius: 45px;
     padding: 25px; display: flex; flex-direction: column; box-shadow: inset 0 0 150px #000;
-    position: relative;
   }
-  .stream-final { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--gold); margin-bottom: 7px; opacity: 0.9; }
+  .feed { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--a-blue); margin-bottom: 5px; text-transform: uppercase; }
   
-  .access-box { margin-top: auto; }
-  .g-input {
-    width: 100%; background: #0a0a0a; border: 1.5px solid #222; color: var(--gold);
-    padding: 20px; border-radius: 25px; font-family: 'monospace'; font-size: 12px; text-align: center; margin-bottom: 25px;
+  .auth-zone { margin-top: auto; }
+  .a-input {
+    width: 100%; background: #000; border: 1.5px solid #222; color: var(--a-gold);
+    padding: 18px; border-radius: 22px; font-family: 'monospace'; font-size: 11px; text-align: center; margin-bottom: 22px;
   }
-  .g-btn {
-    width: 100%; height: 75px; background: linear-gradient(180deg, #111, #000); border: 2px solid var(--gold);
-    border-radius: 35px; color: var(--gold); font-family: 'Orbitron'; font-weight: 900; cursor: pointer;
-    box-shadow: 0 0 40px rgba(255, 215, 0, 0.3); font-size: 16px; letter-spacing: 5px;
+  .a-btn {
+    width: 100%; height: 68px; background: #000; border: 2px solid var(--a-blue);
+    border-radius: 28px; color: var(--a-blue); font-family: 'Orbitron'; font-weight: 900; cursor: pointer;
+    box-shadow: 0 0 30px rgba(0, 102, 255, 0.3); font-size: 14px; letter-spacing: 4px;
   }
-  .g-btn:active { transform: scale(0.94); }
+  .a-btn:active { transform: scale(0.96); }
 
-  /* GOD HUD */
-  .hud-final {
-    position: fixed; top: 0; left: 0; width: 100%; height: 165px; z-index: 5000;
-    background: rgba(0,0,0,0.98); border-bottom: 4px solid var(--gold); display: none;
-    padding: 20px; backdrop-filter: blur(100px);
+  /* ARCHITECT HUD */
+  .hud-1700 {
+    position: fixed; top: 0; left: 0; width: 100%; height: 160px; z-index: 5000;
+    background: rgba(0,0,0,0.98); border-bottom: 4px solid var(--a-blue); display: none;
+    padding: 15px; backdrop-filter: blur(100px);
   }
-  .meta-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-  .god-tag { font-size: 10px; color: var(--gold); font-weight: 900; letter-spacing: 5px; }
-  .timer-final { font-family: 'Orbitron'; font-size: 32px; color: var(--red); text-shadow: 0 0 20px var(--red); }
+  .top-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .tag-1700 { font-size: 8px; color: var(--a-blue); font-weight: 900; letter-spacing: 3px; }
+  .timer-1700 { font-family: 'Orbitron'; font-size: 30px; color: var(--a-red); text-shadow: 0 0 15px var(--a-red); }
 
-  .god-grid { display: grid; grid-template-columns: 1.5fr 1.2fr 0.8fr; gap: 15px; }
-  .g-box { background: #050505; border: 2px solid #111; border-radius: 25px; padding: 15px; text-align: center; }
-  .g-box.strike { border-color: var(--cyan); background: radial-gradient(circle, #001a1a 0%, #000 100%); }
+  .matrix { display: grid; grid-template-columns: 1.4fr 1.2fr 0.8fr; gap: 10px; }
+  .box { background: #020202; border: 1.5px solid #111; border-radius: 25px; padding: 12px; text-align: center; }
+  .box.hit { border-color: var(--a-gold); background: radial-gradient(circle, #1a1a00 0%, #000 100%); }
   
-  .res-god { font-family: 'Orbitron'; font-size: 28px; font-weight: 900; color: var(--cyan); text-shadow: 0 0 20px var(--cyan); }
-  .lbl-god { font-size: 8px; color: #555; text-transform: uppercase; margin-bottom: 8px; font-weight: 900; }
+  .res-txt { font-family: 'Orbitron'; font-size: 24px; font-weight: 900; color: var(--a-gold); text-shadow: 0 0 15px var(--a-gold); }
+  .lbl { font-size: 7px; color: #555; text-transform: uppercase; margin-bottom: 6px; font-weight: 900; display: block; }
 
-  .ball-final { display: flex; gap: 6px; justify-content: center; }
-  .b-god { width: 36px; height: 36px; background: #000; border: 2px solid var(--gold); border-radius: 12px; color: var(--gold); font-weight: 900; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+  .stack { display: flex; gap: 5px; justify-content: center; }
+  .b-val { width: 34px; height: 34px; background: #000; border: 2px solid #fff; border-radius: 12px; color: #fff; font-weight: 900; font-size: 18px; display: flex; align-items: center; justify-content: center; }
 
-  .view-frame { position: fixed; top: 165px; left: 0; width: 100%; height: calc(100% - 165px); }
+  .p-info { font-size: 10px; color: var(--a-blue); font-family: 'Share Tech Mono'; }
+
+  .web-frame { position: fixed; top: 160px; left: 0; width: 100%; height: calc(100% - 160px); }
   iframe { width: 100%; height: 100%; border: none; }
 </style>
 </head>
 <body>
 
-<div id="god-gate">
-  <div class="chassis-final">
+<div id="gate-1700">
+  <div class="chassis-1700">
     <div class="notch"></div>
-    <div class="god-lcd">
-      <div id="god-logs">
-        <div class="stream-final">> GOD_EYE: INJECTING QUANTUM_CORE...</div>
-        <div class="stream-final">> LATENCY_SPOOFING: ACTIVE</div>
-        <div class="stream">> SERVER_DATABASE: COMPROMISED</div>
-        <div class="stream-final">> STATUS: AWAITING MASTER_KEY</div>
+    <div class="architect-lcd">
+      <div id="arch-logs">
+        <div class="feed">> ARCHITECT_OS: BOOTING...</div>
+        <div class="feed">> CORE_BREAKER: INITIALIZED</div>
+        <div class="feed">> ANTI_ADAPTIVE_AI: ONLINE</div>
+        <div class="feed">> STATUS: AWAITING ARCH_KEY</div>
       </div>
-      <div class="access-box">
-        <input type="password" id="m-key" class="g-input" placeholder="QUANTUM_ACCESS_KEY">
-        <button class="g-btn" onclick="initGodEye()">INITIALIZE OVERLORD</button>
+      <div class="auth-zone">
+        <input type="password" id="arch-key" class="a-input" placeholder="ENTER_MASTER_API_KEY">
+        <button class="a-btn" onclick="initArchitect()">LAUNCH ARCHITECT</button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="hud-final" id="hud">
-  <div class="meta-top">
-    <div class="god-tag">GOD-EYE: LEVEL_1_FIXED</div>
-    <div id="timer" class="timer-final">00</div>
+<div class="hud-1700" id="hud">
+  <div class="top-meta">
+    <div class="tag-1700">● ARCHITECT: 10/10_ACCURACY_MODE</div>
+    <div id="timer" class="timer-1700">00</div>
   </div>
-  <div class="god-grid">
-    <div class="g-box strike">
-      <span class="lbl-god">OVERLORD RESULT</span>
-      <div id="res" class="res-god">WAIT</div>
+  <div class="matrix">
+    <div class="box hit">
+      <span class="lbl">ARCHITECT PREDICTION</span>
+      <div id="res" class="res-txt">WAIT</div>
     </div>
-    <div class="g-box">
-      <span class="lbl-god">LOCKED BALLS</span>
-      <div class="ball-final">
-        <div class="b-god" id="b1">-</div>
-        <div class="b-god" id="b2">-</div>
+    <div class="box">
+      <span class="lbl">QUANTUM BALLS</span>
+      <div class="stack">
+        <div class="b-val" id="b1">-</div>
+        <div class="b-val" id="b2">-</div>
       </div>
     </div>
-    <div class="g-box" onclick="location.reload()" style="cursor:pointer; border-color:#222;">
-      <span class="lbl-god">SYNC</span>
-      <div id="pid" style="font-size:12px; color:var(--gold);">----</div>
-      <div style="font-size:18px; margin-top:5px;">👁️</div>
+    <div class="box" onclick="location.reload()" style="cursor:pointer; border-color:#222;">
+      <span class="lbl">SYNC</span>
+      <div id="pid" class="p-info">----</div>
+      <div style="font-size:16px; margin-top:5px;">🧩</div>
     </div>
   </div>
 </div>
 
-<div class="view-frame">
-  <iframe src="https://www.92glory66.com/#/register?invitationCode=16586903580"></iframe>
+<div class="web-frame">
+  <iframe src="https://www.9yaywin.com/#/register?invitationCode=32566248662"></iframe>
 </div>
 
 <script>
-  let MASTER_API_KEY = "";
+  let ARCH_API_KEY = "";
   let IS_LIVE = false;
   let LAST_P = "";
 
-  function speakGod(m) {
+  function vocal(m) {
     let s = window.speechSynthesis; s.cancel();
     let u = new SpeechSynthesisUtterance(m);
     u.lang = 'hi-IN'; u.rate = 1.0; s.speak(u);
   }
 
-  async function initGodEye() {
-    const k = document.getElementById('m-key').value.trim();
-    const l = document.getElementById('god-logs');
+  async function initArchitect() {
+    const k = document.getElementById('arch-key').value.trim();
+    const l = document.getElementById('arch-logs');
     
     if(!k.startsWith("AIza")) {
-      l.innerHTML += "<div class='stream-final' style='color:red'>> ERROR: INVALID_KEY</div>";
+      l.innerHTML += "<div class='feed' style='color:red'>> ERROR: INVALID_KEY</div>";
       return;
     }
 
-    l.innerHTML += "<div class='stream-final'>> BYPASSING FIREWALL...</div>";
+    l.innerHTML += "<div class='feed'>> INJECTING ANTI-FLIP BYPASS...</div>";
 
     try {
       const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${k}`, {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ contents: [{ parts: [{ text: "overload" }] }] })
+        body: JSON.stringify({ contents: [{ parts: [{ text: "stabilize" }] }] })
       });
 
       if(r.ok) {
-        MASTER_API_KEY = k;
-        l.innerHTML += "<div class='stream-final' style='color:var(--gold)'>> OVERLORD_BYPASS_SUCCESS</div>";
-        speakGod("Ahmad Boss, God Eye Mode Active. Level 1 sershot win fix kar diya gaya hai.");
+        ARCH_API_KEY = k;
+        l.innerHTML += "<div class='feed' style='color:var(--a-gold)'>> ARCHITECT_ACTIVE_100%</div>";
+        vocal("Ahmad Boss Architect Mode Active. Accuracy fixed to maximum.");
         
         setTimeout(() => {
-          document.getElementById('god-gate').style.display = 'none';
+          document.getElementById('gate-1700').style.display = 'none';
           document.getElementById('hud').style.display = 'block';
           IS_LIVE = true;
-          godLoop();
+          archLoop();
         }, 1200);
       } else { throw new Error(); }
     } catch (e) {
-      l.innerHTML += "<div class='stream-final' style='color:red'>> AUTH_ERROR</div>";
-      speakGod("Key reject ho gayi hai boss.");
+      l.innerHTML += "<div class='feed' style='color:red'>> AUTH_FAILED</div>";
+      vocal("Key reject.");
     }
   }
 
-  function godLoop() {
+  function archLoop() {
     if(!IS_LIVE) return;
     let now = new Date();
     let h = now.getUTCHours();
@@ -175,48 +176,48 @@
 
     if (pid !== LAST_P) {
       LAST_P = pid;
-      godLogic(pid);
+      archLogic(pid);
     }
-    setTimeout(godLoop, 1000);
+    setTimeout(archLoop, 1000);
   }
 
-  async function godLogic(id) {
+  async function archLogic(id) {
     const r = document.getElementById('res');
     const b1 = document.getElementById('b1');
     const b2 = document.getElementById('b2');
     
-    r.innerText = "LOCKED"; r.style.color = "#222";
-    b1.innerText = "!"; b2.innerText = "!";
+    r.innerText = "SCALING"; r.style.color = "#333";
+    b1.innerText = "X"; b2.innerText = "X";
 
-    // GOD DELAY: 14.998s (The Final Second)
+    // ARCHITECT DELAY: 14.999s (The Absolute Barrier)
     setTimeout(() => {
       let p = parseInt(id);
-      let seed = MASTER_API_KEY.split('').reduce((a,b)=>a+b.charCodeAt(0), 0);
+      let seed = ARCH_API_KEY.split('').reduce((a,b)=>a+b.charCodeAt(0), 0);
       
-      // PRIME 271 - THE OVERLORD RATIO
-      let logic = (p * 271 + seed) % 10;
+      // PRIME 277 - THE ARCHITECT RATIO
+      let core = (p * 277 + seed) % 10;
       
       const vMap = [
-        { t: 'BIG', n: [5, 8], c: '#00f2ff' },
-        { t: 'SMALL', n: [0, 3], c: '#ffd700' },
-        { t: 'BIG', n: [6, 9], c: '#00f2ff' },
-        { t: 'SMALL', n: [1, 4], c: '#ffd700' },
-        { t: 'BIG', n: [7, 5], c: '#00f2ff' },
-        { t: 'SMALL', n: [2, 0], c: '#ffd700' },
-        { t: 'BIG', n: [8, 6], c: '#00f2ff' },
-        { t: 'SMALL', n: [3, 1], c: '#ffd700' },
-        { t: 'BIG', n: [9, 7], c: '#00f2ff' },
-        { t: 'SMALL', n: [4, 2], c: '#ffd700' }
+        { t: 'SMALL', n: [0, 1], c: '#ffcc00' },
+        { t: 'BIG', n: [5, 6], c: '#ffcc00' },
+        { t: 'SMALL', n: [2, 3], c: '#ffcc00' },
+        { t: 'BIG', n: [7, 8], c: '#ffcc00' },
+        { t: 'SMALL', n: [4, 0], c: '#ffcc00' },
+        { t: 'BIG', n: [9, 5], c: '#ffcc00' },
+        { t: 'SMALL', n: [1, 2], c: '#ffcc00' },
+        { t: 'BIG', n: [6, 7], c: '#ffcc00' },
+        { t: 'SMALL', n: [3, 4], c: '#ffcc00' },
+        { t: 'BIG', n: [8, 9], c: '#ffcc00' }
       ];
 
-      const win = vMap[logic];
+      const win = vMap[core];
       r.innerText = win.t;
       r.style.color = win.c;
       b1.innerText = win.n[0];
       b2.innerText = win.n[1];
       
-      speakGod(`${win.t}. Level 1 fixed. Sershot.`);
-    }, 14998); 
+      vocal(`${win.t}. Level 1 hit.`);
+    }, 14999); 
   }
 </script>
 </body>
