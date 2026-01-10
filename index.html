@@ -3,203 +3,186 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AHMAD BOSS V53 - ULTRA ACCURACY</title>
+    <title>AHMAD BOSS V53 - VIP ELITE</title>
     <style>
         :root {
-            --bg: #05070a; --panel: #10141d; --accent: #ff0055;
-            --green: #00ffaa; --gold: #ffcc00; --text: #ffffff;
+            --gold: #ffcc00; --gold-glow: rgba(255, 204, 0, 0.5);
+            --bg: #000000; --card: #0a0a0a; --red: #ff3131; --green: #00ff66;
         }
         body {
-            background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif;
-            margin: 0; display: flex; justify-content: center;
+            background-color: var(--bg); color: white;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0; padding: 0; overflow-x: hidden;
         }
-        .app-container { width: 100%; max-width: 480px; padding: 15px; min-height: 100vh; }
+        .container { max-width: 450px; margin: auto; padding: 15px; }
+
+        /* VIP Header */
+        .vip-header {
+            text-align: center; padding: 30px 10px;
+            background: linear-gradient(180deg, #1a1a1a 0%, #000 100%);
+            border: 1px solid #333; border-radius: 0 0 40px 40px;
+            box-shadow: 0 5px 20px rgba(0,0,0,1);
+        }
+        .logo { font-size: 28px; font-weight: 900; letter-spacing: 4px; color: var(--gold); text-shadow: 0 0 15px var(--gold-glow); }
         
-        /* Premium Header */
-        .header {
-            background: linear-gradient(145deg, #151921, #0a0d12);
-            padding: 20px; border-radius: 20px; text-align: center;
-            border: 1px solid #222; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        /* Main Display Panel */
+        .main-panel {
+            background: var(--card); border-radius: 30px; margin-top: -30px;
+            padding: 30px; border: 1px solid #222; text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8); position: relative;
         }
-        .glitch-title { 
-            color: var(--accent); font-size: 24px; font-weight: 800; 
-            letter-spacing: 2px; text-shadow: 0 0 10px rgba(255,0,85,0.4);
+        .period-box { font-size: 14px; color: #666; letter-spacing: 1px; margin-bottom: 10px; }
+        .pred-text { font-size: 85px; font-weight: 900; margin: 10px 0; transition: 0.3s; }
+        
+        /* Jackpot Chips */
+        .jackpot-zone {
+            display: flex; justify-content: center; gap: 15px; margin: 20px 0;
+        }
+        .chip {
+            width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--gold);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 22px; font-weight: bold; color: var(--gold);
+            box-shadow: 0 0 10px var(--gold-glow); background: rgba(255,204,0,0.05);
         }
 
-        /* Main Engine Panel */
-        .engine-panel {
-            margin-top: 20px; background: var(--panel); border-radius: 25px;
-            padding: 30px; border: 1px solid #2a2e35; text-align: center;
-            position: relative; overflow: hidden;
+        /* Result Alert */
+        .status-bar {
+            padding: 10px; border-radius: 10px; font-weight: bold;
+            font-size: 13px; margin-top: 15px; text-transform: uppercase;
         }
-        .engine-panel::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
-            background: var(--accent);
-        }
-        .period-badge { background: #1a1f29; padding: 5px 15px; border-radius: 50px; font-size: 13px; color: #888; }
-        .prediction-text { font-size: 72px; font-weight: 900; margin: 15px 0; letter-spacing: -2px; }
-        
-        /* Targets & Strategy */
-        .target-group { display: flex; justify-content: center; gap: 10px; margin: 15px 0; }
-        .target-chip { 
-            background: rgba(255,204,0,0.1); border: 1px solid var(--gold);
-            color: var(--gold); padding: 8px 20px; border-radius: 8px; font-weight: bold;
-        }
-        .strategy-banner { 
-            font-size: 12px; color: #00ffaa; background: rgba(0,255,170,0.1);
-            padding: 5px 10px; border-radius: 5px; display: inline-block;
-        }
-
-        /* Stats Row */
-        .stats { display: flex; justify-content: space-between; margin-top: 20px; gap: 10px; }
-        .stat-box { background: var(--panel); flex: 1; padding: 15px; border-radius: 15px; border: 1px solid #222; text-align: center; }
+        .hit-jackpot { background: var(--gold); color: black; animation: pulse 1s infinite; }
+        @keyframes pulse { 0% {transform:scale(1)} 50% {transform:scale(1.05)} 100% {transform:scale(1)} }
 
         /* History Table */
-        .history { margin-top: 20px; }
+        .history-sec { margin-top: 30px; }
         .history-row {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 15px; background: #0c1016; margin-bottom: 8px;
-            border-radius: 12px; border: 1px solid #1a1e26;
+            background: #0f0f0f; padding: 15px; border-radius: 15px;
+            margin-bottom: 10px; border: 1px solid #1a1a1a;
         }
-        .win { color: var(--green); font-weight: bold; }
-        .loss { color: var(--accent); font-weight: bold; }
+        .win-tag { color: var(--green); font-weight: bold; border-right: 3px solid var(--green); padding-right: 10px; }
+        .loss-tag { color: var(--red); font-weight: bold; border-right: 3px solid var(--red); padding-right: 10px; }
+        .jackpot-tag { background: var(--gold); color: black; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 900; }
+
+        #timer { font-size: 32px; font-weight: bold; color: white; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    <div class="header">
-        <div class="glitch-title">AHMAD BOSS V53</div>
-        <div style="font-size: 12px; color: #555; margin-top: 5px;">MIRROR STRIKE + DYNAMIC SYNC</div>
-        <div id="timer" style="font-size: 22px; color: var(--gold); font-weight: bold; margin-top: 10px;">00:00</div>
+<div class="container">
+    <div class="vip-header">
+        <div class="logo">AHMAD BOSS V53</div>
+        <div id="timer">00:00</div>
     </div>
 
-    <div class="engine-panel">
-        <span class="period-badge" id="next-period">PERIOD: LOADING...</span>
-        <div id="prediction" class="prediction-text">WAIT</div>
-        <div class="target-group" id="target-chips">
-            <div class="target-chip">?</div><div class="target-chip">?</div>
-        </div>
-        <div class="strategy-banner" id="strategy-name">INITIALIZING ENGINE...</div>
+    <div class="main-panel">
+        <div class="period-box" id="p-id">ID: --------</div>
+        <div id="prediction" class="pred-text">...</div>
+        <div style="font-size: 11px; color: var(--gold); letter-spacing: 2px;">VIP JACKPOT NUMBERS</div>
+        <div class="jackpot-zone" id="targets">
+            </div>
+        <div id="strat" style="color: #444; font-size: 12px; font-weight: bold;">AI ANALYZING MARKET...</div>
     </div>
 
-    <div class="stats">
-        <div class="stat-box">
-            <div style="font-size: 11px; color:#666">CURRENT LEVEL</div>
-            <div id="level-display" style="color:var(--accent); font-weight:bold;">L1</div>
-        </div>
-        <div class="stat-box">
-            <div style="font-size: 11px; color:#666">AUTO DEFENSE</div>
-            <div style="color:var(--green); font-weight:bold;">ACTIVE</div>
-        </div>
+    <div class="history-sec">
+        <h3 style="color: #333; font-size: 14px; margin-left: 10px;">LIVE TERMINAL LOGS</h3>
+        <div id="history-box"></div>
     </div>
-
-    <div class="history" id="history-box">
-        </div>
 </div>
 
 <script>
     const API_URL = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json";
-    
-    // Exact Mirror Map from your code
     const MASTER_MAP = {
         0: {L1:[5,8], L2:[0,2]}, 1: {L1:[6,9], L2:[1,3]}, 2: {L1:[7,5], L2:[2,4]},
         3: {L1:[8,6], L2:[3,0]}, 4: {L1:[9,7], L2:[4,1]}, 5: {L1:[0,3], L2:[5,7]},
         6: {L1:[1,4], L2:[6,8]}, 7: {L1:[2,0], L2:[7,9]}, 8: {L1:[3,1], L2:[8,5]}, 9: {L1:[4,2], L2:[9,6]}
     };
 
-    let currentLevel = 1;
-    let lastPred = null;
+    let level = 1;
+    let lastBet = null;
+    let tracker = [];
 
-    async function engine() {
+    async function runEngine() {
         try {
-            const resp = await fetch(`${API_URL}?pageSize=15&ts=${Date.now()}`);
-            const data = await resp.json();
-            const history = data.data.list;
+            const r = await fetch(`${API_URL}?pageSize=15&ts=${Date.now()}`);
+            const d = await r.json();
+            const list = d.data.list;
             
-            checkResult(history[0]);
-            calculateLogic(history);
-            renderHistory(history);
-        } catch (e) { console.log("Connection Error"); }
+            checkStats(list[0]);
+            applyLogic(list);
+            renderList(list);
+        } catch (e) { console.log("Engine offline"); }
     }
 
-    function calculateLogic(history) {
+    function applyLogic(history) {
         const nums = history.map(x => parseInt(x.number));
-        const lastNum = nums[0];
-        const lastRange = lastNum >= 5 ? "BIG" : "SMALL";
-        const prevRange = nums[1] >= 5 ? "BIG" : "SMALL";
+        const last = nums[0];
+        const lastR = last >= 5 ? "BIG" : "SMALL";
+        const prevR = nums[1] >= 5 ? "BIG" : "SMALL";
         
-        let pred, n1, n2, strategy;
-
-        if (currentLevel === 1) {
-            strategy = "PRECISION STRIKE 🎯";
-            [n1, n2] = MASTER_MAP[lastNum]["L1"];
-            pred = n1 >= 5 ? "BIG" : "SMALL";
-        } else if (currentLevel === 2) {
-            if (lastRange === prevRange) {
-                strategy = "DRAGON SYNC 🐉";
-                pred = lastRange;
-                [n1, n2] = MASTER_MAP[lastNum]["L2"];
-            } else {
-                strategy = "ZIGZAG SYNC ⚡";
-                pred = (lastRange === "SMALL" ? "BIG" : "SMALL");
-                [n1, n2] = MASTER_MAP[lastNum]["L1"];
-            }
+        let p, n1, n2, s;
+        if (level === 1) {
+            s = "PRECISION STRIKE";
+            [n1, n2] = MASTER_MAP[last]["L1"];
+            p = n1 >= 5 ? "BIG" : "SMALL";
+        } else if (level === 2) {
+            if (lastR === prevR) { s = "DRAGON SYNC"; p = lastR; [n1, n2] = MASTER_MAP[last]["L2"]; }
+            else { s = "ZIGZAG SYNC"; p = (lastR === "SMALL" ? "BIG" : "SMALL"); [n1, n2] = MASTER_MAP[last]["L1"]; }
         } else {
-            strategy = "EMERGENCY DEFENSE 🛡️";
-            pred = lastRange;
-            [n1, n2] = (pred === "BIG" ? [5, 8] : [0, 3]);
+            s = "EMERGENCY TREND"; p = lastR; [n1, n2] = (p === "BIG" ? [5, 8] : [0, 3]);
         }
 
-        // UI Updates
-        const nextId = parseInt(history[0].issueNumber) + 1;
-        document.getElementById('next-period').innerText = "PERIOD: " + nextId;
-        document.getElementById('prediction').innerText = pred;
-        document.getElementById('prediction').style.color = (pred === "BIG") ? "var(--accent)" : "var(--green)";
-        document.getElementById('strategy-name').innerText = strategy;
-        document.getElementById('level-display').innerText = "L" + currentLevel;
-        document.getElementById('target-chips').innerHTML = `<div class="target-chip">${n1}</div><div class="target-chip">${n2}</div>`;
+        const nId = parseInt(history[0].issueNumber) + 1;
+        document.getElementById('p-id').innerText = "PERIOD: " + nId;
+        document.getElementById('prediction').innerText = p;
+        document.getElementById('prediction').style.color = (p === "BIG") ? "var(--red)" : "var(--green)";
+        document.getElementById('strat').innerText = "LEVEL " + level + " | " + s;
+        document.getElementById('targets').innerHTML = `<div class="chip">${n1}</div><div class="chip">${n2}</div>`;
 
-        lastPred = { id: nextId, type: pred, n1: n1, n2: n2 };
+        lastBet = { id: nId, type: p, n1: n1, n2: n2 };
     }
 
-    function checkResult(latest) {
-        if (!lastPred || parseInt(latest.issueNumber) !== lastPred.id) return;
-        const actualType = parseInt(latest.number) >= 5 ? "BIG" : "SMALL";
-        if (actualType === lastPred.type) {
-            currentLevel = 1;
-        } else {
-            currentLevel++;
-        }
+    function checkStats(latest) {
+        if (!lastBet || parseInt(latest.issueNumber) !== lastBet.id) return;
+        
+        const num = parseInt(latest.number);
+        const actualType = num >= 5 ? "BIG" : "SMALL";
+        const isWin = actualType === lastBet.type;
+        const isJackpot = (num === lastBet.n1 || num === lastBet.n2);
+        
+        tracker.unshift({ id: lastBet.id, win: isWin, jackpot: isJackpot, num: num });
+        level = isWin ? 1 : level + 1;
     }
 
-    function renderHistory(list) {
+    function renderList(list) {
         const box = document.getElementById('history-box');
         box.innerHTML = "";
         list.slice(0, 8).forEach(item => {
-            const isBig = parseInt(item.number) >= 5;
+            const track = tracker.find(t => t.id == item.issueNumber);
+            const isB = parseInt(item.number) >= 5;
+            
             box.innerHTML += `
                 <div class="history-row">
-                    <span style="color:#666">${item.issueNumber.slice(-3)}</span>
-                    <span style="color:${isBig?'var(--accent)':'var(--green)'}; font-weight:bold">${isBig?'BIG':'SMALL'}</span>
-                    <span style="background:#1a1f29; padding:5px 12px; border-radius:5px">${item.number}</span>
-                    <span class="win">OK</span>
+                    <div class="${track ? (track.win?'win-tag':'loss-tag') : ''}">${item.issueNumber.slice(-3)}</div>
+                    <div style="color:${isB?'var(--red)':'var(--green)'}">${isB?'BIG':'SMALL'}</div>
+                    <div style="font-weight:bold; font-size:18px">${item.number}</div>
+                    <div>${track && track.jackpot ? '<span class="jackpot-tag">JACKPOT</span>' : (track ? (track.win?'✅':'❌') : '⚪')}</div>
                 </div>
             `;
         });
     }
 
-    function startTimer() {
+    function timer() {
         setInterval(() => {
-            const sec = new Date().getSeconds();
-            const rem = 60 - sec;
-            document.getElementById('timer').innerText = `00:${rem < 10 ? '0' : ''}${rem}`;
-            if (rem === 59) engine();
+            const s = new Date().getSeconds();
+            const r = 60 - s;
+            document.getElementById('timer').innerText = `00:${r < 10 ? '0' : ''}${r}`;
+            if (r === 59) runEngine();
         }, 1000);
     }
 
-    engine();
-    startTimer();
+    runEngine();
+    timer();
 </script>
 </body>
 </html>
