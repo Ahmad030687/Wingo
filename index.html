@@ -3,186 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AHMAD BOSS V55 - INTERNAL ENGINE</title>
+    <title>AHMAD BOSS V53 - ULTRA ACCURACY</title>
     <style>
         :root {
-            --gold: #ffcf4d; --dark: #050505; --card: #121212;
-            --green: #00ff88; --red: #ff3e3e; --text: #e0e0e0;
+            --bg: #05070a; --panel: #10141d; --accent: #ff0055;
+            --green: #00ffaa; --gold: #ffcc00; --text: #ffffff;
         }
         body {
-            background-color: var(--dark); color: var(--text);
-            font-family: 'Consolas', monospace; margin: 0; padding: 10px;
+            background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif;
+            margin: 0; display: flex; justify-content: center;
         }
-        .container { max-width: 450px; margin: auto; }
+        .app-container { width: 100%; max-width: 480px; padding: 15px; min-height: 100vh; }
         
         /* Premium Header */
         .header {
-            background: linear-gradient(180deg, #1a1a1a 0%, #050505 100%);
-            padding: 20px; text-align: center; border: 1px solid #333;
-            border-radius: 15px; margin-bottom: 15px;
+            background: linear-gradient(145deg, #151921, #0a0d12);
+            padding: 20px; border-radius: 20px; text-align: center;
+            border: 1px solid #222; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .status-badge {
-            background: rgba(0, 255, 136, 0.1); color: var(--green);
-            padding: 5px 15px; border-radius: 20px; font-size: 12px; border: 1px solid var(--green);
+        .glitch-title { 
+            color: var(--accent); font-size: 24px; font-weight: 800; 
+            letter-spacing: 2px; text-shadow: 0 0 10px rgba(255,0,85,0.4);
+        }
+
+        /* Main Engine Panel */
+        .engine-panel {
+            margin-top: 20px; background: var(--panel); border-radius: 25px;
+            padding: 30px; border: 1px solid #2a2e35; text-align: center;
+            position: relative; overflow: hidden;
+        }
+        .engine-panel::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+            background: var(--accent);
+        }
+        .period-badge { background: #1a1f29; padding: 5px 15px; border-radius: 50px; font-size: 13px; color: #888; }
+        .prediction-text { font-size: 72px; font-weight: 900; margin: 15px 0; letter-spacing: -2px; }
+        
+        /* Targets & Strategy */
+        .target-group { display: flex; justify-content: center; gap: 10px; margin: 15px 0; }
+        .target-chip { 
+            background: rgba(255,204,0,0.1); border: 1px solid var(--gold);
+            color: var(--gold); padding: 8px 20px; border-radius: 8px; font-weight: bold;
+        }
+        .strategy-banner { 
+            font-size: 12px; color: #00ffaa; background: rgba(0,255,170,0.1);
+            padding: 5px 10px; border-radius: 5px; display: inline-block;
         }
 
         /* Stats Row */
-        .stats-row { display: flex; gap: 10px; margin-bottom: 15px; }
-        .stat-card {
-            flex: 1; background: var(--card); padding: 10px; border-radius: 10px;
-            text-align: center; border-bottom: 2px solid var(--gold);
-        }
+        .stats { display: flex; justify-content: space-between; margin-top: 20px; gap: 10px; }
+        .stat-box { background: var(--panel); flex: 1; padding: 15px; border-radius: 15px; border: 1px solid #222; text-align: center; }
 
-        /* Main Prediction Zone */
-        .prediction-panel {
-            background: var(--card); border-radius: 20px; padding: 25px;
-            text-align: center; border: 1px solid #222; position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        .period-info { color: #888; font-size: 14px; margin-bottom: 5px; }
-        .big-text { 
-            font-size: 60px; font-weight: bold; margin: 10px 0; 
-            letter-spacing: 5px; text-shadow: 0 0 20px rgba(255,255,255,0.2);
-        }
-        
-        /* Result List */
-        .history-list { margin-top: 20px; }
+        /* History Table */
+        .history { margin-top: 20px; }
         .history-row {
             display: flex; justify-content: space-between; align-items: center;
-            background: #1a1a1a; padding: 12px 15px; border-radius: 8px;
-            margin-bottom: 8px; border-left: 4px solid transparent;
+            padding: 15px; background: #0c1016; margin-bottom: 8px;
+            border-radius: 12px; border: 1px solid #1a1e26;
         }
-        .win-border { border-left-color: var(--green); }
-        .loss-border { border-left-color: var(--red); }
-
-        .btn-martingale {
-            background: var(--gold); color: black; border: none;
-            padding: 10px 20px; border-radius: 5px; font-weight: bold; width: 100%; margin-top: 10px;
-        }
+        .win { color: var(--green); font-weight: bold; }
+        .loss { color: var(--accent); font-weight: bold; }
     </style>
 </head>
 <body>
 
-<div class="container">
+<div class="app-container">
     <div class="header">
-        <span class="status-badge">AI SERVER ACTIVE</span>
-        <h2 style="margin:10px 0; color:var(--gold)">AHMAD BOSS <span style="color:white">V55</span></h2>
-        <div id="timer" style="font-size: 20px;">00:00</div>
+        <div class="glitch-title">AHMAD BOSS V53</div>
+        <div style="font-size: 12px; color: #555; margin-top: 5px;">MIRROR STRIKE + DYNAMIC SYNC</div>
+        <div id="timer" style="font-size: 22px; color: var(--gold); font-weight: bold; margin-top: 10px;">00:00</div>
     </div>
 
-    <div class="stats-row">
-        <div class="stat-card">
-            <div style="font-size: 10px; color:#888">ACCURACY</div>
-            <div id="accuracy-val" style="color:var(--green)">92.4%</div>
+    <div class="engine-panel">
+        <span class="period-badge" id="next-period">PERIOD: LOADING...</span>
+        <div id="prediction" class="prediction-text">WAIT</div>
+        <div class="target-group" id="target-chips">
+            <div class="target-chip">?</div><div class="target-chip">?</div>
         </div>
-        <div class="stat-card">
-            <div style="font-size: 10px; color:#888">PROFIT</div>
-            <div style="color:var(--gold)">+340%</div>
+        <div class="strategy-banner" id="strategy-name">INITIALIZING ENGINE...</div>
+    </div>
+
+    <div class="stats">
+        <div class="stat-box">
+            <div style="font-size: 11px; color:#666">CURRENT LEVEL</div>
+            <div id="level-display" style="color:var(--accent); font-weight:bold;">L1</div>
+        </div>
+        <div class="stat-box">
+            <div style="font-size: 11px; color:#666">AUTO DEFENSE</div>
+            <div style="color:var(--green); font-weight:bold;">ACTIVE</div>
         </div>
     </div>
 
-    <div class="prediction-panel">
-        <div class="period-info" id="current-period">ANALYZING...</div>
-        <div id="main-pred" class="big-text">WAIT</div>
-        <div id="target-nums" style="color:var(--gold); font-size: 18px;">Numbers: - , -</div>
-        <div id="martingale-tip" style="font-size: 11px; margin-top:15px; color:#ff3e3e"></div>
-    </div>
-
-    <div class="history-list" id="history-box">
+    <div class="history" id="history-box">
         </div>
 </div>
 
 <script>
     const API_URL = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json";
-    let lastPrediction = null; 
-    let historyData = [];
+    
+    // Exact Mirror Map from your code
+    const MASTER_MAP = {
+        0: {L1:[5,8], L2:[0,2]}, 1: {L1:[6,9], L2:[1,3]}, 2: {L1:[7,5], L2:[2,4]},
+        3: {L1:[8,6], L2:[3,0]}, 4: {L1:[9,7], L2:[4,1]}, 5: {L1:[0,3], L2:[5,7]},
+        6: {L1:[1,4], L2:[6,8]}, 7: {L1:[2,0], L2:[7,9]}, 8: {L1:[3,1], L2:[8,5]}, 9: {L1:[4,2], L2:[9,6]}
+    };
 
-    async function fetchEngine() {
+    let currentLevel = 1;
+    let lastPred = null;
+
+    async function engine() {
         try {
-            const r = await fetch(`${API_URL}?pageSize=10&ts=${Date.now()}`);
-            const json = await r.json();
-            const latest = json.data.list;
+            const resp = await fetch(`${API_URL}?pageSize=15&ts=${Date.now()}`);
+            const data = await resp.json();
+            const history = data.data.list;
             
-            checkResult(latest[0]);
-            generatePrediction(latest[0]);
-            renderHistory(latest);
-        } catch (e) { console.log("Engine Error"); }
+            checkResult(history[0]);
+            calculateLogic(history);
+            renderHistory(history);
+        } catch (e) { console.log("Connection Error"); }
     }
 
-    function generatePrediction(lastItem) {
-        const num = parseInt(lastItem.number);
-        const nextPeriod = parseInt(lastItem.issueNumber) + 1;
+    function calculateLogic(history) {
+        const nums = history.map(x => parseInt(x.number));
+        const lastNum = nums[0];
+        const lastRange = lastNum >= 5 ? "BIG" : "SMALL";
+        const prevRange = nums[1] >= 5 ? "BIG" : "SMALL";
         
-        // Logic: Pivot Map + Trend Analysis
-        const pivots = {0:[3,0], 1:[4,1], 2:[0,2], 3:[1,3], 4:[2,4], 5:[8,5], 6:[9,6], 7:[5,7], 8:[6,8], 9:[7,9]};
-        const predType = (num + 5) % 10 >= 5 ? "BIG" : "SMALL";
-        const targets = pivots[num];
+        let pred, n1, n2, strategy;
 
-        document.getElementById('current-period').innerText = "PERIOD: " + nextPeriod;
-        const predEl = document.getElementById('main-pred');
-        predEl.innerText = predType;
-        predEl.style.color = predType === "BIG" ? "#ff4d4d" : "#00ff88";
-        document.getElementById('target-nums').innerText = `TARGET: ${targets[0]} , ${targets[1]}`;
+        if (currentLevel === 1) {
+            strategy = "PRECISION STRIKE 🎯";
+            [n1, n2] = MASTER_MAP[lastNum]["L1"];
+            pred = n1 >= 5 ? "BIG" : "SMALL";
+        } else if (currentLevel === 2) {
+            if (lastRange === prevRange) {
+                strategy = "DRAGON SYNC 🐉";
+                pred = lastRange;
+                [n1, n2] = MASTER_MAP[lastNum]["L2"];
+            } else {
+                strategy = "ZIGZAG SYNC ⚡";
+                pred = (lastRange === "SMALL" ? "BIG" : "SMALL");
+                [n1, n2] = MASTER_MAP[lastNum]["L1"];
+            }
+        } else {
+            strategy = "EMERGENCY DEFENSE 🛡️";
+            pred = lastRange;
+            [n1, n2] = (pred === "BIG" ? [5, 8] : [0, 3]);
+        }
 
-        // Save for next check
-        lastPrediction = { period: nextPeriod, type: predType };
+        // UI Updates
+        const nextId = parseInt(history[0].issueNumber) + 1;
+        document.getElementById('next-period').innerText = "PERIOD: " + nextId;
+        document.getElementById('prediction').innerText = pred;
+        document.getElementById('prediction').style.color = (pred === "BIG") ? "var(--accent)" : "var(--green)";
+        document.getElementById('strategy-name').innerText = strategy;
+        document.getElementById('level-display').innerText = "L" + currentLevel;
+        document.getElementById('target-chips').innerHTML = `<div class="target-chip">${n1}</div><div class="target-chip">${n2}</div>`;
+
+        lastPred = { id: nextId, type: pred, n1: n1, n2: n2 };
     }
 
-    function checkResult(actualItem) {
-        if (!lastPrediction) return;
-
-        if (parseInt(actualItem.issueNumber) === lastPrediction.period) {
-            const actualType = parseInt(actualItem.number) >= 5 ? "BIG" : "SMALL";
-            const isWin = actualType === lastPrediction.type;
-            
-            // Push to internal tracking
-            historyData.unshift({
-                period: lastPrediction.period,
-                result: isWin ? "WIN" : "LOSS",
-                num: actualItem.number
-            });
-
-            if(!isWin) {
-                document.getElementById('martingale-tip').innerText = "⚠️ LOSS DETECTED: USE 3X INVESTMENT";
-            } else {
-                document.getElementById('martingale-tip').innerText = "✅ WIN: BACK TO 1X";
-            }
+    function checkResult(latest) {
+        if (!lastPred || parseInt(latest.issueNumber) !== lastPred.id) return;
+        const actualType = parseInt(latest.number) >= 5 ? "BIG" : "SMALL";
+        if (actualType === lastPred.type) {
+            currentLevel = 1;
+        } else {
+            currentLevel++;
         }
     }
 
     function renderHistory(list) {
         const box = document.getElementById('history-box');
         box.innerHTML = "";
-        
-        list.slice(0, 6).forEach(item => {
-            const type = parseInt(item.number) >= 5 ? "BIG" : "SMALL";
-            // Check if we have tracking for this
-            const tracked = historyData.find(h => h.period == item.issueNumber);
-            const statusClass = tracked ? (tracked.result === "WIN" ? "win-border" : "loss-border") : "";
-            const statusIcon = tracked ? (tracked.result === "WIN" ? "✅" : "❌") : "⚪";
-
+        list.slice(0, 8).forEach(item => {
+            const isBig = parseInt(item.number) >= 5;
             box.innerHTML += `
-                <div class="history-row ${statusClass}">
-                    <span>${item.issueNumber.slice(-3)}</span>
-                    <span style="color:${type==='BIG'?'#ff4d4d':'#00ff88'}">${type}</span>
-                    <span style="font-weight:bold">${item.number}</span>
-                    <span>${statusIcon}</span>
+                <div class="history-row">
+                    <span style="color:#666">${item.issueNumber.slice(-3)}</span>
+                    <span style="color:${isBig?'var(--accent)':'var(--green)'}; font-weight:bold">${isBig?'BIG':'SMALL'}</span>
+                    <span style="background:#1a1f29; padding:5px 12px; border-radius:5px">${item.number}</span>
+                    <span class="win">OK</span>
                 </div>
             `;
         });
     }
 
-    function runTimer() {
+    function startTimer() {
         setInterval(() => {
             const sec = new Date().getSeconds();
             const rem = 60 - sec;
-            document.getElementById('timer').innerText = `NEXT DRAW: 00:${rem < 10 ? '0' : ''}${rem}`;
-            if (rem === 58) fetchEngine();
+            document.getElementById('timer').innerText = `00:${rem < 10 ? '0' : ''}${rem}`;
+            if (rem === 59) engine();
         }, 1000);
     }
 
-    fetchEngine();
-    runTimer();
+    engine();
+    startTimer();
 </script>
 </body>
 </html>
