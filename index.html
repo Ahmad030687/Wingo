@@ -3,186 +3,298 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AHMAD BOSS V53 - VIP ELITE</title>
+    <title>AHMAD V.5 - 5 ALGO CORE</title>
     <style>
         :root {
-            --gold: #ffcc00; --gold-glow: rgba(255, 204, 0, 0.5);
-            --bg: #000000; --card: #0a0a0a; --red: #ff3131; --green: #00ff66;
+            --neon: #39ff14;
+            --red: #ff003c;
+            --bg: #050505;
+            --panel: #0f1216;
+            --gold: #ffd700;
         }
         body {
-            background-color: var(--bg); color: white;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            margin: 0; padding: 0; overflow-x: hidden;
+            background-color: var(--bg);
+            color: white;
+            font-family: 'Courier New', monospace;
+            margin: 0; display: flex; justify-content: center;
         }
-        .container { max-width: 450px; margin: auto; padding: 15px; }
+        .container {
+            width: 100%; max-width: 450px;
+            background: black;
+            border-left: 1px solid #222; border-right: 1px solid #222;
+            min-height: 100vh; padding: 10px;
+        }
 
-        /* VIP Header */
-        .vip-header {
-            text-align: center; padding: 30px 10px;
-            background: linear-gradient(180deg, #1a1a1a 0%, #000 100%);
-            border: 1px solid #333; border-radius: 0 0 40px 40px;
-            box-shadow: 0 5px 20px rgba(0,0,0,1);
+        /* HEADER */
+        .header {
+            border: 1px solid var(--neon); padding: 15px;
+            border-radius: 10px; text-align: center;
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.2);
+            margin-bottom: 20px;
         }
-        .logo { font-size: 28px; font-weight: 900; letter-spacing: 4px; color: var(--gold); text-shadow: 0 0 15px var(--gold-glow); }
+        .glitch-title { font-size: 20px; font-weight: 900; color: var(--neon); text-transform: uppercase; }
+        .sub-title { font-size: 10px; color: #666; letter-spacing: 3px; }
+
+        /* MAIN PREDICTION CARD */
+        .main-card {
+            background: var(--panel); border-radius: 15px;
+            padding: 20px; border: 1px solid #333;
+            text-align: center; position: relative;
+        }
+        .period-box { font-size: 14px; color: white; margin-bottom: 5px; }
         
-        /* Main Display Panel */
-        .main-panel {
-            background: var(--card); border-radius: 30px; margin-top: -30px;
-            padding: 30px; border: 1px solid #222; text-align: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8); position: relative;
+        .big-pred {
+            font-size: 70px; font-weight: 900; color: var(--neon);
+            text-shadow: 0 0 20px var(--neon); margin: 10px 0;
         }
-        .period-box { font-size: 14px; color: #666; letter-spacing: 1px; margin-bottom: 10px; }
-        .pred-text { font-size: 85px; font-weight: 900; margin: 10px 0; transition: 0.3s; }
-        
-        /* Jackpot Chips */
-        .jackpot-zone {
-            display: flex; justify-content: center; gap: 15px; margin: 20px 0;
+        .small-pred {
+            font-size: 70px; font-weight: 900; color: #00ccff;
+            text-shadow: 0 0 20px #00ccff; margin: 10px 0;
         }
-        .chip {
-            width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--gold);
+
+        /* 5 ALGORITHM GRID */
+        .algo-title { font-size: 10px; color: #555; text-align: left; margin: 15px 0 5px 0; }
+        .algo-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+        }
+        .algo-box {
+            background: #080808; border: 1px solid #222;
+            padding: 8px; font-size: 9px; border-radius: 5px;
+            color: #444; transition: 0.3s;
+        }
+        .active-algo {
+            border-color: var(--neon); color: var(--neon);
+            box-shadow: 0 0 5px var(--neon); font-weight: bold;
+        }
+        .active-algo-red {
+            border-color: #00ccff; color: #00ccff;
+            box-shadow: 0 0 5px #00ccff; font-weight: bold;
+        }
+
+        /* SURESHOT BAR */
+        .sureshot-bar {
+            margin-top: 15px; padding: 8px; background: #111;
+            border-radius: 5px; border: 1px solid #333; font-size: 11px;
+            display: flex; justify-content: space-between;
+        }
+        .level-tag { color: var(--gold); font-weight: bold; }
+
+        /* JACKPOT BALLS */
+        .balls-row { display: flex; justify-content: center; gap: 8px; margin-top: 20px; }
+        .ball {
+            width: 40px; height: 40px; border-radius: 50%;
+            background: #000; border: 2px solid #333;
             display: flex; align-items: center; justify-content: center;
-            font-size: 22px; font-weight: bold; color: var(--gold);
-            box-shadow: 0 0 10px var(--gold-glow); background: rgba(255,204,0,0.05);
+            font-weight: bold; font-size: 18px;
         }
+        .ball-glow-g { border-color: var(--neon); color: var(--neon); box-shadow: 0 0 10px var(--neon); }
+        .ball-glow-b { border-color: #00ccff; color: #00ccff; box-shadow: 0 0 10px #00ccff; }
 
-        /* Result Alert */
-        .status-bar {
-            padding: 10px; border-radius: 10px; font-weight: bold;
-            font-size: 13px; margin-top: 15px; text-transform: uppercase;
+        /* HISTORY */
+        .log-area { margin-top: 20px; font-size: 12px; }
+        .log-row {
+            display: flex; justify-content: space-between; padding: 10px;
+            background: #0d0d0d; border-bottom: 1px solid #222;
         }
-        .hit-jackpot { background: var(--gold); color: black; animation: pulse 1s infinite; }
-        @keyframes pulse { 0% {transform:scale(1)} 50% {transform:scale(1.05)} 100% {transform:scale(1)} }
+        .win { color: var(--neon); }
+        .loss { color: var(--red); }
 
-        /* History Table */
-        .history-sec { margin-top: 30px; }
-        .history-row {
-            display: flex; justify-content: space-between; align-items: center;
-            background: #0f0f0f; padding: 15px; border-radius: 15px;
-            margin-bottom: 10px; border: 1px solid #1a1a1a;
-        }
-        .win-tag { color: var(--green); font-weight: bold; border-right: 3px solid var(--green); padding-right: 10px; }
-        .loss-tag { color: var(--red); font-weight: bold; border-right: 3px solid var(--red); padding-right: 10px; }
-        .jackpot-tag { background: var(--gold); color: black; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 900; }
-
-        #timer { font-size: 32px; font-weight: bold; color: white; margin-top: 10px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="vip-header">
-        <div class="logo">AHMAD BOSS V53</div>
-        <div id="timer">00:00</div>
+    <div class="header">
+        <div class="glitch-title">DARKNET V.5</div>
+        <div class="sub-title">5-ALGO CORE ENGINE</div>
+        <div id="timer" style="margin-top: 5px; font-size: 20px; color: white;">00:00</div>
     </div>
 
-    <div class="main-panel">
-        <div class="period-box" id="p-id">ID: --------</div>
-        <div id="prediction" class="pred-text">...</div>
-        <div style="font-size: 11px; color: var(--gold); letter-spacing: 2px;">VIP JACKPOT NUMBERS</div>
-        <div class="jackpot-zone" id="targets">
+    <div class="main-card">
+        <div class="period-box">PERIOD: <span id="pID">Loading...</span></div>
+        <div id="pText" class="big-pred">WAIT</div>
+        
+        <div class="sureshot-bar">
+            <span>CONFIDENCE: <span id="confPct">0%</span></span>
+            <span class="level-tag" id="levelTag">LEVEL 1</span>
+        </div>
+
+        <div class="algo-title">ACTIVE ALGORITHMS (VOTING SYSTEM)</div>
+        <div class="algo-grid">
+            <div class="algo-box" id="a-dragon">DRAGON</div>
+            <div class="algo-box" id="a-opp">OPPOSITE</div>
+            <div class="algo-box" id="a-bal">BALANCE</div>
+            <div class="algo-box" id="a-quan">QUANTUM</div>
+            <div class="algo-box" id="a-mirr">MIRROR</div>
+            <div class="algo-box" style="border:none; color:#333;">AI CORE</div>
+        </div>
+
+        <div class="balls-row" id="seeds">
             </div>
-        <div id="strat" style="color: #444; font-size: 12px; font-weight: bold;">AI ANALYZING MARKET...</div>
     </div>
 
-    <div class="history-sec">
-        <h3 style="color: #333; font-size: 14px; margin-left: 10px;">LIVE TERMINAL LOGS</h3>
-        <div id="history-box"></div>
-    </div>
+    <div style="margin-top:20px; color:#555; font-size:10px;">LIVE RESULT LOG</div>
+    <div class="log-area" id="logs"></div>
 </div>
 
 <script>
-    const API_URL = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json";
-    const MASTER_MAP = {
-        0: {L1:[5,8], L2:[0,2]}, 1: {L1:[6,9], L2:[1,3]}, 2: {L1:[7,5], L2:[2,4]},
-        3: {L1:[8,6], L2:[3,0]}, 4: {L1:[9,7], L2:[4,1]}, 5: {L1:[0,3], L2:[5,7]},
-        6: {L1:[1,4], L2:[6,8]}, 7: {L1:[2,0], L2:[7,9]}, 8: {L1:[3,1], L2:[8,5]}, 9: {L1:[4,2], L2:[9,6]}
-    };
-
-    let level = 1;
-    let lastBet = null;
-    let tracker = [];
+    const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json";
+    let lastId = -1;
+    let historyTracker = [];
 
     async function runEngine() {
         try {
-            const r = await fetch(`${API_URL}?pageSize=15&ts=${Date.now()}`);
+            const r = await fetch(`${API}?pageSize=20&ts=${Date.now()}`);
             const d = await r.json();
             const list = d.data.list;
-            
-            checkStats(list[0]);
-            applyLogic(list);
-            renderList(list);
-        } catch (e) { console.log("Engine offline"); }
+            const currentPeriod = parseInt(list[0].issueNumber);
+
+            checkWin(list[0]);
+
+            if (currentPeriod > lastId) {
+                lastId = currentPeriod;
+                calculate5Algo(list);
+            }
+        } catch(e) { console.log("Syncing..."); }
     }
 
-    function applyLogic(history) {
-        const nums = history.map(x => parseInt(x.number));
-        const last = nums[0];
-        const lastR = last >= 5 ? "BIG" : "SMALL";
-        const prevR = nums[1] >= 5 ? "BIG" : "SMALL";
+    function calculate5Algo(list) {
+        const nextPeriod = parseInt(list[0].issueNumber) + 1;
+        const nums = list.map(i => parseInt(i.number));
+        const types = nums.map(n => n >= 5 ? "BIG" : "SMALL");
+
+        // --- THE 5 ALGORITHMS LOGIC ---
         
-        let p, n1, n2, s;
-        if (level === 1) {
-            s = "PRECISION STRIKE";
-            [n1, n2] = MASTER_MAP[last]["L1"];
-            p = n1 >= 5 ? "BIG" : "SMALL";
-        } else if (level === 2) {
-            if (lastR === prevR) { s = "DRAGON SYNC"; p = lastR; [n1, n2] = MASTER_MAP[last]["L2"]; }
-            else { s = "ZIGZAG SYNC"; p = (lastR === "SMALL" ? "BIG" : "SMALL"); [n1, n2] = MASTER_MAP[last]["L1"]; }
+        // 1. DRAGON (Trend Check) - Votes if streak > 2
+        let streak = 1;
+        for(let i=0; i<3; i++) { if(types[i] === types[i+1]) streak++; else break; }
+        const dragonVote = streak >= 2 ? types[0] : null;
+
+        // 2. OPPOSITE (ZigZag Check) - Votes if streak is 1
+        const oppositeVote = streak === 1 ? (types[0]==="BIG"?"SMALL":"BIG") : null;
+
+        // 3. BALANCE (Frequency Check)
+        const last10Big = types.slice(0,10).filter(x=>x==="BIG").length;
+        const balanceVote = last10Big > 5 ? "SMALL" : "BIG";
+
+        // 4. QUANTUM (Missing Number Weight)
+        // Simple logic: If 5,7,9 present recently, predict Small (0,2,4)
+        const recentNums = nums.slice(0,5);
+        const highSum = recentNums.reduce((a,b) => a+b, 0);
+        const quantumVote = highSum > 22 ? "SMALL" : "BIG";
+
+        // 5. MIRROR (Pattern Repeat)
+        // Checks if index 0 matches index 2 (A-B-A pattern)
+        const mirrorVote = types[0] === types[2] ? types[0] : (types[0]==="BIG"?"SMALL":"BIG");
+
+        // --- TALLY VOTES ---
+        let votes = { BIG: 0, SMALL: 0 };
+        const algoStatus = { dragon:false, opp:false, bal:false, quan:false, mirr:false };
+
+        if(dragonVote) { votes[dragonVote]++; algoStatus.dragon = dragonVote; }
+        if(oppositeVote) { votes[oppositeVote]++; algoStatus.opp = oppositeVote; }
+        if(balanceVote) { votes[balanceVote]++; algoStatus.bal = balanceVote; }
+        if(quantumVote) { votes[quantumVote]++; algoStatus.quan = quantumVote; }
+        if(mirrorVote) { votes[mirrorVote]++; algoStatus.mirr = mirrorVote; }
+
+        // --- FINAL DECISION ---
+        const finalPred = votes.BIG >= votes.SMALL ? "BIG" : "SMALL";
+        const totalVotes = votes[finalPred]; // Max 5
+        
+        // Level Logic: 4 or 5 votes = SURESHOT (Level 2)
+        const isSureShot = totalVotes >= 4;
+        
+        updateUI(nextPeriod, finalPred, algoStatus, isSureShot, totalVotes);
+        
+        // Save for history
+        historyTracker.unshift({ id: nextPeriod, pred: finalPred, isSS: isSureShot });
+    }
+
+    function updateUI(period, pred, algos, isSS, voteCount) {
+        document.getElementById('pID').innerText = period.toString().slice(-4);
+        
+        const pText = document.getElementById('pText');
+        pText.innerText = pred;
+
+        const levelTag = document.getElementById('levelTag');
+        const confPct = document.getElementById('confPct');
+        
+        // Confidence Calculation
+        const percentage = (voteCount / 5) * 100;
+        confPct.innerText = percentage + "%";
+
+        if(isSS) {
+            levelTag.innerText = "🔥🔥 LEVEL 2 SURESHOT";
+            levelTag.style.color = "#ff003c";
+            levelTag.style.animation = "blink 0.5s infinite";
         } else {
-            s = "EMERGENCY TREND"; p = lastR; [n1, n2] = (p === "BIG" ? [5, 8] : [0, 3]);
+            levelTag.innerText = "LEVEL 1 (NORMAL)";
+            levelTag.style.color = "#ffd700";
+            levelTag.style.animation = "none";
         }
 
-        const nId = parseInt(history[0].issueNumber) + 1;
-        document.getElementById('p-id').innerText = "PERIOD: " + nId;
-        document.getElementById('prediction').innerText = p;
-        document.getElementById('prediction').style.color = (p === "BIG") ? "var(--red)" : "var(--green)";
-        document.getElementById('strat').innerText = "LEVEL " + level + " | " + s;
-        document.getElementById('targets').innerHTML = `<div class="chip">${n1}</div><div class="chip">${n2}</div>`;
+        // Color & Grid Updates
+        resetGrid();
+        
+        const colorClass = pred === "BIG" ? "active-algo" : "active-algo-red";
+        const glowClass = pred === "BIG" ? "ball-glow-g" : "ball-glow-b";
+        
+        if(pred === "BIG") {
+            pText.className = "big-pred";
+            document.getElementById('seeds').innerHTML = makeSeeds([5,6,7,8,9], glowClass);
+        } else {
+            pText.className = "small-pred";
+            document.getElementById('seeds').innerHTML = makeSeeds([0,1,2,3,4], glowClass);
+        }
 
-        lastBet = { id: nId, type: p, n1: n1, n2: n2 };
+        // Highlight Active Algorithms
+        if(algos.dragon === pred) document.getElementById('a-dragon').className = `algo-box ${colorClass}`;
+        if(algos.opp === pred) document.getElementById('a-opp').className = `algo-box ${colorClass}`;
+        if(algos.bal === pred) document.getElementById('a-bal').className = `algo-box ${colorClass}`;
+        if(algos.quan === pred) document.getElementById('a-quan').className = `algo-box ${colorClass}`;
+        if(algos.mirr === pred) document.getElementById('a-mirr').className = `algo-box ${colorClass}`;
     }
 
-    function checkStats(latest) {
-        if (!lastBet || parseInt(latest.issueNumber) !== lastBet.id) return;
-        
-        const num = parseInt(latest.number);
-        const actualType = num >= 5 ? "BIG" : "SMALL";
-        const isWin = actualType === lastBet.type;
-        const isJackpot = (num === lastBet.n1 || num === lastBet.n2);
-        
-        tracker.unshift({ id: lastBet.id, win: isWin, jackpot: isJackpot, num: num });
-        level = isWin ? 1 : level + 1;
+    function resetGrid() {
+        const boxes = document.querySelectorAll('.algo-box');
+        boxes.forEach(b => b.className = 'algo-box');
     }
 
-    function renderList(list) {
-        const box = document.getElementById('history-box');
-        box.innerHTML = "";
-        list.slice(0, 8).forEach(item => {
-            const track = tracker.find(t => t.id == item.issueNumber);
-            const isB = parseInt(item.number) >= 5;
-            
-            box.innerHTML += `
-                <div class="history-row">
-                    <div class="${track ? (track.win?'win-tag':'loss-tag') : ''}">${item.issueNumber.slice(-3)}</div>
-                    <div style="color:${isB?'var(--red)':'var(--green)'}">${isB?'BIG':'SMALL'}</div>
-                    <div style="font-weight:bold; font-size:18px">${item.number}</div>
-                    <div>${track && track.jackpot ? '<span class="jackpot-tag">JACKPOT</span>' : (track ? (track.win?'✅':'❌') : '⚪')}</div>
+    function makeSeeds(arr, cls) {
+        return arr.sort(()=>0.5-Math.random()).map(n=>`<div class="ball ${cls}">${n}</div>`).join('');
+    }
+
+    function checkWin(item) {
+        const pid = parseInt(item.issueNumber);
+        const old = historyTracker.find(x => x.id === pid);
+        if(old && !old.checked) {
+            const actual = parseInt(item.number) >= 5 ? "BIG" : "SMALL";
+            const won = actual === old.pred;
+            const logArea = document.getElementById('logs');
+            logArea.innerHTML = `
+                <div class="log-row">
+                    <span>${pid}</span>
+                    <span style="color:${won? 'var(--neon)':'var(--red)'}">${old.pred} [${item.number}]</span>
+                    <span>${won?'✅ WIN':'❌ LOSS'}</span>
                 </div>
-            `;
-        });
+            ` + logArea.innerHTML;
+            old.checked = true;
+        }
     }
 
-    function timer() {
-        setInterval(() => {
-            const s = new Date().getSeconds();
-            const r = 60 - s;
-            document.getElementById('timer').innerText = `00:${r < 10 ? '0' : ''}${r}`;
-            if (r === 59) runEngine();
-        }, 1000);
-    }
+    // Timer
+    setInterval(() => {
+        const r = 60 - new Date().getSeconds();
+        document.getElementById('timer').innerText = `00:${r<10?'0'+r:r}`;
+        if(r===59) runEngine();
+    }, 1000);
+    
+    // CSS Keyframes for Sureshot blink
+    const style = document.createElement('style');
+    style.innerHTML = `@keyframes blink { 0% {opacity:1} 50% {opacity:0.5} 100% {opacity:1} }`;
+    document.head.appendChild(style);
 
     runEngine();
-    timer();
 </script>
 </body>
 </html>
