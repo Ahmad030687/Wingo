@@ -3,134 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AHMAD BOSS V.10.5 - 3:3 SPECIAL</title>
+    <title>AHMAD BOSS V.10.7 - 7 ALGO MATRIX</title>
     <style>
         :root {
-            --bg-color: #050505; --card-bg: #111111; --gold: #d4af37;
-            --green: #00e676; --red: #ff1744; --blue: #00b0ff;
+            --bg: #050505; --card: #111; --gold: #d4af37;
+            --win: #00e676; --loss: #ff1744; --blue: #00b0ff;
         }
-        body { background-color: var(--bg-color); color: white; font-family: sans-serif; margin: 0; display: flex; justify-content: center; user-select: none; }
-        .app-container { width: 100%; max-width: 450px; min-height: 100vh; background: #000; border: 1px solid #222; position: relative; }
+        body { background: var(--bg); color: white; font-family: sans-serif; margin: 0; display: flex; justify-content: center; user-select: none; }
+        .wrapper { width: 100%; max-width: 450px; min-height: 100vh; background: #000; border: 1px solid #222; position: relative; }
         .header { background: #1a1a1a; padding: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--gold); }
-        .logo { font-size: 20px; font-weight: 900; color: var(--gold); letter-spacing: 1px; }
-        .timer-box { background: #000; border: 1px solid var(--gold); padding: 5px 15px; border-radius: 50px; font-family: monospace; font-size: 20px; box-shadow: 0 0 10px var(--gold); }
-        .main-card { background: var(--card-bg); margin: 20px; border-radius: 25px; padding: 30px 20px; text-align: center; border: 1px solid #222; box-shadow: inset 0 0 30px #000; }
-        .prediction-text { font-size: 80px; font-weight: 900; margin: 15px 0; line-height: 1; }
-        .big-anim { color: var(--green); text-shadow: 0 0 30px var(--green); }
+        .timer { background: #000; border: 1px solid var(--gold); padding: 5px 15px; border-radius: 50px; font-family: monospace; font-size: 20px; box-shadow: 0 0 10px var(--gold); }
+        .main-card { background: var(--card); margin: 20px; border-radius: 25px; padding: 30px 20px; text-align: center; border: 1px solid #222; box-shadow: inset 0 0 30px #000; }
+        .pred-text { font-size: 80px; font-weight: 900; margin: 15px 0; line-height: 1; }
+        .big-anim { color: var(--win); text-shadow: 0 0 30px var(--win); }
         .small-anim { color: var(--blue); text-shadow: 0 0 30px var(--blue); }
-        .algo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 25px; }
-        .algo-item { background: #080808; border: 1px solid #1a1a1a; padding: 12px 5px; border-radius: 6px; font-size: 9px; color: #444; font-weight: bold; }
+        .algo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 25px; }
+        .algo-box { background: #080808; border: 1px solid #1a1a1a; padding: 12px 2px; border-radius: 6px; font-size: 8px; color: #444; font-weight: bold; }
         .algo-active { border-color: var(--gold); color: var(--gold); background: rgba(212, 175, 55, 0.1); box-shadow: 0 0 10px var(--gold); }
-        .ball { width: 55px; height: 55px; border-radius: 50%; background: #000; border: 2px solid #222; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #222; font-weight: bold; }
+        .balls-row { display: flex; justify-content: center; gap: 20px; margin-top: 30px; }
+        .ball { width: 55px; height: 55px; border-radius: 50%; background: #000; border: 2px solid #222; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #333; font-weight: bold; }
         .ball-active { border-color: var(--gold); color: var(--gold); box-shadow: 0 0 15px var(--gold); }
+        .h-card { background: #111; padding: 12px; border-radius: 10px; display: flex; justify-content: space-between; margin: 10px 20px; border-left: 4px solid #333; font-size: 13px; }
     </style>
 </head>
 <body>
 
-<div class="app-container">
+<div class="wrapper">
     <div class="header">
-        <div class="logo">AHMAD BOSS V.10.5</div>
-        <div class="timer-box" id="timer">00:00</div>
+        <div style="font-weight:900; color:var(--gold); letter-spacing:1px;">AHMAD BOSS V.10.7</div>
+        <div class="timer" id="timer">00:00</div>
     </div>
 
     <div class="main-card">
-        <div style="color: #888; font-size: 12px; margin-bottom: 5px;">LIVE PERIOD</div>
-        <div style="background: rgba(255,255,255,0.05); padding: 5px 20px; border-radius: 10px; display: inline-block; border: 1px solid #333;" id="periodDisplay">-------</div>
+        <div style="color: #888; font-size: 11px; margin-bottom: 5px;">LIVE PERIOD</div>
+        <div style="background: rgba(255,255,255,0.05); padding: 5px 20px; border-radius: 10px; display: inline-block; border: 1px solid #333; font-weight: bold;" id="pDisp">-------</div>
         
-        <div id="prediction" class="prediction-text">WAIT</div>
-        <div id="statusText" style="font-size:11px; color:var(--gold);">3:3 STRATEGY ACTIVE</div>
+        <div id="prediction" class="pred-text">WAIT</div>
+        <div id="status" style="font-size:11px; color:var(--gold);">SCANNING 7 ALGORITHMS...</div>
 
         <div class="algo-grid">
-            <div class="algo-item" id="algo-dragon">DRAGON</div>
-            <div class="algo-item" id="algo-mirror">MIRROR</div>
-            <div class="algo-item" id="algo-33">3:3 ALGO</div> <div class="algo-item" id="algo-balance">BALANCE</div>
-            <div class="algo-item" id="algo-quantum">QUANTUM</div>
-            <div class="algo-item" id="algo-v10">OPPOSITE</div>
+            <div class="algo-box" id="a-dragon">DRAGON</div>
+            <div class="algo-box" id="a-33">3:3 STRAT</div>
+            <div class="algo-box" id="a-mirror">MIRROR</div>
+            <div class="algo-box" id="a-opposite">OPPOSITE</div>
+            <div class="algo-box" id="a-balance">BALANCE</div>
+            <div class="algo-box" id="a-quantum">QUANTUM</div>
         </div>
+        <div class="algo-box" id="a-v10" style="width:100%; margin-top:8px;">BOSS V10 CORE (MATHEMATICAL)</div>
 
-        <div style="display: flex; justify-content: center; gap: 20px; margin-top: 30px;" id="ballsRow">
+        <div class="balls-row" id="balls">
             <div class="ball">?</div><div class="ball">?</div>
         </div>
     </div>
 
-    <div style="padding: 0 20px; color: var(--gold); font-size: 12px;">HISTORY LOG</div>
-    <div id="historyList"></div>
+    <div style="padding: 0 20px; color: var(--gold); font-size: 11px; font-weight: bold;">HISTORY MONITOR</div>
+    <div id="hList"></div>
 </div>
 
 <script>
-    const API_URL = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json";
-    let lastP = ""; let localLog = [];
+    const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json";
+    let lastP = ""; let log = [];
 
-    async function fetchData() {
+    async function fetchLive() {
         try {
-            const r = await fetch(`${API_URL}?pageSize=20&ts=${Date.now()}`, { cache: "no-store" });
+            const r = await fetch(`${API}?pageSize=20&ts=${Date.now()}`, { cache: "no-store" });
             const d = await r.json();
             const list = d.data.list;
             const currentP = list[0].issueNumber;
 
-            if (localLog.length > 0 && localLog[0].period === currentP) {
-                const actual = parseInt(list[0].number) >= 5 ? "BIG" : "SMALL";
-                localLog[0].res = (actual === localLog[0].pred) ? "WIN" : "LOSS";
-                renderHistory();
+            if (log.length > 0 && log[0].period === currentP) {
+                const act = parseInt(list[0].number) >= 5 ? "BIG" : "SMALL";
+                log[0].res = (act === log[0].pred) ? "WIN" : "LOSS";
+                renderH();
             }
 
             if (currentP !== lastP) {
                 lastP = currentP;
                 const nextP = (BigInt(currentP) + 1n).toString();
-                document.getElementById('periodDisplay').innerText = nextP;
-                process33(list, nextP);
+                document.getElementById('pDisp').innerText = nextP;
+                run7Algos(list, nextP);
             }
-        } catch (e) { console.error("Sync Error"); }
+        } catch (e) {}
     }
 
-    function process33(list, nextP) {
+    function run7Algos(list, nextP) {
         const nums = list.map(x => parseInt(x.number));
         const bs = nums.map(n => n >= 5 ? "BIG" : "SMALL");
-        
-        let finalPred = "SMALL";
-        let activeID = "algo-v10";
+        let pred = ""; let aid = "";
 
-        // --- 1. 3:3 STRATEGY LOGIC ---
-        // Checks for BBB-S- (expects S next) or SSS-B- (expects B next)
-        const is33Pattern = (bs[1] === bs[2] && bs[2] === bs[3]); // Previous 3 are same
-        const currentChanged = (bs[0] !== bs[1]); // Current one just broke the streak
-        
-        if (is33Pattern && currentChanged) {
-            finalPred = bs[0]; // Follow the new 3:3 trend
-            activeID = "algo-33";
+        // 1. 3:3 Pattern (Triple Triple)
+        if ((bs[1] === bs[2] && bs[2] === bs[3]) && (bs[0] !== bs[1])) {
+            pred = bs[0]; aid = "a-33";
         }
-        // --- 2. DRAGON ---
+        // 2. Dragon (Lambi Line)
         else if (bs[0] === bs[1] && bs[1] === bs[2]) {
-            finalPred = bs[0]; activeID = "algo-dragon";
+            pred = bs[0]; aid = "a-dragon";
         }
-        // --- 3. MIRROR ---
+        // 3. Mirror (Pichle ka Mirror)
         else if (bs[0] === bs[2]) {
-            finalPred = bs[0]; activeID = "algo-mirror";
+            pred = bs[0]; aid = "a-mirror";
         }
-        // --- 4. OPPOSITE ---
+        // 4. Opposite (ZigZag)
+        else if (bs[0] !== bs[1]) {
+            pred = (bs[0] === "BIG") ? "SMALL" : "BIG"; aid = "a-opposite";
+        }
+        // 5. Balance (10-round Ratio)
         else {
-            finalPred = bs[0] === "BIG" ? "SMALL" : "BIG";
-            activeID = "algo-v10";
+            const sum5 = nums.slice(0, 5).reduce((a, b) => a + b, 0);
+            const bigs = bs.slice(0, 10).filter(x => x === "BIG").length;
+            
+            if (bigs > 6) { pred = "SMALL"; aid = "a-balance"; }
+            else if (sum5 > 22) { pred = "SMALL"; aid = "a-quantum"; }
+            else { 
+                // BOSS V10 CORE
+                pred = (nums[0] % 2 === 0) ? "SMALL" : "BIG";
+                aid = "a-v10";
+            }
         }
 
-        // UI UPDATE
-        const pBox = document.getElementById('prediction');
-        pBox.innerText = finalPred;
-        pBox.className = "prediction-text " + (finalPred === "BIG" ? "big-anim" : "small-anim");
+        // UI Update
+        const pTxt = document.getElementById('prediction');
+        pTxt.innerText = pred;
+        pTxt.className = "pred-text " + (pred === "BIG" ? "big-anim" : "small-anim");
         
-        document.querySelectorAll('.algo-item').forEach(el => el.classList.remove('algo-active'));
-        document.getElementById(activeID).classList.add('algo-active');
+        document.querySelectorAll('.algo-box').forEach(el => el.classList.remove('algo-active'));
+        document.getElementById(aid).classList.add('algo-active');
 
-        const balls = finalPred === "BIG" ? [7, 8] : [2, 3];
-        document.getElementById('ballsRow').innerHTML = `<div class="ball ball-active">${balls[0]}</div><div class="ball ball-active">${balls[1]}</div>`;
+        const targets = pred === "BIG" ? [7, 9] : [2, 4];
+        document.getElementById('balls').innerHTML = `<div class="ball ball-active">${targets[0]}</div><div class="ball ball-active">${targets[1]}</div>`;
 
-        localLog.unshift({ period: nextP, pred: finalPred, res: "WAIT" });
+        log.unshift({ period: nextP, pred: pred, res: "WAIT" });
     }
 
-    function renderHistory() {
-        const cont = document.getElementById('historyList');
-        cont.innerHTML = localLog.slice(0, 5).map(h => `
-            <div style="background:#111; padding:12px; border-radius:10px; display:flex; justify-content:space-between; margin:10px 20px; border-left:4px solid ${h.res==='WIN'?'#00e676':'#ff1744'}">
+    function renderH() {
+        document.getElementById('hList').innerHTML = log.slice(0, 5).map(h => `
+            <div class="h-card" style="border-left-color:${h.res==='WIN'?'#00e676':'#ff1744'}">
                 <div>#${h.period.slice(-3)}</div>
                 <div style="font-weight:bold; color:${h.pred==='BIG'?'#00e676':'#00b0ff'}">${h.pred}</div>
                 <div>${h.res === 'WIN' ? '✅ WIN' : (h.res === 'LOSS' ? '❌ LOSS' : '⏳')}</div>
@@ -142,10 +149,10 @@
         const s = new Date().getSeconds();
         const rem = 60 - s;
         document.getElementById('timer').innerText = `00:${rem < 10 ? '0' : ''}${rem}`;
-        if (s === 1 || s % 5 === 0) fetchData();
+        if (s === 1 || s % 4 === 0) fetchLive();
     }, 1000);
 
-    fetchData();
+    fetchLive();
 </script>
 </body>
 </html>
