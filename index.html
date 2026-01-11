@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AHMAD BOSS V.10 - ULTIMATE</title>
+    <title>AHMAD BOSS V.10.2 - LIVE</title>
     <style>
         :root {
             --bg-color: #050505;
@@ -12,115 +12,44 @@
             --green: #00e676;
             --red: #ff1744;
             --blue: #00b0ff;
-            --gray: #888;
         }
 
-        body {
-            background-color: var(--bg-color);
-            color: white;
-            font-family: 'Segoe UI', Roboto, sans-serif;
-            margin: 0; padding: 0;
-            display: flex; justify-content: center;
-        }
+        body { background-color: var(--bg-color); color: white; font-family: sans-serif; margin: 0; display: flex; justify-content: center; }
+        .app-container { width: 100%; max-width: 450px; min-height: 100vh; background: #000; border: 1px solid #222; position: relative; }
+        
+        .header { background: #1a1a1a; padding: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--gold); }
+        .logo { font-size: 20px; font-weight: 900; color: var(--gold); }
+        .timer-box { background: #000; border: 1px solid var(--gold); padding: 5px 15px; border-radius: 50px; font-family: monospace; font-size: 20px; color: #fff; }
 
-        .app-container {
-            width: 100%; max-width: 450px;
-            min-height: 100vh;
-            background: #000;
-            border-left: 1px solid #222; border-right: 1px solid #222;
-            position: relative;
-        }
+        .main-card { background: var(--card-bg); margin: 20px; border-radius: 25px; padding: 30px 20px; text-align: center; border: 1px solid #222; }
+        .period-info { background: rgba(255,255,255,0.05); padding: 5px 20px; border-radius: 10px; font-size: 14px; color: #888; display: inline-block; }
+        .prediction-text { font-size: 80px; font-weight: 900; margin: 15px 0; line-height: 1; }
+        .big-anim { color: var(--green); text-shadow: 0 0 30px var(--green); }
+        .small-anim { color: var(--blue); text-shadow: 0 0 30px var(--blue); }
 
-        /* --- HEADER --- */
-        .header {
-            background: linear-gradient(180deg, #1a1a1a 0%, #000 100%);
-            padding: 20px;
-            display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 2px solid var(--gold);
-            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.2);
-        }
+        .algo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 25px; }
+        .algo-item { background: #080808; border: 1px solid #1a1a1a; padding: 12px 5px; border-radius: 6px; font-size: 9px; color: #444; font-weight: bold; }
+        .algo-active { border-color: var(--gold); color: var(--gold); background: rgba(212, 175, 55, 0.1); }
 
-        .logo { font-size: 22px; font-weight: 900; color: var(--gold); letter-spacing: 1px; }
-        .timer-box {
-            background: #000; border: 1px solid var(--gold);
-            padding: 5px 15px; border-radius: 50px;
-            font-family: 'Courier New', monospace; font-size: 20px;
-            color: #fff; box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
-        }
-
-        /* --- DASHBOARD --- */
-        .main-card {
-            background: var(--card-bg); margin: 20px; border-radius: 25px;
-            padding: 30px 20px; text-align: center;
-            border: 1px solid #222; box-shadow: inset 0 0 30px rgba(0,0,0,1);
-        }
-
-        .period-info {
-            background: rgba(255,255,255,0.05); padding: 5px 20px;
-            border-radius: 10px; border: 1px solid #333;
-            font-size: 14px; color: var(--gray); display: inline-block;
-        }
-
-        .prediction-text {
-            font-size: 85px; font-weight: 900; margin: 15px 0;
-            letter-spacing: -2px; line-height: 1;
-        }
-        .big-anim { color: var(--green); text-shadow: 0 0 40px rgba(0, 230, 118, 0.5); }
-        .small-anim { color: var(--blue); text-shadow: 0 0 40px rgba(0, 176, 255, 0.5); }
-
-        /* --- ALGO MATRIX --- */
-        .algo-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 25px;
-        }
-        .algo-item {
-            background: #080808; border: 1px solid #1a1a1a; padding: 12px 5px;
-            border-radius: 6px; font-size: 10px; font-weight: bold; color: #444;
-            transition: all 0.4s ease; text-transform: uppercase;
-        }
-        .algo-active { 
-            border-color: var(--gold); color: var(--gold); 
-            background: rgba(212, 175, 55, 0.1); box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
-        }
-
-        /* --- BALLS --- */
         .balls-row { display: flex; justify-content: center; gap: 20px; margin-top: 30px; }
-        .ball {
-            width: 60px; height: 60px; border-radius: 50%;
-            background: #000; border: 2px solid #222;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 26px; font-weight: bold; color: #222;
-            transition: 0.5s;
-        }
-        .ball-active { border-color: var(--gold); color: var(--gold); box-shadow: 0 0 20px var(--gold); }
+        .ball { width: 55px; height: 55px; border-radius: 50%; background: #000; border: 2px solid #222; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #222; font-weight: bold; }
+        .ball-active { border-color: var(--gold); color: var(--gold); box-shadow: 0 0 15px var(--gold); }
 
-        /* --- HISTORY --- */
-        .history-section { padding: 0 20px; }
-        .h-title { color: var(--gold); font-size: 14px; margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 5px; }
-        .h-card {
-            background: #111; padding: 15px; border-radius: 12px;
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 10px; border-left: 4px solid #333;
-        }
-        .win-bar { border-left-color: var(--green); }
-        .loss-bar { border-left-color: var(--red); }
-
-        /* --- STATUS --- */
-        .status-bar { text-align: center; font-size: 10px; color: #333; margin-top: 20px; }
-
+        .h-card { background: #111; padding: 12px; border-radius: 10px; display: flex; justify-content: space-between; margin: 10px 20px; border-left: 4px solid #333; }
     </style>
 </head>
 <body>
 
 <div class="app-container">
     <div class="header">
-        <div class="logo">AHMAD BOSS V.10</div>
+        <div class="logo">AHMAD BOSS V.10.2</div>
         <div class="timer-box" id="timer">00:00</div>
     </div>
 
     <div class="main-card">
-        <div class="period-info">PERIOD: <span id="periodDisplay" style="color:#fff">-------</span></div>
+        <div class="period-info">LIVE PERIOD: <span id="periodDisplay" style="color:#fff">FETCHING...</span></div>
         <div id="prediction" class="prediction-text">WAIT</div>
-        <div id="statusText" style="font-size:12px; color:var(--gray); margin-top:-10px;">Connecting to Server...</div>
+        <div id="statusText" style="font-size:11px; color:#555;">SYSTEM SYNCED</div>
 
         <div class="algo-grid">
             <div class="algo-item" id="algo-dragon">DRAGON</div>
@@ -137,12 +66,8 @@
         </div>
     </div>
 
-    <div class="history-section">
-        <div class="h-title">RECENT ACTIVITY (SOURCE LOG)</div>
-        <div id="historyList"></div>
-    </div>
-
-    <div class="status-bar">ENCRYPTION: AES-256 | SERVER: SG-W1 | STATUS: SECURE</div>
+    <div style="padding: 0 20px; color: var(--gold); font-size: 12px;">RECENT ACTIVITY</div>
+    <div id="historyList"></div>
 </div>
 
 <script>
@@ -150,100 +75,81 @@
     let lastP = "";
     let localLog = [];
 
-    // --- ALGO LOGIC (Screenshot Accurate) ---
+    // --- LIVE FETCH LOGIC ---
     async function fetchData() {
         try {
-            const r = await fetch(`${API_URL}?pageSize=20&ts=${Date.now()}`);
+            // Cache buster (Date.now) ensures we get the latest period
+            const r = await fetch(`${API_URL}?pageSize=10&ts=${Date.now()}`, { cache: "no-store" });
             const d = await r.json();
             const list = d.data.list;
             const currentP = list[0].issueNumber;
 
-            // 1. Result Milte hi History Update karein
+            // Update History for previous round
             if (localLog.length > 0 && localLog[0].period === currentP) {
                 const actual = parseInt(list[0].number) >= 5 ? "BIG" : "SMALL";
                 localLog[0].res = (actual === localLog[0].pred) ? "WIN" : "LOSS";
                 renderHistory();
             }
 
-            // 2. Naya Period Detect karein
+            // If period changed, generate next prediction
             if (currentP !== lastP) {
                 lastP = currentP;
-                processPrediction(list);
+                const nextP = (BigInt(currentP) + 1n).toString();
+                document.getElementById('periodDisplay').innerText = nextP;
+                processPrediction(list, nextP);
             }
-        } catch (e) { console.log("Reconnecting..."); }
+        } catch (e) { console.error("Sync Error"); }
     }
 
-    function processPrediction(list) {
-        const nextP = (parseInt(list[0].issueNumber) + 1).toString();
+    function processPrediction(list, nextP) {
         const nums = list.map(x => parseInt(x.number));
         const bs = nums.map(n => n >= 5 ? "BIG" : "SMALL");
 
-        let pred = "SMALL";
+        let pred = (nums[0] % 2 === 0) ? "BIG" : "SMALL"; // Simple logic fallback
         let activeID = "algo-v10";
 
-        // SCREENSHOT ALGORITHMS
-        if (bs[0] === bs[1] && bs[1] === bs[2]) {
-            pred = bs[0]; activeID = "algo-dragon";
-        } else if (bs[0] === bs[2]) {
-            pred = bs[0]; activeID = "algo-mirror";
-        } else if (bs[0] !== bs[1]) {
-            pred = (bs[0] === "BIG") ? "SMALL" : "BIG"; activeID = "algo-opposite";
-        }
+        // Screenshot Strategies
+        if (bs[0] === bs[1] && bs[1] === bs[2]) { pred = bs[0]; activeID = "algo-dragon"; }
+        else if (bs[0] === bs[2]) { pred = bs[0]; activeID = "algo-mirror"; }
+        else if (bs[0] !== bs[1]) { pred = (bs[0] === "BIG") ? "SMALL" : "BIG"; activeID = "algo-opposite"; }
 
-        // UPDATE UI
-        document.getElementById('periodDisplay').innerText = nextP;
-        const pBox = document.getElementById('prediction');
-        pBox.innerText = pred;
-        pBox.className = "prediction-text " + (pred === "BIG" ? "big-anim" : "small-anim");
-        document.getElementById('statusText').innerText = "AI PREDICTION GENERATED";
+        document.getElementById('prediction').innerText = pred;
+        document.getElementById('prediction').className = "prediction-text " + (pred === "BIG" ? "big-anim" : "small-anim");
 
-        // Highlight Active Algo
         document.querySelectorAll('.algo-item').forEach(el => el.classList.remove('algo-active'));
         document.getElementById(activeID).classList.add('algo-active');
 
-        // Jackpot Balls
         const balls = pred === "BIG" ? [6, 8] : [1, 3];
-        document.getElementById('ballsRow').innerHTML = `
-            <div class="ball ball-active">${balls[0]}</div>
-            <div class="ball ball-active">${balls[1]}</div>
-        `;
+        document.getElementById('ballsRow').innerHTML = `<div class="ball ball-active">${balls[0]}</div><div class="ball ball-active">${balls[1]}</div>`;
 
-        // Add to Local Log
         localLog.unshift({ period: nextP, pred: pred, res: "WAIT" });
     }
 
     function renderHistory() {
         const cont = document.getElementById('historyList');
-        cont.innerHTML = localLog.slice(0, 5).map(h => `
-            <div class="h-card ${h.res === 'WIN' ? 'win-bar' : (h.res === 'LOSS' ? 'loss-bar' : '')}">
-                <div style="font-size:12px; font-weight:bold">#${h.period.slice(-3)}</div>
-                <div style="font-weight:900; color:${h.pred==='BIG'?'var(--green)':'var(--blue)'}">${h.pred}</div>
-                <div style="font-size:11px; background:#000; padding:2px 8px; border-radius:4px">
-                    ${h.res === 'WIN' ? '✅ WIN' : (h.res === 'LOSS' ? '❌ LOSS' : '⏳ PENDING')}
-                </div>
+        cont.innerHTML = localLog.slice(0, 4).map(h => `
+            <div class="h-card" style="border-left-color:${h.res==='WIN'?'#00e676':'#ff1744'}">
+                <div style="font-size:12px;">#${h.period.slice(-3)}</div>
+                <div style="font-weight:bold; color:${h.pred==='BIG'?'#00e676':'#00b0ff'}">${h.pred}</div>
+                <div style="font-size:10px;">${h.res === 'WIN' ? '✅' : (h.res === 'LOSS' ? '❌' : '⏳')}</div>
             </div>
         `).join('');
     }
 
-    // --- TIMER & AUTO REFRESH ---
+    // --- SECONDS BASED SYNC ---
     setInterval(() => {
         const now = new Date();
-        const seconds = now.getSeconds();
-        const remaining = 60 - seconds;
-        
-        document.getElementById('timer').innerText = `00:${remaining < 10 ? '0' : ''}${remaining}`;
+        const s = now.getSeconds();
+        const rem = 60 - s;
+        document.getElementById('timer').innerText = `00:${rem < 10 ? '0' : ''}${rem}`;
 
-        // Har Minute ke start mein aur har 2 second par check karega data
-        if (remaining === 59 || remaining % 2 === 0) {
+        // Force fetch at crucial seconds
+        if (s === 1 || s === 58 || s % 5 === 0) {
             fetchData();
-        }
-        
-        if (remaining === 1) {
-            document.getElementById('statusText').innerText = "SYNCHRONIZING SERVER...";
         }
     }, 1000);
 
-    fetchData(); // Initial Call
+    fetchData();
 </script>
 </body>
 </html>
