@@ -3,52 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AHMAD BOSS V.12 - GHOST</title>
+    <title>AHMAD BOSS V.13 - SNAP LOGIC</title>
     <style>
         :root { --bg: #000; --gold: #d4af37; --win: #00e676; --blue: #00b0ff; }
-        body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; text-align: center; }
+        body { background: var(--bg); color: white; font-family: sans-serif; margin: 0; text-align: center; }
         .app { width: 100%; max-width: 450px; margin: auto; min-height: 100vh; border: 1px solid #222; }
         .header { background: #111; padding: 15px; border-bottom: 2px solid var(--gold); display: flex; justify-content: space-between; align-items: center; }
-        .card { background: #0a0a0a; margin: 15px; border-radius: 20px; padding: 30px 15px; border: 1px solid #333; box-shadow: 0 0 30px rgba(212,175,55,0.1); }
-        .period { font-size: 14px; color: #888; letter-spacing: 1px; }
-        .pred { font-size: 85px; font-weight: 900; margin: 10px 0; }
+        .card { background: #0a0a0a; margin: 15px; border-radius: 20px; padding: 35px 15px; border: 1px solid #333; box-shadow: 0 0 40px rgba(212,175,55,0.1); }
+        .pred { font-size: 90px; font-weight: 900; margin: 10px 0; }
         .big { color: var(--win); text-shadow: 0 0 30px var(--win); }
         .small { color: var(--blue); text-shadow: 0 0 30px var(--blue); }
-        .algo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 20px 0; }
-        .box { background: #000; border: 1px solid #222; padding: 10px 2px; border-radius: 5px; font-size: 9px; color: #444; }
-        .active { border-color: var(--gold); color: var(--gold); box-shadow: 0 0 10px var(--gold); }
-        .h-item { background: #111; padding: 12px; margin: 5px 15px; border-radius: 8px; display: flex; justify-content: space-between; border-left: 4px solid #333; }
+        .status-bar { font-size: 11px; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
+        .h-item { background: #111; padding: 12px; margin: 5px 15px; border-radius: 8px; display: flex; justify-content: space-between; font-size: 14px; }
+        .win-tag { color: var(--win); font-weight: bold; }
+        .loss-tag { color: #ff1744; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="app">
     <div class="header">
-        <div style="font-weight:900; color:var(--gold);">AHMAD BOSS V.12</div>
-        <div id="timer" style="font-family:monospace; font-size:20px;">00:00</div>
+        <div style="font-weight:900; color:var(--gold);">BOSS V.13 SNAP-LOGIC</div>
+        <div id="timer" style="font-family:monospace; font-size:22px;">00:00</div>
     </div>
 
     <div class="card">
-        <div class="period">PERIOD: <span id="pDisp" style="color:#fff">---</span></div>
+        <div class="status-bar" id="status">INITIALIZING SCANNER...</div>
+        <div style="color: #666; font-size: 12px;">TARGET PERIOD: <span id="pDisp" style="color:#fff">---</span></div>
         <div id="prediction" class="pred">...</div>
-        <div id="status" style="font-size:11px; color:var(--gold);">GHOST ENGINE: ACTIVE</div>
-
-        <div class="algo-grid">
-            <div class="box active" id="a1">DRAGON</div>
-            <div class="box active" id="a2">MIRROR</div>
-            <div class="box active" id="a3">3:3 STRAT</div>
-            <div class="box active" id="a4">OPPOSITE</div>
-            <div class="box active" id="a5">V12 CORE</div>
-            <div class="box active" id="a6">QUANTUM</div>
-        </div>
-
-        <div style="display: flex; justify-content: center; gap: 15px; margin-top: 20px;" id="balls">
-            <div style="width:50px; height:50px; border-radius:50%; border:2px solid #222; display:flex; align-items:center; justify-content:center; font-weight:bold; color:var(--gold);" id="b1">?</div>
-            <div style="width:50px; height:50px; border-radius:50%; border:2px solid #222; display:flex; align-items:center; justify-content:center; font-weight:bold; color:var(--gold);" id="b2">?</div>
+        
+        <div style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;" id="numbers">
+            <div style="width:40px; height:40px; border-radius:50%; border:1px solid #d4af37; display:flex; align-items:center; justify-content:center; color:var(--gold);" id="n1">?</div>
+            <div style="width:40px; height:40px; border-radius:50%; border:1px solid #d4af37; display:flex; align-items:center; justify-content:center; color:var(--gold);" id="n2">?</div>
         </div>
     </div>
 
-    <div style="text-align:left; padding:0 20px; font-size:12px; color:var(--gold);">LIVE HISTORY</div>
+    <div style="text-align:left; padding:0 20px; font-size:12px; color:var(--gold); font-weight: bold;">ADAPTIVE HISTORY</div>
     <div id="hList"></div>
 </div>
 
@@ -56,7 +46,7 @@
     const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json";
     let lastP = ""; let log = [];
 
-    async function ghostSync() {
+    async function fetchData() {
         try {
             const r = await fetch(`${API}?pageSize=10&ts=${Date.now()}`);
             const d = await r.json();
@@ -66,57 +56,63 @@
             if (log.length > 0 && log[0].period === currentP) {
                 const act = parseInt(list[0].number) >= 5 ? "BIG" : "SMALL";
                 log[0].res = (act === log[0].pred) ? "WIN" : "LOSS";
-                renderH();
+                updateHistory();
             }
 
             if (currentP !== lastP) {
                 lastP = currentP;
                 const nextP = (BigInt(currentP) + 1n).toString();
                 document.getElementById('pDisp').innerText = nextP;
-                predictGhost(list, nextP);
+                runSnapLogic(list, nextP);
             }
         } catch (e) {}
     }
 
-    function predictGhost(list, nextP) {
+    function runSnapLogic(list, nextP) {
         const nums = list.map(x => parseInt(x.number));
         const bs = nums.map(n => n >= 5 ? "BIG" : "SMALL");
-        
-        // GHOST RECOVERY LOGIC (1000% L2 Focus)
+        const statusBox = document.getElementById('status');
         let p = "";
-        
-        // Check if last round was a loss
-        let lastLoss = (log.length > 0 && log[0].res === "LOSS");
 
-        if (lastLoss) {
-            // INSTANT SWITCH: If L1 lost, server is trying to trap. Break the trap.
-            p = (bs[0] === "BIG") ? "SMALL" : "BIG"; 
-            document.getElementById('status').innerText = "RECOVERY MODE: ON";
-        } else {
-            // NORMAL HIGH-SPEED PATTERNS
-            if (bs[0] === bs[1]) p = bs[0]; // Trend
-            else if (bs[0] !== bs[1]) p = (bs[0] === "BIG") ? "SMALL" : "BIG"; // Zigzag
-            else p = (nums[0] % 2 === 0) ? "BIG" : "SMALL";
-            document.getElementById('status').innerText = "GHOST ENGINE: SCANNING";
+        // --- SNAP LOGIC ENGINE (THE RECOVERY SECRET) ---
+        
+        // 1. Check for Level 1 Loss
+        if (log.length > 0 && log[0].res === "LOSS") {
+            // SENSING MODE: Detect if Server is Zig-Zagging
+            if (bs[0] !== bs[1]) {
+                p = (bs[0] === "BIG") ? "SMALL" : "BIG"; // Logic Flip (Reverse)
+                statusBox.innerText = "SNAP: REVERSE STRATEGY (L2)";
+            } else {
+                p = bs[0]; // Logic Follow (Dragon Lock)
+                statusBox.innerText = "SNAP: TREND LOCK (L2)";
+            }
+        } 
+        // 2. Normal Stage 1 Prediction (High Frequency)
+        else {
+            // Number Gravity Logic
+            const sumLast2 = nums[0] + nums[1];
+            p = (sumLast2 % 2 === 0) ? "BIG" : "SMALL";
+            statusBox.innerText = "GHOST ENGINE: SCANNING";
         }
 
+        // --- UI UPDATES ---
         const pBox = document.getElementById('prediction');
         pBox.innerText = p;
         pBox.className = "pred " + (p === "BIG" ? "big" : "small");
         
-        const balls = p === "BIG" ? [6, 8] : [1, 3];
-        document.getElementById('b1').innerText = balls[0];
-        document.getElementById('b2').innerText = balls[1];
+        const targets = p === "BIG" ? [7, 9] : [2, 4];
+        document.getElementById('n1').innerText = targets[0];
+        document.getElementById('n2').innerText = targets[1];
 
         log.unshift({ period: nextP, pred: p, res: "WAIT" });
     }
 
-    function renderH() {
+    function updateHistory() {
         document.getElementById('hList').innerHTML = log.slice(0, 5).map(h => `
-            <div class="h-item" style="border-left-color:${h.res==='WIN'?'#00e676':'#ff1744'}">
+            <div class="h-item" style="border-left:4px solid ${h.res==='WIN'?'#00e676':'#ff1744'}">
                 <div>#${h.period.slice(-3)}</div>
                 <div style="font-weight:bold; color:${h.pred==='BIG'?'#00e676':'#00b0ff'}">${h.pred}</div>
-                <div>${h.res === 'WIN' ? '✅ WIN' : '❌ LOSS'}</div>
+                <div class="${h.res === 'WIN' ? 'win-tag' : 'loss-tag'}">${h.res}</div>
             </div>
         `).join('');
     }
@@ -125,9 +121,9 @@
         const s = new Date().getSeconds();
         const rem = 60 - s;
         document.getElementById('timer').innerText = `00:${rem < 10 ? '0' : ''}${rem}`;
-        if (s === 1 || s % 2 === 0) ghostSync();
+        if (s === 1 || s % 3 === 0) fetchData();
     }, 1000);
-    ghostSync();
+    fetchData();
 </script>
 </body>
 </html>
