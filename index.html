@@ -3,330 +3,383 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AHMAD V.9 - LEVEL 1 SURESHOT</title>
+    <title>AHMAD BOSS V.10 - ULTIMATE</title>
     <style>
         :root {
-            --gold: #ffcc00; /* Jackpot Color */
-            --green: #00ff41; /* Win Color */
-            --red: #ff3131; /* Loss/Big Color */
-            --blue: #00f3ff; /* Small Color */
-            --bg: #000000;
-            --panel: #111;
+            --bg-color: #0d0d0d;
+            --card-color: #1a1a1a;
+            --primary: #d4af37; /* Gold */
+            --win: #00e676;     /* Green */
+            --loss: #ff1744;    /* Red */
+            --text-main: #ffffff;
+            --text-sub: #888888;
         }
+
         body {
-            background-color: var(--bg);
-            color: white;
-            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0; padding: 0;
             display: flex; justify-content: center;
+            overflow-x: hidden; /* Prevent horizontal scroll */
         }
-        .app-container {
-            width: 100%; max-width: 480px;
+
+        .app-wrapper {
+            width: 100%; max-width: 450px;
             min-height: 100vh;
-            background: black;
-            padding-bottom: 80px; /* Space for bottom nav */
+            background: #000;
             position: relative;
+            padding-bottom: 70px; /* Space for bottom nav */
         }
 
-        /* HEADER */
-        .header {
-            padding: 20px;
-            background: linear-gradient(180deg, #1a1a1a 0%, #000 100%);
-            border-bottom: 2px solid var(--gold);
+        /* --- HEADER --- */
+        .top-header {
+            background: linear-gradient(180deg, #222 0%, #000 100%);
+            padding: 15px 20px;
+            border-bottom: 2px solid var(--primary);
             display: flex; justify-content: space-between; align-items: center;
-            box-shadow: 0 5px 20px rgba(255, 204, 0, 0.15);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
         }
-        .logo { font-size: 22px; font-weight: 900; color: var(--gold); letter-spacing: 1px; }
-        .timer-box { 
-            background: #222; padding: 5px 15px; border-radius: 50px; 
-            border: 1px solid var(--gold); font-size: 18px; font-weight: bold; color: white;
-        }
-
-        /* MAIN DASHBOARD */
-        .dashboard {
-            margin: 20px; padding: 25px;
-            background: var(--panel); border-radius: 25px;
-            border: 1px solid #333; text-align: center;
-            box-shadow: inset 0 0 30px rgba(0,0,0,0.8);
-            position: relative;
+        .brand-logo { font-size: 20px; font-weight: 900; color: var(--primary); letter-spacing: 1px; }
+        .countdown { 
+            background: #111; padding: 5px 12px; border-radius: 50px; 
+            border: 1px solid var(--primary); font-family: monospace; font-size: 18px; color: #fff;
         }
 
-        .period-tag {
-            background: #222; padding: 5px 15px; border-radius: 20px;
-            font-size: 13px; color: #888; display: inline-block; margin-bottom: 10px;
+        /* --- PAGES --- */
+        .page { display: none; padding: 15px; animation: fadein 0.3s; }
+        .active-page { display: block; }
+        @keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
+
+        /* --- MAIN DASHBOARD (HOME) --- */
+        .prediction-card {
+            background: var(--card-color); border-radius: 20px;
+            padding: 25px; text-align: center;
+            border: 1px solid #333;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+            margin-bottom: 20px;
         }
 
-        .prediction-text {
-            font-size: 75px; font-weight: 900; margin: 10px 0;
-            letter-spacing: -2px; text-transform: uppercase;
+        .period-badge {
+            background: #000; padding: 5px 15px; border-radius: 8px;
+            font-size: 13px; color: var(--text-sub); border: 1px solid #333;
+            display: inline-block; margin-bottom: 15px;
         }
 
-        /* SURESHOT BADGE */
-        .level-bar {
-            background: #1a1a1a; padding: 10px; border-radius: 10px;
-            display: flex; justify-content: space-between; align-items: center;
-            border: 1px solid #333; margin-bottom: 20px;
+        .result-text {
+            font-size: 80px; font-weight: 900; margin: 0;
+            line-height: 1; text-transform: uppercase;
+            text-shadow: 0 0 20px rgba(255,255,255,0.1);
         }
-        .badge { 
-            padding: 4px 12px; border-radius: 5px; font-size: 11px; font-weight: bold; color: black;
-        }
+        .text-big { color: var(--loss); text-shadow: 0 0 30px rgba(255, 23, 68, 0.4); }
+        .text-small { color: #00b0ff; text-shadow: 0 0 30px rgba(0, 176, 255, 0.4); }
 
-        /* JACKPOT 2 NUMBERS */
-        .jackpot-sec { margin-top: 10px; }
-        .jackpot-label { color: var(--gold); font-size: 10px; letter-spacing: 3px; margin-bottom: 8px; }
-        .numbers-row { display: flex; justify-content: center; gap: 15px; }
-        .num-ball {
-            width: 60px; height: 60px; border-radius: 15px;
-            background: #0f0f0f; border: 2px solid #333;
+        /* --- ALGORITHM MATRIX --- */
+        .algo-section { margin-top: 20px; }
+        .algo-title { font-size: 10px; color: var(--text-sub); text-align: left; margin-bottom: 5px; letter-spacing: 1px; }
+        .algo-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+        }
+        .algo-box {
+            background: #0d0d0d; border: 1px solid #222; padding: 8px;
+            font-size: 9px; text-align: center; border-radius: 4px; color: #555;
+            transition: 0.3s; font-weight: bold;
+        }
+        /* Active States for Algos */
+        .algo-active-green { border-color: var(--win); color: var(--win); background: rgba(0, 230, 118, 0.1); box-shadow: 0 0 5px var(--win); }
+        .algo-active-red { border-color: var(--loss); color: var(--loss); background: rgba(255, 23, 68, 0.1); box-shadow: 0 0 5px var(--loss); }
+
+        /* --- JACKPOT BALLS --- */
+        .balls-container {
+            display: flex; justify-content: center; gap: 15px; margin-top: 25px;
+        }
+        .ball {
+            width: 55px; height: 55px; border-radius: 50%;
+            background: #111; border: 2px solid #333;
             display: flex; align-items: center; justify-content: center;
-            font-size: 28px; font-weight: bold; color: white;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            font-size: 24px; font-weight: bold; color: white;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.5);
         }
-        .num-glow {
-            border-color: var(--gold); color: var(--gold);
-            box-shadow: 0 0 20px rgba(255, 204, 0, 0.4);
-        }
+        .ball.active { border-color: var(--primary); color: var(--primary); box-shadow: 0 0 15px var(--primary); }
 
-        /* HISTORY MODAL (Hidden by default) */
-        .history-panel {
-            display: none; padding: 15px;
+        /* --- HISTORY LIST --- */
+        .history-item {
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--card-color); padding: 15px; border-radius: 12px;
+            margin-bottom: 10px; border-left: 4px solid #333;
         }
-        .log-item {
-            display: flex; justify-content: space-between; padding: 15px;
-            background: #111; margin-bottom: 8px; border-radius: 10px;
-            border-left: 4px solid #333; font-size: 14px;
-        }
+        .h-period { font-size: 14px; font-weight: bold; }
+        .h-pred { font-weight: 900; }
+        .h-res { font-size: 12px; padding: 3px 8px; border-radius: 4px; background: #000; }
+        .win-border { border-left-color: var(--win); }
+        .loss-border { border-left-color: var(--loss); }
 
-        /* BOTTOM NAVIGATION (4 BUTTONS) */
+        /* --- BOTTOM NAVIGATION --- */
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; width: 100%;
-            background: #0a0a0a; border-top: 1px solid #333;
-            display: flex; justify-content: space-around; padding: 15px 0;
-            z-index: 100;
+            background: #111; border-top: 1px solid #333;
+            display: flex; justify-content: space-around;
+            padding: 10px 0; z-index: 1000;
         }
-        .nav-btn {
+        .nav-item {
             background: none; border: none; color: #666;
-            font-size: 10px; font-weight: bold; text-align: center;
-            cursor: pointer; width: 25%;
+            display: flex; flex-direction: column; align-items: center;
+            font-size: 10px; width: 25%; cursor: pointer;
         }
-        .nav-icon { font-size: 20px; display: block; margin-bottom: 5px; }
-        .active-nav { color: var(--gold); text-shadow: 0 0 10px var(--gold); }
+        .nav-icon { font-size: 22px; margin-bottom: 4px; }
+        .nav-active { color: var(--primary); }
 
-        /* Dynamic Colors */
-        .text-big { color: var(--red); text-shadow: 0 0 20px rgba(255, 49, 49, 0.5); }
-        .text-small { color: var(--blue); text-shadow: 0 0 20px rgba(0, 243, 255, 0.5); }
-        .win-border { border-left-color: var(--green); }
-        .loss-border { border-left-color: var(--red); }
-
-        @keyframes pulse { 0% {opacity:1} 50% {opacity:0.5} 100% {opacity:1} }
-        .blink { animation: pulse 0.8s infinite; }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    <div class="header">
-        <div class="logo">BOSS V.9</div>
-        <div class="timer-box" id="timer">00:00</div>
+<div class="app-wrapper">
+    <div class="top-header">
+        <div class="brand-logo">AHMAD BOSS V.10</div>
+        <div class="countdown" id="timer">00:00</div>
     </div>
 
-    <div id="page-home">
-        <div class="dashboard">
-            <div class="period-tag">PERIOD: <span id="pID">Wait...</span></div>
+    <div id="p-home" class="page active-page">
+        <div class="prediction-card">
+            <div class="period-badge">PERIOD: <span id="periodDisplay">LOADING...</span></div>
+            <div style="font-size:10px; color:#666; letter-spacing:2px; margin-bottom:5px;">AI DECISION</div>
             
-            <div id="pText" class="prediction-text">WAIT</div>
-            
-            <div class="level-bar">
-                <span style="font-size: 11px; color:#aaa;">STATUS:</span>
-                <span class="badge" id="lvlBadge" style="background:#333; color:white;">ANALYZING</span>
-            </div>
+            <div id="predResult" class="result-text">WAIT</div>
 
-            <div class="jackpot-sec">
-                <div class="jackpot-label">VIP JACKPOT NUMBERS</div>
-                <div class="numbers-row" id="numBox">
-                    <div class="num-ball">?</div>
-                    <div class="num-ball">?</div>
+            <div class="algo-section">
+                <div class="algo-title">ACTIVE ALGORITHM (SOURCE)</div>
+                <div class="algo-grid">
+                    <div class="algo-box" id="a-dragon">DRAGON</div>
+                    <div class="algo-box" id="a-mirror">MIRROR</div>
+                    <div class="algo-box" id="a-quantum">QUANTUM</div>
+                    <div class="algo-box" id="a-balance">BALANCE</div>
+                    <div class="algo-box" id="a-opp">OPPOSITE</div>
+                    <div class="algo-box" style="border:none;">AI CORE</div>
                 </div>
             </div>
-        </div>
 
-        <div style="text-align:center; color:#444; font-size:10px; margin-top:20px;">
-            AI AGENTS: DRAGON • MIRROR • QUANTUM • BALANCE • OPPOSITE
+            <div style="margin-top:20px; font-size:10px; color:var(--primary);">SURESHOT NUMBERS</div>
+            <div class="balls-container" id="jackpotBalls">
+                <div class="ball">?</div>
+                <div class="ball">?</div>
+            </div>
+        </div>
+        
+        <div style="text-align:center; color:#444; font-size:10px;">
+            SYSTEM STATUS: ONLINE | LEVEL 1 PROTECTION ACTIVE
         </div>
     </div>
 
-    <div id="page-history" class="history-panel">
-        <h3 style="color:white; border-bottom:1px solid #333; padding-bottom:10px;">WINNING LOGS</h3>
-        <div id="historyLogs"></div>
+    <div id="p-activity" class="page">
+        <h2 style="color:white; text-align:center;">ACTIVITY LOG</h2>
+        <p style="color:#666; text-align:center;">No recent events.</p>
+    </div>
+
+    <div id="p-history" class="page">
+        <h3 style="color:var(--primary); padding-bottom:10px; border-bottom:1px solid #333;">TRADE HISTORY</h3>
+        <div id="historyContainer">
+            <div style="text-align:center; color:#444; padding:20px;">Waiting for results...</div>
+        </div>
+    </div>
+
+    <div id="p-wallet" class="page">
+        <div style="background:#1a1a1a; padding:20px; border-radius:15px; text-align:center;">
+            <div style="color:#666; font-size:12px;">TOTAL PROFIT</div>
+            <div style="font-size:30px; font-weight:bold; color:var(--win);">$0.00</div>
+            <div style="font-size:10px; color:#444; margin-top:10px;">SESSION ID: AHMAD-V10-PRO</div>
+        </div>
     </div>
 
     <div class="bottom-nav">
-        <button class="nav-btn active-nav" onclick="switchPage('home', this)">
+        <button class="nav-item nav-active" onclick="changeTab('p-home', this)">
             <span class="nav-icon">🏠</span> HOME
         </button>
-        <button class="nav-btn" onclick="alert('VIP Membership Required for Graph')">
-            <span class="nav-icon">📈</span> GRAPH
+        <button class="nav-item" onclick="changeTab('p-activity', this)">
+            <span class="nav-icon">📊</span> GRAPH
         </button>
-        <button class="nav-btn" onclick="switchPage('history', this)">
+        <button class="nav-item" onclick="changeTab('p-wallet', this)">
+            <span class="nav-icon">💰</span> WALLET
+        </button>
+        <button class="nav-item" onclick="changeTab('p-history', this)">
             <span class="nav-icon">📜</span> HISTORY
-        </button>
-        <button class="nav-btn" onclick="alert('Settings Locked')">
-            <span class="nav-icon">⚙️</span> SETUP
         </button>
     </div>
 </div>
 
 <script>
-    const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json";
-    let lastProcessed = -1;
-    let myHistory = [];
+    const API_URL = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json";
     
-    // --- 5 ALGORITHM CORE ---
-    // (Dragon, Opposite, Balance, Quantum, Mirror)
-    // 100% Same Logic as V5 but stricter for Level 1
-    
-    async function runBot() {
-        try {
-            const r = await fetch(`${API}?pageSize=20&ts=${Date.now()}`);
-            const d = await r.json();
-            const list = d.data.list;
-            
-            checkResult(list[0]);
-            
-            const currentId = parseInt(list[0].issueNumber);
-            if(currentId > lastProcessed) {
-                lastProcessed = currentId;
-                generatePrediction(list);
-            }
-        } catch(e) { console.log("Syncing..."); }
+    // Internal Memory
+    let lastProcessedPeriod = -1;
+    let localHistory = []; // Stores {id, pred, win}
+
+    // --- NAVIGATION LOGIC ---
+    function changeTab(pageId, btnElement) {
+        // Hide all pages
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
+        // Show selected page
+        document.getElementById(pageId).classList.add('active-page');
+        
+        // Update Bottom Nav Colors
+        document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('nav-active'));
+        btnElement.classList.add('nav-active');
     }
 
-    function generatePrediction(list) {
-        const nextId = parseInt(list[0].issueNumber) + 1;
-        const nums = list.map(i => parseInt(i.number));
-        const types = nums.map(n => n >= 5 ? "BIG" : "SMALL");
+    // --- MAIN ENGINE ---
+    async function runAhmadBoss() {
+        try {
+            const response = await fetch(`${API_URL}?pageSize=20&ts=${Date.now()}`);
+            const data = await response.json();
+            const list = data.data.list;
+            
+            // 1. Check Win/Loss for previous prediction
+            checkWinLoss(list[0]);
 
-        // 1. VOTING ENGINE
+            // 2. Generate New Prediction if new period
+            const currentPeriod = parseInt(list[0].issueNumber);
+            if(currentPeriod > lastProcessedPeriod) {
+                lastProcessedPeriod = currentPeriod;
+                predictNext(list);
+            }
+        } catch(e) {
+            console.log("Connecting...");
+        }
+    }
+
+    function predictNext(list) {
+        const nextPeriod = parseInt(list[0].issueNumber) + 1;
+        const numbers = list.map(i => parseInt(i.number));
+        const types = numbers.map(n => n >= 5 ? "BIG" : "SMALL");
+
+        // --- 5 ALGORITHM LOGIC ---
         let votes = { BIG: 0, SMALL: 0 };
-        
-        // Dragon (Streak > 2)
+        let activeAlgos = []; // Tracks which algo voted for the winner
+
+        // 1. Dragon (Trend > 2)
         let streak = 1;
         for(let i=0; i<3; i++) { if(types[i] === types[i+1]) streak++; else break; }
-        if(streak >= 2) votes[types[0]] += 1.5; // Heavy weight to trend
-
-        // Opposite (ZigZag)
-        if(streak === 1) votes[types[0]==="BIG"?"SMALL":"BIG"] += 1.2;
-
-        // Mirror (A-B-A)
-        if(types[0] === types[2]) votes[types[0]] += 1;
-
-        // Balance & Quantum (Math)
-        const bigCount = types.slice(0,10).filter(x=>x==="BIG").length;
-        votes[bigCount > 5 ? "SMALL" : "BIG"] += 0.8;
-        
-        // Final Calc
-        const pred = votes.BIG > votes.SMALL ? "BIG" : "SMALL";
-        const confidence = votes[pred]; // Max approx 4.5
-
-        // 2. LEVEL LOGIC
-        // If confidence > 3, it's a Level 1 Sureshot
-        // If last result was loss, force Level 2
-        let level = 1;
-        let isSureshot = confidence > 2.5;
-        
-        if(myHistory.length > 0 && !myHistory[0].win) {
-            level = 2; // Recovery Mode
-            isSureshot = true; // Level 2 is always fixed sureshot
+        if(streak >= 2) { 
+            votes[types[0]] += 1.5; 
+            activeAlgos.push({name: 'dragon', vote: types[0]});
         }
 
-        // 3. GENERATE 2 JACKPOT NUMBERS
-        // Pick top 2 most frequent numbers matching the prediction
-        const targetRange = pred === "BIG" ? [5,6,7,8,9] : [0,1,2,3,4];
-        let numCounts = {};
-        nums.forEach(n => { if(targetRange.includes(n)) numCounts[n] = (numCounts[n]||0)+1; });
-        // Sort by frequency
-        let bestNums = targetRange.sort((a,b) => (numCounts[b]||0) - (numCounts[a]||0)).slice(0, 2);
+        // 2. Mirror (Pattern A-B-A)
+        if(types[0] === types[2]) {
+            votes[types[0]] += 1.2;
+            activeAlgos.push({name: 'mirror', vote: types[0]});
+        }
 
-        updateUI(nextId, pred, level, isSureshot, bestNums);
+        // 3. Opposite (ZigZag)
+        if(streak === 1) {
+            const opp = types[0] === "BIG" ? "SMALL" : "BIG";
+            votes[opp] += 1.0;
+            activeAlgos.push({name: 'opp', vote: opp});
+        }
+
+        // 4. Balance (Last 10 count)
+        const bigs = types.slice(0,10).filter(t => t === "BIG").length;
+        const balVote = bigs > 5 ? "SMALL" : "BIG";
+        votes[balVote] += 0.8;
+        activeAlgos.push({name: 'balance', vote: balVote});
+
+        // 5. Quantum (Num Sum)
+        const sum = numbers.slice(0,5).reduce((a,b)=>a+b,0);
+        const qVote = sum > 22 ? "SMALL" : "BIG";
+        votes[qVote] += 0.9;
+        activeAlgos.push({name: 'quantum', vote: qVote});
+
+        // FINAL DECISION
+        const prediction = votes.BIG > votes.SMALL ? "BIG" : "SMALL";
         
-        myHistory.unshift({ id: nextId, pred: pred, win: null, level: level });
+        // Select 2 Jackpot Numbers
+        const range = prediction === "BIG" ? [5,6,7,8,9] : [0,1,2,3,4];
+        const bestNums = range.sort(() => 0.5 - Math.random()).slice(0, 2);
+
+        // UI UPDATE
+        updateUI(nextPeriod, prediction, bestNums, activeAlgos);
+
+        // Store for History
+        localHistory.unshift({
+            id: nextPeriod,
+            pred: prediction,
+            win: null // Will be set next round
+        });
     }
 
-    function updateUI(id, pred, level, isSure, nums) {
-        document.getElementById('pID').innerText = id.toString().slice(-4);
+    function updateUI(period, pred, nums, activeAlgos) {
+        document.getElementById('periodDisplay').innerText = period;
         
-        const pText = document.getElementById('pText');
-        pText.innerText = pred;
-        
-        const badge = document.getElementById('lvlBadge');
-        if(level === 2) {
-            badge.innerText = "⚡ LEVEL 2 FIXED RECOVERY";
-            badge.style.background = "#ff3131";
-            badge.className = "badge blink";
-        } else if(isSure) {
-            badge.innerText = "🔥 LEVEL 1 SURESHOT";
-            badge.style.background = "#00ff41";
-            badge.className = "badge";
-        } else {
-            badge.innerText = "LEVEL 1 (NORMAL)";
-            badge.style.background = "#ffcc00";
-            badge.className = "badge";
-        }
+        const resText = document.getElementById('predResult');
+        resText.innerText = pred;
 
-        // Colors
+        // Reset Algos
+        document.querySelectorAll('.algo-box').forEach(b => {
+            b.className = 'algo-box'; // remove active classes
+        });
+
+        // Highlight Active Algos
+        activeAlgos.forEach(algo => {
+            if(algo.vote === pred) {
+                const el = document.getElementById(`a-${algo.name}`);
+                if(el) el.classList.add(pred === "BIG" ? 'algo-active-green' : 'algo-active-red');
+            }
+        });
+
+        // Colors & Balls
         if(pred === "BIG") {
-            pText.className = "prediction-text text-big";
+            resText.className = "result-text text-big"; // Red for BIG in Wingo often
+            updateBalls(nums, 'var(--loss)'); // Red glow
         } else {
-            pText.className = "prediction-text text-small";
+            resText.className = "result-text text-small"; // Blue/Green for SMALL
+            updateBalls(nums, '#00b0ff'); // Blue glow
         }
+    }
 
-        // Jackpot Numbers
-        const numBox = document.getElementById('numBox');
-        numBox.innerHTML = `
-            <div class="num-ball num-glow">${nums[0]}</div>
-            <div class="num-ball num-glow">${nums[1]}</div>
+    function updateBalls(nums, color) {
+        const container = document.getElementById('jackpotBalls');
+        container.innerHTML = `
+            <div class="ball active" style="border-color:${color}; color:${color}; box-shadow:0 0 15px ${color}">${nums[0]}</div>
+            <div class="ball active" style="border-color:${color}; color:${color}; box-shadow:0 0 15px ${color}">${nums[1]}</div>
         `;
     }
 
-    function checkResult(item) {
-        const pid = parseInt(item.issueNumber);
-        const record = myHistory.find(x => x.id === pid);
-        
+    function checkWinLoss(latestItem) {
+        const pid = parseInt(latestItem.issueNumber);
+        const record = localHistory.find(r => r.id === pid);
+
         if(record && record.win === null) {
-            const actual = parseInt(item.number) >= 5 ? "BIG" : "SMALL";
-            const won = actual === record.pred;
-            record.win = won;
-            
-            const logs = document.getElementById('historyLogs');
-            logs.innerHTML = `
-                <div class="log-item ${won?'win-border':'loss-border'}">
-                    <div>#${pid}</div>
-                    <div style="font-weight:bold; color:${won?'#00ff41':'#ff3131'}">
-                        ${record.pred} ${won?'✅ WIN':'❌ LOSS'}
-                    </div>
-                    <div style="color:#666">[LVL ${record.level}]</div>
+            const actual = parseInt(latestItem.number) >= 5 ? "BIG" : "SMALL";
+            const isWin = actual === record.pred;
+            record.win = isWin;
+
+            // Update History Tab
+            const container = document.getElementById('historyContainer');
+            // Remove "Waiting" text if exists
+            if(container.innerText.includes("Waiting")) container.innerHTML = "";
+
+            const html = `
+                <div class="history-item ${isWin ? 'win-border' : 'loss-border'}">
+                    <div class="h-period">${pid}</div>
+                    <div class="h-pred" style="color:${record.pred==='BIG'?'#ff1744':'#00b0ff'}">${record.pred}</div>
+                    <div class="h-res">${isWin ? '✅ WIN' : '❌ LOSS'}</div>
                 </div>
-            ` + logs.innerHTML;
+            `;
+            container.insertAdjacentHTML('afterbegin', html);
         }
     }
 
-    // Nav Switcher
-    window.switchPage = function(page, btn) {
-        document.getElementById('page-home').style.display = page==='home'?'block':'none';
-        document.getElementById('page-history').style.display = page==='history'?'block':'none';
-        
-        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active-nav'));
-        btn.classList.add('active-nav');
-    }
-
-    // Timer
+    // Timer Logic
     setInterval(() => {
-        const s = new Date().getSeconds();
-        document.getElementById('timer').innerText = `00:${60-s<10?'0':''}${60-s}`;
-        if(60-s === 59) runBot();
+        const d = new Date();
+        const s = d.getSeconds();
+        const remaining = 60 - s;
+        document.getElementById('timer').innerText = `00:${remaining < 10 ? '0' : ''}${remaining}`;
+        if(remaining === 59) runAhmadBoss();
     }, 1000);
 
-    runBot();
+    // Start
+    runAhmadBoss();
+
 </script>
 </body>
 </html>
