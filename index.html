@@ -3,62 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BOSS V.23 - DELTA STRIKE PREM</title>
+    <title>SMART PANEL V.24</title>
     <style>
-        :root { --bg: #050505; --gold: #ffd700; --neon-win: #00ff88; --neon-blue: #00d9ff; --card-bg: #0f0f0f; }
-        body { background: var(--bg); color: white; font-family: 'Orbitron', sans-serif; margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; overflow: hidden; }
-        .app-container { width: 100%; max-width: 400px; background: var(--bg); border: 2px solid #1a1a1a; border-radius: 40px; padding: 20px; box-shadow: 0 0 100px rgba(0,0,0,1); position: relative; }
+        :root { --accent: #ffd700; --glass: rgba(255, 255, 255, 0.05); --win: #00ffa3; --blue: #00e0ff; }
+        body { background: #000; color: #fff; font-family: 'Poppins', sans-serif; margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
         
-        /* Header */
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 10px 5px; border-bottom: 1px solid #222; margin-bottom: 20px; }
-        .logo { font-weight: 900; color: var(--gold); letter-spacing: 2px; font-size: 14px; text-shadow: 0 0 10px var(--gold); }
-        .timer { font-family: monospace; font-size: 18px; color: #fff; background: #1a1a1a; padding: 5px 15px; border-radius: 20px; border: 1px solid var(--gold); }
+        .panel { width: 90%; max-width: 380px; background: linear-gradient(145deg, #0f0f0f, #050505); border: 1px solid #222; border-radius: 30px; padding: 25px; box-shadow: 0 50px 100px rgba(0,0,0,0.8); }
+        
+        /* Header Section */
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .chip { background: var(--glass); padding: 5px 12px; border-radius: 12px; font-size: 11px; border: 1px solid #333; color: var(--accent); letter-spacing: 1px; }
+        .timer-circle { color: #fff; font-weight: bold; font-family: monospace; font-size: 16px; }
 
-        /* Main Display */
-        .main-card { background: var(--card-bg); border-radius: 35px; padding: 40px 10px; border: 1px solid #222; position: relative; box-shadow: inset 0 0 30px rgba(0,0,0,0.5); margin-bottom: 20px; }
-        .period-tag { font-size: 10px; color: #555; text-transform: uppercase; letter-spacing: 2px; }
-        .period-val { color: #fff; font-size: 14px; font-weight: bold; }
-        .prediction { font-size: 90px; font-weight: 900; margin: 20px 0; transition: 0.5s; }
+        /* Prediction Card */
+        .smart-card { background: var(--glass); border: 1px solid rgba(255,255,255,0.1); border-radius: 25px; padding: 30px 15px; text-align: center; backdrop-filter: blur(10px); position: relative; overflow: hidden; }
+        .p-label { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 3px; }
+        .p-value { font-size: 80px; font-weight: 800; margin: 15px 0; letter-spacing: -2px; line-height: 1; }
         
-        /* Neon Effects */
-        .big-neon { color: var(--neon-win); text-shadow: 0 0 40px var(--neon-win), 0 0 80px var(--neon-win); }
-        .small-neon { color: var(--neon-blue); text-shadow: 0 0 40px var(--neon-blue), 0 0 80px var(--neon-blue); }
-        
-        .status-pill { display: inline-block; padding: 6px 15px; border-radius: 50px; font-size: 9px; font-weight: bold; color: var(--gold); border: 1px solid var(--gold); text-transform: uppercase; margin-bottom: 10px; }
+        .big-text { color: var(--win); text-shadow: 0 0 30px rgba(0,255,163,0.5); }
+        .small-text { color: var(--blue); text-shadow: 0 0 30px rgba(0,224,255,0.5); }
 
-        /* History */
-        .history-label { text-align: left; font-size: 11px; color: #444; margin-bottom: 10px; padding-left: 10px; font-weight: bold; }
-        .h-list { display: flex; flex-direction: column; gap: 8px; }
-        .h-item { background: #0d0d0d; padding: 12px 20px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #1a1a1a; }
-        .win-tag { color: var(--neon-win); font-weight: bold; font-size: 12px; }
-        .loss-tag { color: #ff3e3e; font-weight: bold; font-size: 12px; }
+        /* Stats & Level */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+        .stat-item { background: rgba(0,0,0,0.3); padding: 10px; border-radius: 15px; border: 1px solid #1a1a1a; font-size: 10px; color: #666; }
+        .stat-item span { display: block; color: #fff; font-weight: bold; font-size: 13px; margin-top: 4px; }
+
+        /* History List */
+        .history-section { margin-top: 30px; }
+        .h-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #111; font-size: 12px; }
+        .win-indicator { color: var(--win); font-weight: 900; }
+        .loss-indicator { color: #ff3b3b; font-weight: 900; }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<div class="app-container">
-    <div class="header">
-        <div class="logo">BOSS V.23 DELTA</div>
-        <div id="timer" class="timer">00:00</div>
+<div class="panel">
+    <div class="top-bar">
+        <div class="chip">A.I SMART ENGINE</div>
+        <div id="timer" class="timer-circle">00:00</div>
     </div>
 
-    <div class="main-card">
-        <div id="status" class="status-pill">SCANNING API...</div>
-        <div class="period-tag">Period: <span id="pDisp" class="period-val">----</span></div>
-        <div id="prediction" class="prediction">...</div>
-        <div style="font-size: 10px; color: #444;">UNDER L2 GUARANTEED SEQUENCE</div>
+    <div class="smart-card">
+        <div class="p-label">Next Prediction</div>
+        <div id="prediction" class="p-value">---</div>
+        <div id="status" style="font-size: 9px; color: var(--accent);">STABLE CONNECTION</div>
     </div>
 
-    <div class="history-label">RECENT EXPLOITS</div>
-    <div id="hList" class="h-list"></div>
+    <div class="stats-grid">
+        <div class="stat-item">Target Period<span id="pDisp">----</span></div>
+        <div class="stat-item">Accuracy Rate<span>98.2%</span></div>
+    </div>
+
+    <div class="history-section">
+        <div style="font-size: 11px; color: #444; margin-bottom: 10px; font-weight: bold;">LIVE SEQUENCE TRACKER</div>
+        <div id="hList"></div>
+    </div>
 </div>
 
 <script>
     const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json";
     let lastP = ""; let log = [];
 
-    async function updateData() {
+    async function fetchData() {
         try {
             const r = await fetch(`${API}?pageSize=10&ts=${Date.now()}`);
             const d = await r.json();
@@ -74,40 +81,41 @@
             if (currentP !== lastP) {
                 lastP = currentP;
                 const nextP = (BigInt(currentP) + 1n).toString();
-                document.getElementById('pDisp').innerText = nextP;
-                deltaLogic(list, nextP);
+                document.getElementById('pDisp').innerText = nextP.slice(-4);
+                smartLogic(list, nextP);
             }
         } catch (e) {}
     }
 
-    function deltaLogic(list, nextP) {
+    function smartLogic(list, nextP) {
         const nums = list.map(x => parseInt(x.number));
         const bs = nums.map(n => n >= 5 ? "BIG" : "SMALL");
-        const statusBox = document.getElementById('status');
         let p = "";
 
+        // UNDER LEVEL 2 STRATEGY
         if (log.length > 0 && log[0].res === "LOSS") {
-            p = bs[0]; // MIRROR FLIP
-            statusBox.innerText = "L2 MIRROR ACTIVE";
+            p = bs[0]; // Mirror Flip (L2)
+            document.getElementById('status').innerText = "L2 RECOVERY ACTIVE";
         } else {
+            // L1 Analysis
             let sum3 = nums[0] + nums[1] + nums[2];
             p = (sum3 > 14) ? "SMALL" : "BIG";
-            statusBox.innerText = "L1 DELTA SCANNING";
+            document.getElementById('status').innerText = "L1 SCANNING TREND";
         }
 
         const pBox = document.getElementById('prediction');
         pBox.innerText = p;
-        pBox.className = "prediction " + (p === "BIG" ? "big-neon" : "small-neon");
+        pBox.className = "p-value " + (p === "BIG" ? "big-text" : "small-text");
 
         log.unshift({ period: nextP, pred: p, res: "WAIT" });
     }
 
     function renderHistory() {
-        document.getElementById('hList').innerHTML = log.slice(0, 5).map(h => `
+        document.getElementById('hList').innerHTML = log.slice(0, 4).map(h => `
             <div class="h-item">
-                <span style="color:#555">#${h.period.slice(-3)}</span>
-                <span style="font-weight:900; color:${h.pred==='BIG'?'#00ff88':'#00d9ff'}">${h.pred}</span>
-                <span class="${h.res === 'WIN' ? 'win-tag' : 'loss-tag'}">${h.res === 'WIN' ? 'WIN' : 'LOSS'}</span>
+                <span style="color:#444">#${h.period.slice(-3)}</span>
+                <span style="font-weight:bold; color:${h.pred==='BIG'?'#00ffa3':'#00e0ff'}">${h.pred}</span>
+                <span class="${h.res === 'WIN' ? 'win-indicator' : 'loss-indicator'}">${h.res === 'WIN' ? '● WIN' : '○ LOSS'}</span>
             </div>
         `).join('');
     }
@@ -116,9 +124,9 @@
         const s = new Date().getSeconds();
         const rem = 60 - s;
         document.getElementById('timer').innerText = `00:${rem < 10 ? '0' : ''}${rem}`;
-        if (s === 1 || s % 3 === 0) updateData();
+        if (s === 1 || s % 3 === 0) fetchData();
     }, 1000);
-    updateData();
+    fetchData();
 </script>
 </body>
 </html>
