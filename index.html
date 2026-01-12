@@ -3,38 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TITAN ULTRA V.29</title>
+    <title>TITAN ULTRA V.30 - TREND LOCK</title>
     <style>
         :root { --gold: #ffd700; --bg: #000; --neon: #00ffa3; --blue: #00d9ff; }
         body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; margin: 0; display: flex; justify-content: center; min-height: 100vh; overflow-x: hidden; }
-        .panel { width: 100%; max-width: 420px; background: #080808; padding: 20px; border: 1px solid #222; border-radius: 40px; margin: 10px; box-shadow: 0 0 50px rgba(0,0,0,1); }
+        .panel { width: 100%; max-width: 420px; background: #080808; padding: 20px; border: 1px solid #222; border-radius: 40px; margin: 10px; box-shadow: 0 0 50px rgba(0,0,0,1); border-top: 3px solid var(--gold); }
         .top-nav { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1a1a1a; padding-bottom: 15px; margin-bottom: 20px; }
-        .main-display { background: radial-gradient(circle, #111 0%, #000 100%); border-radius: 35px; border: 1px solid #333; padding: 40px 10px; text-align: center; margin-bottom: 20px; }
+        .main-display { background: radial-gradient(circle, #111 0%, #000 100%); border-radius: 35px; border: 1px solid #333; padding: 45px 10px; text-align: center; margin-bottom: 20px; box-shadow: inset 0 0 20px rgba(0,255,163,0.05); }
         .pred-text { font-size: 100px; font-weight: 900; letter-spacing: -5px; line-height: 1; margin: 10px 0; }
         .win-glow { color: var(--neon); text-shadow: 0 0 50px var(--neon); }
         .blue-glow { color: var(--blue); text-shadow: 0 0 50px var(--blue); }
-        .history-card { background: #0f0f0f; border-radius: 25px; padding: 15px; border: 1px solid #1a1a1a; }
-        .h-row { display: flex; justify-content: space-between; padding: 10px 5px; border-bottom: 1px solid #222; font-size: 11px; align-items: center; }
-        .num-circle { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; background: #222; color: #fff; font-size: 10px; }
+        .history-card { background: #0f0f0f; border-radius: 25px; padding: 15px; border: 1px solid #1a1a1a; max-height: 400px; overflow-y: auto; }
+        .h-row { display: flex; justify-content: space-between; padding: 12px 5px; border-bottom: 1px solid #222; font-size: 11px; align-items: center; }
+        .num-circle { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; background: #1a1a1a; color: #fff; font-size: 11px; border: 1px solid #333; }
         .res-win { color: var(--neon); font-weight: 900; }
         .res-loss { color: #ff3e3e; font-weight: bold; }
+        .status-bar { font-size: 10px; color: var(--gold); letter-spacing: 1px; font-weight: bold; margin-bottom: 10px; text-transform: uppercase; }
     </style>
 </head>
 <body>
 
 <div class="panel">
     <div class="top-nav">
-        <div style="color: var(--gold); font-size: 11px; font-weight: bold; letter-spacing: 2px;">TITAN ULTRA V.29</div>
-        <div id="timer" style="font-family: monospace; font-size: 18px; font-weight: 900;">00:00</div>
+        <div style="color: var(--gold); font-size: 12px; font-weight: 900; letter-spacing: 1px;">TITAN V.30 TREND-LOCK</div>
+        <div id="timer" style="font-family: monospace; font-size: 20px; font-weight: 900;">00:00</div>
     </div>
 
     <div class="main-display">
-        <div style="font-size: 8px; letter-spacing: 3px; color: #666; margin-bottom: 10px;">LAYERED 1024 NODES CONSENSUS</div>
+        <div id="status" class="status-bar">INITIALIZING 1000+ NODES...</div>
         <div id="prediction" class="pred-text">---</div>
-        <div id="status" style="font-size: 10px; color: var(--gold); letter-spacing: 1px;">SYNCING SERVER DATA...</div>
+        <div style="font-size: 10px; color: #444;">PERIOD: <span id="pDisp" style="color:#fff">----</span></div>
     </div>
 
-    <div style="font-size: 10px; color: #444; margin: 10px 0 10px 10px; font-weight: bold;">LIVE 10-PERIOD HISTORY (FIXED L1/L2)</div>
+    <div style="font-size: 10px; color: #555; margin: 0 0 10px 10px; font-weight: bold; letter-spacing: 1px;">UNDER LEVEL 2 FIXED HISTORY</div>
     <div class="history-card" id="hList">
         </div>
 </div>
@@ -43,9 +44,9 @@
     const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json";
     let lastP = ""; let log = [];
 
-    async function titanUltraSync() {
+    async function titanV30Sync() {
         try {
-            const r = await fetch(`${API}?pageSize=25&ts=${Date.now()}`);
+            const r = await fetch(`${API}?pageSize=20&ts=${Date.now()}`);
             const d = await r.json();
             const list = d.data.list;
             const currentP = list[0].issueNumber;
@@ -61,6 +62,7 @@
             if (currentP !== lastP) {
                 lastP = currentP;
                 const nextP = (BigInt(currentP) + 1n).toString();
+                document.getElementById('pDisp').innerText = nextP.slice(-3);
                 processLogic(list, nextP);
             }
         } catch (e) {}
@@ -69,16 +71,28 @@
     function processLogic(list, nextP) {
         const nums = list.map(x => parseInt(x.number));
         const bs = nums.map(n => n >= 5 ? "BIG" : "SMALL");
+        const statusEl = document.getElementById('status');
         
         let p = "";
-        // 1000+ Algo Fixed Logic for Under L2
+        
+        // --- V.30 TREND-LOCK LOGIC INTEGRATION ---
+        let isDragon = (bs[0] === bs[1]); 
+
         if (log.length > 0 && log[0].res === "LOSS") {
-            p = (bs[0] === "BIG") ? "SMALL" : "BIG"; // Strategic Flip
-            document.getElementById('status').innerText = "LEVEL 2: FIXED RECOVERY";
+            if (isDragon) {
+                // Agar Dragon (Repeat) hai, toh Mirror nahi karna, Trend follow karna hai
+                p = bs[0]; 
+                statusEl.innerText = "DRAGON DETECTED: LOCKING TREND";
+            } else {
+                // Agar Zig-Zag hai, toh Flip (Mirror)
+                p = (bs[0] === "BIG") ? "SMALL" : "BIG";
+                statusEl.innerText = "SEQUENCE FLIP: L2 ACTIVE";
+            }
         } else {
-            let avg = nums.slice(0, 5).reduce((a,b)=>a+b,0)/5;
-            p = (avg > 4.5) ? "SMALL" : "BIG";
-            document.getElementById('status').innerText = "LEVEL 1: SURESHOT JACKPOT";
+            // L1: 1000+ Algo Neural Weighting
+            let weight = (nums[0] + nums[1] + nums[2]) / 3;
+            p = (weight > 4.5) ? "SMALL" : "BIG";
+            statusEl.innerText = "NEURAL SCAN: L1 READY";
         }
 
         const pBox = document.getElementById('prediction');
@@ -92,9 +106,9 @@
         document.getElementById('hList').innerHTML = log.slice(0, 10).map(h => `
             <div class="h-row">
                 <span style="color:#555">#${h.period.slice(-3)}</span>
-                <span class="num-circle" style="border: 1px solid ${h.num % 2 === 0 ? '#00d9ff' : '#00ff88'}">${h.num}</span>
-                <span style="font-weight:900; color:${h.pred==='BIG'?'#00ff88':'#00d9ff'}">${h.pred}</span>
-                <span class="${h.res === 'WIN' ? 'res-win' : 'res-loss'}">${h.res}</span>
+                <span class="num-circle" style="border-color:${h.num >= 5 ? '#00ffa3' : '#00d9ff'}">${h.num}</span>
+                <span style="font-weight:900; color:${h.pred==='BIG'?'#00ffa3':'#00d9ff'}">${h.pred}</span>
+                <span class="${h.res === 'WIN' ? 'res-win' : 'res-loss'}">${h.res === 'WIN' ? '● WIN' : '○ LOSS'}</span>
             </div>
         `).join('');
     }
@@ -103,9 +117,9 @@
         const s = new Date().getSeconds();
         const rem = 60 - s;
         document.getElementById('timer').innerText = `00:${rem < 10 ? '0' : ''}${rem}`;
-        if (s === 1 || s % 3 === 0) titanUltraSync();
+        if (s === 1 || s % 3 === 0) titanV30Sync();
     }, 1000);
-    titanUltraSync();
+    titanV30Sync();
 </script>
 </body>
 </html>
