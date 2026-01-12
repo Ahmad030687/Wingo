@@ -3,49 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TITAN ULTRA V.30 - TREND LOCK</title>
+    <title>TITAN ULTRA V.31 - ANTI-TRACK</title>
     <style>
         :root { --gold: #ffd700; --bg: #000; --neon: #00ffa3; --blue: #00d9ff; }
         body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; margin: 0; display: flex; justify-content: center; min-height: 100vh; overflow-x: hidden; }
-        .panel { width: 100%; max-width: 420px; background: #080808; padding: 20px; border: 1px solid #222; border-radius: 40px; margin: 10px; box-shadow: 0 0 50px rgba(0,0,0,1); border-top: 3px solid var(--gold); }
+        .panel { width: 100%; max-width: 420px; background: #080808; padding: 20px; border: 1px solid #222; border-radius: 40px; margin: 10px; box-shadow: 0 0 50px rgba(0,0,0,1); border-top: 3px solid var(--neon); }
         .top-nav { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1a1a1a; padding-bottom: 15px; margin-bottom: 20px; }
-        .main-display { background: radial-gradient(circle, #111 0%, #000 100%); border-radius: 35px; border: 1px solid #333; padding: 45px 10px; text-align: center; margin-bottom: 20px; box-shadow: inset 0 0 20px rgba(0,255,163,0.05); }
+        .main-display { background: radial-gradient(circle, #111 0%, #000 100%); border-radius: 35px; border: 1px solid #333; padding: 45px 10px; text-align: center; margin-bottom: 20px; }
         .pred-text { font-size: 100px; font-weight: 900; letter-spacing: -5px; line-height: 1; margin: 10px 0; }
         .win-glow { color: var(--neon); text-shadow: 0 0 50px var(--neon); }
         .blue-glow { color: var(--blue); text-shadow: 0 0 50px var(--blue); }
-        .history-card { background: #0f0f0f; border-radius: 25px; padding: 15px; border: 1px solid #1a1a1a; max-height: 400px; overflow-y: auto; }
+        .history-card { background: #0f0f0f; border-radius: 25px; padding: 15px; border: 1px solid #1a1a1a; max-height: 450px; overflow-y: auto; }
         .h-row { display: flex; justify-content: space-between; padding: 12px 5px; border-bottom: 1px solid #222; font-size: 11px; align-items: center; }
-        .num-circle { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; background: #1a1a1a; color: #fff; font-size: 11px; border: 1px solid #333; }
+        .num-circle { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; background: #1a1a1a; color: #fff; border: 1px solid #333; }
         .res-win { color: var(--neon); font-weight: 900; }
         .res-loss { color: #ff3e3e; font-weight: bold; }
-        .status-bar { font-size: 10px; color: var(--gold); letter-spacing: 1px; font-weight: bold; margin-bottom: 10px; text-transform: uppercase; }
+        .status-bar { font-size: 10px; color: var(--gold); letter-spacing: 1px; font-weight: bold; text-transform: uppercase; margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
 <div class="panel">
     <div class="top-nav">
-        <div style="color: var(--gold); font-size: 12px; font-weight: 900; letter-spacing: 1px;">TITAN V.30 TREND-LOCK</div>
+        <div style="color: var(--gold); font-size: 12px; font-weight: 900;">TITAN V.31 ANTI-TRACK</div>
         <div id="timer" style="font-family: monospace; font-size: 20px; font-weight: 900;">00:00</div>
     </div>
 
     <div class="main-display">
-        <div id="status" class="status-bar">INITIALIZING 1000+ NODES...</div>
+        <div id="status" class="status-bar">BYPASSING SERVER TRACKING...</div>
         <div id="prediction" class="pred-text">---</div>
-        <div style="font-size: 10px; color: #444;">PERIOD: <span id="pDisp" style="color:#fff">----</span></div>
+        <div style="font-size: 10px; color: #444;">TARGET PERIOD: <span id="pDisp" style="color:#fff">----</span></div>
     </div>
 
-    <div style="font-size: 10px; color: #555; margin: 0 0 10px 10px; font-weight: bold; letter-spacing: 1px;">UNDER LEVEL 2 FIXED HISTORY</div>
-    <div class="history-card" id="hList">
-        </div>
+    <div style="font-size: 10px; color: #555; margin: 0 0 10px 10px; font-weight: bold;">LIVE SEQUENCE (UNDER L2 FIXED)</div>
+    <div class="history-card" id="hList"></div>
 </div>
 
 <script>
     const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json";
     let lastP = ""; let log = [];
 
-    async function titanV30Sync() {
+    async function antiTrackSync() {
         try {
+            // Random delay to bypass server tracking (Jitter)
+            const jitter = Math.floor(Math.random() * 1000);
+            await new Promise(r => setTimeout(r, jitter));
+
             const r = await fetch(`${API}?pageSize=20&ts=${Date.now()}`);
             const d = await r.json();
             const list = d.data.list;
@@ -75,30 +78,32 @@
         
         let p = "";
         
-        // --- V.30 TREND-LOCK LOGIC INTEGRATION ---
-        let isDragon = (bs[0] === bs[1]); 
+        // --- V.31 ANTI-TRAP LOGIC INTEGRATION ---
+        let isDragon = (bs[0] === bs[1] && bs[1] === bs[2]); 
+        let isZigZag = (bs[0] !== bs[1] && bs[1] !== bs[2]);
 
         if (log.length > 0 && log[0].res === "LOSS") {
             if (isDragon) {
-                // Agar Dragon (Repeat) hai, toh Mirror nahi karna, Trend follow karna hai
-                p = bs[0]; 
-                statusEl.innerText = "DRAGON DETECTED: LOCKING TREND";
+                p = bs[0]; // Trend follow
+                statusEl.innerText = "DRAGON LOCK ACTIVE";
+            } else if (isZigZag) {
+                p = (bs[0] === "BIG") ? "SMALL" : "BIG"; // Continue ZigZag
+                statusEl.innerText = "ZIGZAG MIRROR ACTIVE";
             } else {
-                // Agar Zig-Zag hai, toh Flip (Mirror)
-                p = (bs[0] === "BIG") ? "SMALL" : "BIG";
-                statusEl.innerText = "SEQUENCE FLIP: L2 ACTIVE";
+                let bigs = nums.slice(0, 5).filter(n => n >= 5).length;
+                p = (bigs > 2) ? "SMALL" : "BIG"; 
+                statusEl.innerText = "VOLATILITY RECOVERY (L2)";
             }
         } else {
-            // L1: 1000+ Algo Neural Weighting
-            let weight = (nums[0] + nums[1] + nums[2]) / 3;
-            p = (weight > 4.5) ? "SMALL" : "BIG";
+            let sum = nums[0] + nums[1];
+            p = (sum > 9) ? "SMALL" : "BIG";
             statusEl.innerText = "NEURAL SCAN: L1 READY";
         }
 
         const pBox = document.getElementById('prediction');
         pBox.innerText = p;
         pBox.className = "pred-text " + (p === "BIG" ? "win-glow" : "blue-glow");
-
+        
         log.unshift({ period: nextP, pred: p, res: "WAIT", num: "?" });
     }
 
@@ -117,9 +122,9 @@
         const s = new Date().getSeconds();
         const rem = 60 - s;
         document.getElementById('timer').innerText = `00:${rem < 10 ? '0' : ''}${rem}`;
-        if (s === 1 || s % 3 === 0) titanV30Sync();
+        if (s === 1 || s % 4 === 0) antiTrackSync();
     }, 1000);
-    titanV30Sync();
+    antiTrackSync();
 </script>
 </body>
 </html>
