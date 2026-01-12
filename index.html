@@ -3,41 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BOSS V.19 - API EXPLOIT</title>
+    <title>BOSS V.20 - SEQUENCE BYPASS</title>
     <style>
-        :root { --bg: #050505; --gold: #ffd700; --win: #00ff88; --blue: #00d9ff; }
-        body { background: var(--bg); color: white; font-family: 'Courier New', monospace; margin: 0; text-align: center; }
-        .app { width: 100%; max-width: 450px; margin: auto; min-height: 100vh; border: 1px solid #1a1a1a; }
-        .header { background: #111; padding: 15px; border-bottom: 2px solid var(--gold); font-weight: 900; }
-        .main-card { background: #000; margin: 15px; border-radius: 20px; padding: 40px 10px; border: 1px solid #222; box-shadow: 0 0 30px rgba(0,255,136,0.1); }
-        .prediction { font-size: 110px; font-weight: 900; margin: 10px 0; }
-        .big { color: var(--win); text-shadow: 0 0 40px var(--win); }
-        .small { color: var(--blue); text-shadow: 0 0 40px var(--blue); }
-        .api-status { font-size: 10px; color: var(--gold); letter-spacing: 2px; margin-bottom: 10px; }
-        .h-row { background: #0a0a0a; margin: 5px 15px; padding: 12px; border-radius: 8px; display: flex; justify-content: space-between; border-bottom: 1px solid #1a1a1a; }
+        :root { --bg: #000; --gold: #ffd700; --win: #00ff88; --blue: #00d9ff; }
+        body { background: var(--bg); color: white; font-family: sans-serif; margin: 0; text-align: center; }
+        .app { width: 100%; max-width: 450px; margin: auto; min-height: 100vh; border: 1px solid #1a1a1a; position: relative; }
+        .header { background: #111; padding: 15px; border-bottom: 2px solid var(--gold); font-weight: 900; letter-spacing: 1px; }
+        .main-card { background: #080808; margin: 15px; border-radius: 25px; padding: 45px 10px; border: 1px solid #333; box-shadow: 0 0 40px rgba(0,255,136,0.1); position: relative; }
+        .prediction { font-size: 115px; font-weight: 900; margin: 10px 0; line-height: 1; }
+        .big { color: var(--win); text-shadow: 0 0 50px var(--win); }
+        .small { color: var(--blue); text-shadow: 0 0 50px var(--blue); }
+        .mode-indicator { background: #1a1a1a; padding: 6px 15px; border-radius: 50px; font-size: 10px; color: var(--gold); border: 1px solid var(--gold); display: inline-block; margin-bottom: 15px; }
+        .history-container { margin: 10px 20px; text-align: left; }
+        .h-row { background: #111; padding: 12px; border-radius: 12px; display: flex; justify-content: space-between; margin-bottom: 8px; border-left: 5px solid #333; }
+        .win-glow { border-left-color: var(--win) !important; box-shadow: inset 50px 0 20px -50px var(--win); }
+        .loss-glow { border-left-color: #ff1744 !important; }
     </style>
 </head>
 <body>
 
 <div class="app">
-    <div class="header" style="color:var(--gold)">BOSS V.19 API-EXPLOIT</div>
+    <div class="header" style="color:var(--gold)">BOSS V.20 SEQUENCE BYPASS</div>
     
     <div class="main-card">
-        <div class="api-status" id="status">CONNECTING TO SERVER API...</div>
-        <div style="color:#444; font-size:12px;">ACTIVE PERIOD: <span id="pDisp" style="color:#fff">----</span></div>
+        <div id="mode" class="mode-indicator">SEQUENCE DECODER: ACTIVE</div>
+        <div style="color:#555; font-size:12px;">TARGET PERIOD: <span id="pDisp" style="color:#fff">----</span></div>
         <div id="prediction" class="prediction">...</div>
-        <div id="timer" style="font-size:20px; color:var(--gold)">00:00</div>
+        <div id="timer" style="font-size:24px; font-family:monospace; color:var(--gold); margin-top:10px;">00:00</div>
     </div>
 
-    <div style="text-align:left; padding:0 20px; color:var(--gold); font-size:11px; font-weight:bold;">REAL-TIME EXPLOIT LOG (UNDER L2)</div>
-    <div id="hList"></div>
+    <div class="history-container">
+        <div style="color:var(--gold); font-size:11px; font-weight:bold; margin-bottom:10px; letter-spacing:1px;">BYPASS LOG (STRICT L2)</div>
+        <div id="hList"></div>
+    </div>
 </div>
 
 <script>
     const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json";
     let lastP = ""; let log = [];
 
-    async function exploitSync() {
+    async function sequenceSync() {
         try {
             const r = await fetch(`${API}?pageSize=20&ts=${Date.now()}`);
             const d = await r.json();
@@ -47,38 +52,41 @@
             if (log.length > 0 && log[0].period === currentP) {
                 const act = parseInt(list[0].number) >= 5 ? "BIG" : "SMALL";
                 log[0].res = (act === log[0].pred) ? "WIN" : "LOSS";
-                renderHistory();
+                renderH();
             }
 
             if (currentP !== lastP) {
                 lastP = currentP;
                 const nextP = (BigInt(currentP) + 1n).toString();
                 document.getElementById('pDisp').innerText = nextP;
-                runExploit(list, nextP);
+                bypassLogic(list, nextP);
             }
         } catch (e) {}
     }
 
-    function runExploit(list, nextP) {
+    function bypassLogic(list, nextP) {
         const nums = list.map(x => parseInt(x.number));
         const bs = nums.map(n => n >= 5 ? "BIG" : "SMALL");
+        const modeBox = document.getElementById('mode');
         let p = "";
 
-        // --- THE 24/7 UNDER L2 LOGIC ---
-        // Step 1: Check for Pattern Fatigue (The Secret)
-        let bigCount = nums.slice(0, 10).filter(n => n >= 5).length;
+        // --- THE "UNDER LEVEL 2" FIXED ENGINE (V.20) ---
         
-        // Step 2: Adaptive Flipping
-        if (log.length > 0 && log[0].res === "LOSS") {
-            // L2 FIX: If server cheated L1, mirror the current trend immediately
-            p = (bs[0] === "BIG") ? "BIG" : "SMALL"; 
-            document.getElementById('status').innerText = "RECOVERY: API MIRROR ACTIVE";
+        // Check if last round was a loss
+        let isL2 = (log.length > 0 && log[0].res === "LOSS");
+
+        if (isL2) {
+            // THE FLIP: If server broke L1, it's a Trap or a New Trend.
+            // Under L2 scripts follow the 'Reverse-Mirror'
+            p = (bs[0] === "BIG") ? "SMALL" : "BIG"; 
+            modeBox.innerText = "BYPASS: FLIP RECOVERY (L2)";
         } else {
-            // L1 FIXED: Probability Weighting
-            if (bigCount > 6) p = "SMALL";
-            else if (bigCount < 4) p = "BIG";
-            else p = (nums[0] % 2 === 0) ? "BIG" : "SMALL";
-            document.getElementById('status').innerText = "API EXPLOIT: STABLE";
+            // THE WEIGHT: Use API frequency for L1
+            let bigs = nums.slice(0, 12).filter(n => n >= 5).length;
+            if (bigs > 7) p = "SMALL";
+            else if (bigs < 5) p = "BIG";
+            else p = (nums[0] + nums[1] > 9) ? "SMALL" : "BIG";
+            modeBox.innerText = "BYPASS: SEQUENCE SYNC (L1)";
         }
 
         const pBox = document.getElementById('prediction');
@@ -88,12 +96,12 @@
         log.unshift({ period: nextP, pred: p, res: "WAIT" });
     }
 
-    function renderHistory() {
-        document.getElementById('hList').innerHTML = log.slice(0, 8).map(h => `
-            <div class="h-row" style="border-right: 3px solid ${h.res==='WIN'?'#00ff88':'#ff3e3e'}">
-                <span style="color:#555">#${h.period.slice(-3)}</span>
+    function renderH() {
+        document.getElementById('hList').innerHTML = log.slice(0, 6).map(h => `
+            <div class="h-row ${h.res==='WIN'?'win-glow':'loss-glow'}">
+                <span style="font-family:monospace; color:#666;">#${h.period.slice(-3)}</span>
                 <span style="font-weight:900; color:${h.pred==='BIG'?'#00ff88':'#00d9ff'}">${h.pred}</span>
-                <span style="color:${h.res==='WIN'?'#00ff88':'#ff3e3e'}">${h.res === 'WIN' ? 'WIN' : 'LOSS'}</span>
+                <span style="font-weight:bold; color:${h.res==='WIN'?'#00ff88':'#ff1744'}">${h.res}</span>
             </div>
         `).join('');
     }
@@ -102,9 +110,9 @@
         const s = new Date().getSeconds();
         const rem = 60 - s;
         document.getElementById('timer').innerText = `00:${rem < 10 ? '0' : ''}${rem}`;
-        if (s === 1 || s % 3 === 0) exploitSync();
+        if (s === 1 || s % 3 === 0) sequenceSync();
     }, 1000);
-    exploitSync();
+    sequenceSync();
 </script>
 </body>
 </html>
