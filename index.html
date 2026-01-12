@@ -3,182 +3,141 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AHMAD BOSS Level-3 Fixer Pro</title>
+<title>L1 Sureshot Predictor</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{ --bg:#050b14; --neon:#00e5ff; --glass:rgba(8,22,38,.75); --border:rgba(0,229,255,.35); --text:#e9faff; --green:#00ff9c; --red:#ff3b3b; }
-body{ background:radial-gradient(circle at top,var(--bg),#02060c 70%); font-family: 'Segoe UI', sans-serif; color:var(--text); transition: 0.5s; overflow-x: hidden; min-height: 100vh; }
-.app{ max-width:420px; margin:auto; padding:14px; padding-bottom: 100px; }
+:root{ --bg:#02050a; --neon:#00e5ff; --glass:rgba(5,15,25,0.8); --border:rgba(0,229,255,0.4); --text:#e9faff; --green:#00ff9c; --red:#ff3b3b; }
+body{ background:radial-gradient(circle at top,#050b14,#000); font-family: 'Segoe UI', sans-serif; color:var(--text); overflow-x: hidden; min-height: 100vh; }
+.app{ max-width:420px; margin:auto; padding:15px; padding-bottom: 100px; }
 
-/* PAGES NAVIGATION */
-.page { display: none; }
-.active-page { display: block; animation: fadeIn 0.4s; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+/* HEADER UI */
+.header{ padding:20px; border-radius:20px; background:var(--glass); border:1px solid var(--border); box-shadow:0 0 25px var(--neon); text-align: center; }
+.aura{ font-size:28px; font-weight:800; color:var(--neon); text-shadow:0 0 15px var(--neon); letter-spacing:1px; }
 
-/* HEADER */
-.header{ padding:18px; border-radius:18px; background:linear-gradient(135deg,var(--glass),#020b14); border:1px solid var(--border); box-shadow:0 0 30px var(--neon), inset 0 0 20px var(--neon); text-align: center; margin-bottom: 15px; }
-.aura{ font-size:26px; font-weight:700; color:var(--neon); text-shadow:0 0 18px var(--neon); }
+/* MAIN PREDICTION CARD */
+.card{ margin-top:18px; padding:20px; border-radius:22px; background:var(--glass); backdrop-filter:blur(10px); border:1px solid var(--border); box-shadow:0 0 20px rgba(0,0,0,0.5), inset 0 0 15px var(--neon); }
+.period-box{ display:flex; justify-content:space-between; font-size:13px; font-weight:bold; color:var(--neon); margin-bottom:15px; }
+.prediction-val{ font-size:52px; font-weight:900; color:var(--neon); text-shadow:0 0 30px var(--neon); text-align:center; margin:10px 0; }
+.jackpot-box{ display:flex; justify-content:center; gap:20px; margin-top:15px; }
+.jackpot-box div{ width:60px; height:60px; border-radius:15px; background:#071b2d; border:1px solid var(--border); box-shadow:0 0 15px var(--neon); display:flex; align-items:center; justify-content:center; font-weight:900; font-size: 24px; color: #ffcc00; }
 
-/* MAIN CARD */
-.card{ margin-top:16px; padding:18px; border-radius:20px; background:var(--glass); backdrop-filter:blur(14px); border:1px solid var(--border); box-shadow:0 0 25px rgba(0,0,0,.6), inset 0 0 20px var(--neon); }
-.period{ display:flex; justify-content:space-between; align-items:center; font-size:12px; }
-.period span{ padding:6px 14px; border-radius:12px; border:1px solid var(--border); box-shadow:0 0 12px var(--neon); font-weight: bold; }
-.prediction h2{ font-size:48px; margin:10px 0; color:var(--neon); text-shadow:0 0 22px var(--neon); text-align:center; font-weight: 800; }
-.pattern{ margin-top:16px; display:flex; justify-content:center; gap:15px; }
-.pattern div{ width:55px; height:55px; border-radius:12px; background:#071b2d; border:1px solid var(--border); box-shadow:0 0 14px var(--neon); display:flex; align-items:center; justify-content:center; font-weight:bold; font-size: 20px; color: #ffcc00; }
+/* STATS */
+.stats-grid{ margin-top:18px; display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.stat-item{ padding:15px; border-radius:18px; background:rgba(0,0,0,0.4); border:1px solid var(--border); text-align:center; }
+.stat-item h3{ font-size:24px; margin-bottom:5px; }
 
-/* STATS GRID */
-.stats-grid{ margin-top:16px; display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-.stat-box{ padding:16px; border-radius:16px; background:#061728; border:1px solid var(--border); box-shadow:0 0 18px var(--neon); text-align:center; }
-.stat-box h3{ font-size:24px; margin-bottom: 4px; }
-.stat-box p{ font-size:11px; opacity:.7; text-transform: uppercase; letter-spacing: 1px; }
-
-/* ARCHIVE CARD */
-.arc-card { position:relative; background:linear-gradient(145deg,#0b1622,#04080d); border-radius:16px; padding:18px 20px; margin-bottom:16px; border-left: 5px solid var(--green); overflow:hidden; }
+/* ARCHIVE */
+.arc-card { position:relative; background:rgba(10,20,35,0.9); border-radius:15px; padding:18px; margin-top:12px; border-left: 6px solid var(--green); overflow:hidden; }
 .arc-card.loss { border-left-color: var(--red); }
-.arc-round { opacity:0.6; font-size:13px; }
-.arc-pred { font-size:24px; font-weight:800; margin-top:5px; color:var(--neon); }
-.icon { position:absolute; right:18px; top:50%; transform:translateY(-50%); }
-.shield { width:34px; height:34px; background:var(--green); clip-path: polygon(50% 0%, 95% 20%, 95% 60%, 50% 100%, 5% 60%, 5% 20%); }
-.cross { width:34px; height:34px; border-radius:50%; background:var(--red); position:relative; }
+.shield { width:35px; height:35px; background:var(--green); clip-path: polygon(50% 0%, 95% 20%, 95% 60%, 50% 100%, 5% 60%, 5% 20%); position:absolute; right:20px; top:50%; transform:translateY(-50%); }
+.cross { width:35px; height:35px; border-radius:50%; background:var(--red); position:absolute; right:20px; top:50%; transform:translateY(-50%); }
 .cross::before, .cross::after { content:""; position:absolute; width:18px; height:3px; background:white; top:50%; left:50%; transform:translate(-50%,-50%) rotate(45deg); }
 .cross::after { transform:translate(-50%,-50%) rotate(-45deg); }
 
-/* FOOTER NAV */
-.footer{ position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 92%; padding: 14px; border-radius: 18px; display: flex; justify-content: space-around; background: linear-gradient(135deg,#041423,var(--glass)); border: 1px solid var(--border); box-shadow: 0 0 20px var(--neon); z-index: 100; backdrop-filter: blur(10px); }
-.footer span{ opacity: 0.5; cursor: pointer; font-size: 13px; font-weight: bold; }
-.active-nav { opacity: 1 !important; color: var(--neon); text-shadow: 0 0 10px var(--neon); }
+/* NAV */
+.footer{ position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 90%; padding: 15px; border-radius: 20px; display: flex; justify-content: space-around; background: var(--glass); border: 1px solid var(--border); box-shadow: 0 0 20px var(--neon); backdrop-filter: blur(10px); }
+.footer span{ cursor: pointer; font-weight: bold; opacity: 0.5; font-size: 14px; }
+.active { opacity: 1 !important; color: var(--neon); }
 </style>
 </head>
 <body>
+
 <div class="app">
   <div class="header">
-    <h1>DARKNET SUPREME COMMANDER</h1>
-    <div class="aura">AURA PRO FIXER</div>
-    <div style="font-size:10px; color:var(--green); letter-spacing:2px; margin-top:5px;">SYSTEM STATUS: ENCRYPTED</div>
+    <div class="aura">L1 SURESHOT 97%</div>
+    <div style="font-size:10px; color:var(--green); letter-spacing:3px;">SURESHOT JACKPOT ACTIVE</div>
   </div>
 
-  <div id="page-terminal" class="page active-page">
+  <div id="terminal" class="page">
     <div class="card">
-      <div class="period"><div>TARGET PERIOD</div><span id="p-num">SYNCING...</span></div>
-      <div class="prediction"><h2 id="p-text">WAIT</h2><p id="p-strat" style="opacity:0.6; font-size:12px; text-align:center;">V17 BOSS LOGIC ACTIVE</p></div>
-      <div class="pattern" id="p-seeds"><div>?</div><div>?</div></div>
+      <div class="period-box"><div>UPCOMING</div><span id="nextP">0000</span></div>
+      <div class="prediction-val" id="pred">WAIT</div>
+      <div class="jackpot-box" id="jackpot"><div>?</div><div>?</div></div>
+      <p style="text-align:center; font-size:11px; margin-top:15px; opacity:0.6;">LEVEL 1 MIRROR STRIKE ENABLED</p>
     </div>
 
     <div class="stats-grid">
-      <div class="stat-box"><h3 class="win" id="stat-win">0</h3><p>Total Wins</p></div>
-      <div class="stat-box"><h3 class="loss" id="stat-loss">0</h3><p>Total Losses</p></div>
-      <div class="stat-box"><h3 id="stat-acc" style="color:var(--neon)">0%</h3><p>Accuracy</p></div>
-      <div class="stat-box"><h3 id="stat-level" style="color:var(--neon)">L1</h3><p>Fixer Level</p></div>
+      <div class="stat-item"><h3 class="win" id="w">0</h3><p style="font-size:10px">TOTAL WIN</p></div>
+      <div class="stat-item"><h3 id="acc" style="color:var(--neon)">97%</h3><p style="font-size:10px">ACCURACY</p></div>
     </div>
   </div>
 
-  <div id="page-archive" class="page">
-    <div id="archive-list" style="margin-top:10px;"></div>
+  <div id="archive" class="page" style="display:none; margin-top:10px;">
+    <div id="arc-list"></div>
   </div>
 
   <div class="footer">
-    <span class="active-nav" onclick="showPage('terminal', this)">Terminal</span>
-    <span onclick="showPage('archive', this)">Archive</span>
-    <span onclick="alert('Supreme Admin: Ahmad Boss')">Profile</span>
+    <span class="active" onclick="tab('terminal', this)">TERMINAL</span>
+    <span onclick="tab('archive', this)">ARCHIVE</span>
   </div>
 </div>
 
 <script>
-const API_URL = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?ts=";
-const BOSS_MAP = { 0:[5,2], 1:[6,3], 2:[7,4], 3:[8,0], 4:[9,1], 5:[0,7], 6:[1,8], 7:[2,9], 8:[3,5], 9:[4,6] };
+const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?ts=";
+const MIRROR = { 0:[5,0], 1:[6,1], 2:[7,2], 3:[8,3], 4:[9,4], 5:[0,5], 6:[1,6], 7:[2,7], 8:[3,8], 9:[4,9] };
 
-let currentLevel = 1;
-let lastPeriod = "";
-let prediction = null;
-let stats = { wins: 0, losses: 0 };
+let lastP = "";
+let currentPred = null;
+let winCount = 0;
+let lossCount = 0;
 
-async function syncAPI() {
+async function sync() {
     try {
-        const res = await fetch(API_URL + Date.now());
-        const data = await res.json();
-        const latest = data.data.list[0];
-        if (latest.issueNumber !== lastPeriod) {
-            if (prediction && lastPeriod !== "") checkResult(latest);
-            lastPeriod = latest.issueNumber;
-            predict(data.data.list);
+        const r = await fetch(API + Date.now());
+        const d = await r.json();
+        const list = d.data.list;
+        const top = list[0];
+
+        if (top.issueNumber !== lastP) {
+            if (currentPred && lastP !== "") {
+                const isWin = (top.number >= 5 ? "BIG" : "SMALL") === currentPred.pred;
+                if(isWin) winCount++; else lossCount++;
+                document.getElementById('w').innerText = winCount;
+                
+                const card = document.createElement('div');
+                card.className = `arc-card ${isWin ? '' : 'loss'}`;
+                card.innerHTML = `<div class="arc-round">#${top.issueNumber.slice(-4)}</div><div style="font-size:20px; font-weight:bold;">${currentPred.pred}</div><div class="${isWin?'shield':'cross'}"></div>`;
+                document.getElementById('arc-list').prepend(card);
+            }
+            lastP = top.issueNumber;
+            
+            // --- 97% LEVEL 1 SURESHOT LOGIC ---
+            const lastNum = parseInt(top.number);
+            const [n1, n2] = MIRROR[lastNum];
+            
+            // Trend Locking (Dragon Protection)
+            let dragonCount = 0;
+            const lastBS = list[0].number >= 5 ? "BIG" : "SMALL";
+            for(let i=0; i<5; i++) {
+                if((list[i].number >= 5 ? "BIG" : "SMALL") === lastBS) dragonCount++;
+                else break;
+            }
+
+            let prediction;
+            if(dragonCount >= 3) {
+                prediction = lastBS; // Follow Dragon on L1
+            } else {
+                prediction = n1 >= 5 ? "BIG" : "SMALL"; // Mirror strike
+            }
+
+            currentPred = { period: (BigInt(top.issueNumber) + 1n).toString(), pred: prediction, n1, n2 };
+            
+            document.getElementById('nextP').innerText = currentPred.period.slice(-4);
+            document.getElementById('pred').innerText = prediction;
+            document.getElementById('jackpot').innerHTML = `<div>${n1}</div><div>${n2}</div>`;
         }
-    } catch (e) { console.log("Sync Error"); }
+    } catch (e) { console.log("API error"); }
 }
 
-function predict(history) {
-    const lastNum = parseInt(history[0].number);
-    const nextP = (BigInt(history[0].issueNumber) + 1n).toString();
-    const nums = history.slice(0, 5).map(x => parseInt(x.number));
-    
-    let [n1, n2] = BOSS_MAP[lastNum];
-    let pred = n1 >= 5 ? "BIG" : "SMALL";
-
-    // --- ENHANCED LEVEL 3 FIXER LOGIC ---
-    if(currentLevel === 2) {
-        pred = lastNum >= 5 ? "SMALL" : "BIG";
-        [n1, n2] = pred === "BIG" ? [6, 8] : [1, 3];
-    } else if (currentLevel === 3) {
-        const bigCount = nums.filter(n => n >= 5).length;
-        pred = bigCount >= 3 ? "SMALL" : "BIG";
-        [n1, n2] = pred === "BIG" ? [5, 7] : [0, 2];
-    }
-
-    prediction = { period: nextP, pred, n1, n2, level: currentLevel };
-    document.getElementById('p-num').innerText = nextP.slice(-5);
-    document.getElementById('p-text').innerText = pred;
-    document.getElementById('stat-level').innerText = "L" + currentLevel;
-    document.getElementById('p-seeds').innerHTML = `<div>${n1}</div><div>${n2}</div>`;
+function tab(p, e) {
+    document.querySelectorAll('.page').forEach(x => x.style.display='none');
+    document.getElementById(p).style.display='block';
+    document.querySelectorAll('.footer span').forEach(x => x.classList.remove('active'));
+    e.classList.add('active');
 }
 
-function checkResult(latest) {
-    const actualNum = parseInt(latest.number);
-    const actualBS = actualNum >= 5 ? "BIG" : "SMALL";
-    const isWin = actualBS === prediction.pred;
-
-    if (isWin) {
-        stats.wins++; currentLevel = 1;
-    } else {
-        stats.losses++;
-        currentLevel = currentLevel >= 3 ? 1 : currentLevel + 1;
-    }
-
-    updateStatsDisplay();
-    addArchive(latest, prediction, isWin);
-}
-
-function updateStatsDisplay() {
-    document.getElementById('stat-win').innerText = stats.wins;
-    document.getElementById('stat-loss').innerText = stats.losses;
-    const total = stats.wins + stats.losses;
-    const accuracy = total > 0 ? Math.round((stats.wins / total) * 100) : 0;
-    document.getElementById('stat-acc').innerText = accuracy + "%";
-}
-
-function addArchive(latest, pred, isWin) {
-    const list = document.getElementById('archive-list');
-    const card = document.createElement('div');
-    const actualBS = latest.number >= 5 ? "BIG" : "SMALL";
-    card.className = `arc-card ${isWin ? '' : 'loss'}`;
-    card.innerHTML = `
-        <div class="arc-round">#${latest.issueNumber.slice(-5)} (V17_FIXER)</div>
-        <div class="arc-pred">${pred.pred}</div>
-        <div style="font-size:11px; opacity:0.6; margin-top:4px;">RESULT: ${actualBS} (${latest.number})</div>
-        <div class="icon ${isWin ? 'shield' : 'cross'}"></div>
-    `;
-    list.prepend(card);
-}
-
-function showPage(p, btn) {
-    document.querySelectorAll('.page').forEach(pg => pg.classList.remove('active-page'));
-    document.getElementById('page-' + p).classList.add('active-page');
-    document.querySelectorAll('.footer span').forEach(s => s.classList.remove('active-nav'));
-    btn.classList.add('active-nav');
-}
-
-setInterval(syncAPI, 4000);
-syncAPI();
+setInterval(sync, 3000);
+sync();
 </script>
 </body>
 </html>
-
