@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Darknet Supreme V.5</title>
+    <title>Darknet V.7 (Auto-Bot)</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap');
 
@@ -12,11 +12,9 @@
             --neon-red: #ff003c;
             --neon-green: #0aff0a;
             --bg-deep: #050505;
-            --panel-bg: rgba(12, 18, 24, 0.9);
-            --border-glow: 0 0 10px rgba(0, 243, 255, 0.3);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
         
         body {
             background-color: var(--bg-deep);
@@ -24,377 +22,340 @@
             font-family: 'Share Tech Mono', monospace;
             overflow: hidden;
             height: 100vh;
-            background-image: radial-gradient(circle at 50% -20%, #1a2530 0%, #000 100%);
+            background-image: radial-gradient(circle at 50% 10%, #1a2530 0%, #000 100%);
         }
 
-        /* --- APP WRAPPER --- */
         .app-container {
             max-width: 480px; margin: 0 auto; height: 100%; display: flex; flex-direction: column;
-            position: relative; border-left: 1px solid #111; border-right: 1px solid #111;
+            border-left: 1px solid #111; border-right: 1px solid #111; position: relative;
         }
 
-        /* --- HEADER --- */
+        /* HEADER */
         .header {
-            padding: 15px; text-align: center;
-            background: rgba(0,0,0,0.6); backdrop-filter: blur(10px);
+            padding: 20px; text-align: center;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(0, 243, 255, 0.15);
             z-index: 10;
         }
-        .logo { 
-            font-family: 'Orbitron'; font-weight: 900; font-size: 1.3rem; 
-            color: var(--neon-blue); text-shadow: 0 0 15px var(--neon-blue); letter-spacing: 1px;
-        }
-        .logo-sub { font-size: 0.6rem; color: #888; letter-spacing: 3px; margin-top: 5px; text-transform: uppercase; }
-
-        /* --- MAIN SCROLL AREA --- */
-        .content { flex: 1; overflow-y: auto; padding: 15px; padding-bottom: 90px; }
-
-        .page { display: none; animation: fadeIn 0.3s ease; }
-        .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* --- INFO CARD --- */
-        .status-bar {
-            background: linear-gradient(90deg, rgba(0,0,0,0.8), rgba(0, 243, 255, 0.05), rgba(0,0,0,0.8));
-            border: 1px solid #222; border-radius: 8px; padding: 12px 20px;
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 20px;
-        }
-        .label { font-size: 0.6rem; color: #666; text-transform: uppercase; letter-spacing: 1px; display: block;}
-        .val { font-family: 'Orbitron'; font-size: 1.2rem; }
-        .timer { color: var(--neon-red); font-weight: bold; text-shadow: 0 0 5px var(--neon-red); }
-
-        /* --- 6 ALGORITHMS GRID --- */
-        .section-head { font-family: 'Orbitron'; font-size: 0.8rem; color: var(--neon-blue); margin-bottom: 10px; text-align: center; letter-spacing: 2px; }
+        .logo { font-family: 'Orbitron'; font-weight: 900; font-size: 1.4rem; color: var(--neon-blue); text-shadow: 0 0 15px var(--neon-blue); }
         
+        /* STATUS PILL (Running Indicator) */
+        .system-status {
+            display: inline-block; padding: 5px 15px; border-radius: 20px;
+            background: rgba(0, 243, 255, 0.1); border: 1px solid var(--neon-blue);
+            font-size: 0.6rem; color: var(--neon-blue); margin-top: 5px;
+            animation: pulseBlue 2s infinite;
+        }
+        @keyframes pulseBlue { 0% { box-shadow: 0 0 5px var(--neon-blue); } 50% { box-shadow: 0 0 15px var(--neon-blue); } 100% { box-shadow: 0 0 5px var(--neon-blue); } }
+
+        /* CONTENT */
+        .content { flex: 1; overflow-y: auto; padding: 15px; padding-bottom: 100px; }
+        .page { display: none; }
+        .page.active { display: block; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* TIMER CARD */
+        .timer-card {
+            background: linear-gradient(135deg, rgba(20,30,40,0.8), rgba(5,5,5,0.9));
+            border: 1px solid #333; border-radius: 10px; padding: 15px;
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;
+        }
+        .t-label { font-size: 0.6rem; color: #888; text-transform: uppercase; }
+        .t-val { font-family: 'Orbitron'; font-size: 1.2rem; margin-top: 2px; }
+        .t-red { color: var(--neon-red); font-weight: bold; }
+
+        /* ALGORITHM GRID */
         .algo-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 25px;
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 20px;
         }
+        .algo-item {
+            background: #0f1215; border: 1px solid #222; border-radius: 6px;
+            padding: 10px 5px; text-align: center; transition: 0.2s; position: relative;
+        }
+        .algo-icon { font-size: 1.2rem; display: block; margin-bottom: 5px; opacity: 0.5; }
+        .algo-name { font-size: 0.6rem; font-weight: bold; color: #555; }
+
+        /* Active/Scanning Styles */
+        .algo-item.active {
+            border-color: var(--neon-blue); background: rgba(0, 243, 255, 0.15);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2); transform: scale(1.05); z-index: 5;
+        }
+        .algo-item.active .algo-icon { opacity: 1; text-shadow: 0 0 10px white; }
+        .algo-item.active .algo-name { color: #fff; }
         
-        .algo-card {
-            background: rgba(255, 255, 255, 0.03); border: 1px solid #333; border-radius: 6px;
-            padding: 10px 5px; text-align: center; cursor: pointer; transition: 0.3s;
-            position: relative; overflow: hidden;
-        }
-        .algo-icon { font-size: 1.2rem; display: block; margin-bottom: 5px; opacity: 0.7; }
-        .algo-name { font-size: 0.6rem; color: #888; font-weight: bold; letter-spacing: 1px; }
+        .algo-item.scanning { background: #222; border-color: #555; }
 
-        /* Active State */
-        .algo-card.active {
-            border-color: var(--neon-blue);
-            background: rgba(0, 243, 255, 0.05);
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.15);
+        /* MAIN PREDICTION CIRCLE */
+        .pred-container {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            margin: 30px 0; position: relative;
         }
-        .algo-card.active .algo-icon { opacity: 1; transform: scale(1.1); text-shadow: 0 0 10px white; }
-        .algo-card.active .algo-name { color: white; }
-        .algo-card.active::after {
-            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; 
-            background: var(--neon-blue); box-shadow: 0 0 10px var(--neon-blue);
+        .pred-ring {
+            width: 180px; height: 180px; border-radius: 50%;
+            border: 5px solid #111; border-top-color: var(--neon-blue);
+            display: flex; align-items: center; justify-content: center;
+            background: #050505; box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            transition: 0.3s;
         }
+        .pred-ring.spinning { animation: spin 1s linear infinite; border-top-color: var(--neon-blue); border-right-color: var(--neon-blue); }
+        .pred-ring.stop-big { border: 5px solid var(--neon-green); box-shadow: 0 0 30px rgba(0,255,10,0.3); }
+        .pred-ring.stop-small { border: 5px solid var(--neon-red); box-shadow: 0 0 30px rgba(255,0,60,0.3); }
 
-        /* --- PREDICTION DISPLAY --- */
-        .terminal {
-            border: 1px dashed #333; background: #080808; padding: 25px;
-            text-align: center; border-radius: 10px; margin-bottom: 20px;
-            position: relative;
-        }
-        .terminal::before { content: 'AI_ANALYSIS_NODE'; position: absolute; top: 10px; left: 10px; font-size: 0.5rem; color: #444; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        .pred-text { font-family: 'Orbitron'; font-size: 2.5rem; font-weight: 900; color: #333; position: absolute; }
         
-        .pred-result { font-family: 'Orbitron'; font-size: 3.5rem; font-weight: 900; color: #333; text-shadow: none; transition: 0.3s; }
-        .pred-conf { font-size: 0.7rem; color: var(--neon-blue); margin-top: 10px; opacity: 0; }
-        
-        .scan-line {
-            width: 100%; height: 2px; background: var(--neon-blue);
-            box-shadow: 0 0 10px var(--neon-blue); margin: 15px 0;
-            transform: scaleX(0); transition: transform 0.5s ease;
+        .status-msg { 
+            margin-top: 20px; font-size: 0.8rem; color: #666; letter-spacing: 1px; text-align: center;
+            min-height: 20px; 
         }
 
-        /* --- BUTTON --- */
-        .main-btn {
-            width: 100%; padding: 16px; background: transparent; color: var(--neon-blue);
-            border: 1px solid var(--neon-blue); font-family: 'Orbitron'; font-size: 1rem;
-            text-transform: uppercase; letter-spacing: 2px; cursor: pointer;
-            position: relative; overflow: hidden; transition: 0.2s;
-            clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
-        }
-        .main-btn:active { background: var(--neon-blue); color: #000; }
-        .main-btn.disabled { opacity: 0.5; pointer-events: none; }
-
-        /* --- HISTORY --- */
-        .history-table { width: 100%; font-size: 0.8rem; border-collapse: collapse; margin-top: 10px; }
-        .history-table th { text-align: left; color: #666; padding: 10px; border-bottom: 1px solid #333; font-family: 'Orbitron'; font-size: 0.7rem;}
-        .history-table td { padding: 12px 10px; border-bottom: 1px solid #1a1a1a; color: #ddd; }
-        
-        .badge { padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 0.7rem; }
-        .b-big { color: var(--neon-green); border: 1px solid var(--neon-green); background: rgba(10, 255, 10, 0.1); }
-        .b-small { color: var(--neon-red); border: 1px solid var(--neon-red); background: rgba(255, 0, 60, 0.1); }
-
-        /* --- BOTTOM NAV --- */
+        /* BOTTOM NAV */
         .nav {
-            position: fixed; bottom: 0; width: 100%; max-width: 480px; height: 75px;
+            position: fixed; bottom: 0; width: 100%; max-width: 480px; height: 70px;
             background: #020202; border-top: 1px solid #222;
             display: flex; justify-content: space-around; align-items: center; z-index: 50;
         }
-        .nav-item {
-            flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            height: 100%; color: #555; transition: 0.3s;
-        }
-        .nav-icon { font-size: 1.4rem; margin-bottom: 5px; }
-        .nav-text { font-size: 0.6rem; letter-spacing: 1px; }
-        
-        .nav-item.active { color: var(--neon-blue); text-shadow: 0 0 10px rgba(0, 243, 255, 0.4); }
-        .nav-item.active .nav-icon { transform: translateY(-3px); }
+        .nav-item { flex: 1; text-align: center; color: #555; transition: 0.3s; display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%;}
+        .nav-icon { font-size: 1.4rem; margin-bottom: 4px; }
+        .nav-item.active { color: var(--neon-blue); text-shadow: 0 0 10px rgba(0, 243, 255, 0.3); }
 
-        /* --- WIN POPUP --- */
-        .win-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.92); z-index: 2000;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            opacity: 0; pointer-events: none; transition: 0.4s;
+        /* WIN POPUP */
+        .win-toast {
+            position: fixed; top: 20%; left: 50%; transform: translateX(-50%) scale(0);
+            background: rgba(0, 255, 10, 0.9); padding: 15px 30px; border-radius: 50px;
+            color: black; font-weight: bold; font-family: 'Orbitron';
+            box-shadow: 0 0 30px var(--neon-green); z-index: 1000;
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: none;
         }
-        .win-overlay.show { opacity: 1; pointer-events: all; }
-        
-        .win-box { text-align: center; animation: zoomIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .win-title { font-family: 'Orbitron'; font-size: 3.5rem; color: var(--neon-green); text-shadow: 0 0 30px var(--neon-green); margin-bottom: 5px; }
-        .win-sub { color: white; letter-spacing: 2px; font-size: 1rem; }
-        @keyframes zoomIn { from { transform: scale(0); } to { transform: scale(1); } }
+        .win-toast.show { transform: translateX(-50%) scale(1); }
+
+        /* HISTORY */
+        .hist-row { display: flex; justify-content: space-between; padding: 12px; border-bottom: 1px solid #1a1a1a; font-size: 0.8rem; color: #bbb; }
+        .badge { padding: 3px 8px; border-radius: 4px; font-weight: bold; font-size: 0.7rem; }
+        .b-big { color: var(--neon-green); border: 1px solid var(--neon-green); }
+        .b-small { color: var(--neon-red); border: 1px solid var(--neon-red); }
 
     </style>
 </head>
 <body>
 
 <div class="app-container">
-    
     <div class="header">
-        <div class="logo">DARKNET SUPREME</div>
-        <div class="logo-sub">Version 5.0 // 6-Core Logic</div>
+        <div class="logo">DARKNET V.7</div>
+        <div class="system-status">● SYSTEM AUTO-PILOT</div>
     </div>
 
     <div class="content">
-
-        <div id="p-terminal" class="page active">
-            <div class="status-bar">
+        <div id="p-home" class="page active">
+            <div class="timer-card">
                 <div>
-                    <span class="label">Period</span>
-                    <span class="val" id="period">202601121000</span>
+                    <div class="t-label">CURRENT PERIOD</div>
+                    <div class="t-val" id="period">202601121000</div>
                 </div>
                 <div style="text-align: right;">
-                    <span class="label">Timer</span>
-                    <span class="val timer" id="timer">45</span>
+                    <div class="t-label">AUTO-DRAW</div>
+                    <div class="t-val t-red" id="timer">--</div>
                 </div>
             </div>
 
-            <div class="section-head">SELECT ALGORITHM PROTOCOL</div>
             <div class="algo-grid">
-                <div class="algo-card active" onclick="pickAlgo(this, 'TITAN')">
-                    <span class="algo-icon">🛡️</span><span class="algo-name">TITAN</span>
-                </div>
-                <div class="algo-card" onclick="pickAlgo(this, 'ZODIAC')">
-                    <span class="algo-icon">🔮</span><span class="algo-name">ZODIAC</span>
-                </div>
-                <div class="algo-card" onclick="pickAlgo(this, 'NEON')">
-                    <span class="algo-icon">⚡</span><span class="algo-name">NEON</span>
-                </div>
-                <div class="algo-card" onclick="pickAlgo(this, 'PHANTOM')">
-                    <span class="algo-icon">👻</span><span class="algo-name">PHANTOM</span>
-                </div>
-                <div class="algo-card" onclick="pickAlgo(this, 'ORION')">
-                    <span class="algo-icon">👁️</span><span class="algo-name">ORION</span>
-                </div>
-                <div class="algo-card" onclick="pickAlgo(this, 'VECTOR')">
-                    <span class="algo-icon">💠</span><span class="algo-name">VECTOR</span>
-                </div>
+                <div class="algo-item" id="algo-0"><span class="algo-icon">🛡️</span><div class="algo-name">TITAN</div></div>
+                <div class="algo-item" id="algo-1"><span class="algo-icon">🔮</span><div class="algo-name">ZODIAC</div></div>
+                <div class="algo-item" id="algo-2"><span class="algo-icon">⚡</span><div class="algo-name">NEON</div></div>
+                <div class="algo-item" id="algo-3"><span class="algo-icon">👻</span><div class="algo-name">PHANTOM</div></div>
+                <div class="algo-item" id="algo-4"><span class="algo-icon">👁️</span><div class="algo-name">ORION</div></div>
+                <div class="algo-item" id="algo-5"><span class="algo-icon">💠</span><div class="algo-name">VECTOR</div></div>
             </div>
 
-            <div class="terminal">
-                <div class="pred-result" id="result">?</div>
-                <div class="scan-line" id="scanline"></div>
-                <div class="pred-conf" id="conf">WAITING FOR COMMAND</div>
+            <div class="pred-container">
+                <div class="pred-ring" id="ring"></div>
+                <div class="pred-text" id="result">WAIT</div>
             </div>
 
-            <button class="main-btn" id="btn" onclick="startHack()">> EXECUTE ANALYSIS</button>
+            <div class="status-msg" id="statusMsg">WAITING FOR NEXT PERIOD...</div>
+
+            <div style="text-align: center; margin-top: 30px; font-size: 0.6rem; color: #444;">
+                <p>AI SERVER CONNECTED: 12ms</p>
+                <p>NO MANUAL INPUT REQUIRED</p>
+            </div>
         </div>
 
         <div id="p-history" class="page">
-            <div class="section-head" style="text-align: left; padding-left: 10px; border-left: 3px solid var(--neon-blue);">ARCHIVED LOGS</div>
-            <table class="history-table">
-                <thead>
-                    <tr>
-                        <th>PERIOD</th>
-                        <th>ALGO</th>
-                        <th>RESULT</th>
-                    </tr>
-                </thead>
-                <tbody id="historyList">
-                    </tbody>
-            </table>
+            <h3 style="padding:10px; color:var(--neon-blue); font-family:'Orbitron'">AUTO LOGS</h3>
+            <div id="historyList" style="padding:0 10px;">
+                </div>
         </div>
 
         <div id="p-profile" class="page">
-            <div style="text-align: center; margin-top: 40px; border: 1px solid #333; padding: 30px; border-radius: 10px; background: rgba(255,255,255,0.02);">
-                <div style="width: 90px; height: 90px; border-radius: 50%; border: 2px solid var(--neon-blue); margin: 0 auto; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(0,243,255,0.2);">
-                    <span style="font-size: 2.5rem;">👤</span>
+            <div style="text-align: center; padding: 40px;">
+                <div style="width: 80px; height: 80px; border: 2px solid var(--neon-blue); border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center;">
+                    <span style="font-size: 2rem;">🤖</span>
                 </div>
-                <h2 style="font-family: 'Orbitron'; margin-top: 15px; color: white;">AHMAD ALI</h2>
-                <div style="color: var(--neon-blue); font-size: 0.7rem; letter-spacing: 2px; margin-top: 5px;">LEVEL 99: SUPREME ADMIN</div>
-                
-                <div style="margin-top: 30px; text-align: left;">
-                    <div style="margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 5px;">
-                        <span style="color: #666; font-size: 0.8rem;">Wallet Status</span>
-                        <span style="float: right; color: var(--neon-green);">CONNECTED</span>
+                <h2 style="margin-top: 20px; font-family:'Orbitron'">AHMAD ALI</h2>
+                <p style="color:#666; font-size:0.8rem;">BOT STATUS: RUNNING</p>
+                <div style="margin-top:30px; border:1px solid #333; padding:15px; border-radius:10px; text-align:left;">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                        <span>Uptime</span><span style="color:white">04:12:05</span>
                     </div>
-                    <div style="margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 5px;">
-                        <span style="color: #666; font-size: 0.8rem;">Total Predictions</span>
-                        <span style="float: right; color: white;">2,451</span>
-                    </div>
-                    <div>
-                        <span style="color: #666; font-size: 0.8rem;">Success Rate</span>
-                        <span style="float: right; color: var(--neon-blue);">98.1%</span>
+                    <div style="display:flex; justify-content:space-between;">
+                        <span>Auto-Wins</span><span style="color:var(--neon-green)">842</span>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 
     <div class="nav">
-        <div class="nav-item active" onclick="tab('p-terminal', this)">
-            <span class="nav-icon">⚛</span>
-            <span class="nav-text">TERMINAL</span>
+        <div class="nav-item active" onclick="tab('p-home', this)">
+            <span class="nav-icon">⚛</span><span style="font-size:0.6rem">AUTO</span>
         </div>
         <div class="nav-item" onclick="tab('p-history', this)">
-            <span class="nav-icon">📜</span>
-            <span class="nav-text">HISTORY</span>
+            <span class="nav-icon">📜</span><span style="font-size:0.6rem">LOGS</span>
         </div>
         <div class="nav-item" onclick="tab('p-profile', this)">
-            <span class="nav-icon">🛡️</span>
-            <span class="nav-text">PROFILE</span>
+            <span class="nav-icon">👤</span><span style="font-size:0.6rem">PROFILE</span>
         </div>
     </div>
 
-    <div class="win-overlay" id="winPopup" onclick="this.classList.remove('show')">
-        <div class="win-box">
-            <div class="win-title">WIN!</div>
-            <div class="win-sub">PREDICTION SUCCESS</div>
-            <div style="font-size: 0.7rem; color: #888; margin-top: 20px;">TAP TO DISMISS</div>
-        </div>
-    </div>
+    <div class="win-toast" id="winToast">WIN MATCHED!</div>
 
 </div>
 
 <script>
-    // --- SETUP ---
-    let currentPeriod = 202601121000;
-    let activeAlgo = "TITAN";
-    let processing = false;
-    let historyData = [];
+    // --- VARIABLES ---
+    let period = 202601121000;
+    let timer = 30; // Starting at 30s for demo
+    let isAnalyzing = false;
+    let hasPredicted = false;
+    const algos = ['TITAN', 'ZODIAC', 'NEON', 'PHANTOM', 'ORION', 'VECTOR'];
 
-    // --- NAVIGATION ---
-    function tab(id, el) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        
-        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-        el.classList.add('active');
-    }
-
-    // --- ALGO SELECT ---
-    window.pickAlgo = function(el, name) {
-        if(processing) return;
-        document.querySelectorAll('.algo-card').forEach(c => c.classList.remove('active'));
-        el.classList.add('active');
-        activeAlgo = name;
-        
-        // Reset Terminal
-        document.getElementById('result').innerText = "?";
-        document.getElementById('result').style.color = "#333";
-        document.getElementById('conf').style.opacity = "0";
-        document.getElementById('scanline').style.transform = "scaleX(0)";
-    }
-
-    // --- TIMER ---
+    // --- MAIN AUTO LOOP ---
     setInterval(() => {
-        const t = document.getElementById('timer');
-        let val = parseInt(t.innerText);
-        if(val > 0) {
-            t.innerText = val - 1 < 10 ? "0"+(val-1) : val-1;
+        // Update Timer Display
+        document.getElementById('timer').innerText = timer < 10 ? "0"+timer : timer;
+        
+        // 1. START ANALYSIS (When timer hits 25s)
+        if(timer === 25 && !hasPredicted) {
+            startAutoAnalysis();
+        }
+
+        // 2. RESET PERIOD (When timer hits 0)
+        if(timer <= 0) {
+            timer = 60; // Reset to 60s
+            period++;
+            document.getElementById('period').innerText = period;
+            resetUI();
+            hasPredicted = false; // Allow new prediction
         } else {
-            t.innerText = "59";
-            currentPeriod++;
-            document.getElementById('period').innerText = currentPeriod;
+            timer--;
         }
     }, 1000);
 
-    // --- HACK LOGIC ---
-    window.startHack = function() {
-        if(processing) return;
-        processing = true;
-
-        const btn = document.getElementById('btn');
-        const res = document.getElementById('result');
-        const line = document.getElementById('scanline');
-        const conf = document.getElementById('conf');
-
-        btn.classList.add('disabled');
-        btn.innerText = "CALCULATING...";
-        line.style.transform = "scaleX(1)"; // Expand line
-        
-        let count = 0;
-        let shuffle = setInterval(() => {
-            res.innerText = Math.floor(Math.random() * 9);
-            res.style.color = "#fff";
-            count++;
-            if(count > 15) {
-                clearInterval(shuffle);
-                finish();
-            }
-        }, 100);
-
-        function finish() {
-            // Logic Simulation
-            const isBig = Math.random() > 0.5;
-            const result = isBig ? "BIG" : "SMALL";
-            const color = isBig ? "var(--neon-green)" : "var(--neon-blue)";
-            
-            res.innerText = result;
-            res.style.color = color;
-            res.style.textShadow = `0 0 20px ${color}`;
-            
-            conf.innerText = `ALGORITHM: ${activeAlgo} | CONFIDENCE: ${Math.floor(Math.random()*15 + 85)}%`;
-            conf.style.opacity = "1";
-            conf.style.color = color;
-
-            btn.classList.remove('disabled');
-            btn.innerText = "> EXECUTE ANALYSIS";
-            line.style.transform = "scaleX(0)";
-
-            // Add History
-            addLog(result);
-
-            // Win Effect (Random)
-            if(Math.random() > 0.5) {
-                setTimeout(() => document.getElementById('winPopup').classList.add('show'), 500);
-            }
-
-            processing = false;
-        }
+    // --- RESET UI FOR NEW ROUND ---
+    function resetUI() {
+        document.getElementById('result').innerText = "WAIT";
+        document.getElementById('result').style.color = "#333";
+        document.getElementById('statusMsg').innerText = "WAITING FOR NEXT PERIOD...";
+        document.getElementById('ring').className = "pred-ring";
+        document.querySelectorAll('.algo-item').forEach(el => el.className = 'algo-item');
     }
 
-    // --- LOGS ---
-    function addLog(res) {
-        const tbody = document.getElementById('historyList');
-        const badge = res === "BIG" ? "b-big" : "b-small";
+    // --- AUTO ANALYSIS LOGIC ---
+    function startAutoAnalysis() {
+        isAnalyzing = true;
+        hasPredicted = true;
         
-        const row = `<tr>
-            <td>${currentPeriod}</td>
-            <td style="color:var(--neon-blue)">${activeAlgo}</td>
-            <td><span class="badge ${badge}">${res}</span></td>
-        </tr>`;
+        const status = document.getElementById('statusMsg');
+        const ring = document.getElementById('ring');
         
-        tbody.innerHTML = row + tbody.innerHTML;
+        status.innerText = "AI SCANNING PATTERNS...";
+        status.style.color = "var(--neon-blue)";
+        ring.classList.add('spinning'); // Start Ring Spinner
+
+        // 1. Flash Algorithms (Scanning effect)
+        let flashes = 0;
+        let flashInterval = setInterval(() => {
+            document.querySelectorAll('.algo-item').forEach(el => {
+                if(Math.random() > 0.7) el.classList.add('scanning');
+                else el.classList.remove('scanning');
+            });
+            flashes++;
+            if(flashes > 15) {
+                clearInterval(flashInterval);
+                document.querySelectorAll('.algo-item').forEach(el => el.classList.remove('scanning'));
+                finalizePrediction();
+            }
+        }, 100);
+    }
+
+    // --- FINALIZE & SHOW RESULT ---
+    function finalizePrediction() {
+        const ring = document.getElementById('ring');
+        const resText = document.getElementById('result');
+        const status = document.getElementById('statusMsg');
+
+        // Select Random Algo
+        const bestAlgoIndex = Math.floor(Math.random() * 6);
+        const bestAlgoName = algos[bestAlgoIndex];
         
-        // Keep only 15 rows
-        if(tbody.children.length > 15) tbody.lastElementChild.remove();
+        // Highlight Algo
+        document.getElementById('algo-'+bestAlgoIndex).classList.add('active');
+
+        // Generate Result
+        const isBig = Math.random() > 0.5;
+        const result = isBig ? "BIG" : "SMALL";
+        const color = isBig ? "var(--neon-green)" : "var(--neon-red)";
+        const ringClass = isBig ? "stop-big" : "stop-small";
+
+        // Stop Spinner & Show Result
+        setTimeout(() => {
+            ring.classList.remove('spinning');
+            ring.classList.add(ringClass);
+            
+            resText.innerText = result;
+            resText.style.color = color;
+            resText.style.textShadow = `0 0 20px ${color}`;
+            
+            status.innerText = `LOCKED: ${bestAlgoName} | CONFIDENCE: ${Math.floor(Math.random()*10 + 89)}%`;
+            status.style.color = "#fff";
+
+            // Save to Log
+            addLog(bestAlgoName, result);
+
+            // Win Animation (Randomly)
+            if(Math.random() > 0.6) showWin();
+
+            isAnalyzing = false;
+        }, 500);
+    }
+
+    // --- HELPERS ---
+    function addLog(algo, res) {
+        const list = document.getElementById('historyList');
+        const badgeClass = res === "BIG" ? "b-big" : "b-small";
+        const html = `
+            <div class="hist-row">
+                <span>${period}</span>
+                <span style="color:var(--neon-blue)">${algo}</span>
+                <span class="badge ${badgeClass}">${res}</span>
+            </div>
+        `;
+        list.insertAdjacentHTML('afterbegin', html);
+        if(list.children.length > 20) list.lastElementChild.remove();
+    }
+
+    function showWin() {
+        const toast = document.getElementById('winToast');
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2000);
+    }
+
+    function tab(id, el) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        el.classList.add('active');
     }
 
 </script>
