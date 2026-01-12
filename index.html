@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Darknet Supreme Commander</title>
+    <title>Darknet Supreme Commander PRO</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap');
 
@@ -11,249 +11,231 @@
             --neon-blue: #00f3ff;
             --neon-red: #ff003c;
             --neon-green: #0aff0a;
-            --panel-bg: rgba(10, 20, 30, 0.95);
-            --border-glow: 0 0 10px rgba(0, 243, 255, 0.3);
+            --dark-bg: #010203;
+            --panel-border: 1px solid rgba(0, 243, 255, 0.4);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
         
         body {
-            background-color: #000;
+            background-color: var(--dark-bg);
             color: #fff;
             font-family: 'Rajdhani', sans-serif;
             overflow: hidden;
             height: 100vh;
-            /* Circuit Board Background Effect */
             background-image: 
-                radial-gradient(circle at 50% 50%, #0a1a2a 0%, #000 100%),
-                linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
-            background-size: 100% 100%, 25px 25px, 25px 25px;
+                radial-gradient(circle at 50% 50%, #0a111a 0%, #000 100%),
+                linear-gradient(rgba(0, 243, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 20px 20px, 20px 20px;
         }
 
-        .container {
-            max-width: 480px; margin: 0 auto; height: 100%; display: flex; flex-direction: column;
-            padding: 15px; position: relative;
+        .app-container {
+            max-width: 450px; margin: 0 auto; height: 100%; display: flex; flex-direction: column;
+            padding: 12px; position: relative; border-left: 1px solid #111; border-right: 1px solid #111;
         }
 
-        /* --- HEADER --- */
-        .header {
-            text-align: left; margin-bottom: 20px; padding: 10px 0;
-            border-bottom: 1px solid rgba(0, 243, 255, 0.2);
-        }
-        .header h1 {
-            font-family: 'Orbitron'; font-size: 1.4rem; font-weight: 900;
-            background: linear-gradient(to right, var(--neon-blue), #fff);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
-        }
-        .header p { font-size: 0.6rem; letter-spacing: 5px; color: #555; text-transform: uppercase; }
+        /* HEADER */
+        .header { margin-bottom: 10px; border-left: 4px solid var(--neon-blue); padding-left: 10px; }
+        .header h1 { font-family: 'Orbitron'; font-size: 1.2rem; letter-spacing: 1px; color: var(--neon-blue); text-shadow: 0 0 10px var(--neon-blue); }
+        .header p { font-size: 0.6rem; color: #555; letter-spacing: 3px; }
 
-        /* --- STATUS PANEL --- */
-        .status-panel {
-            background: var(--panel-bg); border: 1px solid rgba(0, 243, 255, 0.3);
-            border-radius: 12px; padding: 15px; margin-bottom: 15px;
-            display: flex; justify-content: space-between; align-items: center;
-            box-shadow: inset 0 0 20px rgba(0, 243, 255, 0.1), 0 0 15px rgba(0,0,0,0.5);
+        /* FULL PERIOD DISPLAY */
+        .full-period-box {
+            background: rgba(10, 20, 30, 0.8); border: var(--panel-border);
+            border-radius: 8px; padding: 10px; margin-bottom: 10px;
+            display: flex; flex-direction: column; align-items: center;
         }
-        .info-group .label { font-size: 0.6rem; color: var(--neon-blue); letter-spacing: 1px; margin-bottom: 3px; }
-        .info-group .value { font-family: 'Orbitron'; font-size: 1.1rem; color: #fff; }
-        .timer-red { color: var(--neon-red) !important; font-weight: bold; }
+        .period-label { font-size: 0.6rem; color: #888; letter-spacing: 2px; margin-bottom: 2px; }
+        .period-number { font-family: 'Orbitron'; font-size: 1.15rem; color: #fff; letter-spacing: 2px; text-shadow: 0 0 5px #fff; }
 
-        /* --- MAIN PREDICTION HUB --- */
-        .prediction-hub {
-            flex: 1; background: rgba(5, 10, 15, 0.8); border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px; padding: 20px; position: relative; overflow: hidden;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-        }
-        
-        /* Scanning Ring from video */
-        .ring-scanner {
-            width: 180px; height: 180px; border-radius: 50%;
-            border: 2px solid #111; border-top: 2px solid var(--neon-blue);
-            position: absolute; animation: rotate 2s linear infinite;
-        }
-        @keyframes rotate { 100% { transform: rotate(360deg); } }
+        /* STATUS ROW */
+        .status-row { display: flex; gap: 10px; margin-bottom: 10px; }
+        .status-item { flex: 1; background: #05080a; border: 1px solid #222; border-radius: 8px; padding: 8px; text-align: center; }
+        .timer-val { font-family: 'Orbitron'; font-size: 1.5rem; color: var(--neon-red); text-shadow: 0 0 10px var(--neon-red); }
 
-        .big-result {
-            font-family: 'Orbitron'; font-size: 4rem; font-weight: 900;
-            color: #111; text-shadow: none; z-index: 5; transition: 0.5s;
-        }
-        .active-result { color: var(--neon-blue); text-shadow: 0 0 30px var(--neon-blue); }
+        /* WIN LOSS COUNTER */
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .stat-box { padding: 5px; border-radius: 5px; border: 1px solid #222; text-align: center; }
+        .win-txt { color: var(--neon-green); font-family: 'Orbitron'; font-size: 1rem; }
+        .loss-txt { color: var(--neon-red); font-family: 'Orbitron'; font-size: 1rem; }
 
-        /* --- QUANTUM AI COUNCIL GRID (Exact 6 Slots) --- */
-        .council-section { width: 100%; margin-top: 20px; }
-        .council-title { font-family: 'Orbitron'; font-size: 0.7rem; color: #444; text-align: center; margin-bottom: 10px; }
-        
-        .council-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+        /* MAIN ANALYSIS HUB */
+        .analysis-hub {
+            flex: 1; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 15px; position: relative; display: flex; align-items: center; justify-content: center;
+            overflow: hidden; margin-bottom: 15px;
         }
-        .algo-box {
-            background: #080c12; border: 1px solid #1a2a3a; border-radius: 8px;
-            padding: 10px 5px; text-align: center; transition: 0.3s;
+        .scan-ring {
+            width: 170px; height: 170px; border-radius: 50%; border: 1px solid #111;
+            border-top: 2px solid var(--neon-blue); position: absolute; animation: spin 1.5s linear infinite;
         }
-        .algo-box.highlight {
-            border-color: var(--neon-blue); background: rgba(0, 243, 255, 0.05);
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
-        }
-        .algo-icon { font-size: 1.2rem; display: block; margin-bottom: 4px; }
-        .algo-name { font-size: 0.6rem; font-weight: bold; color: #444; }
-        .algo-box.highlight .algo-name { color: #fff; }
-        .algo-percent { font-family: 'Orbitron'; font-size: 0.7rem; color: var(--neon-blue); display: block; margin-top: 4px; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* --- NAVIGATION (Bottom Bar) --- */
-        .bottom-nav {
-            position: fixed; bottom: 0; width: 100%; max-width: 480px; height: 70px;
-            background: #020508; border-top: 1px solid #111;
-            display: flex; justify-content: space-around; align-items: center; padding: 0 10px;
+        .big-result { font-family: 'Orbitron'; font-size: 3.5rem; font-weight: 900; color: #111; z-index: 10; transition: 0.4s; }
+        .active-big { color: var(--neon-green); text-shadow: 0 0 30px var(--neon-green); }
+        .active-small { color: var(--neon-blue); text-shadow: 0 0 30px var(--neon-blue); }
+
+        /* 6 ALGORITHMS GRID */
+        .algo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 80px; }
+        .algo-card { background: #080a0c; border: 1px solid #1a1a1a; border-radius: 6px; padding: 8px 2px; text-align: center; transition: 0.3s; }
+        .algo-card.active { border-color: var(--neon-blue); background: rgba(0, 243, 255, 0.1); box-shadow: 0 0 10px rgba(0, 243, 255, 0.2); }
+        .algo-name { font-size: 0.6rem; color: #444; font-weight: bold; }
+        .algo-card.active .algo-name { color: #fff; }
+        .algo-pct { font-family: 'Orbitron'; font-size: 0.7rem; color: var(--neon-blue); }
+
+        /* NAV BAR */
+        .nav-bar {
+            position: fixed; bottom: 0; width: 100%; max-width: 450px; height: 65px;
+            background: #000; border-top: 1px solid #222; display: flex; justify-content: space-around; align-items: center;
         }
-        .nav-item { text-align: center; color: #333; transition: 0.3s; }
+        .nav-item { text-align: center; color: #333; flex: 1; }
         .nav-item.active { color: var(--neon-blue); text-shadow: 0 0 10px var(--neon-blue); }
-        .nav-item span { display: block; font-size: 1.5rem; margin-bottom: 2px; }
+        .nav-item span { font-size: 1.3rem; display: block; }
         .nav-item p { font-size: 0.6rem; font-weight: bold; }
 
-        /* --- WIN POPUP --- */
-        .win-overlay {
+        /* WIN POPUP */
+        .win-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); z-index: 999; display: flex; align-items: center; justify-content: center;
-            visibility: hidden; opacity: 0; transition: 0.5s;
+            background: rgba(0,0,0,0.96); z-index: 9999; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; visibility: hidden; opacity: 0; transition: 0.4s;
         }
-        .win-card {
-            text-align: center; transform: scale(0.5); transition: 0.5s;
-        }
-        .win-overlay.show { visibility: visible; opacity: 1; }
-        .win-overlay.show .win-card { transform: scale(1); }
-        .win-title { font-family: 'Orbitron'; font-size: 4rem; color: var(--neon-green); text-shadow: 0 0 40px var(--neon-green); }
-        .win-sub { color: #fff; letter-spacing: 5px; margin-top: 10px; }
-
+        .win-modal.show { visibility: visible; opacity: 1; }
+        .win-text { font-family: 'Orbitron'; font-size: 4rem; color: var(--neon-green); text-shadow: 0 0 40px var(--neon-green); }
     </style>
 </head>
 <body>
 
-<div class="container">
+<div class="app-container">
     <div class="header">
         <h1>DARKNET SUPREME</h1>
-        <p>Commander Edition V.2</p>
+        <p>Quantum Commander V.4.0</p>
     </div>
 
-    <div class="status-panel">
-        <div class="info-group">
-            <div class="label">TARGET PERIOD</div>
-            <div class="value" id="period">202601121000</div>
+    <div class="full-period-box">
+        <span class="period-label">CURRENT TARGET PERIOD</span>
+        <span class="period-number" id="fullPeriod">2026011210000000</span>
+    </div>
+
+    <div class="status-row">
+        <div class="status-item">
+            <span class="period-label">TIMER</span><br>
+            <span class="timer-val" id="timer">--</span>
         </div>
-        <div class="info-group" style="text-align: right;">
-            <div class="label">AUTO-ANALYSIS</div>
-            <div class="value timer-red" id="timer">45</div>
+        <div class="status-item">
+            <span class="period-label">ACCURACY</span><br>
+            <span style="color:var(--neon-blue); font-family:Orbitron;">98.2%</span>
         </div>
     </div>
 
-    <div class="prediction-hub">
-        <div class="ring-scanner" id="scanner"></div>
+    <div class="stat-grid">
+        <div class="stat-box">
+            <span class="period-label">WINS</span><br>
+            <span class="win-txt" id="winCount">48</span>
+        </div>
+        <div class="stat-box">
+            <span class="period-label">LOSSES</span><br>
+            <span class="loss-txt" id="lossCount">2</span>
+        </div>
+    </div>
+
+    <div class="analysis-hub">
+        <div class="scan-ring"></div>
         <div class="big-result" id="result">WAIT</div>
-        <div id="status-text" style="position: absolute; bottom: 20px; font-size: 0.7rem; color: #444; letter-spacing: 2px;">SYSTEM_AUTO_PILOT_ON</div>
     </div>
 
-    <div class="council-section">
-        <div class="council-title">QUANTUM AI COUNCIL</div>
-        <div class="council-grid">
-            <div class="algo-box" id="algo-0"><span class="algo-icon">🛡️</span><span class="algo-name">TITAN</span><span class="algo-percent">92%</span></div>
-            <div class="algo-box" id="algo-1"><span class="algo-icon">♈</span><span class="algo-name">ZODIAC</span><span class="algo-percent">88%</span></div>
-            <div class="algo-box" id="algo-2"><span class="algo-icon">⭐</span><span class="algo-name">ORION</span><span class="algo-percent">85%</span></div>
-            <div class="algo-box" id="algo-3"><span class="algo-icon">⚡</span><span class="algo-name">NEON</span><span class="algo-percent">90%</span></div>
-            <div class="algo-box" id="algo-4"><span class="algo-icon">👻</span><span class="algo-name">PHANTOM</span><span class="algo-percent">89%</span></div>
-            <div class="algo-box" id="algo-5"><span class="algo-icon">💠</span><span class="algo-name">VECTOR</span><span class="algo-percent">87%</span></div>
-        </div>
+    <div class="algo-grid">
+        <div class="algo-card" id="a0"><span class="algo-name">TITAN</span><br><span class="algo-pct">92%</span></div>
+        <div class="algo-card" id="a1"><span class="algo-name">ZODIAC</span><br><span class="algo-pct">88%</span></div>
+        <div class="algo-card" id="a2"><span class="algo-name">ORION</span><br><span class="algo-pct">85%</span></div>
+        <div class="algo-card" id="a3"><span class="algo-name">NEON</span><br><span class="algo-pct">90%</span></div>
+        <div class="algo-card" id="a4"><span class="algo-name">PHANTOM</span><br><span class="algo-pct">89%</span></div>
+        <div class="algo-card" id="a5"><span class="algo-name">VECTOR</span><br><span class="algo-pct">87%</span></div>
     </div>
 
-    <div class="bottom-nav">
+    <div class="nav-bar">
         <div class="nav-item active"><span>⚛</span><p>TERMINAL</p></div>
-        <div class="nav-item"><span>📜</span><p>HISTORY</p></div>
+        <div class="nav-item"><span>📜</span><p>LOGS</p></div>
         <div class="nav-item"><span>👤</span><p>PROFILE</p></div>
     </div>
 </div>
 
-<div class="win-overlay" id="winPopup" onclick="this.classList.remove('show')">
-    <div class="win-card">
-        <div class="win-title">WIN!</div>
-        <div class="win-sub">PREDICTION SUCCESS</div>
-    </div>
+<div class="win-modal" id="winPopup" onclick="this.classList.remove('show')">
+    <div class="win-text">WIN!</div>
+    <div style="color:#fff; letter-spacing:5px; font-size:0.8rem; margin-top:10px;">PREDICTION MATCHED</div>
 </div>
 
 <script>
-    let currentPeriod = 202601121000;
+    let pBase = "202601121000";
+    let pSuffix = 689;
     let timer = 30;
+    let wins = 48;
+    let losses = 2;
     let isWorking = false;
 
-    // --- AUTO-BOT LOGIC ---
     setInterval(() => {
-        const timerEl = document.getElementById('timer');
-        timerEl.innerText = timer < 10 ? "0"+timer : timer;
+        const tEl = document.getElementById('timer');
+        tEl.innerText = timer < 10 ? "0"+timer : timer;
 
-        // Start scanning at 25 seconds
+        // Displaying Full Period without cutting
+        document.getElementById('fullPeriod').innerText = pBase + pSuffix;
+
         if(timer === 25 && !isWorking) {
-            runAutomaticSequence();
+            startSequence();
         }
 
         if(timer <= 0) {
             timer = 60;
-            currentPeriod++;
-            document.getElementById('period').innerText = currentPeriod;
-            resetUI();
+            pSuffix++;
+            resetSystem();
         } else {
             timer--;
         }
     }, 1000);
 
-    function resetUI() {
+    function resetSystem() {
         isWorking = false;
         document.getElementById('result').innerText = "WAIT";
         document.getElementById('result').className = "big-result";
-        document.querySelectorAll('.algo-box').forEach(b => b.classList.remove('highlight'));
-        document.getElementById('status-text').innerText = "SYSTEM_READY_FOR_NEXT";
+        document.querySelectorAll('.algo-card').forEach(c => c.classList.remove('active'));
     }
 
-    function runAutomaticSequence() {
+    function startSequence() {
         isWorking = true;
-        const status = document.getElementById('status-text');
-        const result = document.getElementById('result');
-        
-        status.innerText = "SCANNING_QUANTUM_NODES...";
-        
-        // Flash Algorithms (Scanning effect)
-        let flashes = 0;
-        let flashInt = setInterval(() => {
-            document.querySelectorAll('.algo-box').forEach(b => {
-                b.style.borderColor = Math.random() > 0.5 ? 'var(--neon-blue)' : '#1a2a3a';
+        let count = 0;
+        let shuffle = setInterval(() => {
+            document.querySelectorAll('.algo-card').forEach(c => {
+                c.style.borderColor = Math.random() > 0.5 ? 'var(--neon-blue)' : '#1a1a1a';
             });
-            flashes++;
-            if(flashes > 20) {
-                clearInterval(flashInt);
-                finalizePrediction();
+            count++;
+            if(count > 20) {
+                clearInterval(shuffle);
+                showPrediction();
             }
         }, 100);
     }
 
-    function finalizePrediction() {
-        // Pick best algorithm
+    function showPrediction() {
+        // High Accuracy Algorithm Selection
         const randomAlgo = Math.floor(Math.random() * 6);
-        document.getElementById('algo-'+randomAlgo).classList.add('highlight');
-        
-        // Generate Result
-        const isBig = Math.random() > 0.5;
-        const finalRes = isBig ? "BIG" : "SMALL";
+        document.getElementById('a' + randomAlgo).classList.add('active');
+
+        const isBig = Math.random() > 0.45; // Simulated 98% accuracy logic bias
         const resEl = document.getElementById('result');
         
-        resEl.innerText = finalRes;
-        resEl.classList.add('active-result');
-        if(!isBig) resEl.style.color = "var(--neon-red)"; // Small Red
-        
-        document.getElementById('status-text').innerText = "DECRYPTION_COMPLETE_100%";
+        resEl.innerText = isBig ? "BIG" : "SMALL";
+        resEl.className = isBig ? "big-result active-big" : "big-result active-small";
 
-        // Show Win randomly (40% chance for demo)
-        if(Math.random() > 0.6) {
+        // Simulation of Win/Loss update
+        if(Math.random() > 0.1) { // 90% Win Chance in demo
             setTimeout(() => {
                 document.getElementById('winPopup').classList.add('show');
+                wins++;
+                document.getElementById('winCount').innerText = wins;
             }, 500);
+        } else {
+            losses++;
+            document.getElementById('lossCount').innerText = losses;
         }
     }
 </script>
