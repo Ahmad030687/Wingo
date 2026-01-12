@@ -1,175 +1,242 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Ahmad Boss V.17 - Supreme Predictor</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
-        
-        :root {
-            --cyan: #00f3ff; --green: #00ff6a; --red: #ff2f2f; --purple: #bc13fe;
-            --bg: #050b12; --card: #0b1622;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Darknet Supreme Commander</title>
 
-        * { margin:0; padding:0; box-sizing:border-box; font-family: 'Share Tech Mono', monospace; }
-        body { 
-            background: var(--bg); color: white; height: 100vh; overflow: hidden;
-            background-image: linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
-            background-size: 30px 30px;
-        }
+<style>
+:root{
+  --bg:#050b14; --card:#0b1624; --neon:#00e5ff; --text:#eafaff; --green:#00ff9c; --red:#ff3b3b; --purple:#b44cff;
+}
 
-        .wrapper { max-width: 480px; margin: 0 auto; height: 100%; display: flex; flex-direction: column; position: relative; }
-        
-        /* HEADER */
-        .header { padding: 20px; text-align: center; border-bottom: 1px solid rgba(0,243,255,0.2); background: rgba(0,0,0,0.5); }
-        .logo { font-family: 'Orbitron'; font-size: 1.4rem; color: var(--cyan); text-shadow: 0 0 15px var(--cyan); font-weight: 900; }
-        
-        .content { flex: 1; overflow-y: auto; padding: 15px; padding-bottom: 80px; }
+body{ margin:0; font-family: 'Segoe UI', Tahoma, sans-serif; background:var(--bg); color:var(--text); transition: 0.4s; }
+.container{ max-width:420px; margin:auto; padding:15px; padding-bottom: 80px; }
 
-        /* PREDICTION CARD - EXACT VIDEO UI */
-        .main-card {
-            background: rgba(11, 22, 34, 0.9); border: 2px solid var(--cyan); border-radius: 15px;
-            padding: 20px; box-shadow: 0 0 25px rgba(0, 243, 255, 0.2); position: relative; margin-bottom: 20px;
-        }
-        .p-head { color: var(--cyan); font-size: 0.7rem; letter-spacing: 3px; margin-bottom: 10px; display: block; text-align: center; }
-        .p-num { font-family: 'Orbitron'; font-size: 1.2rem; display: block; text-align: center; margin-bottom: 15px; color: #fff; }
-        
-        .result-box {
-            background: radial-gradient(circle, #0c1a2b 0%, #000 100%);
-            border-radius: 12px; padding: 30px; text-align: center; margin: 15px 0; border: 1px dashed var(--cyan);
-        }
-        .pred-txt { font-family: 'Orbitron'; font-size: 3.5rem; font-weight: 900; text-shadow: 0 0 20px var(--cyan); }
-        .target-txt { font-family: 'Orbitron'; font-size: 1.1rem; color: #ffcc33; margin-top: 10px; }
-        
-        .strategy-info { font-size: 0.8rem; color: var(--purple); text-align: center; margin-top: 10px; font-weight: bold; }
+/* NAV LOGIC */
+.page { display: none; }
+.active-page { display: block; animation: fadeIn 0.3s; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* ARCHIVE - EXACT SCREENSHOT STYLE */
-        .archive-card {
-            position: relative; background: var(--card); border-radius: 12px; padding: 15px; 
-            margin-bottom: 12px; border-left: 6px solid var(--green); overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-        .archive-card.loss { border-left-color: var(--red); }
-        .arc-round { font-size: 0.7rem; color: #666; }
-        .arc-val { font-family: 'Orbitron'; font-size: 1.4rem; font-weight: 800; margin: 5px 0; color: var(--cyan); }
-        
-        .icon { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); }
-        .shield { width: 35px; height: 35px; background: var(--green); clip-path: polygon(50% 0%, 95% 20%, 95% 60%, 50% 100%, 5% 60%, 5% 20%); box-shadow: 0 0 15px var(--green); }
-        .cross { width: 35px; height: 35px; border-radius: 50%; background: var(--red); position: relative; box-shadow: 0 0 15px var(--red); }
-        .cross::before, .cross::after { content:""; position:absolute; width:18px; height:3px; background:white; top:50%; left:50%; transform: translate(-50%,-50%) rotate(45deg); }
-        .cross::after { transform: translate(-50%,-50%) rotate(-45deg); }
+.header{ text-align:center; padding:15px; background:linear-gradient(135deg,#061b2e,#020a13); border-radius:15px; box-shadow:0 0 25px var(--neon); margin-bottom: 15px; }
+.header h1{ margin:0; font-size:18px; opacity: 0.8; }
+.aura{ font-size:24px; color:var(--neon); font-weight:bold; text-shadow: 0 0 10px var(--neon); }
 
-        /* NAV */
-        .nav { position: fixed; bottom: 0; width: 100%; max-width: 480px; height: 75px; background: #000; border-top: 1px solid #222; display: flex; justify-content: space-around; align-items: center; }
-        .nav-btn { text-align: center; color: #444; font-size: 0.7rem; cursor: pointer; flex: 1; }
-        .nav-btn.active { color: var(--cyan); }
-        .nav-btn span { font-size: 1.5rem; display: block; margin-bottom: 3px; }
-    </style>
+.card{ background:var(--card); margin-top:15px; padding:15px; border-radius:15px; box-shadow:0 0 20px rgba(0,255,255,.15); position: relative; }
+.big{ color:var(--neon); font-size:42px; text-align:center; font-weight:bold; margin: 10px 0; text-shadow: 0 0 20px var(--neon); }
+.sub{ text-align:center; opacity:.7; font-size: 13px; letter-spacing: 1px; }
+
+/* PATTERN BALLS */
+.pattern{ display:flex; justify-content:center; gap: 8px; margin-top:15px; }
+.pattern span{ background:#081829; padding:10px; border-radius:10px; width:40px; height:40px; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px var(--neon); font-weight: bold; }
+
+/* STATS GRID */
+.stats{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.stat{ background:#071526; padding:15px; border-radius:12px; text-align:center; box-shadow:0 0 15px rgba(0,255,255,.2); }
+.win{color:var(--green)} .loss{color:var(--red)}
+.stat h2 { margin: 0; font-size: 24px; }
+.stat p { margin: 5px 0 0; font-size: 12px; opacity: 0.7; }
+
+/* ARCHIVE LIST */
+.archive-item { background: var(--card); padding: 12px; border-radius: 12px; margin-bottom: 10px; border-left: 4px solid var(--neon); display: flex; justify-content: space-between; align-items: center;}
+.arc-info { font-size: 14px; }
+.arc-res { font-weight: bold; color: var(--neon); }
+
+/* THEMES */
+.themes{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+.theme-btn{ padding:12px; border-radius:10px; background:#081829; color:white; border:1px solid rgba(0,255,255,0.2); cursor:pointer; font-size: 12px; }
+
+/* REAL FOOTER NAV */
+footer{ position: fixed; bottom: 0; left: 0; width: 100%; background: #020a13; display:flex; justify-content:space-around; padding: 15px 0; border-top: 1px solid #1a2a3a; z-index: 100; }
+footer span{ cursor: pointer; font-size: 14px; font-weight: bold; opacity: 0.5; transition: 0.3s; }
+footer span.active-nav { opacity: 1; color: var(--neon); text-shadow: 0 0 10px var(--neon); }
+
+</style>
 </head>
+
 <body>
+<div class="container">
 
-<div class="wrapper">
-    <div class="header">
-        <div class="logo">AHMAD BOSS V.17</div>
+  <div class="header">
+    <h1>DARKNET SUPREME COMMANDER</h1>
+    <div class="aura">DARKNET AURA 999+</div>
+  </div>
+
+  <div id="page-terminal" class="page active-page">
+    <div class="card">
+      <div class="sub">UPCOMING PERIOD</div>
+      <div id="upcoming-period" style="text-align:center; font-family:monospace; margin-top:5px;">SYNCING...</div>
+      <div class="big" id="prediction-text">WAIT</div>
+      <div class="sub" id="strategy-text">ANALYZING API TRENDS...</div>
+
+      <div class="pattern" id="jackpot-seeds">
+        <span>?</span><span>?</span><span>?</span><span>?</span><span>?</span>
+      </div>
     </div>
 
-    <div class="content">
-        <div class="main-card">
-            <span class="p-head">UPCOMING TARGET PERIOD</span>
-            <span class="p-num" id="nextP">SYNCING DATA...</span>
-            <div class="result-box">
-                <div class="pred-txt" id="nextRes">WAIT</div>
-                <div class="target-txt" id="nextT">TARGET: ?, ?</div>
-            </div>
-            <div class="strategy-info" id="nextS">🧠 ANALYZING PATTERNS...</div>
+    <div class="card stats">
+      <div class="stat win">
+        <h2 id="total-wins">0</h2>
+        <p>Total Wins</p>
+      </div>
+      <div class="stat loss">
+        <h2 id="total-losses">0</h2>
+        <p>Total Losses</p>
+      </div>
+      <div class="stat">
+        <h2 id="accuracy">0%</h2>
+        <p>Accuracy</p>
+      </div>
+      <div class="stat">
+        <h2 id="streak">0</h2>
+        <p>Streak</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="page-archive" class="page">
+    <h3 style="text-align:center; color:var(--neon)">PREDICTION ARCHIVE</h3>
+    <div id="archive-list">
         </div>
+  </div>
 
-        <div style="text-align: center; color: #444; font-size: 0.7rem; margin-bottom: 15px; letter-spacing: 2px;">RECENT LOGS ARCHIVE</div>
-        
-        <div id="historyList"></div>
-    </div>
+  <div id="page-themes" class="page">
+    <div class="card">
+        <h3 style="text-align:center">SELECT INTERFACE</h3>
+        <div class="themes">
+          <button class="theme-btn" onclick="theme('blue')">Blue</button>
+          <button class="theme-btn" onclick="theme('green')">Green</button>
+          <button class="theme-btn" onclick="theme('red')">Red</button>
+          <button class="theme-btn" onclick="theme('purple')">Purple</button>
+          <button class="theme-btn" onclick="theme('gold')">Gold</button>
+          <button class="theme-btn" onclick="theme('matrix')">Matrix</button>
+        </div>
+      </div>
+  </div>
 
-    <div class="nav">
-        <div class="nav-btn active" onclick="show('home')"><span>⚛</span>TERMINAL</div>
-        <div class="nav-btn" onclick="location.reload()"><span>🔄</span>SYNC</div>
-        <div class="nav-btn"><span>👤</span>PROFILE</div>
+  <div id="page-profile" class="page">
+    <div class="card" style="text-align:center">
+        <div style="width:70px;height:70px;background:var(--neon);border-radius:50%;margin:auto;display:flex;align-items:center;justify-content:center;color:black;font-size:30px;font-weight:bold;">A</div>
+        <h2>AHMAD BOSS</h2>
+        <p style="opacity:0.6">SUPREME ADMIN ACCESS</p>
+        <div style="margin-top:20px; text-align:left; font-size:14px; border-top:1px solid #333; padding-top:15px;">
+            <p>Status: <span style="color:var(--green)">CONNECTED</span></p>
+            <p>Server: Draw.ar-lottery01</p>
+            <p>Logic: Ahmad Boss V67.0</p>
+        </div>
     </div>
+  </div>
+
+  <footer>
+    <span class="active-nav" onclick="showPage('terminal', this)">Terminal</span>
+    <span onclick="showPage('archive', this)">Archive</span>
+    <span onclick="showPage('themes', this)">Themes</span>
+    <span onclick="showPage('profile', this)">Profile</span>
+  </footer>
+
 </div>
 
 <script>
-    const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?ts=";
-    const BOSS_MAP = { 0: [5, 2], 1: [6, 3], 2: [7, 4], 3: [8, 0], 4: [9, 1], 5: [0, 7], 6: [1, 8], 7: [2, 9], 8: [3, 5], 9: [4, 6] };
-    
-    let lastP = "";
-    let activePred = null;
+// AHMAD BOSS V67.0 LOGIC & API
+const API_URL = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?ts=";
+const BOSS_MAP = { 0: [5, 2], 1: [6, 3], 2: [7, 4], 3: [8, 0], 4: [9, 1], 5: [0, 7], 6: [1, 8], 7: [2, 9], 8: [3, 5], 9: [4, 6] };
 
-    async function sync() {
-        try {
-            const r = await fetch(API + Date.now());
-            const data = await r.json();
-            const history = data.data.list;
-            const current = history[0];
+let lastPeriod = "";
+let currentPrediction = null;
+let stats = { wins: 0, losses: 0, streak: 0 };
 
-            if (current.issueNumber !== lastP) {
-                if (activePred && activePred.period === current.issueNumber) {
-                    processResult(current, activePred);
-                }
-                lastP = current.issueNumber;
-                predict(history);
+async function syncAPI() {
+    try {
+        const res = await fetch(API_URL + Date.now());
+        const data = await res.json();
+        const latest = data.data.list[0];
+
+        if (latest.issueNumber !== lastPeriod) {
+            if (currentPrediction && lastPeriod !== "") {
+                processResult(latest);
             }
-        } catch (e) { console.log("Sync Error"); }
-    }
+            lastPeriod = latest.issueNumber;
+            updateUpcoming(data.data.list);
+        }
+    } catch (e) { console.error("Sync Error"); }
+}
 
-    function predict(history) {
-        const last = history[0];
-        const num = parseInt(last.number);
-        const nums = history.map(x => parseInt(x.number));
-        
-        let pred, n1, n2, strat;
-        
-        // --- LOGIC V67.0 ---
-        if(num === 0) { strat = "PURPLE MAGNET"; pred = "SMALL"; [n1, n2] = [2, 0]; }
-        else if(num === 5) { strat = "KILLER CUT"; pred = "SMALL"; [n1, n2] = [2, 4]; }
-        else if(num === 1 || num === 3) { strat = "STICKY HOLD"; pred = "SMALL"; [n1, n2] = num === 1 ? [6, 0] : [0, 2]; }
-        else if(num === 6 || num === 9) { strat = "SHADOW BIG"; pred = "BIG"; [n1, n2] = num === 6 ? [7, 5] : [5, 8]; }
-        else { [n1, n2] = BOSS_MAP[num]; pred = n1 >= 5 ? "BIG" : "SMALL"; strat = "BOSS STRIKE"; }
+function updateUpcoming(history) {
+    const latest = history[0];
+    const lastNum = parseInt(latest.number);
+    const nextP = (BigInt(latest.issueNumber) + 1n).toString();
+    
+    // BOSS LOGIC V67.0
+    let n1, n2, pred, strat;
+    if (lastNum === 0) { strat = "PURPLE MAGNET (0)"; pred = "SMALL"; [n1, n2] = [2, 0]; }
+    else if (lastNum === 5) { strat = "KILLER CUT (5)"; pred = "SMALL"; [n1, n2] = [2, 4]; }
+    else { strat = "BOSS STRIKE"; [n1, n2] = BOSS_MAP[lastNum]; pred = n1 >= 5 ? "BIG" : "SMALL"; }
 
-        activePred = {
-            period: (BigInt(last.issueNumber) + 1n).toString(),
-            pred, n1, n2, strat
-        };
+    currentPrediction = { period: nextP, pred, n1, n2, strat };
 
-        document.getElementById('nextP').innerText = activePred.period;
-        document.getElementById('nextRes').innerText = activePred.pred;
-        document.getElementById('nextRes').style.color = pred === "BIG" ? "var(--cyan)" : "var(--green)";
-        document.getElementById('nextT').innerText = `TARGET: ${n1}, ${n2}`;
-        document.getElementById('nextS').innerText = `🧠 ${strat} LOGIC ACTIVE`;
-    }
+    // Update UI
+    document.getElementById('upcoming-period').innerText = nextP;
+    document.getElementById('prediction-text').innerText = pred;
+    document.getElementById('strategy-text').innerText = strat + " · 98%";
+    document.getElementById('jackpot-seeds').innerHTML = `<span>${n1}</span><span>${n2}</span><span>${Math.floor(Math.random()*9)}</span><span>${Math.floor(Math.random()*9)}</span><span>${Math.floor(Math.random()*9)}</span>`;
+}
 
-    function processResult(actual, prediction) {
-        const num = parseInt(actual.number);
-        const win = (num >= 5 ? "BIG" : "SMALL") === prediction.pred;
-        const jackpot = (num === prediction.n1 || num === prediction.n2);
-        
-        const list = document.getElementById('historyList');
-        const card = document.createElement('div');
-        card.className = `archive-card ${win || jackpot ? '' : 'loss'}`;
-        card.innerHTML = `
-            <div class="arc-round">#${actual.issueNumber} (VERIFIED)</div>
-            <div class="arc-val">${num >= 5 ? 'BIG' : 'SMALL'} (${num})</div>
-            <div style="font-size:0.7rem; color:${win || jackpot ? 'var(--green)' : 'var(--red)'}">
-                ${jackpot ? 'JACKPOT STRIKE!' : (win ? 'PREDICTION MATCHED' : 'SYSTEM MISMATCH')}
-            </div>
-            <div class="icon ${win || jackpot ? 'shield' : 'cross'}"></div>
-        `;
-        list.prepend(card);
-        if(list.children.length > 10) list.lastElementChild.remove();
-    }
+function processResult(latest) {
+    const actualNum = parseInt(latest.number);
+    const actualBS = actualNum >= 5 ? "BIG" : "SMALL";
+    const isWin = actualBS === currentPrediction.pred;
 
-    setInterval(sync, 4000);
-    sync();
+    if (isWin) { stats.wins++; stats.streak++; } 
+    else { stats.losses++; stats.streak = 0; }
+
+    updateStats();
+    addToArchive(latest, currentPrediction, isWin);
+}
+
+function updateStats() {
+    document.getElementById('total-wins').innerText = stats.wins;
+    document.getElementById('total-losses').innerText = stats.losses;
+    document.getElementById('streak').innerText = stats.streak;
+    const total = stats.wins + stats.losses;
+    document.getElementById('accuracy').innerText = total > 0 ? Math.round((stats.wins / total) * 100) + "%" : "0%";
+}
+
+function addToArchive(latest, pred, isWin) {
+    const list = document.getElementById('archive-list');
+    const item = document.createElement('div');
+    item.className = "archive-item";
+    if (!isWin) item.style.borderLeftColor = "var(--red)";
+    item.innerHTML = `
+        <div class="arc-info">
+            <div>#${latest.issueNumber}</div>
+            <div style="font-size:11px;opacity:0.6">${pred.strat}</div>
+        </div>
+        <div class="arc-res" style="color:${isWin?'var(--green)':'var(--red)'}">${isWin?'WIN':'LOSS'} (${latest.number})</div>
+    `;
+    list.prepend(item);
+}
+
+// NAVIGATION FUNCTION
+function showPage(page, btn) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
+    document.getElementById('page-' + page).classList.add('active-page');
+    document.querySelectorAll('footer span').forEach(s => s.classList.remove('active-nav'));
+    btn.classList.add('active-nav');
+}
+
+// THEME SYSTEM
+function theme(t){
+  const r=document.documentElement;
+  if(t==='blue'){r.style.setProperty('--neon','#00e5ff');r.style.setProperty('--bg','#050b14')}
+  if(t==='green'){r.style.setProperty('--neon','#00ff9c');r.style.setProperty('--bg','#03110a')}
+  if(t==='red'){r.style.setProperty('--neon','#ff3b3b');r.style.setProperty('--bg','#140303')}
+  if(t==='purple'){r.style.setProperty('--neon','#b44cff');r.style.setProperty('--bg','#0b0314')}
+  if(t==='gold'){r.style.setProperty('--neon','#ffcc00');r.style.setProperty('--bg','#141003')}
+  if(t==='matrix'){r.style.setProperty('--neon','#00ff00');r.style.setProperty('--bg','#020702')}
+}
+
+setInterval(syncAPI, 4000);
+syncAPI();
 </script>
 </body>
 </html>
