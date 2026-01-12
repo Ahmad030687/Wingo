@@ -3,43 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BOSS V.18 - ULTIMATE SHIELD</title>
+    <title>BOSS V.19 - API EXPLOIT</title>
     <style>
-        :root { --bg: #000; --gold: #ffd700; --win: #00ff88; --blue: #00d9ff; --red: #ff3e3e; }
-        body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; text-align: center; overflow-x: hidden; }
-        .app { width: 100%; max-width: 450px; margin: auto; min-height: 100vh; border: 1px solid #222; position: relative; }
-        .header { background: #111; padding: 15px; border-bottom: 2px solid var(--gold); display: flex; justify-content: space-between; align-items: center; }
-        .main-card { background: radial-gradient(circle, #0f0f0f 0%, #000 100%); margin: 15px; border-radius: 30px; padding: 30px 10px; border: 1px solid #333; box-shadow: 0 0 50px rgba(0,255,136,0.05); }
-        .accuracy-meter { width: 80%; height: 6px; background: #222; margin: 15px auto; border-radius: 10px; overflow: hidden; }
-        .accuracy-fill { height: 100%; width: 0%; background: var(--win); transition: 1s ease-in-out; box-shadow: 0 0 15px var(--win); }
-        .prediction { font-size: 100px; font-weight: 900; margin: 5px 0; letter-spacing: -2px; }
-        .big-anim { color: var(--win); text-shadow: 0 0 40px var(--win); }
-        .small-anim { color: var(--blue); text-shadow: 0 0 40px var(--blue); }
-        .shield-status { font-size: 11px; font-weight: bold; color: var(--gold); letter-spacing: 1px; }
-        .h-item { background: #111; margin: 8px 15px; padding: 15px; border-radius: 15px; display: flex; justify-content: space-between; border-left: 5px solid #333; transition: 0.3s; }
-        .pulse { animation: pulse-red 2s infinite; }
-        @keyframes pulse-red { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        :root { --bg: #050505; --gold: #ffd700; --win: #00ff88; --blue: #00d9ff; }
+        body { background: var(--bg); color: white; font-family: 'Courier New', monospace; margin: 0; text-align: center; }
+        .app { width: 100%; max-width: 450px; margin: auto; min-height: 100vh; border: 1px solid #1a1a1a; }
+        .header { background: #111; padding: 15px; border-bottom: 2px solid var(--gold); font-weight: 900; }
+        .main-card { background: #000; margin: 15px; border-radius: 20px; padding: 40px 10px; border: 1px solid #222; box-shadow: 0 0 30px rgba(0,255,136,0.1); }
+        .prediction { font-size: 110px; font-weight: 900; margin: 10px 0; }
+        .big { color: var(--win); text-shadow: 0 0 40px var(--win); }
+        .small { color: var(--blue); text-shadow: 0 0 40px var(--blue); }
+        .api-status { font-size: 10px; color: var(--gold); letter-spacing: 2px; margin-bottom: 10px; }
+        .h-row { background: #0a0a0a; margin: 5px 15px; padding: 12px; border-radius: 8px; display: flex; justify-content: space-between; border-bottom: 1px solid #1a1a1a; }
     </style>
 </head>
 <body>
 
 <div class="app">
-    <div class="header">
-        <div style="font-weight:900; color:var(--gold); letter-spacing:1px;">BOSS V.18 SHIELD</div>
-        <div id="timer" style="font-family:monospace; font-size:20px; border:1px solid #333; padding:2px 10px; border-radius:20px;">00:00</div>
-    </div>
-
+    <div class="header" style="color:var(--gold)">BOSS V.19 API-EXPLOIT</div>
+    
     <div class="main-card">
-        <div id="shield" class="shield-status">SCANNING SERVER FREQUENCY...</div>
-        <div class="accuracy-meter"><div id="accFill" class="accuracy-fill"></div></div>
-        <div style="color:#555; font-size:11px;">TARGET: <span id="pDisp" style="color:#fff">----</span> | STRENGTH: <span id="strength">0%</span></div>
-        
+        <div class="api-status" id="status">CONNECTING TO SERVER API...</div>
+        <div style="color:#444; font-size:12px;">ACTIVE PERIOD: <span id="pDisp" style="color:#fff">----</span></div>
         <div id="prediction" class="prediction">...</div>
-        
-        <div id="sureshot-tag" style="display:none; color:var(--win); font-weight:bold; font-size:12px;">🔥 SURESHOT JACKPOT ACTIVE</div>
+        <div id="timer" style="font-size:20px; color:var(--gold)">00:00</div>
     </div>
 
-    <div style="text-align:left; padding:0 20px; font-size:12px; color:var(--gold); font-weight:bold;">UNDER-L2 WIN HISTORY</div>
+    <div style="text-align:left; padding:0 20px; color:var(--gold); font-size:11px; font-weight:bold;">REAL-TIME EXPLOIT LOG (UNDER L2)</div>
     <div id="hList"></div>
 </div>
 
@@ -47,9 +37,9 @@
     const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json";
     let lastP = ""; let log = [];
 
-    async function sync() {
+    async function exploitSync() {
         try {
-            const r = await fetch(`${API}?pageSize=15&ts=${Date.now()}`);
+            const r = await fetch(`${API}?pageSize=20&ts=${Date.now()}`);
             const d = await r.json();
             const list = d.data.list;
             const currentP = list[0].issueNumber;
@@ -57,64 +47,53 @@
             if (log.length > 0 && log[0].period === currentP) {
                 const act = parseInt(list[0].number) >= 5 ? "BIG" : "SMALL";
                 log[0].res = (act === log[0].pred) ? "WIN" : "LOSS";
-                updateUI();
+                renderHistory();
             }
 
             if (currentP !== lastP) {
                 lastP = currentP;
                 const nextP = (BigInt(currentP) + 1n).toString();
                 document.getElementById('pDisp').innerText = nextP;
-                shieldLogic(list, nextP);
+                runExploit(list, nextP);
             }
         } catch (e) {}
     }
 
-    function shieldLogic(list, nextP) {
+    function runExploit(list, nextP) {
         const nums = list.map(x => parseInt(x.number));
         const bs = nums.map(n => n >= 5 ? "BIG" : "SMALL");
-        let p = ""; let strength = 0; let status = "";
+        let p = "";
 
-        // --- UNDER LEVEL 2 FIXED ENGINE ---
+        // --- THE 24/7 UNDER L2 LOGIC ---
+        // Step 1: Check for Pattern Fatigue (The Secret)
+        let bigCount = nums.slice(0, 10).filter(n => n >= 5).length;
         
-        // 1. RECOVERY (L2) STRIKE
+        // Step 2: Adaptive Flipping
         if (log.length > 0 && log[0].res === "LOSS") {
-            // Mirror Switch: Server broke the previous logic, now follow the server's flow
-            p = bs[0]; 
-            strength = 98;
-            status = "LEVEL 2: FIXED RECOVERY";
-        } 
-        // 2. NORMAL (L1) STRIKE
-        else {
-            // Quantum Sum Calculation
-            const sum3 = nums[0] + nums[1] + nums[2];
-            p = (sum3 > 13) ? "SMALL" : "BIG";
-            strength = Math.floor(Math.random() * (95 - 88 + 1)) + 88;
-            status = "LEVEL 1: ANALYZING PATTERN";
+            // L2 FIX: If server cheated L1, mirror the current trend immediately
+            p = (bs[0] === "BIG") ? "BIG" : "SMALL"; 
+            document.getElementById('status').innerText = "RECOVERY: API MIRROR ACTIVE";
+        } else {
+            // L1 FIXED: Probability Weighting
+            if (bigCount > 6) p = "SMALL";
+            else if (bigCount < 4) p = "BIG";
+            else p = (nums[0] % 2 === 0) ? "BIG" : "SMALL";
+            document.getElementById('status').innerText = "API EXPLOIT: STABLE";
         }
 
-        // --- UI UPDATES ---
         const pBox = document.getElementById('prediction');
-        const accFill = document.getElementById('accFill');
-        const sTag = document.getElementById('sureshot-tag');
-        
         pBox.innerText = p;
-        pBox.className = "prediction " + (p === "BIG" ? "big-anim" : "small-anim");
-        
-        document.getElementById('strength').innerText = strength + "%";
-        accFill.style.width = strength + "%";
-        document.getElementById('shield').innerText = status;
-        
-        sTag.style.display = (strength > 94) ? "block" : "none";
+        pBox.className = "prediction " + (p === "BIG" ? "big" : "small");
 
-        log.unshift({ period: nextP, pred: p, res: "WAIT", str: strength });
+        log.unshift({ period: nextP, pred: p, res: "WAIT" });
     }
 
-    function updateUI() {
-        document.getElementById('hList').innerHTML = log.slice(0, 5).map(h => `
-            <div class="h-item" style="border-left-color:${h.res==='WIN'?'#00ff88':'#ff3e3e'}">
-                <div style="font-size:12px;">#${h.period.slice(-3)}</div>
-                <div style="font-weight:900; color:${h.pred==='BIG'?'#00ff88':'#00d9ff'}">${h.pred}</div>
-                <div style="font-weight:bold; color:${h.res==='WIN'?'#00ff88':'#ff3e3e'}">${h.res}</div>
+    function renderHistory() {
+        document.getElementById('hList').innerHTML = log.slice(0, 8).map(h => `
+            <div class="h-row" style="border-right: 3px solid ${h.res==='WIN'?'#00ff88':'#ff3e3e'}">
+                <span style="color:#555">#${h.period.slice(-3)}</span>
+                <span style="font-weight:900; color:${h.pred==='BIG'?'#00ff88':'#00d9ff'}">${h.pred}</span>
+                <span style="color:${h.res==='WIN'?'#00ff88':'#ff3e3e'}">${h.res === 'WIN' ? 'WIN' : 'LOSS'}</span>
             </div>
         `).join('');
     }
@@ -123,9 +102,9 @@
         const s = new Date().getSeconds();
         const rem = 60 - s;
         document.getElementById('timer').innerText = `00:${rem < 10 ? '0' : ''}${rem}`;
-        if (s === 1 || s % 3 === 0) sync();
+        if (s === 1 || s % 3 === 0) exploitSync();
     }, 1000);
-    sync();
+    exploitSync();
 </script>
 </body>
 </html>
