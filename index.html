@@ -3,44 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BOSS V.23 - DELTA STRIKE</title>
+    <title>BOSS V.23 - DELTA STRIKE PREM</title>
     <style>
-        :root { --bg: #000; --gold: #ffd700; --win: #00ff88; --blue: #00d9ff; }
-        body { background: var(--bg); color: white; font-family: sans-serif; margin: 0; text-align: center; }
-        .app { width: 100%; max-width: 450px; margin: auto; min-height: 100vh; border: 1px solid #1a1a1a; }
-        .header { background: #111; padding: 20px; border-bottom: 2px solid var(--gold); font-size: 20px; font-weight: 900; }
-        .display { background: radial-gradient(circle, #111 0%, #000 100%); margin: 20px; border-radius: 30px; padding: 50px 10px; border: 1px solid #333; box-shadow: 0 0 60px rgba(0,255,136,0.1); }
-        .prediction { font-size: 120px; font-weight: 900; line-height: 1; margin: 15px 0; letter-spacing: -5px; }
-        .big { color: var(--win); text-shadow: 0 0 50px var(--win); }
-        .small { color: var(--blue); text-shadow: 0 0 50px var(--blue); }
-        .status { font-size: 12px; color: var(--gold); letter-spacing: 2px; font-weight: bold; background: #1a1a1a; padding: 5px 15px; border-radius: 50px; display: inline-block; }
-        .history { margin: 10px 20px; text-align: left; }
-        .h-row { background: #0a0a0a; margin-bottom: 8px; padding: 12px; border-radius: 12px; display: flex; justify-content: space-between; border-left: 6px solid #333; }
+        :root { --bg: #050505; --gold: #ffd700; --neon-win: #00ff88; --neon-blue: #00d9ff; --card-bg: #0f0f0f; }
+        body { background: var(--bg); color: white; font-family: 'Orbitron', sans-serif; margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; overflow: hidden; }
+        .app-container { width: 100%; max-width: 400px; background: var(--bg); border: 2px solid #1a1a1a; border-radius: 40px; padding: 20px; box-shadow: 0 0 100px rgba(0,0,0,1); position: relative; }
+        
+        /* Header */
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 10px 5px; border-bottom: 1px solid #222; margin-bottom: 20px; }
+        .logo { font-weight: 900; color: var(--gold); letter-spacing: 2px; font-size: 14px; text-shadow: 0 0 10px var(--gold); }
+        .timer { font-family: monospace; font-size: 18px; color: #fff; background: #1a1a1a; padding: 5px 15px; border-radius: 20px; border: 1px solid var(--gold); }
+
+        /* Main Display */
+        .main-card { background: var(--card-bg); border-radius: 35px; padding: 40px 10px; border: 1px solid #222; position: relative; box-shadow: inset 0 0 30px rgba(0,0,0,0.5); margin-bottom: 20px; }
+        .period-tag { font-size: 10px; color: #555; text-transform: uppercase; letter-spacing: 2px; }
+        .period-val { color: #fff; font-size: 14px; font-weight: bold; }
+        .prediction { font-size: 90px; font-weight: 900; margin: 20px 0; transition: 0.5s; }
+        
+        /* Neon Effects */
+        .big-neon { color: var(--neon-win); text-shadow: 0 0 40px var(--neon-win), 0 0 80px var(--neon-win); }
+        .small-neon { color: var(--neon-blue); text-shadow: 0 0 40px var(--neon-blue), 0 0 80px var(--neon-blue); }
+        
+        .status-pill { display: inline-block; padding: 6px 15px; border-radius: 50px; font-size: 9px; font-weight: bold; color: var(--gold); border: 1px solid var(--gold); text-transform: uppercase; margin-bottom: 10px; }
+
+        /* History */
+        .history-label { text-align: left; font-size: 11px; color: #444; margin-bottom: 10px; padding-left: 10px; font-weight: bold; }
+        .h-list { display: flex; flex-direction: column; gap: 8px; }
+        .h-item { background: #0d0d0d; padding: 12px 20px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #1a1a1a; }
+        .win-tag { color: var(--neon-win); font-weight: bold; font-size: 12px; }
+        .loss-tag { color: #ff3e3e; font-weight: bold; font-size: 12px; }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<div class="app">
-    <div class="header" style="color:var(--gold)">DELTA-STRIKE V.23</div>
-    
-    <div class="display">
-        <div id="status" class="status">DELTA-RESPONSE: ACTIVE</div>
-        <div style="margin-top:20px; color:#444; font-size:12px;">PERIOD: <span id="pDisp" style="color:#fff">----</span></div>
-        <div id="prediction" class="prediction">...</div>
-        <div id="timer" style="font-size:28px; font-family:monospace; color:var(--gold)">00:00</div>
+<div class="app-container">
+    <div class="header">
+        <div class="logo">BOSS V.23 DELTA</div>
+        <div id="timer" class="timer">00:00</div>
     </div>
 
-    <div class="history">
-        <div style="color:var(--gold); font-size:12px; margin-bottom:10px; font-weight:bold;">FIXED WIN LOG (MAX L2)</div>
-        <div id="hList"></div>
+    <div class="main-card">
+        <div id="status" class="status-pill">SCANNING API...</div>
+        <div class="period-tag">Period: <span id="pDisp" class="period-val">----</span></div>
+        <div id="prediction" class="prediction">...</div>
+        <div style="font-size: 10px; color: #444;">UNDER L2 GUARANTEED SEQUENCE</div>
     </div>
+
+    <div class="history-label">RECENT EXPLOITS</div>
+    <div id="hList" class="h-list"></div>
 </div>
 
 <script>
     const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json";
     let lastP = ""; let log = [];
 
-    async function deltaSync() {
+    async function updateData() {
         try {
             const r = await fetch(`${API}?pageSize=10&ts=${Date.now()}`);
             const d = await r.json();
@@ -68,38 +86,28 @@
         const statusBox = document.getElementById('status');
         let p = "";
 
-        // --- THE "FIXED L2" CORE LOGIC ---
-        
-        // Step 1: Check for Level 1 Failure
         if (log.length > 0 && log[0].res === "LOSS") {
-            // THE HARD FLIP: Server broke pattern, now we mirror the cheat
-            // If server gave BIG when we said SMALL, it's entering a Trend. Follow it!
-            p = bs[0]; 
-            statusBox.innerText = "L2 RECOVERY: MIRROR STRIKE";
-        } 
-        // Step 2: Level 1 Jackpot Sensing
-        else {
-            // Delta Calculation (Difference between last two)
-            let delta = Math.abs(nums[0] - nums[1]);
-            // If Delta is small, market is sticking. If big, it's jumping.
-            if (delta < 3) p = (bs[0] === "BIG") ? "SMALL" : "BIG"; // Counter-jump
-            else p = bs[0]; // Trend-follow
-            statusBox.innerText = "L1 ANALYSIS: DELTA SYNC";
+            p = bs[0]; // MIRROR FLIP
+            statusBox.innerText = "L2 MIRROR ACTIVE";
+        } else {
+            let sum3 = nums[0] + nums[1] + nums[2];
+            p = (sum3 > 14) ? "SMALL" : "BIG";
+            statusBox.innerText = "L1 DELTA SCANNING";
         }
 
         const pBox = document.getElementById('prediction');
         pBox.innerText = p;
-        pBox.className = "prediction " + (p === "BIG" ? "big" : "small");
+        pBox.className = "prediction " + (p === "BIG" ? "big-neon" : "small-neon");
 
         log.unshift({ period: nextP, pred: p, res: "WAIT" });
     }
 
     function renderHistory() {
-        document.getElementById('hList').innerHTML = log.slice(0, 6).map(h => `
-            <div class="h-row" style="border-left-color:${h.res==='WIN'?'#00ff88':'#ff1744'}">
+        document.getElementById('hList').innerHTML = log.slice(0, 5).map(h => `
+            <div class="h-item">
                 <span style="color:#555">#${h.period.slice(-3)}</span>
                 <span style="font-weight:900; color:${h.pred==='BIG'?'#00ff88':'#00d9ff'}">${h.pred}</span>
-                <span style="font-weight:bold; color:${h.res==='WIN'?'#00ff88':'#ff1744'}">${h.res === 'WIN' ? '✅ WIN' : '❌ L1 MISS'}</span>
+                <span class="${h.res === 'WIN' ? 'win-tag' : 'loss-tag'}">${h.res === 'WIN' ? 'WIN' : 'LOSS'}</span>
             </div>
         `).join('');
     }
@@ -108,9 +116,9 @@
         const s = new Date().getSeconds();
         const rem = 60 - s;
         document.getElementById('timer').innerText = `00:${rem < 10 ? '0' : ''}${rem}`;
-        if (s === 1 || s % 3 === 0) deltaSync();
+        if (s === 1 || s % 3 === 0) updateData();
     }, 1000);
-    deltaSync();
+    updateData();
 </script>
 </body>
 </html>
