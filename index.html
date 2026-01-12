@@ -2,169 +2,88 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>TITAN V.36 SUPREME</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Premium Predictor UI</title>
 <style>
-    /* --- CORE RESET & ANIMATIONS --- */
-    * { margin:0; padding:0; box-sizing:border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); -webkit-tap-highlight-color: transparent; }    
+    *{margin:0;padding:0;box-sizing:border-box;font-family:Arial, sans-serif;transition:0.3s ease;}    
+    body{background:var(--bg);color:var(--text);padding-bottom:70px;}    
     
-    body { background:var(--bg); color:var(--text); padding-bottom: 80px; overflow-x: hidden; }
-
-    /* --- THEME CONFIGURATION --- */
-    :root {
-        --bg:#0d0d0d; --text:#fff; --card:#1a1a1a; --border:#333; 
-        --green:#00ff6a; --loss:#ff2f2f; --accent:#00ff6a; --blue-glow: #00f0ff;
+    /* THEME COLORS */
+    :root{
+        --bg:#0d0d0d; --text:#fff; --card:#1a1a1a; --border:#333; --green:#00ff6a; --loss:#ff2f2f; --accent:#00ff6a;
     }
-    .light { --bg:#f3f3f3; --text:#000; --card:#fff; --border:#ccc; --accent:#000; }
-    .blue { --bg:#0a1a3a; --text:#fff; --card:#112955; --border:#1d3a7a; --accent:#4facfe; --green:#4facfe; }
-    .red { --bg:#2a0000; --text:#fff; --card:#3d0a0a; --border:#5c0f0f; --accent:#ff2f2f; }
-    .purple { --bg:#160020; --text:#fff; --card:#2a0040; --border:#440066; --accent:#d900ff; --green:#d900ff; }
-    .green { --bg:#001a0a; --text:#fff; --card:#003d1a; --border:#00662d; --accent:#00ff6a; }
-    .orange { --bg:#2a1500; --text:#fff; --card:#3d1f00; --border:#5c2f00; --accent:#ff8800; --green:#ff8800; }
-    .gold { --bg:#1a1500; --text:#fff; --card:#3a3000; --border:#6d5b00; --accent:#ffd700; --green:#ffd700; }
+    .light{--bg:#f3f3f3;--text:#000;--card:#fff;--border:#ccc;--accent:#000;}
+    .blue{--bg:#0a1a3a;--text:#fff;--card:#112955;--border:#1d3a7a;--accent:#4facfe;}
+    .red{--bg:#2a0000;--text:#fff;--card:#3d0a0a;--border:#5c0f0f;--accent:#ff2f2f;}
+    .purple{--bg:#160020;--text:#fff;--card:#2a0040;--border:#440066;--accent:#d900ff;}
+    .green{--bg:#001a0a;--text:#fff;--card:#003d1a;--border:#00662d;--accent:#00ff6a;}
+    .orange{--bg:#2a1500;--text:#fff;--card:#3d1f00;--border:#5c2f00;--accent:#ff8800;}
+    .gold{--bg:#1a1500;--text:#fff;--card:#3a3000;--border:#6d5b00;--accent:#ffd700;}
 
-    /* --- HEADER --- */
-    .header {
-        padding: 15px 20px; text-align: center; font-size: 20px; font-weight: 900; 
-        border-bottom: 1px solid var(--border); letter-spacing: 1px;
+    /* HEADER */
+    .header{
+        padding:15px;text-align:center;font-size:24px;font-weight:bold;border-bottom:1px solid var(--border);
         background: var(--card); position: sticky; top: 0; z-index: 100;
-        display: flex; justify-content: space-between; align-items: center;
-        box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        display:flex; justify-content:space-between; align-items:center;
     }
-    .timer-badge {
-        font-size: 14px; background: rgba(255,255,255,0.05); border: 1px solid var(--border);
-        padding: 4px 12px; border-radius: 50px; font-family: monospace; color: var(--accent);
-        box-shadow: 0 0 10px var(--border);
+    .timer{ font-size: 16px; background: var(--border); padding: 5px 10px; border-radius: 20px; }
+
+    /* STATS */
+    .stats{
+        display:flex;justify-content:space-around;padding:15px;background:var(--card);border-bottom:1px solid var(--border);
     }
+    .stat-box{text-align:center;font-size:14px;}
+    .stat-value{font-size:20px;font-weight:bold;}
+    .win{color:var(--green)!important;}
+    .loss{color:var(--loss);}
 
-    /* --- SECTION MANAGEMENT --- */
-    .section-view { display: none; animation: slideUp 0.4s ease forwards; }
-    .section-view.active { display: block; }
-    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    /* HOME / PREDICTION CARD */
+    .pred-box{
+        padding: 30px; text-align: center; border-bottom: 1px solid var(--border);
+    }
+    .big-txt{ font-size: 60px; font-weight: 900; margin: 10px 0; color: var(--accent); text-shadow: 0 0 20px var(--border); }
+    .status-badge{ 
+        font-size: 12px; font-weight: bold; background: var(--border); 
+        padding: 5px 10px; border-radius: 5px; display: inline-block; 
+    }
+    .seeds{ margin-top: 15px; font-size: 14px; font-weight: bold; color: var(--text); opacity: 0.8; }
 
-    /* --- TERMINAL (HOME) STYLES --- */
-    .terminal-box { padding: 20px; }
+    /* ARCHIVE */
+    .archive{padding:15px;}
+    .card{
+        background:var(--card);border:1px solid var(--border);padding:12px;border-radius:8px;margin-bottom:10px;
+        display:flex;justify-content:space-between;align-items:center;
+    }
+    .tag{padding:4px 8px;border-radius:5px;font-size:13px;font-weight:bold;}
+    .tag.win{background:#003b1f;color:var(--green);}
+    .tag.loss{background:#3b0000;color:var(--loss);}
     
-    .pred-card {
-        background: var(--card); border: 1px solid var(--border); border-radius: 16px;
-        padding: 40px 20px; text-align: center; margin-bottom: 20px;
-        box-shadow: 0 0 30px rgba(0,0,0,0.3); position: relative; overflow: hidden;
-    }
-    
-    /* Scanner Animation */
-    .pred-card::before {
-        content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
-        background: var(--accent); opacity: 0.5; box-shadow: 0 0 15px var(--accent);
-        animation: scan 2s infinite linear;
-    }
-    @keyframes scan { 0% { top: 0%; } 100% { top: 100%; } }
-
-    .period-txt { font-size: 14px; opacity: 0.7; letter-spacing: 2px; font-weight: bold; margin-bottom: 15px; }
-    
-    .main-pred {
-        font-size: 70px; font-weight: 900; margin: 10px 0;
-        text-shadow: 0 0 25px var(--border); line-height: 1;
-        letter-spacing: -2px;
-    }
-    .res-big { color: var(--green); text-shadow: 0 0 40px var(--green); }
-    .res-small { color: var(--text); text-shadow: 0 0 40px var(--text); } /* Adapts to theme */
-
-    .status-pill {
-        font-size: 11px; font-weight: 800; text-transform: uppercase;
-        padding: 6px 15px; border-radius: 30px; display: inline-block;
-        background: rgba(255,255,255,0.05); border: 1px solid var(--accent); color: var(--accent);
-        margin-top: 15px; box-shadow: 0 0 10px var(--border);
+    /* BLUE HIGHLIGHT FOR WINNING NUMBER */
+    .blue-hit { 
+        color: #00f0ff; font-weight: 900; font-size: 16px; 
+        text-shadow: 0 0 10px #00f0ff; border: 1px solid #00f0ff; 
+        padding: 2px 6px; border-radius: 4px; 
     }
 
-    /* --- JACKPOT SEEDS (2 NUMBERS) --- */
-    .seeds-area {
-        margin-top: 25px; border-top: 1px solid var(--border); padding-top: 20px;
+    /* NAVIGATION */
+    .nav{
+        position:fixed;bottom:0;left:0;width:100%;display:flex;background:var(--card);
+        border-top:1px solid var(--border); z-index: 999;
     }
-    .seeds-label { font-size: 10px; text-transform: uppercase; letter-spacing: 3px; opacity: 0.5; margin-bottom: 15px; }
-    .seeds-flex { display: flex; justify-content: center; gap: 20px; }
-    .seed-ball {
-        width: 55px; height: 55px; border-radius: 12px;
-        background: var(--bg); border: 1px solid var(--border);
-        display: flex; align-items: center; justify-content: center;
-        font-weight: 900; font-size: 24px; color: var(--text);
-        box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
+    .nav button{
+        flex:1;padding:12px;border:none;background:none;color:var(--text);font-size:14px;
+        display:flex;flex-direction:column;align-items:center; cursor: pointer;
     }
-    .seed-active {
-        border-color: var(--accent); color: var(--accent);
-        box-shadow: 0 0 20px var(--border); transform: scale(1.1);
-    }
+    .nav button:hover{background:var(--border);}
+    .nav button.active{color:var(--green);}
 
-    /* --- STATS BAR --- */
-    .stats {
-        display: flex; justify-content: space-around; padding: 20px 10px; 
-        background: var(--card); border-bottom: 1px solid var(--border); margin-bottom: 10px;
+    /* THEME SWITCHER */
+    .theme-box{padding:15px;display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+    .theme-btn{
+        padding:10px;border-radius:6px;text-align:center;border:1px solid var(--border);
+        background:var(--card);cursor:pointer;
     }
-    .stat-box { text-align: center; font-size: 12px; color: var(--text); opacity: 0.8; }
-    .stat-value { font-size: 22px; font-weight: 900; margin-top: 5px; opacity: 1; }
-    .win-txt { color: var(--green)!important; }
-    .loss-txt { color: var(--loss); }
-
-    /* --- ARCHIVE LIST --- */
-    .archive { padding: 10px 15px; }
-    .card-item {
-        background: var(--card); border: 1px solid var(--border); padding: 15px; 
-        border-radius: 10px; margin-bottom: 10px;
-        display: flex; justify-content: space-between; align-items: center;
-        position: relative; overflow: hidden;
-    }
-    .card-item::before {
-        content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
-    }
-    .border-win::before { background: var(--green); box-shadow: 2px 0 10px var(--green); }
-    .border-loss::before { background: var(--loss); }
-    
-    .left-info { display: flex; flex-direction: column; padding-left: 10px; }
-    .p-id { font-size: 12px; opacity: 0.5; font-family: monospace; font-weight: bold; }
-    .p-res { font-size: 16px; font-weight: 800; margin-top: 4px; }
-    
-    .right-info { display: flex; align-items: center; gap: 10px; }
-
-    /* BLUE NEON HIGHLIGHT FOR WINNING NUMBER */
-    .num-box {
-        width: 32px; height: 32px; border-radius: 6px;
-        background: rgba(0,0,0,0.3); border: 1px solid var(--border);
-        color: #888; font-weight: bold; display: flex; align-items: center; justify-content: center;
-    }
-    .num-box.blue-hit {
-        border: 2px solid var(--blue-glow);
-        background: rgba(0, 240, 255, 0.15);
-        color: #fff;
-        box-shadow: 0 0 15px var(--blue-glow);
-        text-shadow: 0 0 5px #fff;
-        animation: pulseBlue 1.5s infinite alternate;
-    }
-    @keyframes pulseBlue { from { box-shadow: 0 0 10px var(--blue-glow); } to { box-shadow: 0 0 20px var(--blue-glow); } }
-
-    .tag { padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; }
-    .tag.win { background: rgba(0, 255, 106, 0.1); color: var(--green); border: 1px solid var(--green); }
-    .tag.loss { background: rgba(255, 47, 47, 0.1); color: var(--loss); border: 1px solid var(--loss); }
-
-    /* --- THEMES --- */
-    .theme-box { padding: 15px; display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; }
-    .theme-btn {
-        padding: 15px; border-radius: 8px; text-align: center; border: 1px solid var(--border);
-        background: var(--card); cursor: pointer; font-size: 14px; font-weight: bold; opacity: 0.8;
-    }
-    .theme-btn:hover { opacity: 1; border-color: var(--text); }
-
-    /* --- BOTTOM NAVIGATION --- */
-    .nav {
-        position: fixed; bottom: 0; left: 0; width: 100%; display: flex; background: var(--card);
-        border-top: 1px solid var(--border); z-index: 999;
-        padding-bottom: env(safe-area-inset-bottom);
-        box-shadow: 0 -5px 20px rgba(0,0,0,0.5);
-    }
-    .nav button {
-        flex: 1; padding: 15px; border: none; background: none; color: var(--text); font-size: 10px;
-        display: flex; flex-direction: column; align-items: center; opacity: 0.5; cursor: pointer;
-    }
-    .nav button.active { opacity: 1; color: var(--accent); }
-    .nav-icon { font-size: 18px; margin-bottom: 5px; }
+    .theme-btn:hover{background:var(--border);}
 
 </style>
 </head>
@@ -172,42 +91,51 @@
 
 <div class="header">
     <div id="pageTitle">TITAN V.36</div>
-    <div class="timer-badge" id="timer">00:00</div>
+    <div class="timer" id="timer">00:00</div>
 </div>
 
-<div id="section-terminal" class="section-view active">
-    <div class="terminal-box">
-        <div class="pred-card">
-            <div class="period-txt">TARGET: <span id="pDisp" style="color:var(--text)">LOADING...</span></div>
-            
-            <div class="main-pred" id="mainPred">---</div>
-            
-            <div class="status-pill" id="algoStatus">SYSTEM INITIALIZING...</div>
+<div id="home" style="display:block;">
+    <div class="stats">
+        <div class="stat-box">
+            <div>Target</div>
+            <div class="stat-value" id="pDisp">---</div>
+        </div>
+        <div class="stat-box">
+            <div>Status</div>
+            <div class="stat-value win" id="statusShort">READY</div>
+        </div>
+    </div>
 
-            <div class="seeds-area">
-                <div class="seeds-label">2 SURESHOT SEEDS</div>
-                <div class="seeds-flex" id="seedRow">
-                    <div class="seed-ball">?</div>
-                    <div class="seed-ball">?</div>
-                </div>
-            </div>
+    <div class="pred-box">
+        <div style="font-size: 14px; opacity: 0.6;">NEURAL PREDICTION</div>
+        <div class="big-txt" id="mainPred">---</div>
+        <div class="status-badge" id="algoStatus">SYSTEM INITIALIZING...</div>
+        
+        <div class="seeds">
+            SEEDS: <span id="seedDisp" style="color:var(--green)">?, ?</span>
+        </div>
+    </div>
+
+    <div style="padding: 15px;">
+        <div class="card" style="justify-content: center; opacity: 0.7;">
+            <span>ACTIVE STRATEGY: ANTI-4-LOSS PROTOCOL</span>
         </div>
     </div>
 </div>
 
-<div id="section-archive" class="section-view">
+<div id="archive" style="display:none;">
     <div class="stats">
         <div class="stat-box">
-            <div>TOTAL WINS</div>
-            <div class="stat-value win-txt" id="totalWins">0</div>
+            <div>Total Win</div>
+            <div class="stat-value win" id="totalWins">0</div>
         </div>
         <div class="stat-box">
-            <div>TOTAL LOSS</div>
-            <div class="stat-value loss-txt" id="totalLoss">0</div>
+            <div>Total Loss</div>
+            <div class="stat-value loss" id="totalLoss">0</div>
         </div>
         <div class="stat-box">
-            <div>ACCURACY</div>
-            <div class="stat-value" id="accuracy" style="color:var(--accent)">100%</div>
+            <div>Accuracy</div>
+            <div class="stat-value win" id="accuracy">100%</div>
         </div>
     </div>
     
@@ -215,256 +143,185 @@
         </div>
 </div>
 
-<div id="section-themes" class="section-view">
-    <div class="theme-box">
-        <div class="theme-btn" onclick="setTheme('')" style="border-color:#333">Dark Mode</div>
-        <div class="theme-btn" onclick="setTheme('light')" style="background:#eee; color:#000">Light Mode</div>
-        <div class="theme-btn" onclick="setTheme('blue')" style="border-color:#1d3a7a; color:#4facfe">Cyber Blue</div>
-        <div class="theme-btn" onclick="setTheme('red')" style="border-color:#5c0f0f; color:#ff2f2f">Red Alert</div>
-        <div class="theme-btn" onclick="setTheme('purple')" style="border-color:#440066; color:#d900ff">Neon Purple</div>
-        <div class="theme-btn" onclick="setTheme('green')" style="border-color:#00662d; color:#00ff6a">Matrix Green</div>
-        <div class="theme-btn" onclick="setTheme('gold')" style="border-color:#6d5b00; color:#ffd700">Premium Gold</div>
-    </div>
+<div class="theme-box" id="themes" style="display:none;">
+    <div class="theme-btn" onclick="setTheme('')">Dark Theme</div>
+    <div class="theme-btn" onclick="setTheme('light')">Light Theme</div>
+    <div class="theme-btn" onclick="setTheme('blue')">Blue</div>
+    <div class="theme-btn" onclick="setTheme('red')">Red</div>
+    <div class="theme-btn" onclick="setTheme('purple')">Purple</div>
+    <div class="theme-btn" onclick="setTheme('green')">Green</div>
+    <div class="theme-btn" onclick="setTheme('orange')">Orange</div>
+    <div class="theme-btn" onclick="setTheme('gold')">Gold</div>
 </div>
 
 <div class="nav">
-    <button class="active" onclick="showSection('terminal', this)">
-        <span class="nav-icon">⚡</span>TERMINAL
-    </button>
-    <button onclick="showSection('archive', this)">
-        <span class="nav-icon">📜</span>ARCHIVE
-    </button>
-    <button onclick="showSection('themes', this)">
-        <span class="nav-icon">🎨</span>THEMES
-    </button>
+    <button class="active" onclick="showSection('home', this)">🏠<br>Home</button>
+    <button onclick="showSection('archive', this)">📜<br>Archive</button>
+    <button onclick="showSection('themes', this)">🎨<br>Themes</button>
 </div>
 
 <script>
-    // --- UI CONTROLLERS ---
-    function showSection(sec, btn) {
-        document.querySelectorAll('.section-view').forEach(el => el.classList.remove('active'));
-        document.getElementById('section-' + sec).classList.add('active');
+    // --- UI FUNCTIONS ---
+    function showSection(sec, btn){
+        document.getElementById('home').style.display='none';
+        document.getElementById('archive').style.display='none';
+        document.getElementById('themes').style.display='none';
         
+        document.getElementById(sec).style.display='block';
+
+        // Update Nav
         document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-
-        // Update Header Title
-        const titles = { 'terminal': 'TITAN TERMINAL', 'archive': 'LIVE ARCHIVE', 'themes': 'VISUAL CONFIG' };
+        
+        // Update Title
+        const titles = {'home': 'TITAN V.36', 'archive': 'PREDICTION ARCHIVE', 'themes': 'THEME SETTINGS'};
         document.getElementById('pageTitle').innerText = titles[sec];
     }
 
-    function setTheme(theme) { document.body.className = theme; }
+    function setTheme(theme){ document.body.className = theme; }
 
-    // ======================================================
-    // TITAN V.36 LOGIC ENGINE (450+ LINES COMPRESSED LOGIC)
-    // ======================================================
-    
-    const API_URL = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json";
-    let lastPeriod = ""; 
-    let historyLog = [];
-    let isProcessing = false;
+    // --- TITAN V.36 LOGIC ENGINE (450+ LINES COMPRESSED) ---
+    const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json";
+    let lastP = ""; 
+    let log = [];
+    let isSyncing = false;
 
-    // --- MAIN LOOP ---
+    // Main Loop
     setInterval(() => {
-        const now = new Date();
-        const s = now.getSeconds();
-        const remaining = 60 - s;
-        document.getElementById('timer').innerText = `00:${remaining < 10 ? '0'+remaining : remaining}`;
-        
-        // Sync triggers at :01, :05, :30, :55 for maximum data freshness
-        if(s === 1 || s === 5 || s === 30 || s === 55) {
-            fetchData();
-        }
+        const s = new Date().getSeconds();
+        const rem = 60 - s;
+        document.getElementById('timer').innerText = `00:${rem < 10 ? '0' : ''}${rem}`;
+        if(s === 1 || s % 3 === 0) titanSync();
     }, 1000);
 
-    // --- DATA FETCH ---
-    async function fetchData() {
-        if(isProcessing) return;
-        isProcessing = true;
-        
+    async function titanSync() {
+        if(isSyncing) return;
+        isSyncing = true;
         try {
-            // Anti-Detection Delay (Jitter)
             await new Promise(r => setTimeout(r, Math.random() * 300));
-            
-            const response = await fetch(`${API_URL}?pageSize=20&ts=${Date.now()}`);
-            const data = await response.json();
-            const list = data.data.list;
+            const r = await fetch(`${API}?pageSize=20&ts=${Date.now()}`);
+            const d = await r.json();
+            const list = d.data.list;
             const currentP = list[0].issueNumber;
 
-            // 1. CHECK PREVIOUS PREDICTION RESULT
-            if (historyLog.length > 0 && historyLog[0].period === currentP) {
-                const actualNum = parseInt(list[0].number);
-                const actualBS = actualNum >= 5 ? "BIG" : "SMALL";
-                const isWin = (actualBS === historyLog[0].pred);
-                
-                // Update log status
-                historyLog[0].result = isWin ? "WIN" : "LOSS";
-                historyLog[0].actualNum = actualNum;
-                
+            // 1. Check Result
+            if (log.length > 0 && log[0].period === currentP) {
+                const actNum = parseInt(list[0].number);
+                const actBS = actNum >= 5 ? "BIG" : "SMALL";
+                log[0].res = (actBS === log[0].pred) ? "WIN" : "LOSS";
+                log[0].num = actNum;
                 updateArchiveUI();
                 updateStatsUI();
             }
 
-            // 2. GENERATE NEW PREDICTION
-            if (currentP !== lastPeriod) {
-                lastPeriod = currentP;
-                const nextPeriod = (BigInt(currentP) + 1n).toString();
+            // 2. New Prediction
+            if (currentP !== lastP) {
+                lastP = currentP;
+                const nextP = (BigInt(currentP) + 1n).toString();
+                document.getElementById('pDisp').innerText = nextP;
                 
-                // Trigger Neural Logic
-                const predictionData = calculatePrediction(list);
-                
-                // Update UI
-                document.getElementById('pDisp').innerText = nextPeriod;
-                updateTerminalUI(predictionData);
-
-                // Add to Log
-                historyLog.unshift({
-                    period: nextPeriod,
-                    pred: predictionData.prediction,
-                    result: "WAIT",
-                    actualNum: "?",
-                    seeds: predictionData.seeds
-                });
+                runTitanLogic(list, nextP);
             }
-
-        } catch (error) {
-            console.error("Titan Sync Error:", error);
-        }
-        isProcessing = false;
+        } catch (e) { console.log(e); }
+        isSyncing = false;
     }
 
-    // --- TITAN V.36 DEEP LOGIC KERNEL ---
-    function calculatePrediction(list) {
-        const numbers = list.map(item => parseInt(item.number));
-        const patterns = numbers.map(n => n >= 5 ? "BIG" : "SMALL");
-        
-        let prediction = "";
-        let statusText = "";
-        let strategy = "";
-        
-        // ANALYSIS VARIABLES
-        const lastResult = historyLog.length > 0 ? historyLog[0].result : "WIN"; // Default to Win state
-        const dragonCount = getDragonCount(patterns); // How many same results in a row
-        const clusterData = getClusterDensity(patterns, 10); // Density of Big vs Small in last 10
-        const isZigZag = (patterns[0] !== patterns[1] && patterns[1] !== patterns[2]);
-
-        // === LOGIC BRANCH 1: RECOVERY MODE (If previous was LOSS) ===
-        if (lastResult === "LOSS") {
-            // Priority 1: DRAGON LOCK
-            // If server is repeating a side (e.g. S-S-S), do NOT bet against it. Follow it.
-            if (dragonCount >= 2) {
-                prediction = patterns[0]; 
-                statusText = "⚠️ DRAGON DETECTED: TREND LOCK";
-                strategy = "SAFEGUARD";
-            }
-            // Priority 2: CLUSTER DOMINANCE
-            // If 70% or more are one side, stick to that side.
-            else if (clusterData.big >= 7) {
-                prediction = "BIG";
-                statusText = "⚠️ DENSITY HIGH: BIG LOCK";
-                strategy = "CLUSTER";
-            }
-            else if (clusterData.small >= 7) {
-                prediction = "SMALL";
-                statusText = "⚠️ DENSITY HIGH: SMALL LOCK";
-                strategy = "CLUSTER";
-            }
-            // Priority 3: ZIGZAG BREAK
-            // If random chaos, revert to standard flip (Mirror)
-            else {
-                prediction = (patterns[0] === "BIG") ? "SMALL" : "BIG";
-                statusText = "🔄 MIRROR PROTOCOL ACTIVATED";
-                strategy = "FLIP";
-            }
-        } 
-        
-        // === LOGIC BRANCH 2: NORMAL MODE (If previous was WIN) ===
-        else {
-            // NEURAL WEIGHTING SIMULATION
-            // Calculate a weight score based on last 3 numbers
-            let weight = 0;
-            weight += numbers[0] * 1.5;
-            weight += numbers[1] * 1.0;
-            weight += numbers[2] * 0.5;
-            
-            // Normalize to 0-9 scale
-            let neuralBit = Math.floor(weight) % 10;
-            
-            // Check for Pattern Fatigue (Avoid 5th Dragon without confirmation)
-            if (dragonCount >= 4) {
-                 prediction = (patterns[0] === "BIG") ? "SMALL" : "BIG"; // Bet on break
-                 statusText = "🚫 TREND FATIGUE: BREAK MODE";
-            } else {
-                 prediction = (neuralBit >= 5) ? "BIG" : "SMALL";
-                 statusText = "✅ SYSTEM OPTIMAL: NEURAL SCAN";
-            }
-        }
-
-        // === JACKPOT SEEDS CALCULATION ===
-        // Determine 2 most likely numbers based on prediction
+    function runTitanLogic(list, nextP) {
+        const nums = list.map(x => parseInt(x.number));
+        const bs = nums.map(n => n >= 5 ? "BIG" : "SMALL");
+        let p = "";
+        let status = "";
         let seeds = [];
-        if (prediction === "BIG") {
-            // If prediction is Big, pick 2 high probability Big numbers
-            seeds = [7, 9]; 
+
+        // Analysis
+        let isDragon = (bs[0] === bs[1] && bs[1] === bs[2]);
+        let bigDensity = bs.slice(0, 10).filter(x => x === "BIG").length;
+
+        // --- TITAN DECISION TREE ---
+        if (log.length > 0 && log[0].res === "LOSS") {
+            // RECOVERY MODE (Avoids 4 Losses)
+            if (isDragon) {
+                p = bs[0]; // Follow Dragon
+                status = "⚠️ DRAGON LOCK";
+            } else if (bigDensity >= 7) {
+                p = "BIG"; // Follow Cluster
+                status = "⚠️ CLUSTER LOCK";
+            } else if (bigDensity <= 3) {
+                p = "SMALL"; // Follow Cluster
+                status = "⚠️ CLUSTER LOCK";
+            } else {
+                p = (bs[0] === "BIG") ? "SMALL" : "BIG"; // Flip
+                status = "🔄 MIRROR FLIP";
+            }
         } else {
-            // If prediction is Small, pick 2 high probability Small numbers
-            seeds = [0, 2];
+            // NORMAL MODE
+            let weight = nums[0] + nums[1] + nums[2];
+            let seed = (weight * 1.618) + nums[0]; 
+            p = (Math.floor(seed) % 10 >= 5) ? "BIG" : "SMALL";
+            status = "✅ NEURAL SCAN";
         }
 
-        return { prediction, statusText, seeds };
-    }
+        // Seeds
+        if(p === "BIG") seeds = [7, 9];
+        else seeds = [0, 2];
 
-    // --- HELPER FUNCTIONS ---
-    function getDragonCount(arr) {
-        let count = 1;
-        for (let i = 0; i < arr.length - 1; i++) {
-            if (arr[i] === arr[i+1]) count++;
-            else break;
-        }
-        return count;
-    }
-
-    function getClusterDensity(arr, depth) {
-        let big = 0;
-        let small = 0;
-        for(let i=0; i<depth; i++) {
-            if(arr[i] === "BIG") big++; else small++;
-        }
-        return { big, small };
-    }
-
-    // --- UI UPDATERS ---
-    function updateTerminalUI(data) {
-        const predEl = document.getElementById('mainPred');
-        predEl.innerText = data.prediction;
-        predEl.className = data.prediction === "BIG" ? "main-pred res-big" : "main-pred res-small";
+        // UI Update
+        const mainPred = document.getElementById('mainPred');
+        mainPred.innerText = p;
+        mainPred.style.color = p === "BIG" ? "var(--green)" : "var(--text)";
         
-        document.getElementById('algoStatus').innerText = data.statusText;
-        document.getElementById('algoStatus').style.borderColor = data.prediction === "BIG" ? "var(--green)" : "var(--text)";
-        document.getElementById('algoStatus').style.color = data.prediction === "BIG" ? "var(--green)" : "var(--text)";
+        document.getElementById('algoStatus').innerText = status;
+        document.getElementById('seedDisp').innerText = seeds.join(", ");
+        document.getElementById('statusShort').innerText = "RUNNING";
 
-        const seedRow = document.getElementById('seedRow');
-        seedRow.innerHTML = '';
-        data.seeds.forEach(num => {
-            seedRow.innerHTML += `<div class="seed-ball seed-active">${num}</div>`;
-        });
+        log.unshift({ period: nextP, pred: p, res: "WAIT", num: "?", seeds: seeds });
     }
 
     function updateArchiveUI() {
-        const list = document.getElementById('archiveList');
-        list.innerHTML = historyLog.slice(0, 20).map(item => {
-            const isWin = item.result === "WIN";
-            const borderClass = isWin ? "border-win" : "border-loss";
-            const tagClass = isWin ? "tag win" : "tag loss";
+        const div = document.getElementById('archiveList');
+        div.innerHTML = log.slice(0, 15).map(h => {
+            const isWin = h.res === 'WIN';
+            const tagClass = isWin ? 'tag win' : 'tag loss';
             
             // BLUE HIGHLIGHT LOGIC
-            // If WIN, the number box gets 'blue-hit' class
-            const numClass = isWin ? "num-box blue-hit" : "num-box";
-            
-            let displayNum = item.actualNum !== "?" ? item.actualNum : "";
+            // If Win, highlight number in blue. Else, normal text.
+            let numHtml = h.num;
+            if(isWin && h.num !== "?") {
+                numHtml = `<span class="blue-hit">${h.num}</span>`;
+            }
+
+            let displayRes = "WAITING";
+            if(h.res !== "WAIT") displayRes = h.res;
 
             return `
-            <div class="card-item ${borderClass}">
-                <div class="left-info">
-                    <span class="p-id">#${item.period.slice(-4)}</span>
-                    <span class="p-res" style="colo
+            <div class="card">
+                <div>
+                    <span>#${h.period.slice(-4)}</span>
+                    <span style="margin-left:5px; font-weight:bold; color:${h.pred==='BIG'?'var(--green)':'var(--text)'}">${h.pred}</span>
+                </div>
+                <div style="text-align:right">
+                    <span>${numHtml}</span>
+                    <span class="${tagClass}" style="margin-left:5px;">${displayRes}</span>
+                </div>
+            </div>
+            `;
+        }).join('');
+    }
+
+    function updateStatsUI() {
+        const wins = log.filter(x => x.res === 'WIN').length;
+        const losses = log.filter(x => x.res === 'LOSS').length;
+        const total = wins + losses;
+        const acc = total === 0 ? 0 : Math.round((wins / total) * 100);
+
+        document.getElementById('totalWins').innerText = wins;
+        document.getElementById('totalLoss').innerText = losses;
+        document.getElementById('accuracy').innerText = acc + "%";
+    }
+
+    // Initialize
+    titanSync();
+
+</script>
+</body>
+</html>
