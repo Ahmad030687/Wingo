@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TITAN ULTRA V.33 - NEURAL ADAPT</title>
+    <title>TITAN ULTRA V.34 - CLUSTER SCAN</title>
     <style>
         :root { --gold: #ffd700; --bg: #000; --neon: #00ffa3; --blue: #00e0ff; }
         body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; margin: 0; display: flex; justify-content: center; min-height: 100vh; overflow-x: hidden; }
-        .panel { width: 100%; max-width: 420px; background: #080808; padding: 20px; border: 1px solid #222; border-radius: 40px; margin: 10px; border-top: 3px solid var(--neon); }
+        .panel { width: 100%; max-width: 420px; background: #080808; padding: 20px; border: 1px solid #222; border-radius: 40px; margin: 10px; border-top: 3px solid var(--gold); }
         .top-nav { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1a1a1a; padding-bottom: 15px; margin-bottom: 20px; }
         .main-display { background: radial-gradient(circle, #111 0%, #000 100%); border-radius: 35px; border: 1px solid #333; padding: 45px 10px; text-align: center; margin-bottom: 20px; }
         .pred-text { font-size: 100px; font-weight: 900; letter-spacing: -5px; line-height: 1; margin: 10px 0; }
@@ -25,14 +25,14 @@
 
 <div class="panel">
     <div class="top-nav">
-        <div style="color: var(--gold); font-size: 12px; font-weight: 900;">TITAN V.33 NEURAL-ADAPT</div>
+        <div style="color: var(--gold); font-size: 12px; font-weight: 900;">TITAN V.34 CLUSTER-SCAN</div>
         <div id="timer" style="font-family: monospace; font-size: 20px; font-weight: 900;">00:00</div>
     </div>
 
     <div class="main-display">
-        <div id="status" class="status-bar">CALIBRATING NEURAL NODES...</div>
+        <div id="status" class="status-bar">SCANNING CLUSTER DENSITY...</div>
         <div id="prediction" class="pred-text">---</div>
-        <div style="font-size: 10px; color: #444;">PERIOD: <span id="pDisp" style="color:#fff">----</span></div>
+        <div style="font-size: 10px; color: #444;">TARGET PERIOD: <span id="pDisp" style="color:#fff">----</span></div>
     </div>
 
     <div class="history-card" id="hList"></div>
@@ -72,31 +72,25 @@
         const statusEl = document.getElementById('status');
         
         let p = "";
-        let dragonStrike = (bs[0] === bs[1]); 
+        
+        // --- V.34 CLUSTER DENSITY LOGIC ---
+        let bigCount = bs.slice(0, 8).filter(x => x === "BIG").length;
+        let smallCount = 8 - bigCount;
 
         if (log.length > 0 && log[0].res === "LOSS") {
-            // L2: FIXED ADAPTIVE RECOVERY
-            if (dragonStrike) {
-                p = bs[0]; 
-                statusEl.innerText = "NEURAL LOCK: TREND FOLLOW";
-            } else {
+            // L2: CLUSTER RECOVERY
+            // Agar ek side bohot bhari hai, toh flip mat karo
+            if (bigCount >= 6) { p = "BIG"; statusEl.innerText = "CLUSTER LOCK: BIG DOMINANT"; }
+            else if (smallCount >= 6) { p = "SMALL"; statusEl.innerText = "CLUSTER LOCK: SMALL DOMINANT"; }
+            else {
+                // Standard Adaptive Flip
                 p = (bs[0] === "BIG") ? "SMALL" : "BIG";
-                statusEl.innerText = "NEURAL LOCK: SEQUENCE FLIP";
+                statusEl.innerText = "CLUSTER ADJUST: FLIP MODE";
             }
         } else {
-            // L1: PATTERN DENSITY ANALYSIS
-            let recentSmall = bs.slice(0, 5).filter(x => x === "SMALL").length;
-            if (recentSmall >= 4) {
-                p = "SMALL";
-                statusEl.innerText = "DENSITY: SMALL DOMINANT";
-            } else if (recentSmall <= 1) {
-                p = "BIG";
-                statusEl.innerText = "DENSITY: BIG DOMINANT";
-            } else {
-                let weight = (nums[0] + nums[1]) % 2 === 0 ? "BIG" : "SMALL";
-                p = weight;
-                statusEl.innerText = "PATTERN SYNC: L1 READY";
-            }
+            // L1: DENSITY MEAN SCAN
+            if (bigCount > smallCount) { p = "BIG"; statusEl.innerText = "DENSITY SCAN: BIG FAVOR"; }
+            else { p = "SMALL"; statusEl.innerText = "DENSITY SCAN: SMALL FAVOR"; }
         }
 
         const pBox = document.getElementById('prediction');
