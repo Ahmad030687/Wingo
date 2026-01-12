@@ -1,371 +1,389 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>DARKNET TITAN V.42</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;800&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Darknet Supreme Commander</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap');
 
-<style>
-/* =========================================
-   1. GLOBAL DARKNET STYLES
-   ========================================= */
-body {
-    margin: 0; padding: 0; background: #03060F; font-family: 'Orbitron', sans-serif;
-    color: white; -webkit-tap-highlight-color: transparent; padding-bottom: 80px;
-    overflow-x: hidden;
-}
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-green: #00ff41;
+            --neon-red: #ff003c;
+            --dark-bg: #050a10;
+            --panel-bg: rgba(10, 20, 30, 0.9);
+            --border-blue: 1px solid rgba(0, 243, 255, 0.3);
+            --border-green: 1px solid rgba(0, 255, 65, 0.3);
+        }
 
-/* HEADER */
-.header {
-    padding: 20px; font-size: 22px; font-weight: 900; text-align: center;
-    border-bottom: 1px solid #0A4DFF; background: #02040a;
-    position: sticky; top: 0; z-index: 100; box-shadow: 0 5px 20px rgba(0,0,0,0.5);
-    display: flex; justify-content: space-between; align-items: center;
-}
-.timer-badge {
-    font-size: 14px; background: rgba(0, 162, 255, 0.1); border: 1px solid #0A4DFF;
-    padding: 5px 12px; border-radius: 50px; font-family: monospace; color: #00f0ff;
-}
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
 
-/* SECTIONS */
-.view-section { display: none; animation: fadeIn 0.4s ease; }
-.view-section.active { display: block; }
-@keyframes fadeIn { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
+        body {
+            background-color: var(--dark-bg);
+            color: white;
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+        }
 
-/* AURA BOX (TERMINAL) */
-.container { width: 92%; margin: 20px auto; }
-.aura-box {
-    width: 100%; padding: 25px; background: linear-gradient(180deg, #02204F, #031A39);
-    border-radius: 16px; border: 1px solid #0A4DFF; text-align: center;
-    box-shadow: 0 0 30px rgba(0, 71, 255, 0.4); margin-bottom: 25px; box-sizing: border-box;
-}
-.aura-title { font-size: 26px; font-weight: 900; color: #23A0FF; text-shadow: 0 0 10px #0047FF; }
+        .container {
+            width: 100%;
+            max-width: 450px;
+            background: radial-gradient(circle at center, #0a1520 0%, #000000 100%);
+            min-height: 100vh;
+            padding: 15px;
+            position: relative;
+            border-left: 1px solid #333;
+            border-right: 1px solid #333;
+        }
 
-/* PREDICTION BOX */
-.section {
-    padding: 25px; border-radius: 16px; border: 1px solid #0A4DFF;
-    background: rgba(0, 20, 40, 0.8); box-shadow: 0 0 20px rgba(0, 71, 255, 0.2);
-}
-.big-text {
-    text-align: center; font-size: 70px; font-weight: 900;
-    margin: 15px 0; text-shadow: 0 0 30px rgba(0, 240, 255, 0.5);
-}
-.res-green { color: #00ff9d; text-shadow: 0 0 30px #00ff9d; }
-.res-blue { color: #00aaff; text-shadow: 0 0 30px #00aaff; }
+        /* Header */
+        .header {
+            margin-bottom: 20px;
+        }
+        .app-name {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-green);
+            font-size: 1.5rem;
+            font-weight: 900;
+            text-shadow: 0 0 10px var(--neon-green);
+            letter-spacing: 1px;
+        }
+        .sub-name {
+            font-size: 0.7rem;
+            color: #555;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
 
-/* PATTERN GRID */
-.pattern-box { margin-top: 20px; padding: 10px; border-radius: 10px; background: #021122; border: 1px solid #103FFF; }
-.pattern-grid { display: flex; justify-content: center; gap: 8px; margin-top: 10px; }
-.pattern-num {
-    width: 35px; height: 35px; border: 1px solid #2EA7FF;
-    display: flex; justify-content: center; align-items: center;
-    font-weight: 900; font-size: 16px; border-radius: 6px;
-    background: #051a30; color: #fff;
-}
+        /* Top Status Bar */
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border: var(--border-green);
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.1);
+        }
+        .timer-box {
+            text-align: right;
+        }
+        .timer-val {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            color: var(--neon-blue);
+        }
 
-/* =========================================
-   2. YOUR PREMIUM RESULT CARD UI
-   ========================================= */
-.card {
-    position: relative;
-    background: linear-gradient(145deg, #0b1622, #04080d);
-    border-radius: 16px;
-    padding: 18px 20px;
-    margin-bottom: 16px;
-    box-shadow: 0 0 25px rgba(0, 255, 200, 0.05);
-    overflow: hidden;
-    border: 1px solid rgba(255,255,255,0.05);
-    font-family: 'Segoe UI', sans-serif; /* Using your requested font for cards */
-}
+        /* Main Display Panel */
+        .main-panel {
+            border: 2px solid var(--neon-green);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: inset 0 0 20px rgba(0, 255, 65, 0.1);
+            position: relative;
+        }
+        
+        .period-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+        .period-num {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4rem;
+            background: #222;
+            padding: 2px 10px;
+            border-radius: 5px;
+            color: #fff;
+        }
 
-/* The Left Border Strip */
-.card::before {
-    content: ""; position: absolute; left: 0; top: 0;
-    height: 100%; width: 5px; background: #00ff9d; /* Green default */
-}
-.card.loss::before { background: #ff3b3b; } /* Red for loss */
+        /* Result BIG/SMALL */
+        .result-display {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .prediction-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4.5rem;
+            font-weight: 900;
+            color: var(--neon-green); /* Default, JS changes this */
+            text-shadow: 0 0 20px currentColor;
+            transition: all 0.3s ease;
+        }
+        .confidence {
+            color: #888;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+        }
 
-.round { opacity: 0.6; font-size: 13px; letter-spacing: 1px; color: #aab; }
+        /* Pattern Analysis */
+        .section-title {
+            color: var(--neon-blue);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .pattern-grid {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .seed-ball {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 2px solid var(--neon-green);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            font-size: 1.2rem;
+            background: rgba(0, 255, 65, 0.1);
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.2);
+            color: white;
+        }
+        .seed-ball.blue {
+            border-color: var(--neon-blue);
+            background: rgba(0, 243, 255, 0.1);
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+        }
 
-.prediction { font-size: 24px; font-weight: 800; margin-top: 6px; text-transform: uppercase; }
-.prediction.small { color: #00ffa2; text-shadow: 0 0 10px rgba(0, 255, 162, 0.3); }
-.prediction.big { color: #00aaff; text-shadow: 0 0 10px rgba(0, 170, 255, 0.3); }
-.prediction.loss { color: #ff4d4d; }
+        /* AI Council Grid */
+        .ai-council {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .ai-card {
+            background: #0f1820;
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #333;
+        }
+        .ai-card.active {
+            border: 1px solid var(--neon-green);
+            box-shadow: 0 0 5px var(--neon-green);
+        }
+        .ai-icon { font-size: 1.5rem; margin-bottom: 5px; display: block;}
+        .ai-name { font-size: 0.7rem; color: #aaa; display: block;}
+        .ai-percent { font-size: 0.9rem; color: var(--neon-green); font-weight: bold;}
 
-.jackpot { margin-top: 6px; font-size: 14px; color: #ffcc33; font-weight: 600; }
-.result { margin-top: 4px; font-size: 15px; color: #00ff9d; font-weight: 700; }
-.card.loss .result { color: #ff4d4d; }
+        /* Stats */
+        .stats-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .stat-box {
+            flex: 1;
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+        .stat-val { font-family: 'Orbitron'; font-size: 1.5rem; display: block; }
+        .stat-label { font-size: 0.7rem; color: #666; }
+        .win-box { border-color: var(--neon-green); }
+        .loss-box { border-color: var(--neon-red); }
 
-/* ICONS */
-.icon { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); }
+        /* Terminal Button */
+        .terminal-btn {
+            width: 100%;
+            padding: 15px;
+            background: black;
+            border: 2px solid var(--neon-green);
+            color: var(--neon-green);
+            font-family: 'Orbitron';
+            font-size: 1.2rem;
+            margin-top: 20px;
+            cursor: pointer;
+            text-transform: uppercase;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
+            border-radius: 30px;
+            transition: 0.2s;
+        }
+        .terminal-btn:active {
+            transform: scale(0.98);
+            background: var(--neon-green);
+            color: black;
+        }
 
-/* GREEN SHIELD (Polygon) */
-.shield {
-    width: 36px; height: 36px; background: #00ff9d;
-    clip-path: polygon(50% 0%, 95% 20%, 95% 60%, 50% 100%, 5% 60%, 5% 20%);
-    box-shadow: 0 0 20px #00ff9d;
-}
-/* RED CROSS (Circle + Pseudo Elements) */
-.cross {
-    width: 36px; height: 36px; border-radius: 50%;
-    background: #ff3b3b; position: relative;
-    box-shadow: 0 0 20px #ff3b3b;
-}
-.cross::before, .cross::after {
-    content: ""; position: absolute; width: 20px; height: 3px;
-    background: white; top: 50%; left: 50%;
-}
-.cross::before { transform: translate(-50%, -50%) rotate(45deg); }
-.cross::after { transform: translate(-50%, -50%) rotate(-45deg); }
-
-
-/* =========================================
-   3. NAVIGATION
-   ========================================= */
-.navbar {
-    position: fixed; bottom: 0; width: 100%; background: rgba(2, 17, 34, 0.98);
-    backdrop-filter: blur(10px); padding: 10px 0; display: flex; justify-content: space-around;
-    border-top: 2px solid #0A4DFF; z-index: 1000;
-}
-.nav-item { text-align: center; font-size: 10px; color: #2EA7FF; opacity: 0.6; cursor: pointer; }
-.nav-item.active { opacity: 1; color: #fff; text-shadow: 0 0 10px #0A4DFF; }
-.nav-item svg { width: 24px; height: 24px; margin-bottom: 3px; fill: #2EA7FF; }
-.nav-item.active svg { filter: drop-shadow(0 0 8px #0047FF); fill: #fff; transform: translateY(-3px); }
-
-</style>
+    </style>
 </head>
 <body>
 
-<div class="header">
-    <div>DARKNET V.42</div>
-    <div class="timer-badge" id="timer">00:00</div>
-</div>
-
 <div class="container">
+    <div class="header">
+        <div class="app-name">DARKNET V.2</div>
+        <div class="sub-name">Supreme Commander AI</div>
+    </div>
 
-    <div id="view-terminal" class="view-section active">
-        <div class="aura-box">
-            <div class="aura-title">TITAN AURA 999+</div>
-            <div style="font-size:12px; letter-spacing:2px; color:#aaa; margin-top:5px;">V.42 ABSOLUTE ZERO</div>
+    <div class="status-bar">
+        <div>
+            <span style="color:var(--neon-blue)">DARKNET AI ACTIVE</span><br>
+            <span style="font-size:0.8rem; color:#aaa;">System Online</span>
         </div>
-
-        <div class="section">
-            <div style="display:flex; justify-content:space-between; align-items:center; color:#2EA7FF; font-weight:bold;">
-                <span>TARGET: <span id="pDisp" style="color:#fff">---</span></span>
-                <span id="algoStatus" style="font-size:12px; color:#00ff9d">SCANNING...</span>
-            </div>
-
-            <div id="predictionBox" class="big-text">---</div>
-            
-            <div style="text-align:center; margin-top:10px;">
-                <span style="font-size:12px; color:#aaa;">SURESHOT SEEDS</span><br>
-                <span id="seedDisplay" style="font-size:24px; font-weight:bold; color:#ffcc33">?, ?</span>
-            </div>
-
-            <div class="pattern-box">
-                <div style="font-size:10px; text-align:center; margin-bottom:5px; color:#aaa;">LIVE PATTERN</div>
-                <div id="patternGrid" class="pattern-grid">
-                    <div class="pattern-num">?</div>
-                    <div class="pattern-num">?</div>
-                    <div class="pattern-num">?</div>
-                    <div class="pattern-num">?</div>
-                    <div class="pattern-num">?</div>
-                </div>
-            </div>
+        <div class="timer-box">
+            <div style="font-size:0.6rem; color:var(--neon-green)">SEC TO DRAW</div>
+            <div class="timer-val" id="timer">45</div>
         </div>
     </div>
 
-    <div id="view-archive" class="view-section">
+    <div class="main-panel">
+        <div class="period-info">
+            <span style="color:var(--neon-blue)">TARGET PERIOD</span>
+            <span class="period-num" id="periodDisplay">202601121001</span>
+        </div>
+
+        <div style="text-align: center; color: var(--neon-blue); letter-spacing: 3px; font-size: 0.8rem; margin-bottom: 5px;">QUANTUM ANALYSIS</div>
         
-        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-bottom:15px;">
-            <div style="background:#0b1622; padding:10px; border-radius:12px; text-align:center; border:1px solid #00ff9d;">
-                <div id="totalWins" style="font-size:18px; color:#00ff9d; font-weight:bold;">0</div>
-                <div style="font-size:9px; color:#aaa;">WIN</div>
-            </div>
-            <div style="background:#0b1622; padding:10px; border-radius:12px; text-align:center; border:1px solid #ff3b3b;">
-                <div id="totalLoss" style="font-size:18px; color:#ff3b3b; font-weight:bold;">0</div>
-                <div style="font-size:9px; color:#aaa;">LOSS</div>
-            </div>
-            <div style="background:#0b1622; padding:10px; border-radius:12px; text-align:center; border:1px solid #00aaff;">
-                <div id="accuracy" style="font-size:18px; color:#00aaff; font-weight:bold;">100%</div>
-                <div style="font-size:9px; color:#aaa;">ACCURACY</div>
-            </div>
+        <div class="result-display">
+            <div class="prediction-text" id="predictionResult">WAIT</div>
+            <div class="confidence" id="confidenceText">CALCULATING...</div>
         </div>
 
-        <div id="archiveList">
-            </div>
+        <div class="section-title">Active Algorithms</div>
+        <div style="display:flex; justify-content:center; gap:10px; margin-bottom:20px;">
+            <span style="border:1px solid #444; padding:3px 8px; font-size:0.7rem; border-radius:4px;">DRAGON</span>
+            <span style="border:1px solid #444; padding:3px 8px; font-size:0.7rem; border-radius:4px;">3:3 MATRIX</span>
+            <span style="border:1px solid var(--neon-green); color:var(--neon-green); padding:3px 8px; font-size:0.7rem; border-radius:4px;">QUANTUM</span>
+        </div>
+
+        <div class="section-title">Darknet Jackpot Seeds</div>
+        <div class="pattern-grid" id="seedContainer">
+            <div class="seed-ball">4</div>
+            <div class="seed-ball">9</div>
+            <div class="seed-ball blue">1</div>
+            <div class="seed-ball">0</div>
+            <div class="seed-ball blue">7</div>
+        </div>
     </div>
 
-</div>
+    <div class="ai-council">
+        <div class="ai-card active">
+            <span class="ai-icon">🧠</span>
+            <span class="ai-name">TITAN</span>
+            <span class="ai-percent">92%</span>
+        </div>
+        <div class="ai-card">
+            <span class="ai-icon">⭐</span>
+            <span class="ai-name">ZODIAC</span>
+            <span class="ai-percent">88%</span>
+        </div>
+        <div class="ai-card">
+            <span class="ai-icon">⚡</span>
+            <span class="ai-name">NEON</span>
+            <span class="ai-percent">90%</span>
+        </div>
+    </div>
 
-<div class="navbar">
-    <div class="nav-item active" onclick="switchTab('terminal', 0)">
-        <svg viewBox="0 0 24 24"><path d="M2 21h20v-2H2v2zm3-4h14l-7-13-7 13z"/></svg><br>TERMINAL
+    <div class="stats-row">
+        <div class="stat-box win-box">
+            <span class="stat-val" style="color:var(--neon-green)" id="winCount">12</span>
+            <span class="stat-label">TOTAL WINS</span>
+        </div>
+        <div class="stat-box loss-box">
+            <span class="stat-val" style="color:var(--neon-red)" id="lossCount">1</span>
+            <span class="stat-label">TOTAL LOSSES</span>
+        </div>
     </div>
-    <div class="nav-item" onclick="switchTab('archive', 1)">
-        <svg viewBox="0 0 24 24"><path d="M12 8V4l-8 8 8 8v-4c5.5 0 9-1.5 12-6-3-4.5-6.5-6-12-6z"/></svg><br>ARCHIVE
-    </div>
+
+    <button class="terminal-btn" onclick="generatePrediction()">> RUN TERMINAL ANALYSIS</button>
 </div>
 
 <script>
-    // --- UI NAVIGATION ---
-    function switchTab(viewId, btnIndex) {
-        document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
-        document.getElementById('view-' + viewId).classList.add('active');
-        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.nav-item')[btnIndex].classList.add('active');
+    // Configuration
+    let currentPeriod = 202601121000;
+    let wins = 12;
+    let losses = 1;
+    let isProcessing = false;
+
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    // --- TITAN V.42 "ABSOLUTE ZERO" LOGIC ---
-    const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json";
-    let lastP = ""; 
-    let log = [];
-    let isSyncing = false;
-
-    // Timer
-    setInterval(() => {
-        const s = new Date().getSeconds();
-        const rem = 60 - s;
-        document.getElementById('timer').innerText = `00:${rem < 10 ? '0' : ''}${rem}`;
-        if(s === 1 || s % 4 === 0) titanSync();
-    }, 1000);
-
-    async function titanSync() {
-        if(isSyncing) return;
-        isSyncing = true;
-        try {
-            await new Promise(r => setTimeout(r, Math.random() * 300));
-            const r = await fetch(`${API}?pageSize=20&ts=${Date.now()}`);
-            const d = await r.json();
-            const list = d.data.list;
-            const currentP = list[0].issueNumber;
-
-            // 1. Result Check
-            if (log.length > 0 && log[0].period === currentP) {
-                const actNum = parseInt(list[0].number);
-                const actBS = actNum >= 5 ? "BIG" : "SMALL";
-                log[0].res = (actBS === log[0].pred) ? "WIN" : "LOSS";
-                log[0].num = actNum;
-                updateArchiveUI();
-                updateStatsUI();
-            }
-
-            // 2. New Prediction
-            if (currentP !== lastP) {
-                lastP = currentP;
-                const nextP = (BigInt(currentP) + 1n).toString();
-                document.getElementById('pDisp').innerText = nextP;
-                updatePattern(list);
-                processLogic(list, nextP);
-            }
-        } catch (e) { console.log("API Error"); }
-        isSyncing = false;
-    }
-
-    function updatePattern(list) {
-        const grid = document.getElementById('patternGrid');
-        grid.innerHTML = '';
-        for(let i=0; i<5; i++) {
-            grid.innerHTML += `<div class="pattern-num" style="color:${parseInt(list[i].number)>=5?'#00ff9d':'#00aaff'}">${list[i].number}</div>`;
-        }
-    }
-
-    function processLogic(list, nextP) {
-        const nums = list.map(x => parseInt(x.number));
-        const bs = nums.map(n => n >= 5 ? "BIG" : "SMALL");
-        let p = "";
-        let status = "";
-        let seeds = [];
-
-        // --- V.42 LOGIC CORE ---
-        let lastRes = bs[0];
-        let prevRes = bs[1];
-        let wasLoss = (log.length > 0 && log[0].res === "LOSS");
-
-        if (wasLoss) {
-            // === LEVEL 2: RECOVERY (GUARANTEED) ===
-            // Logic: If we lost, we were fighting a Trend.
-            // Action: IMMEDIATELY FOLLOW THE LAST RESULT.
-            p = lastRes;
-            status = "🛡️ TREND SHIELD ACTIVE";
+    function updateTimer() {
+        const timerEl = document.getElementById('timer');
+        let time = parseInt(timerEl.innerText);
+        if (time > 0) {
+            timerEl.innerText = (time - 1).toString().padStart(2, '0');
         } else {
-            // === LEVEL 1: ANALYSIS ===
-            // Check for Dragon (3 same)
-            if(bs[0] === bs[1] && bs[1] === bs[2]) {
-                p = lastRes; // Follow Dragon
-                status = "🐉 DRAGON DETECTED";
-            } 
-            // Check for ZigZag (Flip)
-            else if (bs[0] !== bs[1]) {
-                p = (lastRes === "BIG") ? "SMALL" : "BIG";
-                status = "⚡ ZIG-ZAG DETECTED";
-            }
-            // Fallback Neural
-            else {
-                let s = nums[0] + nums[1] + nums[2];
-                p = (s % 10 >= 5) ? "BIG" : "SMALL";
-                status = "🧠 NEURAL AI";
-            }
+            timerEl.innerText = "60";
+            currentPeriod++;
+            document.getElementById('periodDisplay').innerText = currentPeriod;
         }
-
-        // Seeds
-        if (p === "BIG") seeds = [8, 6]; else seeds = [1, 3];
-
-        // UI Update
-        const pBox = document.getElementById('predictionBox');
-        pBox.innerText = p;
-        pBox.className = "big-text " + (p === "BIG" ? "res-blue" : "res-green");
-        
-        document.getElementById('algoStatus').innerText = status;
-        document.getElementById('seedDisplay').innerText = seeds.join(", ");
-
-        log.unshift({ period: nextP, pred: p, res: "WAIT", num: "?", seeds: seeds });
     }
+    setInterval(updateTimer, 1000);
 
-    function updateArchiveUI() {
-        const div = document.getElementById('archiveList');
-        div.innerHTML = log.slice(0, 20).map(h => {
-            const isWin = h.res === 'WIN';
-            
-            // Classes for your specific UI
-            const cardClass = isWin ? 'card win' : 'card loss';
-            const iconClass = isWin ? 'icon shield' : 'icon cross';
-            
-            // Colors for Text
-            let predClass = 'prediction';
-            if(!isWin && h.res !== "WAIT") predClass += ' loss';
-            else if(h.pred === 'BIG') predClass += ' big';
-            else predClass += ' small';
+    function generatePrediction() {
+        if(isProcessing) return;
+        isProcessing = true;
 
-            let resText = "WAITING...";
-            if(h.res !== "WAIT") {
-                resText = `RESULT: ${h.res==='WIN'?h.pred:(h.pred==='BIG'?'SMALL':'BIG')} (${h.num})`;
+        const predText = document.getElementById('predictionResult');
+        const confText = document.getElementById('confidenceText');
+        const btn = document.querySelector('.terminal-btn');
+        const seedContainer = document.getElementById('seedContainer');
+
+        // Animation start
+        btn.innerText = "SCANNING BLOCKCHAIN...";
+        predText.style.fontSize = "2rem";
+        predText.innerText = "ANALYZING";
+        
+        // Randomize Seeds Animation
+        let interval = setInterval(() => {
+            let seedsHTML = '';
+            for(let i=0; i<5; i++) {
+                let num = getRandomInt(0, 9);
+                let isBlue = Math.random() > 0.5 ? 'blue' : '';
+                seedsHTML += `<div class="seed-ball ${isBlue}">${num}</div>`;
+            }
+            seedContainer.innerHTML = seedsHTML;
+        }, 100);
+
+        setTimeout(() => {
+            clearInterval(interval);
+            
+            // Logic Simulation (The "Algorithm")
+            const outcome = Math.random() > 0.5 ? "BIG" : "SMALL";
+            const percent = getRandomInt(65, 98);
+            
+            // Color Logic
+            const color = outcome === "BIG" ? "var(--neon-green)" : "var(--neon-blue)";
+            
+            predText.style.color = color;
+            predText.innerText = outcome;
+            predText.style.fontSize = "4.5rem";
+            confText.innerText = `QUANTUM STRENGTH: ${percent}%`;
+            
+            btn.innerText = "> RUN TERMINAL ANALYSIS";
+            
+            // Simulate win/loss update randomly for effect
+            if(Math.random() > 0.7) {
+                wins++;
+                document.getElementById('winCount').innerText = wins;
             }
 
-            return `
-            <div class="${cardClass}">
-                <div class="round">#${h.period} (V.42)</div>
-                <div class="${predClass}">${h.pred}</div>
-                <div class="jackpot">JACKPOT: ${h.seeds.join(',')}</div>
-                <div class="result">${resText}</div>
-                <div class="${iconClass}"></div>
-            </div>`;
-        }).join('');
+            isProcessing = false;
+        }, 2000); // 2 seconds processing time
     }
-
-    function updateStatsUI() {
-        let wins = log.filter(x => x.res === 'WIN').length;
-        let losses = log.filter(x => x.res === 'LOSS').length;
-        let total = wins + losses;
-        let acc = total === 0 ? 0 : Math.round((wins / total) * 100);
-        document.getElementById('totalWins').innerText = wins;
-        document.getElementById('totalLoss').innerText = losses;
-        document.getElementById('accuracy').innerText = acc + "%";
-    }
-
-    titanSync();
 </script>
+
 </body>
 </html>
