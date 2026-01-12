@@ -3,99 +3,92 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Darknet Supreme Commander</title>
-
+<title>Darknet V17 Level-3 Fixer Pro</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{ --bg:#050b14; --neon:#00e5ff; --glass:rgba(8,22,38,.75); --border:rgba(0,229,255,.35); --text:#e9faff; --green:#00ff9c; --red:#ff3b3b; }
+body{ background:radial-gradient(circle at top,var(--bg),#02060c 70%); font-family: 'Segoe UI', sans-serif; color:var(--text); transition: 0.5s; overflow-x: hidden; min-height: 100vh; }
+.app{ max-width:420px; margin:auto; padding:14px; padding-bottom: 100px; }
 
-body{ background:radial-gradient(circle at top,var(--bg),#02060c 70%); font-family: 'Segoe UI', sans-serif; color:var(--text); transition: 0.5s; overflow-x: hidden; }
-.app{ max-width:420px; margin:auto; padding:14px; padding-bottom: 90px; }
-
-/* PAGES */
+/* PAGES NAVIGATION */
 .page { display: none; }
 .active-page { display: block; animation: fadeIn 0.4s; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
 /* HEADER */
-.header{ padding:18px; border-radius:18px; background:linear-gradient(135deg,var(--glass),#020b14); border:1px solid var(--border); box-shadow:0 0 30px var(--neon), inset 0 0 20px var(--neon); text-align: center; }
+.header{ padding:18px; border-radius:18px; background:linear-gradient(135deg,var(--glass),#020b14); border:1px solid var(--border); box-shadow:0 0 30px var(--neon), inset 0 0 20px var(--neon); text-align: center; margin-bottom: 15px; }
 .aura{ font-size:26px; font-weight:700; color:var(--neon); text-shadow:0 0 18px var(--neon); }
 
 /* MAIN CARD */
 .card{ margin-top:16px; padding:18px; border-radius:20px; background:var(--glass); backdrop-filter:blur(14px); border:1px solid var(--border); box-shadow:0 0 25px rgba(0,0,0,.6), inset 0 0 20px var(--neon); }
 .period{ display:flex; justify-content:space-between; align-items:center; font-size:12px; }
 .period span{ padding:6px 14px; border-radius:12px; border:1px solid var(--border); box-shadow:0 0 12px var(--neon); font-weight: bold; }
-.prediction h2{ font-size:48px; margin:10px 0; color:var(--neon); text-shadow:0 0 22px var(--neon); text-align:center; }
-
-/* JACKPOT NUMBERS (ONLY 2) */
+.prediction h2{ font-size:48px; margin:10px 0; color:var(--neon); text-shadow:0 0 22px var(--neon); text-align:center; font-weight: 800; }
 .pattern{ margin-top:16px; display:flex; justify-content:center; gap:15px; }
 .pattern div{ width:55px; height:55px; border-radius:12px; background:#071b2d; border:1px solid var(--border); box-shadow:0 0 14px var(--neon); display:flex; align-items:center; justify-content:center; font-weight:bold; font-size: 20px; color: #ffcc00; }
 
-/* STATS */
-.stats{ margin-top:16px; display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-.stat{ padding:16px; border-radius:16px; background:#061728; border:1px solid var(--border); box-shadow:0 0 18px var(--neon); text-align:center; }
+/* STATS GRID */
+.stats-grid{ margin-top:16px; display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.stat-box{ padding:16px; border-radius:16px; background:#061728; border:1px solid var(--border); box-shadow:0 0 18px var(--neon); text-align:center; }
+.stat-box h3{ font-size:24px; margin-bottom: 4px; }
+.stat-box p{ font-size:11px; opacity:.7; text-transform: uppercase; letter-spacing: 1px; }
 
-/* --- ARCHIVE RESULT CARD (EXACT SCREENSHOT STYLE) --- */
-.arc-card { position:relative; background:linear-gradient(145deg,#0b1622,#04080d); border-radius:16px; padding:18px 20px; margin-bottom:16px; border-left: 5px solid var(--green); overflow:hidden; box-shadow:0 0 15px rgba(0,0,0,0.5); }
+/* ARCHIVE CARD */
+.arc-card { position:relative; background:linear-gradient(145deg,#0b1622,#04080d); border-radius:16px; padding:18px 20px; margin-bottom:16px; border-left: 5px solid var(--green); overflow:hidden; }
 .arc-card.loss { border-left-color: var(--red); }
 .arc-round { opacity:0.6; font-size:13px; }
-.arc-pred { font-size:24px; font-weight:800; margin-top:5px; color:var(--neon); letter-spacing: 1px; }
-.arc-res { margin-top:4px; font-size:15px; color:var(--green); }
-.loss .arc-res { color:var(--red); }
-
-/* ICONS: SHIELD & CROSS */
+.arc-pred { font-size:24px; font-weight:800; margin-top:5px; color:var(--neon); }
 .icon { position:absolute; right:18px; top:50%; transform:translateY(-50%); }
-.shield { width:34px; height:34px; background:var(--green); clip-path: polygon(50% 0%, 95% 20%, 95% 60%, 50% 100%, 5% 60%, 5% 20%); box-shadow:0 0 15px var(--green); }
-.cross { width:34px; height:34px; border-radius:50%; background:var(--red); position:relative; box-shadow:0 0 15px var(--red); }
-.cross::before, .cross::after { content:""; position:absolute; width:18px; height:3px; background:white; top:50%; left:50%; }
-.cross::before { transform:translate(-50%,-50%) rotate(45deg); }
+.shield { width:34px; height:34px; background:var(--green); clip-path: polygon(50% 0%, 95% 20%, 95% 60%, 50% 100%, 5% 60%, 5% 20%); }
+.cross { width:34px; height:34px; border-radius:50%; background:var(--red); position:relative; }
+.cross::before, .cross::after { content:""; position:absolute; width:18px; height:3px; background:white; top:50%; left:50%; transform:translate(-50%,-50%) rotate(45deg); }
 .cross::after { transform:translate(-50%,-50%) rotate(-45deg); }
 
-/* NAV */
-.footer{ position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 90%; padding: 14px; border-radius: 18px; display: flex; justify-content: space-around; background: linear-gradient(135deg,#041423,var(--glass)); border: 1px solid var(--border); box-shadow: 0 0 20px var(--neon); z-index: 100; }
+/* FOOTER NAV */
+.footer{ position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 92%; padding: 14px; border-radius: 18px; display: flex; justify-content: space-around; background: linear-gradient(135deg,#041423,var(--glass)); border: 1px solid var(--border); box-shadow: 0 0 20px var(--neon); z-index: 100; backdrop-filter: blur(10px); }
 .footer span{ opacity: 0.5; cursor: pointer; font-size: 13px; font-weight: bold; }
-.active-nav { opacity: 1 !important; color: var(--neon); }
+.active-nav { opacity: 1 !important; color: var(--neon); text-shadow: 0 0 10px var(--neon); }
 </style>
 </head>
-
 <body>
 <div class="app">
-
   <div class="header">
     <h1>DARKNET SUPREME COMMANDER</h1>
-    <div class="aura">DARKNET AURA 999+</div>
+    <div class="aura">AURA PRO FIXER</div>
+    <div style="font-size:10px; color:var(--green); letter-spacing:2px; margin-top:5px;">SYSTEM STATUS: ENCRYPTED</div>
   </div>
 
   <div id="page-terminal" class="page active-page">
     <div class="card">
-      <div class="period"><div>UPCOMING PERIOD</div><span id="p-num">SYNCING...</span></div>
-      <div class="prediction"><h2 id="p-text">WAIT</h2><p id="p-strat">BOSS LOGIC V67.0 ACTIVE</p></div>
-      <div class="sub" style="margin-top:10px">JACKPOT NUMBERS</div>
+      <div class="period"><div>TARGET PERIOD</div><span id="p-num">SYNCING...</span></div>
+      <div class="prediction"><h2 id="p-text">WAIT</h2><p id="p-strat" style="opacity:0.6; font-size:12px; text-align:center;">V17 BOSS LOGIC ACTIVE</p></div>
       <div class="pattern" id="p-seeds"><div>?</div><div>?</div></div>
     </div>
-    <div class="stats">
-      <div class="stat"><h3 class="win" id="stat-win">0</h3><p>TOTAL WINS</p></div>
-      <div class="stat"><h3 class="loss" id="stat-loss">0</h3><p>TOTAL LOSS</p></div>
+
+    <div class="stats-grid">
+      <div class="stat-box"><h3 class="win" id="stat-win">0</h3><p>Total Wins</p></div>
+      <div class="stat-box"><h3 class="loss" id="stat-loss">0</h3><p>Total Losses</p></div>
+      <div class="stat-box"><h3 id="stat-acc" style="color:var(--neon)">0%</h3><p>Accuracy</p></div>
+      <div class="stat-box"><h3 id="stat-level" style="color:var(--neon)">L1</h3><p>Fixer Level</p></div>
     </div>
   </div>
 
   <div id="page-archive" class="page">
-    <div id="archive-list" style="margin-top:10px;">
-        </div>
+    <div id="archive-list" style="margin-top:10px;"></div>
   </div>
 
   <div class="footer">
     <span class="active-nav" onclick="showPage('terminal', this)">Terminal</span>
     <span onclick="showPage('archive', this)">Archive</span>
-    <span onclick="alert('Profile Locked')">Profile</span>
+    <span onclick="alert('Supreme Admin: Ahmad Boss')">Profile</span>
   </div>
-
 </div>
 
 <script>
 const API_URL = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?ts=";
 const BOSS_MAP = { 0:[5,2], 1:[6,3], 2:[7,4], 3:[8,0], 4:[9,1], 5:[0,7], 6:[1,8], 7:[2,9], 8:[3,5], 9:[4,6] };
 
+let currentLevel = 1;
 let lastPeriod = "";
 let prediction = null;
 let stats = { wins: 0, losses: 0 };
@@ -105,7 +98,6 @@ async function syncAPI() {
         const res = await fetch(API_URL + Date.now());
         const data = await res.json();
         const latest = data.data.list[0];
-
         if (latest.issueNumber !== lastPeriod) {
             if (prediction && lastPeriod !== "") checkResult(latest);
             lastPeriod = latest.issueNumber;
@@ -117,15 +109,25 @@ async function syncAPI() {
 function predict(history) {
     const lastNum = parseInt(history[0].number);
     const nextP = (BigInt(history[0].issueNumber) + 1n).toString();
+    const nums = history.slice(0, 5).map(x => parseInt(x.number));
     
-    let n1, n2, pred;
-    [n1, n2] = BOSS_MAP[lastNum];
-    pred = n1 >= 5 ? "BIG" : "SMALL";
+    let [n1, n2] = BOSS_MAP[lastNum];
+    let pred = n1 >= 5 ? "BIG" : "SMALL";
 
-    prediction = { period: nextP, pred, n1, n2 };
+    // --- ENHANCED LEVEL 3 FIXER LOGIC ---
+    if(currentLevel === 2) {
+        pred = lastNum >= 5 ? "SMALL" : "BIG";
+        [n1, n2] = pred === "BIG" ? [6, 8] : [1, 3];
+    } else if (currentLevel === 3) {
+        const bigCount = nums.filter(n => n >= 5).length;
+        pred = bigCount >= 3 ? "SMALL" : "BIG";
+        [n1, n2] = pred === "BIG" ? [5, 7] : [0, 2];
+    }
 
-    document.getElementById('p-num').innerText = nextP.slice(-4);
+    prediction = { period: nextP, pred, n1, n2, level: currentLevel };
+    document.getElementById('p-num').innerText = nextP.slice(-5);
     document.getElementById('p-text').innerText = pred;
+    document.getElementById('stat-level').innerText = "L" + currentLevel;
     document.getElementById('p-seeds').innerHTML = `<div>${n1}</div><div>${n2}</div>`;
 }
 
@@ -134,23 +136,34 @@ function checkResult(latest) {
     const actualBS = actualNum >= 5 ? "BIG" : "SMALL";
     const isWin = actualBS === prediction.pred;
 
-    if (isWin) stats.wins++; else stats.losses++;
+    if (isWin) {
+        stats.wins++; currentLevel = 1;
+    } else {
+        stats.losses++;
+        currentLevel = currentLevel >= 3 ? 1 : currentLevel + 1;
+    }
+
+    updateStatsDisplay();
+    addArchive(latest, prediction, isWin);
+}
+
+function updateStatsDisplay() {
     document.getElementById('stat-win').innerText = stats.wins;
     document.getElementById('stat-loss').innerText = stats.losses;
-
-    addArchive(latest, prediction, isWin);
+    const total = stats.wins + stats.losses;
+    const accuracy = total > 0 ? Math.round((stats.wins / total) * 100) : 0;
+    document.getElementById('stat-acc').innerText = accuracy + "%";
 }
 
 function addArchive(latest, pred, isWin) {
     const list = document.getElementById('archive-list');
     const card = document.createElement('div');
     const actualBS = latest.number >= 5 ? "BIG" : "SMALL";
-    
     card.className = `arc-card ${isWin ? '' : 'loss'}`;
     card.innerHTML = `
-        <div class="arc-round">#${latest.issueNumber.slice(-4)} (TIME_BASED)</div>
+        <div class="arc-round">#${latest.issueNumber.slice(-5)} (V17_FIXER)</div>
         <div class="arc-pred">${pred.pred}</div>
-        <div class="arc-res">RESULT: ${actualBS} (${latest.number})</div>
+        <div style="font-size:11px; opacity:0.6; margin-top:4px;">RESULT: ${actualBS} (${latest.number})</div>
         <div class="icon ${isWin ? 'shield' : 'cross'}"></div>
     `;
     list.prepend(card);
