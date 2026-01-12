@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TITAN ULTRA V.31 - ANTI-TRACK</title>
+    <title>TITAN ULTRA V.32 - DRAGON KILLER</title>
     <style>
         :root { --gold: #ffd700; --bg: #000; --neon: #00ffa3; --blue: #00d9ff; }
         body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; margin: 0; display: flex; justify-content: center; min-height: 100vh; overflow-x: hidden; }
@@ -13,7 +13,7 @@
         .pred-text { font-size: 100px; font-weight: 900; letter-spacing: -5px; line-height: 1; margin: 10px 0; }
         .win-glow { color: var(--neon); text-shadow: 0 0 50px var(--neon); }
         .blue-glow { color: var(--blue); text-shadow: 0 0 50px var(--blue); }
-        .history-card { background: #0f0f0f; border-radius: 25px; padding: 15px; border: 1px solid #1a1a1a; max-height: 450px; overflow-y: auto; }
+        .history-card { background: #0f0f0f; border-radius: 25px; padding: 15px; border: 1px solid #1a1a1a; max-height: 500px; overflow-y: auto; }
         .h-row { display: flex; justify-content: space-between; padding: 12px 5px; border-bottom: 1px solid #222; font-size: 11px; align-items: center; }
         .num-circle { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; background: #1a1a1a; color: #fff; border: 1px solid #333; }
         .res-win { color: var(--neon); font-weight: 900; }
@@ -25,12 +25,12 @@
 
 <div class="panel">
     <div class="top-nav">
-        <div style="color: var(--gold); font-size: 12px; font-weight: 900;">TITAN V.31 ANTI-TRACK</div>
+        <div style="color: var(--gold); font-size: 12px; font-weight: 900;">TITAN V.32 DRAGON-SULPHUR</div>
         <div id="timer" style="font-family: monospace; font-size: 20px; font-weight: 900;">00:00</div>
     </div>
 
     <div class="main-display">
-        <div id="status" class="status-bar">BYPASSING SERVER TRACKING...</div>
+        <div id="status" class="status-bar">WAITING FOR NEXT SEQUENCE...</div>
         <div id="prediction" class="pred-text">---</div>
         <div style="font-size: 10px; color: #444;">TARGET PERIOD: <span id="pDisp" style="color:#fff">----</span></div>
     </div>
@@ -43,10 +43,9 @@
     const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json";
     let lastP = ""; let log = [];
 
-    async function antiTrackSync() {
+    async function dragonSulphurSync() {
         try {
-            // Random delay to bypass server tracking (Jitter)
-            const jitter = Math.floor(Math.random() * 1000);
+            const jitter = Math.floor(Math.random() * 800);
             await new Promise(r => setTimeout(r, jitter));
 
             const r = await fetch(`${API}?pageSize=20&ts=${Date.now()}`);
@@ -75,35 +74,36 @@
         const nums = list.map(x => parseInt(x.number));
         const bs = nums.map(n => n >= 5 ? "BIG" : "SMALL");
         const statusEl = document.getElementById('status');
+        const pBox = document.getElementById('prediction');
         
         let p = "";
         
-        // --- V.31 ANTI-TRAP LOGIC INTEGRATION ---
-        let isDragon = (bs[0] === bs[1] && bs[1] === bs[2]); 
-        let isZigZag = (bs[0] !== bs[1] && bs[1] !== bs[2]);
+        // --- V.32 SUPER-DRAGON PROTECTION INTEGRATED ---
+        let dragonStrike = (bs[0] === bs[1]); 
 
         if (log.length > 0 && log[0].res === "LOSS") {
-            if (isDragon) {
-                p = bs[0]; // Trend follow
-                statusEl.innerText = "DRAGON LOCK ACTIVE";
-            } else if (isZigZag) {
-                p = (bs[0] === "BIG") ? "SMALL" : "BIG"; // Continue ZigZag
-                statusEl.innerText = "ZIGZAG MIRROR ACTIVE";
+            // LEVEL 2 FIXED RECOVERY
+            if (dragonStrike) {
+                p = bs[0]; 
+                statusEl.innerText = "DRAGON STRIKE: FOLLOWING TREND";
             } else {
-                let bigs = nums.slice(0, 5).filter(n => n >= 5).length;
-                p = (bigs > 2) ? "SMALL" : "BIG"; 
-                statusEl.innerText = "VOLATILITY RECOVERY (L2)";
+                p = (bs[0] === "BIG") ? "SMALL" : "BIG";
+                statusEl.innerText = "L2 RECOVERY: SEQUENCE FLIP";
             }
         } else {
-            let sum = nums[0] + nums[1];
-            p = (sum > 9) ? "SMALL" : "BIG";
-            statusEl.innerText = "NEURAL SCAN: L1 READY";
+            // LEVEL 1: PURE WEIGHTED PROBABILITY
+            if (bs[0] === bs[1] && bs[1] === bs[2]) {
+                p = bs[0]; 
+                statusEl.innerText = "L1: DRAGON CONTINUATION";
+            } else {
+                let avg = nums.slice(0, 3).reduce((a, b) => a + b, 0) / 3;
+                p = (avg > 4.5) ? "SMALL" : "BIG";
+                statusEl.innerText = "L1: NEURAL WEIGHT SCAN";
+            }
         }
 
-        const pBox = document.getElementById('prediction');
         pBox.innerText = p;
         pBox.className = "pred-text " + (p === "BIG" ? "win-glow" : "blue-glow");
-        
         log.unshift({ period: nextP, pred: p, res: "WAIT", num: "?" });
     }
 
@@ -122,9 +122,9 @@
         const s = new Date().getSeconds();
         const rem = 60 - s;
         document.getElementById('timer').innerText = `00:${rem < 10 ? '0' : ''}${rem}`;
-        if (s === 1 || s % 4 === 0) antiTrackSync();
+        if (s === 1 || s % 4 === 0) dragonSulphurSync();
     }, 1000);
-    antiTrackSync();
+    dragonSulphurSync();
 </script>
 </body>
 </html>
