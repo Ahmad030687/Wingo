@@ -3,31 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>30S God Mode V.34</title>
+    <title>30S HYBRID V.35</title>
     <style>
         *{box-sizing:border-box;margin:0;padding:0}
-        :root{ --bg:#000; --neon:#ff00e6; --cyan:#00f3ff; --glass:rgba(20, 0, 30, 0.95); --border:rgba(255, 0, 230, 0.3); --green:#00ff9c; --red:#ff3b3b; }
-        body{ background:radial-gradient(circle at center,#1a0024,#000); font-family: 'Segoe UI', sans-serif; color:#fff; min-height: 100vh; overflow-x: hidden; }
+        :root{ --bg:#000; --neon:#ff003c; --cyan:#00f3ff; --glass:rgba(20, 0, 10, 0.95); --border:rgba(255, 0, 60, 0.3); --green:#00ff9c; --red:#ff3b3b; }
+        body{ background:radial-gradient(circle at center,#1a0005,#000); font-family: 'Segoe UI', sans-serif; color:#fff; min-height: 100vh; overflow-x: hidden; }
         .app{ max-width:420px; margin:auto; padding:12px; }
 
         /* TIMER & HEADER */
-        .header{ padding:15px; border-radius:15px; background:var(--glass); border:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; box-shadow:0 0 20px rgba(255,0,230,0.2); margin-bottom:15px; }
-        .aura{ font-size:18px; font-weight:900; color:var(--neon); text-shadow:0 0 10px var(--neon); }
+        .header{ padding:15px; border-radius:15px; background:var(--glass); border:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; box-shadow:0 0 20px rgba(255,0,60,0.2); margin-bottom:15px; }
+        .aura{ font-size:18px; font-weight:900; color:var(--neon); text-shadow:0 0 10px var(--neon); letter-spacing:1px; }
         .timer-box{ background:#000; padding:5px 15px; border-radius:10px; border:1px solid var(--cyan); color:var(--cyan); font-weight:bold; font-size:18px; }
 
-        /* GOD MODE CARD */
-        .card{ padding:20px; border-radius:20px; background:var(--glass); border:1px solid var(--border); box-shadow:0 0 30px rgba(255,0,230,0.15); margin-bottom:15px; position:relative; }
+        /* HYBRID CARD */
+        .card{ padding:20px; border-radius:20px; background:var(--glass); border:1px solid var(--border); box-shadow:0 0 30px rgba(255,0,60,0.15); margin-bottom:15px; position:relative; }
         .p-info{ display:flex; justify-content:space-between; font-size:12px; color:#aaa; margin-bottom:10px; }
-        .p-text{ font-size:60px; font-weight:900; color:var(--cyan); text-align:center; text-shadow:0 0 40px var(--cyan); margin:10px 0; }
+        .p-text{ font-size:64px; font-weight:900; color:var(--cyan); text-align:center; text-shadow:0 0 40px var(--cyan); margin:5px 0; }
         
         .jack-row{ display:flex; justify-content:center; gap:20px; margin-top:15px; }
-        .jack-row div{ width:50px; height:50px; border-radius:12px; background:#12051a; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-weight:bold; font-size: 22px; color: #ffcc00; box-shadow:0 0 15px var(--neon); }
+        .jack-row div{ width:50px; height:50px; border-radius:12px; background:#1a0505; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-weight:bold; font-size: 22px; color: #ffcc00; box-shadow:0 0 15px var(--neon); }
 
-        /* L2 STATUS */
-        .l2-status { text-align:center; font-size:11px; margin-top:10px; color:var(--green); letter-spacing:1px; background:rgba(0,255,156,0.1); padding:5px; border-radius:5px; }
+        /* LOGIC BADGE */
+        .logic-badge { text-align:center; font-size:10px; margin-top:10px; color:var(--green); letter-spacing:1px; background:rgba(0,255,156,0.1); padding:4px; border-radius:4px; }
 
         /* ARCHIVE */
-        .arc-item { position:relative; background:rgba(20,5,30,0.95); border-radius:12px; padding:15px; margin-top:10px; border-left: 5px solid var(--green); display:flex; justify-content:space-between; align-items:center; }
+        .arc-item { position:relative; background:rgba(20,5,10,0.95); border-radius:12px; padding:15px; margin-top:10px; border-left: 5px solid var(--green); display:flex; justify-content:space-between; align-items:center; }
         .arc-item.loss { border-left-color: var(--red); }
         .res-badge { font-weight:bold; font-size:18px; }
         
@@ -40,16 +40,16 @@
 
 <div class="app">
     <div class="header">
-        <div class="aura">30S GOD MODE V.34</div>
+        <div class="aura">HYBRID V.35 30S</div>
         <div class="timer-box" id="timer">00</div>
     </div>
 
     <div id="page-terminal">
         <div class="card">
-            <div class="p-info"><span>NEXT PERIOD</span><span id="nextP" style="color:#fff">SYNCING...</span></div>
+            <div class="p-info"><span>TARGET PERIOD</span><span id="nextP" style="color:#fff">SYNCING...</span></div>
             <div class="p-text" id="pred">WAIT</div>
             <div class="jack-row" id="jack"><div>?</div><div>?</div></div>
-            <div class="l2-status" id="logic">SYSTEM READY</div>
+            <div class="logic-badge" id="logic">ANALYZING MAP DATA...</div>
         </div>
 
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:15px;">
@@ -118,31 +118,37 @@
         let [n1, n2] = BOSS_MAP[lastNum];
         let nextP = (BigInt(history[0].issueNumber) + 1n).toString();
 
-        // Streak check
         let streak = 1;
         if(lastBS === prevBS) streak = 2;
         if(streak === 2 && prevBS === pPrevBS) streak = 3;
 
-        // --- LEVEL 2 GOD MODE LOGIC ---
+        // --- LEVEL 2 HYBRID INTELLIGENCE ---
         if (level === 2) {
-            // AGAR L1 MISS HUA, TOH REASON DEKHO.
-            // Agar Streak ban rahi hai (Streak >= 2), iska matlab L1 ne Cut karne ki koshish ki aur fail hua.
-            // TOH AB HUM CUT NAHI KARENGE. HUM FOLLOW KARENGE.
+            // Check Boss Map for Flip Signal
+            // n1 is Primary Mirror. If n1 is opposite to current trend, it suggests a FLIP.
+            let mapTargetBS = n1 >= 5 ? "BIG" : "SMALL";
             
-            if (streak >= 2) {
-                prediction = lastBS; // Follow the Dragon/Repeat
-                logic = "L2: STREAK GUARD (SAFE FOLLOW)";
-            } else {
-                // Agar Streak nahi hai (matlab ZigZag fail hua), tab Reverse karo
-                prediction = lastBS === "BIG" ? "SMALL" : "BIG";
-                logic = "L2: STANDARD RECOVERY";
+            if (lastNum === 0 || lastNum === 5) {
+                // Trap Logic overrides everything
+                prediction = "SMALL"; 
+                logic = "L2: TRAP LOCK (0/5)";
+            } 
+            else if (streak >= 3) {
+                // If strong Dragon, ignore Map and Ride
+                prediction = lastBS;
+                logic = "L2: DRAGON RIDE (SAFE)";
             }
-
-            // TRAP PROTECTION (Override)
-            if(lastNum === 0 || lastNum === 5) {
-                // Agar 0/5 hai, toh mostly Small Dragon banta hai 30s mai
-                prediction = "SMALL";
-                logic = "L2: TRAP-0/5 MASTER LOCK";
+            else {
+                // For ZigZag or 2-Streak, Consult the Map
+                if (mapTargetBS !== lastBS) {
+                    // Map says FLIP -> We CUT
+                    prediction = mapTargetBS;
+                    logic = "L2: MAP-BASED CUT";
+                } else {
+                    // Map says SAME -> We FOLLOW
+                    prediction = lastBS;
+                    logic = "L2: MAP-BASED FOLLOW";
+                }
             }
         } 
         // --- LEVEL 1 SPEED LOGIC ---
@@ -152,7 +158,7 @@
                 logic = "L1: ZIG-ZAG MOMENTUM";
             } else if (streak >= 3) {
                 prediction = lastBS;
-                logic = "L1: DRAGON SPEED LOCK";
+                logic = "L1: DRAGON LOCK";
             } else {
                 prediction = n1 >= 5 ? "BIG" : "SMALL";
                 logic = "L1: MIRROR SURESHOT";
@@ -181,7 +187,7 @@
         card.innerHTML = `
             <div>
                 <div style="font-size:10px; opacity:0.7">#${actual.issueNumber.slice(-5)} (${pred.logic})</div>
-                <div style="font-size:9px; color:var(--cyan)">${pred.logic.includes('L2') ? '⚠️ RECOVERY MODE' : '✅ LEVEL 1'}</div>
+                <div style="font-size:9px; color:var(--cyan)">${pred.logic.includes('L2') ? '⚠️ RECOVERY' : '✅ LEVEL 1'}</div>
             </div>
             <div class="res-badge" style="color:${isWin?'var(--green)':'var(--red)'}">${actualBS} (${actual.number})</div>
         `;
