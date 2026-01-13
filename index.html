@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Darknet V.40 Quantum</title>
+<title>Darknet V.41 AI</title>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 <style>
     *{box-sizing:border-box;margin:0;padding:0}
-    :root{ --bg:#050b14; --neon:#00e5ff; --glass:rgba(8,22,38,0.95); --border:rgba(0,229,255,0.4); --text:#e9faff; --green:#00ff9c; --red:#ff3b3b; --gold:#ffd700; }
+    :root{ --bg:#02040a; --neon:#00e5ff; --glass:rgba(5,15,25,0.9); --border:rgba(0,229,255,0.3); --text:#e9faff; --green:#00ff9c; --red:#ff3b3b; --gold:#ffd700; }
     body{ background:radial-gradient(circle at top,var(--bg),#000 90%); font-family: 'Segoe UI', sans-serif; color:var(--text); min-height: 100vh; overflow-x: hidden; }
     .app{ max-width:420px; margin:auto; padding:15px; padding-bottom: 90px; }
 
     /* HEADER */
-    .header{ padding:18px; border-radius:18px; background:linear-gradient(135deg,var(--glass),#000); border:1px solid var(--border); box-shadow:0 0 30px rgba(0,229,255,0.15), inset 0 0 20px rgba(0,229,255,0.05); display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px; }
+    .header{ padding:18px; border-radius:18px; background:linear-gradient(135deg,var(--glass),#000); border:1px solid var(--border); box-shadow:0 0 30px rgba(0,229,255,0.1), inset 0 0 20px rgba(0,229,255,0.05); display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px; }
     .aura{ font-size:20px; font-weight:800; color:var(--neon); text-shadow:0 0 15px var(--neon); letter-spacing:1px; }
     .timer-badge{ background:#000; color:var(--neon); padding:5px 12px; border-radius:8px; border:1px solid var(--neon); font-weight:bold; box-shadow:0 0 10px var(--neon); font-size:18px; }
 
@@ -26,7 +26,7 @@
     .jackpot-box{ display:flex; justify-content:center; gap:15px; margin-top:10px; }
     .jackpot-box div{ width:50px; height:50px; border-radius:12px; background:#071b2d; border:1px solid var(--border); box-shadow:0 0 12px var(--neon); display:flex; align-items:center; justify-content:center; font-weight:bold; font-size: 20px; color: #ffcc00; }
     
-    .logic-text { text-align:center; font-size:10px; color:var(--green); letter-spacing:2px; margin-top:10px; opacity:0.9; font-weight: bold; }
+    .logic-text { text-align:center; font-size:11px; color:var(--green); letter-spacing:1px; margin-top:10px; font-weight: bold; background:rgba(0,255,156,0.05); padding:5px; border-radius:5px; }
 
     /* STATS GRID */
     .stats-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:15px; }
@@ -34,7 +34,7 @@
     .stat-box h3{ font-size:24px; margin:0; }
     .stat-box p{ font-size:10px; opacity:0.6; margin:0; }
 
-    /* ARCHIVE SUPREME (RIGHT SIDE ICONS) */
+    /* ARCHIVE SUPREME */
     .arc-card { position:relative; background:linear-gradient(145deg,#0b1622,#04080d); border-radius:16px; padding:15px 18px; margin-top:12px; border-left: 5px solid var(--green); overflow:hidden; box-shadow:0 5px 15px rgba(0,0,0,0.5); display: flex; justify-content: space-between; align-items: center; }
     .arc-card.loss { border-left-color: var(--red); }
     
@@ -59,21 +59,21 @@
 
 <div class="app">
     <div class="header">
-        <div class="aura">DARKNET V.40 QUANTUM</div>
+        <div class="aura">DARKNET V.41 AI</div>
         <div class="timer-badge" id="timer">00</div>
     </div>
 
     <div id="page-terminal">
         <div class="card">
-            <div class="period-box"><span>30S QUANTUM FLOW</span><span id="nextP">SYNCING...</span></div>
+            <div class="period-box"><span>30S ADAPTIVE</span><span id="nextP">SYNCING...</span></div>
             <div class="prediction-val" id="pred">WAIT</div>
             <div class="jackpot-box" id="jack"><div>?</div><div>?</div></div>
-            <div class="logic-text" id="logic">SENSING MICRO-MOVES...</div>
+            <div class="logic-text" id="logic">AI SCANNING MARKET MOOD...</div>
         </div>
 
         <div class="stats-grid">
-            <div class="stat-box"><h3 id="wins" style="color:var(--green)">0</h3><p>TOTAL WINS</p></div>
-            <div class="stat-box"><h3 id="lvl" style="color:var(--neon)">L1</h3><p>FLOW LEVEL</p></div>
+            <div class="stat-box"><h3 id="wins" style="color:var(--green)">0</h3><p>SESSION WINS</p></div>
+            <div class="stat-box"><h3 id="lvl" style="color:var(--neon)">L1</h3><p>CURRENT LEVEL</p></div>
         </div>
     </div>
 
@@ -96,8 +96,8 @@
     let wins = 0;
     let level = 1;
 
-    // Hyper-Fast Sync
-    setInterval(sync, 1000); // 1 Second sync for 30S
+    // Fast Sync
+    setInterval(sync, 1000); 
     setInterval(updateTimer, 1000);
 
     function updateTimer() {
@@ -120,62 +120,53 @@
             if (currentP !== lastPeriod) {
                 if (activePred && lastPeriod !== "") checkResult(list[0], activePred);
                 lastPeriod = currentP;
-                generateQuantumPrediction(list);
+                generateAIPrediction(list);
             }
         } catch (e) { console.log("Syncing..."); }
     }
 
-    function generateQuantumPrediction(history) {
+    // --- V.41 AI ADAPTIVE ENGINE ---
+    function generateAIPrediction(history) {
         const lastNum = parseInt(history[0].number);
-        const prevNum = parseInt(history[1].number);
-        const pPrevNum = parseInt(history[2].number);
-        
         const lastBS = lastNum >= 5 ? "BIG" : "SMALL";
-        const prevBS = prevNum >= 5 ? "BIG" : "SMALL";
-        const pPrevBS = pPrevNum >= 5 ? "BIG" : "SMALL";
-        
-        let prediction, logic;
         let [n1, n2] = BOSS_MAP[lastNum];
         let nextP = (BigInt(history[0].issueNumber) + 1n).toString();
+        let prediction, logic;
 
-        // --- V.40 QUANTUM FLOW LOGIC ---
-        // Maqsad: Market se ladna nahi, uske saath behna hai.
-        
+        // STEP 1: CALCULATE MARKET MOOD (Last 6 Periods)
+        // Check "Trend" Score vs "Flip" Score
+        let trendScore = 0;
+        let flipScore = 0;
+
+        for (let i = 0; i < 6; i++) {
+            let curr = history[i].number >= 5 ? "BIG" : "SMALL";
+            let prev = history[i+1].number >= 5 ? "BIG" : "SMALL";
+            if (curr === prev) trendScore++;
+            else flipScore++;
+        }
+
+        // STEP 2: DECIDE PREDICTION BASED ON LEVEL
         if (level === 2) {
-            // L2: OPPOSITE FLOW FIXER
-            // Agar L1 fail hua, iska matlab market ne "Flip" mara ya "Trend" pakda jo humne miss kiya.
-            // L2 Hamesha Trend Break ya Trap ko respect karega.
-            
+            // L2 FIXER: If L1 failed, use BOSS MAP (Number Logic) as Tie-Breaker
+            // Patterns failed, so trust the Number Map.
             if(lastNum === 0 || lastNum === 5) {
-                // Trap Recovery: 0/5 ke baad aksar SMALL aata hai (Historical Data)
-                prediction = "SMALL"; 
-                logic = "L2: ZERO-POINT TRAP FIX";
+                prediction = "SMALL"; logic = "L2: TRAP RECOVERY (0/5)";
             } else {
-                // Agar L1 'Trend' tha aur fail hua, toh ab 'Cut' karo.
-                // Agar L1 'Cut' tha aur fail hua, toh ab 'Trend' follow karo.
-                // Simple: Follow the RESULT that just appeared.
-                prediction = lastBS; 
-                logic = "L2: FLOW CORRECTION (FOLLOW)";
+                let mapTarget = n1 >= 5 ? "BIG" : "SMALL";
+                prediction = mapTarget; 
+                logic = "L2: MAP FIXER (NUMBER LOGIC)";
             }
         } 
         else {
-            // L1: SURESHOT FLOW SENSING
-            // Rule 1: Dragon Check (Agar pichle 2 same hain, toh 3rd bhi same hoga)
-            if (lastBS === prevBS) {
+            // L1 AI ADAPTIVE
+            if (trendScore >= flipScore) {
+                // Market is Trending (Dragons/Repeats are winning)
                 prediction = lastBS;
-                logic = "L1: DRAGON FLOW (LOCKED)";
-            }
-            // Rule 2: Zig-Zag Check (Agar last 3 alternate hain)
-            else if (lastBS !== prevBS && prevBS !== pPrevBS) {
+                logic = `L1: AI TREND FOLLOW (S:${trendScore})`;
+            } else {
+                // Market is Flipping (ZigZags are winning)
                 prediction = lastBS === "BIG" ? "SMALL" : "BIG";
-                logic = "L1: ZIG-ZAG FLOW (ACTIVE)";
-            }
-            // Rule 3: Trend Break (Agar trend abhi toota hai) -> BIG, BIG, SMALL
-            // Yahan bohot log ghalti karte hain wapis BIG laga kar.
-            // Hum Naye Trend (SMALL) ke saath jayenge.
-            else {
-                prediction = lastBS;
-                logic = "L1: NEW TREND CAPTURE";
+                logic = `L1: AI FLIP SENSE (S:${flipScore})`;
             }
         }
 
@@ -195,7 +186,7 @@
         
         if (isWin) { 
             wins++; level = 1; 
-            // GRAND CELEBRATION (Massive Blast)
+            // GRAND CELEBRATION
             var colors = ['#00e5ff', '#00ff9c', '#ffffff', '#ffd700'];
             confetti({ particleCount: 300, spread: 160, origin: { y: 0.5 }, colors: colors, scalar: 1.2 });
         } else { 
