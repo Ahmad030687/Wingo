@@ -3,509 +3,390 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Darknet Supreme Commander V.48</title>
+    <title>Darknet Supreme Commander V.50</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <style>
-        /* --- CORE THEME SETTINGS (USER PROVIDED) --- */
+        /* --- SUPREME ENGINE CORE --- */
         :root {
-            --primary-color: #ff0000; /* Default Red */
-            --bg-color: #050505;
-            --card-bg: #0a0a0a;
-            --text-glow: 0 0 10px var(--primary-color);
-            --box-glow: 0 0 15px var(--primary-color), inset 0 0 10px rgba(255, 0, 0, 0.2);
-            --font-main: 'Courier New', Courier, monospace;
+            --primary: #ff0000; /* Default Red (Dragon) */
+            --bg: #020202;
+            --card-bg: #080808;
+            --glass: rgba(10, 10, 10, 0.95);
+            --border: rgba(255, 0, 0, 0.3);
+            --neon-glow: 0 0 15px var(--primary);
+            --green: #00ff88;
+            --red: #ff3333;
+            --gold: #ffcc00;
+            --font: 'Courier New', Courier, monospace;
         }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
 
         body {
-            background-color: var(--bg-color);
-            color: white;
-            font-family: var(--font-main);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
+            background-color: var(--bg);
+            background-image: radial-gradient(circle at top, #1a0505, #000 70%);
+            color: white; font-family: var(--font);
+            min-height: 100vh; overflow-x: hidden;
         }
 
-        /* --- HEADER SECTION --- */
+        /* --- PROFESSIONAL HEADER --- */
         .header {
-            width: 100%;
-            padding: 20px;
-            box-sizing: border-box;
-            border-bottom: 2px solid var(--primary-color);
-            box-shadow: 0 4px 20px -5px var(--primary-color);
+            width: 100%; padding: 20px; border-bottom: 2px solid var(--primary);
             background: linear-gradient(180deg, rgba(20,0,0,1) 0%, rgba(0,0,0,0) 100%);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky; top: 0; z-index: 50; backdrop-filter: blur(5px);
+            display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px);
+            box-shadow: 0 5px 20px -5px var(--primary);
         }
 
-        .title-group h1 {
-            margin: 0;
-            font-size: 22px;
-            text-transform: uppercase;
-            text-shadow: var(--text-glow);
-            color: var(--primary-color);
-            font-weight: 900;
-        }
+        .header-title h1 { font-size: 22px; margin: 0; font-weight: 900; letter-spacing: 1px; color: var(--primary); text-shadow: 0 0 10px var(--primary); }
+        .header-title span { font-size: 10px; color: #666; display: block; letter-spacing: 2px; }
 
-        .title-group span {
-            font-size: 10px;
-            color: #888;
-            letter-spacing: 1px;
-            display: block;
+        .timer-box { 
+            border: 1px solid var(--primary); padding: 5px 12px; border-radius: 8px; 
+            text-align: center; background: #000; box-shadow: var(--neon-glow);
         }
+        .timer-digits { font-size: 24px; font-weight: bold; color: var(--primary); text-shadow: 0 0 5px var(--primary); }
 
-        .timer-box {
-            border: 1px solid var(--primary-color);
-            padding: 5px 10px;
-            border-radius: 8px;
-            box-shadow: var(--box-glow);
-            text-align: center;
-            min-width: 60px;
-        }
+        /* --- APP CONTAINER --- */
+        .app-container { width: 92%; max-width: 420px; margin: 20px auto; padding-bottom: 120px; }
 
-        .timer-digits {
-            font-size: 22px;
-            font-weight: bold;
-            color: var(--primary-color);
-            text-shadow: 0 0 5px var(--primary-color);
-        }
+        /* --- TABS SYSTEM --- */
+        .tab-content { display: none; animation: slideUp 0.4s ease; }
+        .tab-content.active { display: block; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- MAIN CONTAINER --- */
-        .container {
-            width: 90%;
-            max-width: 400px;
-            margin-top: 25px;
-            padding-bottom: 120px;
-            display: none; /* Hidden by default for tab switching */
-            animation: fadeIn 0.3s ease;
-        }
-        .container.active { display: block; }
-        
-        @keyframes fadeIn { from{opacity:0} to{opacity:1} }
-
-        /* --- PREDICTION CARD --- */
-        .main-card {
-            border: 2px solid var(--primary-color);
-            border-radius: 20px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: var(--box-glow);
+        /* --- TERMINAL: SCANNER CARD --- */
+        .commander-card {
+            background: var(--card-bg); border: 2px solid var(--primary); border-radius: 24px;
+            padding: 25px; position: relative; overflow: hidden; text-align: center;
+            box-shadow: var(--neon-glow), inset 0 0 20px rgba(255, 0, 0, 0.1);
             margin-bottom: 25px;
-            background: radial-gradient(circle, rgba(20,0,0,0.8) 0%, rgba(0,0,0,1) 100%);
-            position: relative;
-        }
-
-        .period-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 12px;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding-bottom: 10px;
-        }
-
-        .period-number {
-            background: #000;
-            padding: 4px 10px;
-            border-radius: 5px;
-            border: 1px solid var(--primary-color);
-            font-weight: bold;
-            box-shadow: 0 0 5px var(--primary-color);
-        }
-
-        .result-text {
-            font-size: 65px;
-            font-weight: 900;
-            color: var(--primary-color);
-            text-shadow: 0 0 25px var(--primary-color);
-            margin: 15px 0;
-            letter-spacing: 3px;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { text-shadow: 0 0 20px var(--primary-color); opacity: 0.9; }
-            50% { text-shadow: 0 0 40px var(--primary-color); opacity: 1; }
-            100% { text-shadow: 0 0 20px var(--primary-color); opacity: 0.9; }
-        }
-
-        .sub-info {
-            font-size: 12px;
-            color: #aaa;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
-        }
-
-        /* --- ANALYSIS GRID --- */
-        .grid-header {
-            text-align: left;
-            font-size: 11px;
-            color: var(--primary-color);
-            margin-bottom: 5px;
-            text-transform: uppercase;
-        }
-
-        .grid-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .grid-item {
-            border: 1px solid #333;
-            border-radius: 12px;
-            padding: 12px;
-            text-align: center;
-            background: #080808;
         }
         
-        .grid-item.active {
-            border-color: var(--primary-color);
-            box-shadow: inset 0 0 10px var(--primary-color);
+        /* Laser Scan Line */
+        .commander-card::after {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+            background: var(--primary); box-shadow: 0 0 15px var(--primary);
+            animation: scanning 3s linear infinite; opacity: 0.7;
         }
+        @keyframes scanning { 0% { top: 0%; } 100% { top: 100%; } }
 
-        .grid-label {
-            font-size: 10px;
-            text-transform: uppercase;
-            color: #ccc;
-            margin-bottom: 5px;
-        }
+        .period-info { display: flex; justify-content: space-between; font-size: 12px; color: var(--primary); margin-bottom: 15px; border-bottom: 1px solid #1a1a1a; padding-bottom: 10px; }
+        .p-num { background: #000; padding: 2px 8px; border: 1px solid var(--primary); border-radius: 4px; font-weight: bold; }
 
-        .grid-value {
-            font-size: 14px;
-            color: white;
-            font-weight: bold;
-        }
+        .prediction-val { font-size: 72px; font-weight: 900; color: var(--primary); text-shadow: 0 0 30px var(--primary); margin: 15px 0; letter-spacing: 4px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 0.8; } 50% { opacity: 1; transform: scale(1.05); } 100% { opacity: 0.8; } }
 
-        /* --- JACKPOT SEEDS (BALLS) --- */
-        .jackpot-box {
-            border: 1px solid var(--primary-color);
-            border-radius: 15px;
-            padding: 15px;
-            margin-top: 20px;
-        }
-        .jackpot-seeds {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-top: 10px;
-        }
+        .logic-status { font-size: 11px; color: var(--green); background: rgba(0, 255, 136, 0.1); padding: 5px 15px; border-radius: 20px; border: 1px solid rgba(0, 255, 136, 0.3); display: inline-block; }
 
-        .ball {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            background-color: var(--primary-color);
-            color: black;
-            font-weight: 900;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            box-shadow: 0 0 15px var(--primary-color);
-        }
+        /* --- ALGORITHM GRID --- */
+        .grid-label { font-size: 11px; color: var(--primary); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
+        .grid-box { background: #0a0a0a; border: 1px solid #222; border-radius: 12px; padding: 15px; text-align: center; }
+        .grid-box.active { border-color: var(--primary); box-shadow: inset 0 0 10px var(--primary); }
+        .grid-val { font-size: 16px; font-weight: bold; color: #fff; margin-top: 5px; }
 
-        /* --- ARCHIVE LIST STYLING --- */
-        .archive-item {
-            border: 1px solid #333;
-            background: #080808;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        /* --- JACKPOT DUO (Balls) --- */
+        .jackpot-container { border: 1px solid var(--primary); border-radius: 15px; padding: 15px; background: rgba(10,0,0,0.5); margin-top: 10px; }
+        .ball-row { display: flex; justify-content: center; gap: 15px; margin-top: 12px; }
+        .ball { width: 45px; height: 45px; border-radius: 50%; background: var(--primary); color: black; font-weight: 900; font-size: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px var(--primary); border: 2px solid #fff; }
+
+        /* --- ARCHIVE: SHIELD/CROSS SYSTEM --- */
+        .history-item {
+            display: flex; justify-content: space-between; align-items: center;
+            background: #0d0d0d; border: 1px solid #1a1a1a; border-radius: 14px;
+            padding: 18px 20px; margin-bottom: 10px; border-left: 5px solid #333;
+            transition: 0.3s; position: relative;
         }
-        .archive-item.win { border-color: var(--primary-color); box-shadow: 0 0 5px var(--primary-color); }
-        .archive-left { display: flex; flex-direction: column; }
-        .archive-res { font-size: 18px; font-weight: bold; color: var(--primary-color); }
+        .history-item.win { border-left-color: var(--green); background: linear-gradient(90deg, rgba(0,255,136,0.05), transparent); }
+        .history-item.loss { border-left-color: var(--red); background: linear-gradient(90deg, rgba(255,51,51,0.05), transparent); }
+
+        .item-info { display: flex; flex-direction: column; gap: 4px; }
+        .item-period { font-size: 12px; color: #666; font-family: monospace; }
+        .item-logic { font-size: 10px; color: var(--primary); font-weight: bold; }
+
+        .item-right { display: flex; align-items: center; gap: 15px; }
+        .item-res { font-size: 20px; font-weight: 800; }
+        
+        .icon-system { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; }
+        .shield-icon { width: 28px; height: 28px; background: var(--green); clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); box-shadow: 0 0 15px var(--green); }
+        .cross-icon { width: 28px; height: 28px; background: var(--red); border-radius: 50%; position: relative; box-shadow: 0 0 15px var(--red); }
+        .cross-icon::before, .cross-icon::after { content: ''; position: absolute; width: 16px; height: 3px; background: #fff; top: 50%; left: 50%; }
+        .cross-icon::before { transform: translate(-50%, -50%) rotate(45deg); }
+        .cross-icon::after { transform: translate(-50%, -50%) rotate(-45deg); }
 
         /* --- BOTTOM NAVIGATION --- */
         .bottom-nav {
-            position: fixed;
-            bottom: 20px;
-            width: 90%;
-            max-width: 400px;
-            background-color: #000;
-            border: 2px solid var(--primary-color);
-            border-radius: 35px;
-            display: flex;
-            justify-content: space-around;
-            padding: 12px 0;
-            box-shadow: 0 0 20px var(--primary-color);
-            z-index: 100;
-            backdrop-filter: blur(10px);
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 400px; background: #000; border: 2px solid var(--primary);
+            border-radius: 40px; display: flex; justify-content: space-around; padding: 12px 0;
+            box-shadow: 0 0 25px var(--primary); z-index: 2000; backdrop-filter: blur(15px);
         }
+        .nav-btn { display: flex; flex-direction: column; align-items: center; color: #444; font-size: 10px; font-weight: bold; cursor: pointer; transition: 0.3s; width: 25%; }
+        .nav-btn.active { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
+        .nav-icon { font-size: 22px; margin-bottom: 2px; }
 
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: #444;
-            font-size: 9px;
-            cursor: pointer;
-            transition: 0.3s;
-            width: 25%;
-        }
+        /* --- THEMES --- */
+        .theme-btn { width: 100%; padding: 15px; margin-bottom: 12px; border-radius: 12px; background: #0a0a0a; border: 1px solid #333; color: #fff; font-family: inherit; font-weight: 800; cursor: pointer; }
+        .theme-btn:active { transform: scale(0.98); }
 
-        .nav-item.active {
-            color: var(--primary-color);
-            text-shadow: 0 0 8px var(--primary-color);
-        }
-
-        .nav-icon {
-            font-size: 20px;
-            margin-bottom: 4px;
-        }
-
+        /* --- PROFILE --- */
+        .profile-card { text-align: center; padding: 30px; background: var(--card-bg); border: 1px solid #222; border-radius: 20px; }
+        .vip-badge { background: var(--gold); color: #000; padding: 5px 15px; border-radius: 20px; font-weight: 900; font-size: 12px; display: inline-block; margin-top: 10px; }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <div class="title-group">
-            <h1>DARKNET V.48</h1>
-            <span>SUPREME COMMANDER</span>
+        <div class="header-title">
+            <h1>DARKNET SUPREME</h1>
+            <span>COMMANDER CONSOLE V.50</span>
         </div>
         <div class="timer-box">
-            <small style="font-size: 8px; color: #fff; display:block;">SEC TO DRAW</small>
-            <span class="timer-digits" id="timer">00</span>
+            <div class="timer-digits" id="timer">00</div>
         </div>
     </div>
 
-    <div id="tab-terminal" class="container active">
+    <div class="app-container">
         
-        <div class="main-card">
-            <div class="period-info">
-                <span>Target Period</span>
-                <span class="period-number" id="nextP">....</span>
+        <div id="page-terminal" class="tab-content active">
+            <div class="commander-card">
+                <div class="period-info">
+                    <span>TARGET PERIOD</span>
+                    <span class="p-num" id="nextP">....</span>
+                </div>
+                <div class="logic-status" id="logic">NEURAL SCANNING ACTIVE</div>
+                <div class="prediction-val" id="prediction">WAIT</div>
+                <div style="font-size: 10px; color: var(--primary); letter-spacing: 2px;">QUANTUM SENSOR 98%</div>
             </div>
-            
-            <div class="sub-info">QUANTUM AI ACTIVE</div>
-            
-            <div class="result-text" id="resultDisplay">WAIT</div>
-            
-            <div class="sub-info" style="color: var(--primary-color);" id="logicDisplay">CALCULATING...</div>
+
+            <div class="grid-label">ACTIVE ALGORITHMS</div>
+            <div class="status-grid">
+                <div class="grid-box active">
+                    <div class="grid-label">SURESHOT</div>
+                    <div class="grid-val" id="lvl">L1</div>
+                </div>
+                <div class="grid-box">
+                    <div class="grid-label">SESSIONS</div>
+                    <div class="grid-val" id="wins">0</div>
+                </div>
+                <div class="grid-box">
+                    <div class="grid-label">FLOW</div>
+                    <div class="grid-val" id="flowStatus">STABLE</div>
+                </div>
+                <div class="grid-box">
+                    <div class="grid-label">ACCURACY</div>
+                    <div class="grid-val" id="accuracy">100%</div>
+                </div>
+            </div>
+
+            <div class="jackpot-container">
+                <div class="grid-label" style="text-align:center;">SURESHOT DUO (PROBABILITY BALLS)</div>
+                <div class="ball-row" id="duoBalls">
+                    <div class="ball">?</div>
+                    <div class="ball">?</div>
+                </div>
+            </div>
         </div>
 
-        <div class="grid-header">ACTIVE ALGORITHMS</div>
-        <div class="grid-section">
-            <div class="grid-item">
-                <div class="grid-label">WINS</div>
-                <div class="grid-value" id="wins">0</div>
-            </div>
-            <div class="grid-item active">
-                <div class="grid-label">LEVEL</div>
-                <div class="grid-value" style="color:var(--primary-color)" id="lvl">L1</div>
-            </div>
-            <div class="grid-item">
-                <div class="grid-label">STATUS</div>
-                <div class="grid-value">ACTIVE</div>
-            </div>
-            <div class="grid-item">
-                <div class="grid-label">ACCURACY</div>
-                <div class="grid-value" id="acc">100%</div>
+        <div id="page-archive" class="tab-content">
+            <div class="grid-label">LIVE DATA DECRYPTION (HISTORY)</div>
+            <div id="historyList"></div>
+        </div>
+
+        <div id="page-themes" class="tab-content">
+            <div class="grid-label">SYSTEM OVERRIDE: COLOR THEMES</div>
+            <button class="theme-btn" style="border-color: #ff0000; color: #ff0000;" onclick="changeTheme('red')">RED DRAGON (DEFAULT)</button>
+            <button class="theme-btn" style="border-color: #00ffaa; color: #00ffaa;" onclick="changeTheme('green')">NEON MINT (QUANTUM)</button>
+            <button class="theme-btn" style="border-color: #00ccff; color: #00ccff;" onclick="changeTheme('cyan')">AURA BLUE (CHILL)</button>
+            <button class="theme-btn" style="border-color: #ffd700; color: #ffd700;" onclick="changeTheme('gold')">VIP GOLD (LEGENDARY)</button>
+        </div>
+
+        <div id="page-profile" class="tab-content">
+            <div class="profile-card">
+                <div style="font-size: 50px; margin-bottom: 10px;">👤</div>
+                <h2 style="letter-spacing: 2px;">AHMAD ALI</h2>
+                <div class="vip-badge">SUPREME COMMANDER</div>
+                <p style="margin-top: 20px; font-size: 11px; color: #555;">UID: 8594-COMMANDER-050</p>
+                <p style="font-size: 11px; color: #555;">VERSION: 50.0.1 (STABLE)</p>
             </div>
         </div>
 
-        <div class="jackpot-box">
-            <div class="grid-header" style="text-align:center;">BOSS MAP TARGETS</div>
-            <div class="jackpot-seeds" id="seeds">
-                <div class="ball">?</div>
-                <div class="ball">?</div>
-                <div class="ball">?</div>
-                <div class="ball">?</div>
-                <div class="ball">?</div>
-            </div>
-        </div>
-    </div>
-
-    <div id="tab-archive" class="container">
-        <div class="grid-header">SESSION HISTORY</div>
-        <div id="history-list"></div>
-    </div>
-
-    <div id="tab-themes" class="container">
-        <div class="grid-header">INTERFACE COLOR</div>
-        <div style="text-align: center; padding: 20px;">
-            <button onclick="setTheme('red')" style="background:#000; color:red; border:1px solid red; padding:15px; width:100%; margin-bottom:10px; font-family:inherit; font-weight:bold;">🔴 DRAGON RED</button>
-            <button onclick="setTheme('green')" style="background:#000; color:#0f0; border:1px solid #0f0; padding:15px; width:100%; margin-bottom:10px; font-family:inherit; font-weight:bold;">🟢 QUANTUM GREEN</button>
-            <button onclick="setTheme('cyan')" style="background:#000; color:cyan; border:1px solid cyan; padding:15px; width:100%; margin-bottom:10px; font-family:inherit; font-weight:bold;">🔵 NEON CYAN</button>
-            <button onclick="setTheme('gold')" style="background:#000; color:gold; border:1px solid gold; padding:15px; width:100%; margin-bottom:10px; font-family:inherit; font-weight:bold;">🟡 VIP GOLD</button>
-        </div>
-    </div>
-
-    <div id="tab-profile" class="container">
-        <div class="main-card">
-            <div style="font-size:40px; margin-bottom:10px;">👤</div>
-            <div class="result-text" style="font-size:24px; margin:0;">AHMAD BOSS</div>
-            <div class="sub-info" style="margin-top:10px;">SUPREME COMMANDER</div>
-        </div>
     </div>
 
     <div class="bottom-nav">
-        <div class="nav-item active" onclick="switchTab('tab-terminal', this)">
+        <div class="nav-btn active" onclick="switchTab('page-terminal', this)">
             <span class="nav-icon">_></span>
             <span>TERMINAL</span>
         </div>
-        <div class="nav-item" onclick="switchTab('tab-archive', this)">
+        <div class="nav-btn" onclick="switchTab('page-archive', this)">
             <span class="nav-icon">↺</span>
             <span>ARCHIVE</span>
         </div>
-        <div class="nav-item" onclick="switchTab('tab-themes', this)">
+        <div class="nav-btn" onclick="switchTab('page-themes', this)">
             <span class="nav-icon">🎨</span>
             <span>THEMES</span>
         </div>
-        <div class="nav-item" onclick="switchTab('tab-profile', this)">
+        <div class="nav-btn" onclick="switchTab('page-profile', this)">
             <span class="nav-icon">🕵️</span>
             <span>PROFILE</span>
         </div>
     </div>
 
-    <script>
-        // --- CONFIGURATION ---
-        const API = "https://draw.ar-lottery01.com/WinGo/WinGo_30S/GetHistoryIssuePage.json?ts=";
-        const BOSS_MAP = { 0:[5,2], 1:[6,3], 2:[7,4], 3:[8,0], 4:[9,1], 5:[0,7], 6:[1,8], 7:[2,9], 8:[3,5], 9:[4,6] };
+<script>
+    // --- COMMANDER CONFIG ---
+    const API_ENDPOINT = "https://draw.ar-lottery01.com/WinGo/WinGo_30S/GetHistoryIssuePage.json?ts=";
+    const BOSS_MAP = { 0:[5,2], 1:[6,3], 2:[7,4], 3:[8,0], 4:[9,1], 5:[0,7], 6:[1,8], 7:[2,9], 8:[3,5], 9:[4,6] };
 
-        let lastPeriod = "";
-        let activePred = null;
-        let wins = 0;
-        let total = 0;
-        let level = 1;
+    let lastPeriod = "";
+    let activePred = null;
+    let winCount = 0;
+    let totalCount = 0;
+    let currentLevel = 1;
 
-        // --- TIMERS ---
-        setInterval(sync, 1000);
-        setInterval(updateTimer, 1000);
+    // --- SYSTEM TIMERS ---
+    setInterval(updateSystemTime, 1000);
+    setInterval(syncData, 1000);
 
-        function updateTimer() {
-            const d = new Date();
-            const s = d.getSeconds();
-            const rem = s < 30 ? 30 - s : 60 - s;
-            const el = document.getElementById('timer');
-            el.innerText = rem < 10 ? "0"+rem : rem;
+    function updateSystemTime() {
+        const now = new Date();
+        const seconds = now.getSeconds();
+        const remaining = seconds < 30 ? 30 - seconds : 60 - seconds;
+        const timerEl = document.getElementById('timer');
+        timerEl.innerText = remaining < 10 ? "0" + remaining : remaining;
+        
+        if (remaining <= 5) {
+            timerEl.style.color = "var(--red)";
+            timerEl.style.borderColor = "var(--red)";
+        } else {
+            timerEl.style.color = "var(--primary)";
+            timerEl.style.borderColor = "var(--primary)";
         }
+    }
 
-        async function sync() {
-            try {
-                const res = await fetch(API + Date.now());
-                const data = await res.json();
-                const list = data.data.list;
-                const currentP = list[0].issueNumber;
+    async function syncData() {
+        try {
+            const response = await fetch(API_ENDPOINT + Date.now());
+            const json = await response.json();
+            const list = json.data.list;
+            const currentP = list[0].issueNumber;
 
-                if (currentP !== lastPeriod) {
-                    if (activePred && lastPeriod !== "") checkResult(list[0], activePred);
-                    lastPeriod = currentP;
-                    predict(list);
-                }
-            } catch(e) {}
-        }
-
-        // --- LOGIC: STICKY TREND + L2 SMART ---
-        function predict(history) {
-            const lastNum = parseInt(history[0].number);
-            const prevNum = parseInt(history[1].number);
-            const lastBS = lastNum >= 5 ? "BIG" : "SMALL";
-            const prevBS = prevNum >= 5 ? "BIG" : "SMALL";
-            let prediction, logic;
-            let nextP = (BigInt(history[0].issueNumber) + 1n).toString();
-
-            // BOSS MAP NUMBERS FOR JACKPOT SEEDS
-            let [n1, n2] = BOSS_MAP[lastNum];
-            let seedsHTML = `
-                <div class="ball">${lastNum}</div>
-                <div class="ball">${prevNum}</div>
-                <div class="ball" style="background:#333; color:white;">></div>
-                <div class="ball">${n1}</div>
-                <div class="ball">${n2}</div>
-            `;
-            document.getElementById('seeds').innerHTML = seedsHTML;
-
-            // PREDICTION ENGINE
-            if (level === 2) {
-                // L2 SAFETY: FOLLOW STICKY TREND
-                if(lastNum === 0 || lastNum === 5) { prediction="SMALL"; logic="TRAP FIX"; }
-                else { prediction=lastBS; logic="RECOVERY FOLLOW"; }
-            } else {
-                // L1: STICKY SENSOR
-                if (lastBS === prevBS) { prediction=lastBS; logic="STICKY DRAGON"; }
-                else { prediction=lastBS==="BIG"?"SMALL":"BIG"; logic="FLIP MODE"; }
+            if (currentP !== lastPeriod) {
+                if (activePred && lastPeriod !== "") processResult(list[0], activePred);
+                lastPeriod = currentP;
+                generateNeuralPrediction(list);
             }
+        } catch (err) { console.warn("Connecting to Commander Server..."); }
+    }
 
-            activePred = { pred: prediction, logic: logic };
-            
-            document.getElementById('nextP').innerText = nextP.slice(-4);
-            document.getElementById('resultDisplay').innerText = prediction;
-            document.getElementById('logicDisplay').innerText = logic;
-            document.getElementById('lvl').innerText = "L" + level;
+    // --- V.50 NEURAL STICKY ENGINE ---
+    function generateNeuralPrediction(history) {
+        const lastNum = parseInt(history[0].number);
+        const lastBS = lastNum >= 5 ? "BIG" : "SMALL";
+        const prevBS = history[1].number >= 5 ? "BIG" : "SMALL";
+        
+        let [duo1, duo2] = BOSS_MAP[lastNum];
+        let nextP = (BigInt(history[0].issueNumber) + 1n).toString();
+        let prediction, logic;
+
+        if (currentLevel === 2) {
+            // L2 SMART RECOVERY: STICK TO TREND
+            // If L1 failed, the market likely flipped into a Dragon or Sticky Trend.
+            if(lastNum === 0 || lastNum === 5) {
+                prediction = "SMALL"; logic = "L2: TRAP PROTECT";
+            } else {
+                prediction = lastBS; // Follow the flow
+                logic = "L2: STICKY RECOVERY";
+            }
+        } 
+        else {
+            // L1 NEURAL SENSING
+            if (lastBS === prevBS) {
+                prediction = lastBS; logic = "L1: STICKY DRAGON";
+            } else {
+                prediction = lastBS === "BIG" ? "SMALL" : "BIG";
+                logic = "L1: NEURAL FLIP";
+            }
         }
 
-        function checkResult(actual, pred) {
-            const actualBS = actual.number >= 5 ? "BIG" : "SMALL";
-            const isWin = actualBS === pred.pred;
-            total++;
+        activePred = { pick: prediction, logic: logic };
 
-            if(isWin) {
-                wins++; level = 1;
-                triggerConfetti();
-            } else {
-                level = 2;
-            }
+        // UI Updates
+        document.getElementById('nextP').innerText = nextP.slice(-4);
+        document.getElementById('prediction').innerText = prediction;
+        document.getElementById('logic').innerText = logic;
+        document.getElementById('lvl').innerText = "L" + currentLevel;
+        document.getElementById('duoBalls').innerHTML = `<div class="ball">${duo1}</div><div class="ball">${duo2}</div>`;
+        
+        // Color Sync
+        const predEl = document.getElementById('prediction');
+        predEl.style.color = prediction === "BIG" ? "var(--primary)" : "#fff";
+    }
 
-            document.getElementById('wins').innerText = wins;
-            document.getElementById('acc').innerText = Math.round((wins/total)*100) + "%";
-            
-            // Add to Archive
-            const list = document.getElementById('history-list');
-            const item = document.createElement('div');
-            item.className = `archive-item ${isWin ? 'win' : ''}`;
-            item.innerHTML = `
-                <div class="archive-left">
-                    <span style="font-size:10px; color:#888;">#${actual.issueNumber.slice(-4)} (${pred.logic})</span>
-                    <span class="archive-res">${actualBS}</span>
+    function processResult(actual, pred) {
+        const actualBS = actual.number >= 5 ? "BIG" : "SMALL";
+        const isWin = actualBS === pred.pick;
+        totalCount++;
+
+        if (isWin) {
+            winCount++; currentLevel = 1;
+            triggerEliteCelebration();
+        } else {
+            currentLevel = 2;
+        }
+
+        // Stats UI
+        document.getElementById('wins').innerText = winCount;
+        document.getElementById('accuracy').innerText = Math.round((winCount / totalCount) * 100) + "%";
+        
+        renderHistoryItem(actual, pred, isWin, actualBS);
+    }
+
+    function renderHistoryItem(actual, pred, isWin, resultText) {
+        const container = document.getElementById('historyList');
+        const item = document.createElement('div');
+        item.className = `history-item ${isWin ? 'win' : 'loss'}`;
+        
+        item.innerHTML = `
+            <div class="item-info">
+                <span class="item-period">PERIOD #${actual.issueNumber.slice(-4)} (${pred.logic})</span>
+                <span class="item-logic">${isWin ? 'STATUS: DECRYPTED ✅' : 'STATUS: FAILED ❌'}</span>
+            </div>
+            <div class="item-right">
+                <span class="item-res" style="color:${isWin?'var(--green)':'var(--red)'}">${resultText}</span>
+                <div class="icon-system">
+                    <div class="${isWin ? 'shield-icon' : 'cross-icon'}"></div>
                 </div>
-                <div style="font-size:20px;">${isWin ? '✔' : '✖'}</div>
-            `;
-            list.prepend(item);
-        }
+            </div>
+        `;
+        container.prepend(item);
+        if (container.children.length > 20) container.removeChild(container.lastChild);
+    }
 
-        // --- UI UTILS ---
-        function triggerConfetti() {
-            // Use current theme color for confetti
-            const rootStyle = getComputedStyle(document.documentElement);
-            const colorHex = rootStyle.getPropertyValue('--primary-color').trim();
-            confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors: [colorHex, '#ffffff'] });
-        }
+    function triggerEliteCelebration() {
+        const colors = ['#ffffff', '#ff0000', '#ffd700'];
+        confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 }, colors: colors });
+    }
 
-        function switchTab(id, btn) {
-            document.querySelectorAll('.container').forEach(c => c.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            btn.classList.add('active');
-        }
+    // --- UI INTERFACE LOGIC ---
+    function switchTab(tabId, btn) {
+        document.querySelectorAll('.tab-content').forEach(p => p.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
 
-        function setTheme(colorName) {
-            const root = document.documentElement;
-            let color, bgBox;
+    function changeTheme(theme) {
+        const root = document.documentElement;
+        let color;
+        if (theme === 'red') color = '#ff0000';
+        else if (theme === 'green') color = '#00ffaa';
+        else if (theme === 'cyan') color = '#00ccff';
+        else if (theme === 'gold') color = '#ffd700';
 
-            if (colorName === 'red') { color = '#ff0000'; bgBox = 'rgba(255, 0, 0, 0.2)'; }
-            else if (colorName === 'green') { color = '#00ff00'; bgBox = 'rgba(0, 255, 0, 0.2)'; }
-            else if (colorName === 'cyan') { color = '#00f0ff'; bgBox = 'rgba(0, 240, 255, 0.2)'; }
-            else if (colorName === 'gold') { color = '#ffd700'; bgBox = 'rgba(255, 215, 0, 0.2)'; }
-
-            root.style.setProperty('--primary-color', color);
-            root.style.setProperty('--text-glow', `0 0 10px ${color}`);
-            root.style.setProperty('--box-glow', `0 0 15px ${color}, inset 0 0 10px ${bgBox}`);
-        }
-    </script>
+        root.style.setProperty('--primary', color);
+        root.style.setProperty('--border', color + '4d');
+    }
+</script>
 </body>
-</html>
+    </html>
