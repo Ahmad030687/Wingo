@@ -3,18 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Master Universal V.28</title>
+    <title>Universal V.31 - Streak Cutter</title>
     <style>
         *{box-sizing:border-box;margin:0;padding:0}
         :root{ --bg:#010409; --neon:#00e5ff; --glass:rgba(10,25,45,0.95); --border:rgba(0,229,255,0.4); --green:#00ff9c; --red:#ff3b3b; }
         body{ background:radial-gradient(circle at top,#050f1a,#000); font-family: 'Segoe UI', sans-serif; color:#fff; min-height: 100vh; overflow-x: hidden; }
         .app{ max-width:420px; margin:auto; padding:15px; }
 
-        /* HEADER */
         .header{ padding:20px; border-radius:20px; background:var(--glass); border:1px solid var(--border); box-shadow:0 0 30px var(--neon); text-align: center; margin-bottom: 20px; }
         .aura{ font-size:26px; font-weight:900; color:var(--neon); text-shadow:0 0 15px var(--neon); letter-spacing:2px; }
 
-        /* PREDICTION CARD */
         .card{ padding:25px; border-radius:22px; background:var(--glass); backdrop-filter:blur(10px); border:1px solid var(--border); box-shadow:0 0 20px rgba(0,0,0,0.5), inset 0 0 15px var(--neon); margin-bottom:15px; }
         .p-info{ display:flex; justify-content:space-between; font-size:12px; font-weight:bold; color:var(--neon); margin-bottom:15px; border-bottom:1px solid rgba(0,229,255,0.1); padding-bottom:10px; }
         .p-text{ font-size:62px; font-weight:900; color:var(--neon); text-shadow:0 0 35px var(--neon); text-align:center; }
@@ -22,12 +20,10 @@
         .jack-row{ display:flex; justify-content:center; gap:25px; margin-top:20px; }
         .jack-row div{ width:58px; height:58px; border-radius:15px; background:#071b2d; border:1px solid var(--border); box-shadow:0 0 15px var(--neon); display:flex; align-items:center; justify-content:center; font-weight:bold; font-size: 26px; color: #ffcc00; }
 
-        /* DASHBOARD */
         .dashboard{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:15px; }
         .stat-card{ padding:15px; border-radius:16px; background:rgba(0,0,0,0.4); border:1px solid var(--border); text-align:center; }
         .stat-card h3{ font-size:24px; color:var(--neon); }
 
-        /* ARCHIVE ITEM */
         .arc-item { position:relative; background:rgba(15,35,55,0.9); border-radius:15px; padding:18px; margin-top:12px; border-left: 6px solid var(--green); overflow:hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
         .arc-item.loss { border-left-color: var(--red); }
         .shield { width:32px; height:32px; background:var(--green); clip-path: polygon(50% 0%, 95% 20%, 95% 60%, 50% 100%, 5% 60%, 5% 20%); position:absolute; right:20px; top:50%; transform:translateY(-50%); }
@@ -35,7 +31,6 @@
         .cross::before, .cross::after { content:""; position:absolute; width:18px; height:3px; background:white; top:50%; left:50%; transform:translate(-50%,-50%) rotate(45deg); }
         .cross::after { transform:translate(-50%,-50%) rotate(-45deg); }
 
-        /* NAV */
         .nav-footer{ position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 90%; padding: 15px; border-radius: 20px; display: flex; justify-content: space-around; background: var(--glass); border: 1px solid var(--border); box-shadow: 0 0 20px var(--neon); backdrop-filter: blur(10px); z-index: 100; }
         .nav-footer span{ cursor: pointer; font-weight: bold; opacity: 0.5; font-size: 14px; }
         .active-tab { opacity: 1 !important; color: var(--neon); text-shadow: 0 0 10px var(--neon); }
@@ -45,8 +40,8 @@
 
 <div class="app">
     <div class="header">
-        <div class="aura">MASTER UNIVERSAL V.28</div>
-        <div id="logic-label" style="font-size:10px; color:var(--green); letter-spacing:2px; margin-top:5px;">TRAP & TREND SENSOR ACTIVE</div>
+        <div class="aura">UNIVERSAL V.31</div>
+        <div id="logic-label" style="font-size:10px; color:var(--green); letter-spacing:2px; margin-top:5px;">2-STREAK CUTTER ACTIVE</div>
     </div>
 
     <div id="page-terminal" class="tab-content">
@@ -97,46 +92,37 @@
         const lastNum = parseInt(history[0].number);
         const lastBS = lastNum >= 5 ? "BIG" : "SMALL";
         const prevBS = history[1].number >= 5 ? "BIG" : "SMALL";
-        const pPrevBS = history[2].number >= 5 ? "BIG" : "SMALL";
         
         let prediction, logic;
         let [n1, n2] = BOSS_MAP[lastNum];
 
-        // --- MASTER LOGIC STACK V.28 ---
-        
-        // 1. LEVEL 2 SMART RECOVERY (TRAP GUARD)
+        // --- V.31 CUTTER LOGIC ---
+
+        // LEVEL 2: RECOVERY
         if (level === 2) {
             if (lastNum === 0 || lastNum === 5) {
-                // Trap Number Recovery Logic
-                prediction = "SMALL"; 
-                logic = "LEVEL 2: TRAP RECOVERY (0/5)";
+                prediction = "SMALL"; // Trap Recovery
+                logic = "L2: TRAP RECOVERY";
             } else {
-                // Standard Reversal
-                prediction = lastBS === "BIG" ? "SMALL" : "BIG";
-                logic = "LEVEL 2: RECOVERY STRIKE";
+                // Aggressive Cut (Even on L2)
+                prediction = lastBS === "BIG" ? "SMALL" : "BIG"; 
+                logic = "L2: AGGRESSIVE CUT";
             }
         }
         
-        // 2. LEVEL 1: UNIVERSAL SENSING
-        else if (lastNum === 0) {
-            // Trap Protection Level 1
-            prediction = "SMALL";
-            logic = "PURPLE MAGNET (0) DETECTED";
-        }
-        else if (lastBS !== prevBS && prevBS !== pPrevBS) {
-            // Zig-Zag Mode
-            prediction = lastBS === "BIG" ? "SMALL" : "BIG";
-            logic = "ZIG-ZAG PATTERN DETECTED";
-        } 
-        else if (lastBS === prevBS && prevBS === pPrevBS) {
-            // Dragon Mode
-            prediction = lastBS;
-            logic = "DRAGON TREND LOCKED";
-        } 
+        // LEVEL 1: STREAK BREAKER
         else {
-            // Base Mirror Mode
-            prediction = n1 >= 5 ? "BIG" : "SMALL";
-            logic = "MASTER MIRROR STRIKE";
+            if (lastBS === prevBS) {
+                // Agar pichle 2 result same hain (Streak of 2)
+                // BREAK IT (Predict Opposite)
+                prediction = lastBS === "BIG" ? "SMALL" : "BIG";
+                logic = "2-STREAK DETECTED -> CUT";
+            } else {
+                // Agar Streak nahi hai (Zig-Zag ya Random)
+                // Use Standard Mirror
+                prediction = n1 >= 5 ? "BIG" : "SMALL";
+                logic = "L1 MIRROR STRIKE";
+            }
         }
 
         activePred = { 
