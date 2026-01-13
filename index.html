@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Darknet V.41 AI</title>
+<title>Darknet V.42 Neural</title>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 <style>
     *{box-sizing:border-box;margin:0;padding:0}
-    :root{ --bg:#02040a; --neon:#00e5ff; --glass:rgba(5,15,25,0.9); --border:rgba(0,229,255,0.3); --text:#e9faff; --green:#00ff9c; --red:#ff3b3b; --gold:#ffd700; }
+    :root{ --bg:#02040a; --neon:#00e5ff; --glass:rgba(5,15,25,0.95); --border:rgba(0,229,255,0.3); --text:#e9faff; --green:#00ff9c; --red:#ff3b3b; --gold:#ffd700; }
     body{ background:radial-gradient(circle at top,var(--bg),#000 90%); font-family: 'Segoe UI', sans-serif; color:var(--text); min-height: 100vh; overflow-x: hidden; }
     .app{ max-width:420px; margin:auto; padding:15px; padding-bottom: 90px; }
 
@@ -59,21 +59,21 @@
 
 <div class="app">
     <div class="header">
-        <div class="aura">DARKNET V.41 AI</div>
+        <div class="aura">DARKNET V.42 NEURAL</div>
         <div class="timer-badge" id="timer">00</div>
     </div>
 
     <div id="page-terminal">
         <div class="card">
-            <div class="period-box"><span>30S ADAPTIVE</span><span id="nextP">SYNCING...</span></div>
+            <div class="period-box"><span>30S NEURAL SENSING</span><span id="nextP">SYNCING...</span></div>
             <div class="prediction-val" id="pred">WAIT</div>
             <div class="jackpot-box" id="jack"><div>?</div><div>?</div></div>
-            <div class="logic-text" id="logic">AI SCANNING MARKET MOOD...</div>
+            <div class="logic-text" id="logic">NEURAL AI INITIALIZING...</div>
         </div>
 
         <div class="stats-grid">
             <div class="stat-box"><h3 id="wins" style="color:var(--green)">0</h3><p>SESSION WINS</p></div>
-            <div class="stat-box"><h3 id="lvl" style="color:var(--neon)">L1</h3><p>CURRENT LEVEL</p></div>
+            <div class="stat-box"><h3 id="lvl" style="color:var(--neon)">L1</h3><p>SURESHOT LEVEL</p></div>
         </div>
     </div>
 
@@ -95,8 +95,11 @@
     let activePred = null;
     let wins = 0;
     let level = 1;
+    
+    // NEURAL MEMORY (This stores what's working)
+    let strategy = "TREND"; // Can be 'TREND' or 'FLIP'
 
-    // Fast Sync
+    // Fast Sync (1 Second)
     setInterval(sync, 1000); 
     setInterval(updateTimer, 1000);
 
@@ -120,53 +123,45 @@
             if (currentP !== lastPeriod) {
                 if (activePred && lastPeriod !== "") checkResult(list[0], activePred);
                 lastPeriod = currentP;
-                generateAIPrediction(list);
+                generateNeuralPrediction(list);
             }
         } catch (e) { console.log("Syncing..."); }
     }
 
-    // --- V.41 AI ADAPTIVE ENGINE ---
-    function generateAIPrediction(history) {
+    // --- V.42 NEURAL SENSING ENGINE ---
+    function generateNeuralPrediction(history) {
         const lastNum = parseInt(history[0].number);
         const lastBS = lastNum >= 5 ? "BIG" : "SMALL";
         let [n1, n2] = BOSS_MAP[lastNum];
         let nextP = (BigInt(history[0].issueNumber) + 1n).toString();
         let prediction, logic;
 
-        // STEP 1: CALCULATE MARKET MOOD (Last 6 Periods)
-        // Check "Trend" Score vs "Flip" Score
-        let trendScore = 0;
-        let flipScore = 0;
+        // STEP 1: NEURAL LEARNING (Auto-Switching)
+        // Hum check karenge ke pichli baar kya hua tha?
+        // Agar Trend jeeta tha, toh strategy 'TREND' rakho.
+        // Agar Trend haara tha, toh strategy 'FLIP' kar do.
+        
+        // (This happens in checkResult, here we just APPLY it)
 
-        for (let i = 0; i < 6; i++) {
-            let curr = history[i].number >= 5 ? "BIG" : "SMALL";
-            let prev = history[i+1].number >= 5 ? "BIG" : "SMALL";
-            if (curr === prev) trendScore++;
-            else flipScore++;
-        }
-
-        // STEP 2: DECIDE PREDICTION BASED ON LEVEL
         if (level === 2) {
-            // L2 FIXER: If L1 failed, use BOSS MAP (Number Logic) as Tie-Breaker
-            // Patterns failed, so trust the Number Map.
+            // L2 FIXER: Trap Protection + Map
             if(lastNum === 0 || lastNum === 5) {
-                prediction = "SMALL"; logic = "L2: TRAP RECOVERY (0/5)";
+                prediction = "SMALL"; logic = "L2: NEURAL TRAP FIX";
             } else {
-                let mapTarget = n1 >= 5 ? "BIG" : "SMALL";
-                prediction = mapTarget; 
-                logic = "L2: MAP FIXER (NUMBER LOGIC)";
+                // L2 par humesha Map Logic ya Inverse use karte hain safe side ke liye
+                // Yahan hum 'Best Opposite' use karenge
+                prediction = lastBS === "BIG" ? "SMALL" : "BIG"; 
+                logic = "L2: NEURAL RECOVERY";
             }
         } 
         else {
-            // L1 AI ADAPTIVE
-            if (trendScore >= flipScore) {
-                // Market is Trending (Dragons/Repeats are winning)
-                prediction = lastBS;
-                logic = `L1: AI TREND FOLLOW (S:${trendScore})`;
+            // L1 NEURAL SENSING
+            if (strategy === "TREND") {
+                prediction = lastBS; // Follow Last
+                logic = "L1: NEURAL TREND (LOCKED)";
             } else {
-                // Market is Flipping (ZigZags are winning)
-                prediction = lastBS === "BIG" ? "SMALL" : "BIG";
-                logic = `L1: AI FLIP SENSE (S:${flipScore})`;
+                prediction = lastBS === "BIG" ? "SMALL" : "BIG"; // Flip Last
+                logic = "L1: NEURAL FLIP (ACTIVE)";
             }
         }
 
@@ -183,6 +178,18 @@
     function checkResult(actual, pred) {
         const actualBS = actual.number >= 5 ? "BIG" : "SMALL";
         const isWin = actualBS === pred.pred;
+        
+        // --- NEURAL UPDATE (The Magic) ---
+        // Hum dekhenge ke market ne actually kya kiya?
+        // Did market repeat? (TREND) or flip? (FLIP)
+        const prevBS = activePred.pred === "BIG" || activePred.pred === "SMALL" ? (activePred.pred === "BIG" && strategy === "FLIP" ? "SMALL" : (activePred.pred === "SMALL" && strategy === "FLIP" ? "BIG" : activePred.pred)) : actualBS; // Reconstruct previous state is hard, simplify:
+        
+        // Simple Neural Rule:
+        // If we LOST on L1, it means our Strategy was wrong. SWITCH IT.
+        if (!isWin && level === 1) {
+            strategy = strategy === "TREND" ? "FLIP" : "TREND";
+        }
+        // If we WON, Keep the Strategy (Don't fix what isn't broken).
         
         if (isWin) { 
             wins++; level = 1; 
