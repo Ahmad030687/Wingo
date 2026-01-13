@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Darknet V.39 Sigma</title>
+<title>Darknet V.40 Quantum</title>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 <style>
     *{box-sizing:border-box;margin:0;padding:0}
-    :root{ --bg:#050b14; --neon:#00e5ff; --glass:rgba(8,22,38,0.95); --border:rgba(0,229,255,0.4); --text:#e9faff; --green:#00ff9c; --red:#ff3b3b; }
+    :root{ --bg:#050b14; --neon:#00e5ff; --glass:rgba(8,22,38,0.95); --border:rgba(0,229,255,0.4); --text:#e9faff; --green:#00ff9c; --red:#ff3b3b; --gold:#ffd700; }
     body{ background:radial-gradient(circle at top,var(--bg),#000 90%); font-family: 'Segoe UI', sans-serif; color:var(--text); min-height: 100vh; overflow-x: hidden; }
     .app{ max-width:420px; margin:auto; padding:15px; padding-bottom: 90px; }
 
@@ -18,6 +18,8 @@
 
     /* MAIN CARD */
     .card{ position:relative; padding:20px; border-radius:22px; background:var(--glass); backdrop-filter:blur(14px); border:1px solid var(--border); box-shadow:0 0 40px rgba(0,0,0,0.8), inset 0 0 15px rgba(0,229,255,0.05); margin-bottom:15px; overflow:hidden; }
+    .card::after{ content:''; position:absolute; top:0; left:0; width:100%; height:2px; background:linear-gradient(90deg, transparent, var(--neon), transparent); animation: scan 2s infinite linear; }
+    @keyframes scan{ 0%{left:-100%} 100%{left:100%} }
     
     .period-box{ display:flex; justify-content:space-between; font-size:12px; color:var(--neon); margin-bottom:10px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:8px; }
     .prediction-val{ font-size:60px; font-weight:900; color:var(--text); text-shadow:0 0 35px var(--neon); text-align:center; margin:10px 0; letter-spacing: 2px; }
@@ -32,7 +34,7 @@
     .stat-box h3{ font-size:24px; margin:0; }
     .stat-box p{ font-size:10px; opacity:0.6; margin:0; }
 
-    /* ARCHIVE SUPREME */
+    /* ARCHIVE SUPREME (RIGHT SIDE ICONS) */
     .arc-card { position:relative; background:linear-gradient(145deg,#0b1622,#04080d); border-radius:16px; padding:15px 18px; margin-top:12px; border-left: 5px solid var(--green); overflow:hidden; box-shadow:0 5px 15px rgba(0,0,0,0.5); display: flex; justify-content: space-between; align-items: center; }
     .arc-card.loss { border-left-color: var(--red); }
     
@@ -57,21 +59,21 @@
 
 <div class="app">
     <div class="header">
-        <div class="aura">DARKNET V.39 SIGMA</div>
+        <div class="aura">DARKNET V.40 QUANTUM</div>
         <div class="timer-badge" id="timer">00</div>
     </div>
 
     <div id="page-terminal">
         <div class="card">
-            <div class="period-box"><span>30S VECTOR</span><span id="nextP">SYNCING...</span></div>
+            <div class="period-box"><span>30S QUANTUM FLOW</span><span id="nextP">SYNCING...</span></div>
             <div class="prediction-val" id="pred">WAIT</div>
             <div class="jackpot-box" id="jack"><div>?</div><div>?</div></div>
-            <div class="logic-text" id="logic">CALCULATING VECTORS...</div>
+            <div class="logic-text" id="logic">SENSING MICRO-MOVES...</div>
         </div>
 
         <div class="stats-grid">
             <div class="stat-box"><h3 id="wins" style="color:var(--green)">0</h3><p>TOTAL WINS</p></div>
-            <div class="stat-box"><h3 id="lvl" style="color:var(--neon)">L1</h3><p>FIXER LEVEL</p></div>
+            <div class="stat-box"><h3 id="lvl" style="color:var(--neon)">L1</h3><p>FLOW LEVEL</p></div>
         </div>
     </div>
 
@@ -94,8 +96,8 @@
     let wins = 0;
     let level = 1;
 
-    // Fast Sync
-    setInterval(sync, 1500);
+    // Hyper-Fast Sync
+    setInterval(sync, 1000); // 1 Second sync for 30S
     setInterval(updateTimer, 1000);
 
     function updateTimer() {
@@ -118,62 +120,62 @@
             if (currentP !== lastPeriod) {
                 if (activePred && lastPeriod !== "") checkResult(list[0], activePred);
                 lastPeriod = currentP;
-                generateSigmaPrediction(list);
+                generateQuantumPrediction(list);
             }
         } catch (e) { console.log("Syncing..."); }
     }
 
-    function generateSigmaPrediction(history) {
+    function generateQuantumPrediction(history) {
         const lastNum = parseInt(history[0].number);
         const prevNum = parseInt(history[1].number);
         const pPrevNum = parseInt(history[2].number);
         
         const lastBS = lastNum >= 5 ? "BIG" : "SMALL";
         const prevBS = prevNum >= 5 ? "BIG" : "SMALL";
+        const pPrevBS = pPrevNum >= 5 ? "BIG" : "SMALL";
         
         let prediction, logic;
         let [n1, n2] = BOSS_MAP[lastNum];
         let nextP = (BigInt(history[0].issueNumber) + 1n).toString();
 
-        // --- V.39 SIGMA-MATH LOGIC (NO VISUAL PATTERNS) ---
-        
-        // Calculate Trend Velocity (Vector)
-        // Agar sum even hai aur trend upar ja raha hai, toh correction (Small) ki taraf jayega
-        const sum = lastNum + prevNum + pPrevNum;
-        const vector = (lastNum + prevNum) % 10;
+        // --- V.40 QUANTUM FLOW LOGIC ---
+        // Maqsad: Market se ladna nahi, uske saath behna hai.
         
         if (level === 2) {
-            // L2: INVERSE VECTOR RECOVERY
-            // Jab L1 fail hota hai, iska matlab Math Flip hua hai.
-            // Hum pichle result ka "Mirror Inverse" lenge.
+            // L2: OPPOSITE FLOW FIXER
+            // Agar L1 fail hua, iska matlab market ne "Flip" mara ya "Trend" pakda jo humne miss kiya.
+            // L2 Hamesha Trend Break ya Trap ko respect karega.
+            
             if(lastNum === 0 || lastNum === 5) {
-                prediction = "SMALL"; logic = "L2: ZERO-POINT FIX";
+                // Trap Recovery: 0/5 ke baad aksar SMALL aata hai (Historical Data)
+                prediction = "SMALL"; 
+                logic = "L2: ZERO-POINT TRAP FIX";
             } else {
-                // Force break the pattern that caused Loss
-                prediction = lastBS === "BIG" ? "SMALL" : "BIG"; 
-                logic = "L2: SIGMA INVERSION";
+                // Agar L1 'Trend' tha aur fail hua, toh ab 'Cut' karo.
+                // Agar L1 'Cut' tha aur fail hua, toh ab 'Trend' follow karo.
+                // Simple: Follow the RESULT that just appeared.
+                prediction = lastBS; 
+                logic = "L2: FLOW CORRECTION (FOLLOW)";
             }
         } 
         else {
-            // L1: SURESHOT MATH SENSING
-            // Logic: Period ka last digit + Last Number ka Modulo 10
-            // Ye server seed (RNG) ke sabse kareeb hota hai
-            const periodDigit = parseInt(history[0].issueNumber.slice(-1));
-            const seed = (lastNum * 3 + periodDigit) % 10;
-            
-            if (seed >= 5) {
-                prediction = "BIG";
-                logic = `L1: VECTOR UP (${seed})`;
-            } else {
-                prediction = "SMALL";
-                logic = `L1: VECTOR DOWN (${seed})`;
+            // L1: SURESHOT FLOW SENSING
+            // Rule 1: Dragon Check (Agar pichle 2 same hain, toh 3rd bhi same hoga)
+            if (lastBS === prevBS) {
+                prediction = lastBS;
+                logic = "L1: DRAGON FLOW (LOCKED)";
             }
-            
-            // Special Trap Override (Purple Magnet)
-            if(lastNum === 0 || lastNum === 5) {
-               // 0/5 ke baad aksar RNG Small biased hota hai
-               prediction = "SMALL";
-               logic = "L1: MAGNET TRAP SENSE";
+            // Rule 2: Zig-Zag Check (Agar last 3 alternate hain)
+            else if (lastBS !== prevBS && prevBS !== pPrevBS) {
+                prediction = lastBS === "BIG" ? "SMALL" : "BIG";
+                logic = "L1: ZIG-ZAG FLOW (ACTIVE)";
+            }
+            // Rule 3: Trend Break (Agar trend abhi toota hai) -> BIG, BIG, SMALL
+            // Yahan bohot log ghalti karte hain wapis BIG laga kar.
+            // Hum Naye Trend (SMALL) ke saath jayenge.
+            else {
+                prediction = lastBS;
+                logic = "L1: NEW TREND CAPTURE";
             }
         }
 
@@ -193,9 +195,9 @@
         
         if (isWin) { 
             wins++; level = 1; 
-            // GRAND CELEBRATION
-            var colors = ['#00e5ff', '#00ff9c', '#ffffff'];
-            confetti({ particleCount: 200, spread: 120, origin: { y: 0.6 }, colors: colors });
+            // GRAND CELEBRATION (Massive Blast)
+            var colors = ['#00e5ff', '#00ff9c', '#ffffff', '#ffd700'];
+            confetti({ particleCount: 300, spread: 160, origin: { y: 0.5 }, colors: colors, scalar: 1.2 });
         } else { 
             level = level === 1 ? 2 : 1; 
         }
