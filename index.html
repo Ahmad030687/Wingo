@@ -3,21 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Darknet V.42 Neural</title>
+<title>Darknet V.43 Sticky</title>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 <style>
     *{box-sizing:border-box;margin:0;padding:0}
-    :root{ --bg:#02040a; --neon:#00e5ff; --glass:rgba(5,15,25,0.95); --border:rgba(0,229,255,0.3); --text:#e9faff; --green:#00ff9c; --red:#ff3b3b; --gold:#ffd700; }
+    :root{ --bg:#00050a; --neon:#00ffaa; --glass:rgba(10,20,30,0.95); --border:rgba(0,255,170,0.3); --text:#e0fff5; --green:#00ff9c; --red:#ff3b3b; --gold:#ffd700; }
     body{ background:radial-gradient(circle at top,var(--bg),#000 90%); font-family: 'Segoe UI', sans-serif; color:var(--text); min-height: 100vh; overflow-x: hidden; }
     .app{ max-width:420px; margin:auto; padding:15px; padding-bottom: 90px; }
 
     /* HEADER */
-    .header{ padding:18px; border-radius:18px; background:linear-gradient(135deg,var(--glass),#000); border:1px solid var(--border); box-shadow:0 0 30px rgba(0,229,255,0.1), inset 0 0 20px rgba(0,229,255,0.05); display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px; }
+    .header{ padding:18px; border-radius:18px; background:linear-gradient(135deg,var(--glass),#000); border:1px solid var(--border); box-shadow:0 0 30px rgba(0,255,170,0.15), inset 0 0 20px rgba(0,255,170,0.05); display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px; }
     .aura{ font-size:20px; font-weight:800; color:var(--neon); text-shadow:0 0 15px var(--neon); letter-spacing:1px; }
     .timer-badge{ background:#000; color:var(--neon); padding:5px 12px; border-radius:8px; border:1px solid var(--neon); font-weight:bold; box-shadow:0 0 10px var(--neon); font-size:18px; }
 
     /* MAIN CARD */
-    .card{ position:relative; padding:20px; border-radius:22px; background:var(--glass); backdrop-filter:blur(14px); border:1px solid var(--border); box-shadow:0 0 40px rgba(0,0,0,0.8), inset 0 0 15px rgba(0,229,255,0.05); margin-bottom:15px; overflow:hidden; }
+    .card{ position:relative; padding:20px; border-radius:22px; background:var(--glass); backdrop-filter:blur(14px); border:1px solid var(--border); box-shadow:0 0 40px rgba(0,0,0,0.8), inset 0 0 15px rgba(0,255,170,0.05); margin-bottom:15px; overflow:hidden; }
     .card::after{ content:''; position:absolute; top:0; left:0; width:100%; height:2px; background:linear-gradient(90deg, transparent, var(--neon), transparent); animation: scan 2s infinite linear; }
     @keyframes scan{ 0%{left:-100%} 100%{left:100%} }
     
@@ -26,7 +26,7 @@
     .jackpot-box{ display:flex; justify-content:center; gap:15px; margin-top:10px; }
     .jackpot-box div{ width:50px; height:50px; border-radius:12px; background:#071b2d; border:1px solid var(--border); box-shadow:0 0 12px var(--neon); display:flex; align-items:center; justify-content:center; font-weight:bold; font-size: 20px; color: #ffcc00; }
     
-    .logic-text { text-align:center; font-size:11px; color:var(--green); letter-spacing:1px; margin-top:10px; font-weight: bold; background:rgba(0,255,156,0.05); padding:5px; border-radius:5px; }
+    .logic-text { text-align:center; font-size:11px; color:var(--green); letter-spacing:1px; margin-top:10px; font-weight: bold; background:rgba(0,255,170,0.05); padding:5px; border-radius:5px; }
 
     /* STATS GRID */
     .stats-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:15px; }
@@ -59,21 +59,21 @@
 
 <div class="app">
     <div class="header">
-        <div class="aura">DARKNET V.42 NEURAL</div>
+        <div class="aura">DARKNET V.43 STICKY</div>
         <div class="timer-badge" id="timer">00</div>
     </div>
 
     <div id="page-terminal">
         <div class="card">
-            <div class="period-box"><span>30S NEURAL SENSING</span><span id="nextP">SYNCING...</span></div>
+            <div class="period-box"><span>30S DRAGON SENSOR</span><span id="nextP">SYNCING...</span></div>
             <div class="prediction-val" id="pred">WAIT</div>
             <div class="jackpot-box" id="jack"><div>?</div><div>?</div></div>
-            <div class="logic-text" id="logic">NEURAL AI INITIALIZING...</div>
+            <div class="logic-text" id="logic">ANALYZING STICKINESS...</div>
         </div>
 
         <div class="stats-grid">
             <div class="stat-box"><h3 id="wins" style="color:var(--green)">0</h3><p>SESSION WINS</p></div>
-            <div class="stat-box"><h3 id="lvl" style="color:var(--neon)">L1</h3><p>SURESHOT LEVEL</p></div>
+            <div class="stat-box"><h3 id="lvl" style="color:var(--neon)">L1</h3><p>FIXER LEVEL</p></div>
         </div>
     </div>
 
@@ -95,11 +95,7 @@
     let activePred = null;
     let wins = 0;
     let level = 1;
-    
-    // NEURAL MEMORY (This stores what's working)
-    let strategy = "TREND"; // Can be 'TREND' or 'FLIP'
 
-    // Fast Sync (1 Second)
     setInterval(sync, 1000); 
     setInterval(updateTimer, 1000);
 
@@ -123,45 +119,43 @@
             if (currentP !== lastPeriod) {
                 if (activePred && lastPeriod !== "") checkResult(list[0], activePred);
                 lastPeriod = currentP;
-                generateNeuralPrediction(list);
+                generateStickyPrediction(list);
             }
         } catch (e) { console.log("Syncing..."); }
     }
 
-    // --- V.42 NEURAL SENSING ENGINE ---
-    function generateNeuralPrediction(history) {
+    // --- V.43 STICKY TREND LOGIC ---
+    function generateStickyPrediction(history) {
         const lastNum = parseInt(history[0].number);
+        const prevNum = parseInt(history[1].number);
         const lastBS = lastNum >= 5 ? "BIG" : "SMALL";
+        const prevBS = prevNum >= 5 ? "BIG" : "SMALL";
+        
         let [n1, n2] = BOSS_MAP[lastNum];
         let nextP = (BigInt(history[0].issueNumber) + 1n).toString();
         let prediction, logic;
 
-        // STEP 1: NEURAL LEARNING (Auto-Switching)
-        // Hum check karenge ke pichli baar kya hua tha?
-        // Agar Trend jeeta tha, toh strategy 'TREND' rakho.
-        // Agar Trend haara tha, toh strategy 'FLIP' kar do.
-        
-        // (This happens in checkResult, here we just APPLY it)
-
         if (level === 2) {
-            // L2 FIXER: Trap Protection + Map
+            // L2 GOD-FIX: FOLLOW THE LAST RESULT
+            // Agar L1 fail hua, iska matlab market Trend pakad chuka hai.
+            // L2 par kabhi bhi Reverse mat karo, FOLLOW karo.
             if(lastNum === 0 || lastNum === 5) {
-                prediction = "SMALL"; logic = "L2: NEURAL TRAP FIX";
+                prediction = "SMALL"; logic = "L2: TRAP SAFEGUARD";
             } else {
-                // L2 par humesha Map Logic ya Inverse use karte hain safe side ke liye
-                // Yahan hum 'Best Opposite' use karenge
-                prediction = lastBS === "BIG" ? "SMALL" : "BIG"; 
-                logic = "L2: NEURAL RECOVERY";
+                prediction = lastBS; // Stick to the trend
+                logic = "L2: STICKY RECOVERY (FOLLOW)";
             }
         } 
         else {
-            // L1 NEURAL SENSING
-            if (strategy === "TREND") {
-                prediction = lastBS; // Follow Last
-                logic = "L1: NEURAL TREND (LOCKED)";
+            // L1 STICKY SENSOR
+            if (lastBS === prevBS) {
+                // Agar pichle 2 same hain, toh 3rd bhi same hi aayega (Dragon Start)
+                prediction = lastBS;
+                logic = "L1: STICKY TREND LOCK";
             } else {
-                prediction = lastBS === "BIG" ? "SMALL" : "BIG"; // Flip Last
-                logic = "L1: NEURAL FLIP (ACTIVE)";
+                // Agar pichle 2 alag hain (B, S), toh Flip karo (Zig-Zag)
+                prediction = lastBS === "BIG" ? "SMALL" : "BIG";
+                logic = "L1: FLIP-FLOP ACTIVE";
             }
         }
 
@@ -179,22 +173,10 @@
         const actualBS = actual.number >= 5 ? "BIG" : "SMALL";
         const isWin = actualBS === pred.pred;
         
-        // --- NEURAL UPDATE (The Magic) ---
-        // Hum dekhenge ke market ne actually kya kiya?
-        // Did market repeat? (TREND) or flip? (FLIP)
-        const prevBS = activePred.pred === "BIG" || activePred.pred === "SMALL" ? (activePred.pred === "BIG" && strategy === "FLIP" ? "SMALL" : (activePred.pred === "SMALL" && strategy === "FLIP" ? "BIG" : activePred.pred)) : actualBS; // Reconstruct previous state is hard, simplify:
-        
-        // Simple Neural Rule:
-        // If we LOST on L1, it means our Strategy was wrong. SWITCH IT.
-        if (!isWin && level === 1) {
-            strategy = strategy === "TREND" ? "FLIP" : "TREND";
-        }
-        // If we WON, Keep the Strategy (Don't fix what isn't broken).
-        
         if (isWin) { 
             wins++; level = 1; 
             // GRAND CELEBRATION
-            var colors = ['#00e5ff', '#00ff9c', '#ffffff', '#ffd700'];
+            var colors = ['#00ffaa', '#00e5ff', '#ffffff', '#ffd700'];
             confetti({ particleCount: 300, spread: 160, origin: { y: 0.5 }, colors: colors, scalar: 1.2 });
         } else { 
             level = level === 1 ? 2 : 1; 
