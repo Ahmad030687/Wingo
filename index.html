@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Universal V.31 - Streak Cutter</title>
+    <title>Universal V.32 - Intelligent</title>
     <style>
         *{box-sizing:border-box;margin:0;padding:0}
         :root{ --bg:#010409; --neon:#00e5ff; --glass:rgba(10,25,45,0.95); --border:rgba(0,229,255,0.4); --green:#00ff9c; --red:#ff3b3b; }
@@ -40,8 +40,8 @@
 
 <div class="app">
     <div class="header">
-        <div class="aura">UNIVERSAL V.31</div>
-        <div id="logic-label" style="font-size:10px; color:var(--green); letter-spacing:2px; margin-top:5px;">2-STREAK CUTTER ACTIVE</div>
+        <div class="aura">UNIVERSAL V.32</div>
+        <div id="logic-label" style="font-size:10px; color:var(--green); letter-spacing:2px; margin-top:5px;">INTELLIGENT 2-STREAK DECIDER</div>
     </div>
 
     <div id="page-terminal" class="tab-content">
@@ -92,36 +92,58 @@
         const lastNum = parseInt(history[0].number);
         const lastBS = lastNum >= 5 ? "BIG" : "SMALL";
         const prevBS = history[1].number >= 5 ? "BIG" : "SMALL";
+        const pPrevBS = history[2].number >= 5 ? "BIG" : "SMALL";
         
         let prediction, logic;
         let [n1, n2] = BOSS_MAP[lastNum];
 
-        // --- V.31 CUTTER LOGIC ---
-
-        // LEVEL 2: RECOVERY
-        if (level === 2) {
-            if (lastNum === 0 || lastNum === 5) {
-                prediction = "SMALL"; // Trap Recovery
-                logic = "L2: TRAP RECOVERY";
-            } else {
-                // Aggressive Cut (Even on L2)
-                prediction = lastBS === "BIG" ? "SMALL" : "BIG"; 
-                logic = "L2: AGGRESSIVE CUT";
-            }
+        // --- STREAK DETECTION ---
+        let streak = 1;
+        if (lastBS === prevBS) {
+            streak = 2;
+            if (prevBS === pPrevBS) streak = 3;
         }
-        
-        // LEVEL 1: STREAK BREAKER
-        else {
-            if (lastBS === prevBS) {
-                // Agar pichle 2 result same hain (Streak of 2)
-                // BREAK IT (Predict Opposite)
-                prediction = lastBS === "BIG" ? "SMALL" : "BIG";
-                logic = "2-STREAK DETECTED -> CUT";
+
+        if (level === 2) {
+            // L2 SMART SAFETY: If L1 Cut failed, it means Dragon is Strong. 
+            // DON'T FIGHT THE DRAGON AT L2.
+            if (streak >= 3) {
+                 prediction = lastBS; // Ride the Dragon
+                 logic = "L2: DRAGON RIDE RECOVERY";
             } else {
-                // Agar Streak nahi hai (Zig-Zag ya Random)
-                // Use Standard Mirror
-                prediction = n1 >= 5 ? "BIG" : "SMALL";
-                logic = "L1 MIRROR STRIKE";
+                 prediction = lastBS === "BIG" ? "SMALL" : "BIG"; // Trap Recovery
+                 logic = "L2: AGGRESSIVE CUT";
+            }
+        } 
+        else {
+            if (streak === 2) {
+                // *** INTELLIGENT 2-STREAK DECISION ***
+                // Boss Map se pucho: Kya agla number Trend todega?
+                let mapTargetBS = n1 >= 5 ? "BIG" : "SMALL";
+
+                if (mapTargetBS !== lastBS) {
+                    // Map says FLIP -> We CUT confidently
+                    prediction = mapTargetBS;
+                    logic = "2-STREAK: MAP CONFIRMED CUT";
+                } else {
+                    // Map says SAME -> We DO NOT Cut (Avoid Loss)
+                    prediction = lastBS;
+                    logic = "2-STREAK: MOMENTUM FOLLOW";
+                }
+            }
+            else if (streak >= 3) {
+                prediction = lastBS;
+                logic = "DRAGON TREND LOCK";
+            }
+            else {
+                // Zig-Zag Logic
+                if (lastBS !== prevBS) {
+                    prediction = lastBS === "BIG" ? "SMALL" : "BIG";
+                    logic = "ZIG-ZAG CONTINUATION";
+                } else {
+                    prediction = n1 >= 5 ? "BIG" : "SMALL";
+                    logic = "MIRROR FOUNDATION";
+                }
             }
         }
 
