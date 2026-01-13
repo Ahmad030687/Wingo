@@ -3,40 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>30S Speedster V.33</title>
+    <title>30S God Mode V.34</title>
     <style>
         *{box-sizing:border-box;margin:0;padding:0}
-        :root{ --bg:#000; --neon:#00ffea; --glass:rgba(0, 20, 30, 0.9); --border:rgba(0, 255, 234, 0.3); --green:#00ff9c; --red:#ff3b3b; }
-        body{ background:radial-gradient(circle at center,#0a2a35,#000); font-family: 'Segoe UI', sans-serif; color:#fff; min-height: 100vh; overflow-x: hidden; }
+        :root{ --bg:#000; --neon:#ff00e6; --cyan:#00f3ff; --glass:rgba(20, 0, 30, 0.95); --border:rgba(255, 0, 230, 0.3); --green:#00ff9c; --red:#ff3b3b; }
+        body{ background:radial-gradient(circle at center,#1a0024,#000); font-family: 'Segoe UI', sans-serif; color:#fff; min-height: 100vh; overflow-x: hidden; }
         .app{ max-width:420px; margin:auto; padding:12px; }
 
-        /* HEADER & TIMER */
-        .header{ padding:15px; border-radius:15px; background:var(--glass); border:1px solid var(--border); text-align: center; margin-bottom: 15px; display:flex; justify-content:space-between; align-items:center; }
+        /* TIMER & HEADER */
+        .header{ padding:15px; border-radius:15px; background:var(--glass); border:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; box-shadow:0 0 20px rgba(255,0,230,0.2); margin-bottom:15px; }
         .aura{ font-size:18px; font-weight:900; color:var(--neon); text-shadow:0 0 10px var(--neon); }
-        .timer-box{ background:#000; padding:5px 15px; border-radius:10px; border:1px solid var(--neon); color:var(--neon); font-weight:bold; font-size:18px; }
+        .timer-box{ background:#000; padding:5px 15px; border-radius:10px; border:1px solid var(--cyan); color:var(--cyan); font-weight:bold; font-size:18px; }
 
-        /* PREDICTION CARD */
-        .card{ padding:20px; border-radius:20px; background:var(--glass); border:1px solid var(--border); box-shadow:0 0 30px rgba(0,255,234,0.1); margin-bottom:15px; position:relative; overflow:hidden; }
-        .card::before { content:''; position:absolute; top:0; left:0; width:100%; height:5px; background:linear-gradient(90deg, var(--neon), transparent); animation: scan 2s linear infinite; }
-        @keyframes scan { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
-        
+        /* GOD MODE CARD */
+        .card{ padding:20px; border-radius:20px; background:var(--glass); border:1px solid var(--border); box-shadow:0 0 30px rgba(255,0,230,0.15); margin-bottom:15px; position:relative; }
         .p-info{ display:flex; justify-content:space-between; font-size:12px; color:#aaa; margin-bottom:10px; }
-        .p-text{ font-size:58px; font-weight:900; color:var(--neon); text-align:center; text-shadow:0 0 40px var(--neon); margin:10px 0; }
+        .p-text{ font-size:60px; font-weight:900; color:var(--cyan); text-align:center; text-shadow:0 0 40px var(--cyan); margin:10px 0; }
         
-        /* JACKPOT NUMBERS */
         .jack-row{ display:flex; justify-content:center; gap:20px; margin-top:15px; }
-        .jack-row div{ width:50px; height:50px; border-radius:12px; background:#05151a; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-weight:bold; font-size: 22px; color: #ffcc00; box-shadow:0 0 15px var(--neon); }
+        .jack-row div{ width:50px; height:50px; border-radius:12px; background:#12051a; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-weight:bold; font-size: 22px; color: #ffcc00; box-shadow:0 0 15px var(--neon); }
 
-        /* STATS */
-        .stats{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:15px; }
-        .s-item{ background:rgba(0,0,0,0.5); padding:12px; border-radius:12px; text-align:center; border:1px solid var(--border); }
+        /* L2 STATUS */
+        .l2-status { text-align:center; font-size:11px; margin-top:10px; color:var(--green); letter-spacing:1px; background:rgba(0,255,156,0.1); padding:5px; border-radius:5px; }
 
         /* ARCHIVE */
-        .arc-item { position:relative; background:rgba(10,25,35,0.95); border-radius:12px; padding:15px; margin-top:10px; border-left: 5px solid var(--green); display:flex; justify-content:space-between; align-items:center; }
+        .arc-item { position:relative; background:rgba(20,5,30,0.95); border-radius:12px; padding:15px; margin-top:10px; border-left: 5px solid var(--green); display:flex; justify-content:space-between; align-items:center; }
         .arc-item.loss { border-left-color: var(--red); }
         .res-badge { font-weight:bold; font-size:18px; }
         
-        /* NAV */
         .nav{ position:fixed; bottom:10px; left:50%; transform:translateX(-50%); width:94%; background:var(--glass); padding:15px; border-radius:20px; display:flex; justify-content:space-around; border:1px solid var(--border); backdrop-filter:blur(10px); z-index:99; }
         .nav span{ font-size:12px; font-weight:bold; opacity:0.6; }
         .active { color:var(--neon); opacity:1 !important; text-shadow:0 0 10px var(--neon); }
@@ -46,21 +40,25 @@
 
 <div class="app">
     <div class="header">
-        <div class="aura">AHMAD BOSS 30S</div>
+        <div class="aura">30S GOD MODE V.34</div>
         <div class="timer-box" id="timer">00</div>
     </div>
 
     <div id="page-terminal">
         <div class="card">
-            <div class="p-info"><span>TARGET PERIOD</span><span id="nextP" style="color:#fff">LOADING...</span></div>
+            <div class="p-info"><span>NEXT PERIOD</span><span id="nextP" style="color:#fff">SYNCING...</span></div>
             <div class="p-text" id="pred">WAIT</div>
-            <div style="text-align:center; font-size:10px; color:var(--green); letter-spacing:2px;" id="logic">SYSTEM INITIALIZING...</div>
             <div class="jack-row" id="jack"><div>?</div><div>?</div></div>
+            <div class="l2-status" id="logic">SYSTEM READY</div>
         </div>
 
-        <div class="stats">
-            <div class="s-item"><h3 id="wins" style="margin:0; color:var(--neon)">0</h3><small>WINS</small></div>
-            <div class="s-item"><h3 id="lvl" style="margin:0; color:#fff">L1</h3><small>LEVEL</small></div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:15px;">
+            <div style="background:rgba(0,0,0,0.5); padding:10px; border-radius:10px; text-align:center; border:1px solid var(--border);">
+                <h3 id="wins" style="margin:0; color:var(--neon)">0</h3><small style="font-size:10px;">TOTAL WINS</small>
+            </div>
+            <div style="background:rgba(0,0,0,0.5); padding:10px; border-radius:10px; text-align:center; border:1px solid var(--border);">
+                <h3 id="lvl" style="margin:0; color:#fff">L1</h3><small style="font-size:10px;">STATUS</small>
+            </div>
         </div>
     </div>
 
@@ -75,7 +73,6 @@
 </div>
 
 <script>
-    // 30 SECONDS API URL
     const API = "https://draw.ar-lottery01.com/WinGo/WinGo_30S/GetHistoryIssuePage.json?ts=";
     const BOSS_MAP = { 0:[5,2], 1:[6,3], 2:[7,4], 3:[8,0], 4:[9,1], 5:[0,7], 6:[1,8], 7:[2,9], 8:[3,5], 9:[4,6] };
     
@@ -84,20 +81,16 @@
     let wins = 0;
     let level = 1;
 
-    // Fast Interval for 30S (1.5 Seconds)
     setInterval(sync, 1500);
     setInterval(updateTimer, 1000);
 
     function updateTimer() {
         const d = new Date();
         const s = d.getSeconds();
-        // 30s period resets at 00 and 30
         let remaining = s < 30 ? 30 - s : 60 - s;
         const el = document.getElementById('timer');
         el.innerText = remaining < 10 ? "0"+remaining : remaining;
-        
-        if(remaining <= 5) el.style.color = "var(--red)";
-        else el.style.color = "var(--neon)";
+        el.style.color = remaining <= 5 ? "var(--red)" : "var(--cyan)";
     }
 
     async function sync() {
@@ -125,34 +118,44 @@
         let [n1, n2] = BOSS_MAP[lastNum];
         let nextP = (BigInt(history[0].issueNumber) + 1n).toString();
 
-        // --- 30S FAST LOGIC ---
+        // Streak check
+        let streak = 1;
+        if(lastBS === prevBS) streak = 2;
+        if(streak === 2 && prevBS === pPrevBS) streak = 3;
 
+        // --- LEVEL 2 GOD MODE LOGIC ---
         if (level === 2) {
-            // LEVEL 2: TRAP-FREE RECOVERY
-            // 30s mai 0/5 ka trap common hai, L2 usse bachega
-            if(lastNum === 0 || lastNum === 5) {
-                prediction = "SMALL"; 
-                logic = "L2: TRAP FIXER (SAFE)";
+            // AGAR L1 MISS HUA, TOH REASON DEKHO.
+            // Agar Streak ban rahi hai (Streak >= 2), iska matlab L1 ne Cut karne ki koshish ki aur fail hua.
+            // TOH AB HUM CUT NAHI KARENGE. HUM FOLLOW KARENGE.
+            
+            if (streak >= 2) {
+                prediction = lastBS; // Follow the Dragon/Repeat
+                logic = "L2: STREAK GUARD (SAFE FOLLOW)";
             } else {
-                prediction = lastBS === "BIG" ? "SMALL" : "BIG"; 
-                logic = "L2: AGGRESSIVE FIX";
+                // Agar Streak nahi hai (matlab ZigZag fail hua), tab Reverse karo
+                prediction = lastBS === "BIG" ? "SMALL" : "BIG";
+                logic = "L2: STANDARD RECOVERY";
             }
-        } else {
-            // LEVEL 1: SPEED MOMENTUM
-            // Check for Zig-Zag first (Most common in 30s)
+
+            // TRAP PROTECTION (Override)
+            if(lastNum === 0 || lastNum === 5) {
+                // Agar 0/5 hai, toh mostly Small Dragon banta hai 30s mai
+                prediction = "SMALL";
+                logic = "L2: TRAP-0/5 MASTER LOCK";
+            }
+        } 
+        // --- LEVEL 1 SPEED LOGIC ---
+        else {
             if (lastBS !== prevBS && prevBS !== pPrevBS) {
                 prediction = lastBS === "BIG" ? "SMALL" : "BIG";
-                logic = "ZIG-ZAG MOMENTUM";
-            }
-            // Check for Dragon (3+)
-            else if (lastBS === prevBS && prevBS === pPrevBS) {
+                logic = "L1: ZIG-ZAG MOMENTUM";
+            } else if (streak >= 3) {
                 prediction = lastBS;
-                logic = "DRAGON SPEED LOCK";
-            }
-            // Default: Mirror Strike
-            else {
+                logic = "L1: DRAGON SPEED LOCK";
+            } else {
                 prediction = n1 >= 5 ? "BIG" : "SMALL";
-                logic = "L1 MIRROR SURESHOT";
+                logic = "L1: MIRROR SURESHOT";
             }
         }
 
@@ -177,8 +180,8 @@
         card.className = `arc-item ${isWin ? '' : 'loss'}`;
         card.innerHTML = `
             <div>
-                <div style="font-size:10px; opacity:0.7">#${actual.issueNumber.slice(-5)}</div>
-                <div style="font-size:9px; color:var(--neon)">${pred.logic}</div>
+                <div style="font-size:10px; opacity:0.7">#${actual.issueNumber.slice(-5)} (${pred.logic})</div>
+                <div style="font-size:9px; color:var(--cyan)">${pred.logic.includes('L2') ? '⚠️ RECOVERY MODE' : '✅ LEVEL 1'}</div>
             </div>
             <div class="res-badge" style="color:${isWin?'var(--green)':'var(--red)'}">${actualBS} (${actual.number})</div>
         `;
