@@ -3,17 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Darknet Supreme Commander V.50</title>
+    <title>Darknet V.55 - Level 3 Fixer</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <style>
-        /* --- SUPREME ENGINE CORE --- */
+        /* --- SUPREME COMMANDER CORE UI --- */
         :root {
-            --primary: #ff0000; /* Default Red (Dragon) */
-            --bg: #020202;
+            --primary: #ff0000; 
+            --bg: #000000;
             --card-bg: #080808;
-            --glass: rgba(10, 10, 10, 0.95);
-            --border: rgba(255, 0, 0, 0.3);
-            --neon-glow: 0 0 15px var(--primary);
+            --neon: #00f2ff;
             --green: #00ff88;
             --red: #ff3333;
             --gold: #ffcc00;
@@ -24,7 +22,7 @@
 
         body {
             background-color: var(--bg);
-            background-image: radial-gradient(circle at top, #1a0505, #000 70%);
+            background-image: radial-gradient(circle at top, #200000, #000 80%);
             color: white; font-family: var(--font);
             min-height: 100vh; overflow-x: hidden;
         }
@@ -32,107 +30,106 @@
         /* --- PROFESSIONAL HEADER --- */
         .header {
             width: 100%; padding: 20px; border-bottom: 2px solid var(--primary);
-            background: linear-gradient(180deg, rgba(20,0,0,1) 0%, rgba(0,0,0,0) 100%);
+            background: linear-gradient(180deg, #150000 0%, #000 100%);
             display: flex; justify-content: space-between; align-items: center;
             position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px);
-            box-shadow: 0 5px 20px -5px var(--primary);
+            box-shadow: 0 4px 25px var(--primary);
         }
-
-        .header-title h1 { font-size: 22px; margin: 0; font-weight: 900; letter-spacing: 1px; color: var(--primary); text-shadow: 0 0 10px var(--primary); }
-        .header-title span { font-size: 10px; color: #666; display: block; letter-spacing: 2px; }
+        .header-title h1 { font-size: 22px; font-weight: 900; color: var(--primary); text-shadow: 0 0 15px var(--primary); margin: 0; }
+        .header-title span { font-size: 9px; color: #555; display: block; letter-spacing: 2px; }
 
         .timer-box { 
-            border: 1px solid var(--primary); padding: 5px 12px; border-radius: 8px; 
-            text-align: center; background: #000; box-shadow: var(--neon-glow);
+            border: 2px solid var(--primary); padding: 5px 15px; border-radius: 10px; 
+            text-align: center; background: #000; box-shadow: 0 0 15px var(--primary);
         }
-        .timer-digits { font-size: 24px; font-weight: bold; color: var(--primary); text-shadow: 0 0 5px var(--primary); }
+        .timer-val { font-size: 24px; font-weight: bold; color: var(--primary); }
 
-        /* --- APP CONTAINER --- */
-        .app-container { width: 92%; max-width: 420px; margin: 20px auto; padding-bottom: 120px; }
+        /* --- CONTENT CONTAINER --- */
+        .container { width: 92%; max-width: 420px; margin: 25px auto; padding-bottom: 120px; }
+        .page { display: none; animation: slideUp 0.4s ease; }
+        .page.active { display: block; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- TABS SYSTEM --- */
-        .tab-content { display: none; animation: slideUp 0.4s ease; }
-        .tab-content.active { display: block; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* --- TERMINAL: SCANNER CARD --- */
-        .commander-card {
-            background: var(--card-bg); border: 2px solid var(--primary); border-radius: 24px;
-            padding: 25px; position: relative; overflow: hidden; text-align: center;
-            box-shadow: var(--neon-glow), inset 0 0 20px rgba(255, 0, 0, 0.1);
+        /* --- COMMANDER TERMINAL --- */
+        .main-card {
+            background: var(--card-bg); border: 2px solid var(--primary); border-radius: 25px;
+            padding: 30px 20px; position: relative; overflow: hidden; text-align: center;
+            box-shadow: 0 0 30px rgba(255,0,0,0.3), inset 0 0 20px rgba(255,0,0,0.1);
             margin-bottom: 25px;
         }
-        
-        /* Laser Scan Line */
-        .commander-card::after {
+        /* Laser Scanner */
+        .main-card::after {
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
-            background: var(--primary); box-shadow: 0 0 15px var(--primary);
-            animation: scanning 3s linear infinite; opacity: 0.7;
+            background: var(--primary); box-shadow: 0 0 20px var(--primary);
+            animation: scannerMove 3s linear infinite;
         }
-        @keyframes scanning { 0% { top: 0%; } 100% { top: 100%; } }
+        @keyframes scannerMove { 0% { top: 0; } 100% { top: 100%; } }
 
-        .period-info { display: flex; justify-content: space-between; font-size: 12px; color: var(--primary); margin-bottom: 15px; border-bottom: 1px solid #1a1a1a; padding-bottom: 10px; }
-        .p-num { background: #000; padding: 2px 8px; border: 1px solid var(--primary); border-radius: 4px; font-weight: bold; }
+        .period-row { display: flex; justify-content: space-between; font-size: 11px; color: var(--primary); margin-bottom: 20px; border-bottom: 1px solid #1a1a1a; padding-bottom: 10px; }
+        .p-box { background: #000; padding: 3px 10px; border: 1px solid var(--primary); border-radius: 5px; box-shadow: 0 0 5px var(--primary); }
 
-        .prediction-val { font-size: 72px; font-weight: 900; color: var(--primary); text-shadow: 0 0 30px var(--primary); margin: 15px 0; letter-spacing: 4px; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { opacity: 0.8; } 50% { opacity: 1; transform: scale(1.05); } 100% { opacity: 0.8; } }
+        .pred-display { font-size: 75px; font-weight: 900; color: var(--primary); text-shadow: 0 0 40px var(--primary); margin: 15px 0; letter-spacing: 5px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
 
-        .logic-status { font-size: 11px; color: var(--green); background: rgba(0, 255, 136, 0.1); padding: 5px 15px; border-radius: 20px; border: 1px solid rgba(0, 255, 136, 0.3); display: inline-block; }
+        .logic-badge { font-size: 11px; color: var(--green); background: rgba(0, 255, 136, 0.05); padding: 6px 15px; border-radius: 20px; border: 1px solid rgba(0, 255, 136, 0.3); display: inline-block; }
 
-        /* --- ALGORITHM GRID --- */
+        /* --- DASHBOARD GRID --- */
         .grid-label { font-size: 11px; color: var(--primary); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
-        .status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
-        .grid-box { background: #0a0a0a; border: 1px solid #222; border-radius: 12px; padding: 15px; text-align: center; }
-        .grid-box.active { border-color: var(--primary); box-shadow: inset 0 0 10px var(--primary); }
-        .grid-val { font-size: 16px; font-weight: bold; color: #fff; margin-top: 5px; }
+        .dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+        .dash-item { background: #0a0a0a; border: 1px solid #222; border-radius: 15px; padding: 15px; text-align: center; position: relative; }
+        .dash-item.active { border-color: var(--primary); box-shadow: inset 0 0 10px rgba(255,0,0,0.2); }
+        .dash-val { font-size: 22px; font-weight: 900; margin-top: 5px; }
+        .dash-lbl { font-size: 9px; color: #555; text-transform: uppercase; margin-top: 5px; }
 
-        /* --- JACKPOT DUO (Balls) --- */
-        .jackpot-container { border: 1px solid var(--primary); border-radius: 15px; padding: 15px; background: rgba(10,0,0,0.5); margin-top: 10px; }
-        .ball-row { display: flex; justify-content: center; gap: 15px; margin-top: 12px; }
-        .ball { width: 45px; height: 45px; border-radius: 50%; background: var(--primary); color: black; font-weight: 900; font-size: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px var(--primary); border: 2px solid #fff; }
-
-        /* --- ARCHIVE: SHIELD/CROSS SYSTEM --- */
-        .history-item {
-            display: flex; justify-content: space-between; align-items: center;
-            background: #0d0d0d; border: 1px solid #1a1a1a; border-radius: 14px;
-            padding: 18px 20px; margin-bottom: 10px; border-left: 5px solid #333;
-            transition: 0.3s; position: relative;
+        /* --- JACKPOT DUO BALLS --- */
+        .jack-section { margin-top: 20px; border: 1px dashed #333; border-radius: 15px; padding: 15px; background: rgba(10,0,0,0.5); }
+        .ball-row { display: flex; justify-content: center; gap: 20px; margin-top: 15px; }
+        .ball { 
+            width: 50px; height: 50px; border-radius: 50%; background: var(--primary); 
+            color: #000; font-weight: 900; font-size: 22px; 
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 20px var(--primary); border: 2px solid #fff;
         }
-        .history-item.win { border-left-color: var(--green); background: linear-gradient(90deg, rgba(0,255,136,0.05), transparent); }
-        .history-item.loss { border-left-color: var(--red); background: linear-gradient(90deg, rgba(255,51,51,0.05), transparent); }
 
-        .item-info { display: flex; flex-direction: column; gap: 4px; }
-        .item-period { font-size: 12px; color: #666; font-family: monospace; }
-        .item-logic { font-size: 10px; color: var(--primary); font-weight: bold; }
+        /* --- SUPREME ARCHIVE (HISTORY) --- */
+        .history-card {
+            display: flex; justify-content: space-between; align-items: center;
+            background: #0d0d0d; border-radius: 15px; padding: 18px 22px; margin-bottom: 12px;
+            border-left: 5px solid #333; transition: 0.3s;
+        }
+        .history-card.win { border-left-color: var(--green); background: linear-gradient(90deg, rgba(0,255,136,0.08), transparent); }
+        .history-card.loss { border-left-color: var(--red); background: linear-gradient(90deg, rgba(255,51,51,0.08), transparent); }
 
-        .item-right { display: flex; align-items: center; gap: 15px; }
-        .item-res { font-size: 20px; font-weight: 800; }
+        .h-left { display: flex; flex-direction: column; gap: 5px; }
+        .h-period { font-size: 12px; color: #555; font-family: monospace; }
+        .h-logic { font-size: 10px; color: var(--primary); font-weight: bold; }
+
+        .h-right { display: flex; align-items: center; gap: 15px; }
+        .h-res { font-size: 20px; font-weight: 900; color: #fff; }
         
-        .icon-system { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; }
-        .shield-icon { width: 28px; height: 28px; background: var(--green); clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); box-shadow: 0 0 15px var(--green); }
-        .cross-icon { width: 28px; height: 28px; background: var(--red); border-radius: 50%; position: relative; box-shadow: 0 0 15px var(--red); }
-        .cross-icon::before, .cross-icon::after { content: ''; position: absolute; width: 16px; height: 3px; background: #fff; top: 50%; left: 50%; }
-        .cross-icon::before { transform: translate(-50%, -50%) rotate(45deg); }
-        .cross-icon::after { transform: translate(-50%, -50%) rotate(-45deg); }
+        .icon-container { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; }
+        .shield { 
+            width: 28px; height: 28px; background: var(--green); 
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); 
+            box-shadow: 0 0 15px var(--green);
+        }
+        .cross { 
+            width: 28px; height: 28px; background: var(--red); border-radius: 50%;
+            position: relative; box-shadow: 0 0 15px var(--red);
+        }
+        .cross::before, .cross::after { content: ''; position: absolute; width: 16px; height: 3px; background: #fff; top: 50%; left: 50%; }
+        .cross::before { transform: translate(-50%, -50%) rotate(45deg); }
+        .cross::after { transform: translate(-50%, -50%) rotate(-45deg); }
 
-        /* --- BOTTOM NAVIGATION --- */
+        /* --- NAVIGATION --- */
         .bottom-nav {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
             width: 90%; max-width: 400px; background: #000; border: 2px solid var(--primary);
-            border-radius: 40px; display: flex; justify-content: space-around; padding: 12px 0;
-            box-shadow: 0 0 25px var(--primary); z-index: 2000; backdrop-filter: blur(15px);
+            border-radius: 40px; display: flex; justify-content: space-around; padding: 14px 0;
+            box-shadow: 0 0 30px var(--primary); z-index: 2000; backdrop-filter: blur(10px);
         }
-        .nav-btn { display: flex; flex-direction: column; align-items: center; color: #444; font-size: 10px; font-weight: bold; cursor: pointer; transition: 0.3s; width: 25%; }
-        .nav-btn.active { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
-        .nav-icon { font-size: 22px; margin-bottom: 2px; }
-
-        /* --- THEMES --- */
-        .theme-btn { width: 100%; padding: 15px; margin-bottom: 12px; border-radius: 12px; background: #0a0a0a; border: 1px solid #333; color: #fff; font-family: inherit; font-weight: 800; cursor: pointer; }
-        .theme-btn:active { transform: scale(0.98); }
-
-        /* --- PROFILE --- */
-        .profile-card { text-align: center; padding: 30px; background: var(--card-bg); border: 1px solid #222; border-radius: 20px; }
-        .vip-badge { background: var(--gold); color: #000; padding: 5px 15px; border-radius: 20px; font-weight: 900; font-size: 12px; display: inline-block; margin-top: 10px; }
+        .nav-btn { color: #444; font-size: 11px; font-weight: 900; cursor: pointer; text-align: center; }
+        .nav-btn.active { color: var(--primary); text-shadow: 0 0 15px var(--primary); }
     </style>
 </head>
 <body>
@@ -140,253 +137,178 @@
     <div class="header">
         <div class="header-title">
             <h1>DARKNET SUPREME</h1>
-            <span>COMMANDER CONSOLE V.50</span>
+            <span>FIXER CONSOLE V.55</span>
         </div>
-        <div class="timer-box">
-            <div class="timer-digits" id="timer">00</div>
-        </div>
+        <div class="timer-box"><div class="timer-val" id="timer">00</div></div>
     </div>
 
     <div class="app-container">
         
-        <div id="page-terminal" class="tab-content active">
-            <div class="commander-card">
-                <div class="period-info">
-                    <span>TARGET PERIOD</span>
-                    <span class="p-num" id="nextP">....</span>
-                </div>
-                <div class="logic-status" id="logic">NEURAL SCANNING ACTIVE</div>
-                <div class="prediction-val" id="prediction">WAIT</div>
-                <div style="font-size: 10px; color: var(--primary); letter-spacing: 2px;">QUANTUM SENSOR 98%</div>
-            </div>
-
-            <div class="grid-label">ACTIVE ALGORITHMS</div>
-            <div class="status-grid">
-                <div class="grid-box active">
-                    <div class="grid-label">SURESHOT</div>
-                    <div class="grid-val" id="lvl">L1</div>
-                </div>
-                <div class="grid-box">
-                    <div class="grid-label">SESSIONS</div>
-                    <div class="grid-val" id="wins">0</div>
-                </div>
-                <div class="grid-box">
-                    <div class="grid-label">FLOW</div>
-                    <div class="grid-val" id="flowStatus">STABLE</div>
-                </div>
-                <div class="grid-box">
-                    <div class="grid-label">ACCURACY</div>
-                    <div class="grid-val" id="accuracy">100%</div>
+        <div id="page-terminal" class="page active container">
+            <div class="main-card">
+                <div class="period-row"><span>TERMINAL TARGET</span><span class="p-box" id="nextP">....</span></div>
+                <div class="pred-display" id="prediction">WAIT</div>
+                <div class="logic-badge" id="logic">NEURAL SYNCING...</div>
+                
+                <div class="jack-section">
+                    <div style="font-size: 9px; color: #666; letter-spacing: 2px;">SURESHOT DUO (PROBABILITY BALLS)</div>
+                    <div class="ball-row" id="duo">
+                        <div class="ball">?</div><div class="ball">?</div>
+                    </div>
                 </div>
             </div>
 
-            <div class="jackpot-container">
-                <div class="grid-label" style="text-align:center;">SURESHOT DUO (PROBABILITY BALLS)</div>
-                <div class="ball-row" id="duoBalls">
-                    <div class="ball">?</div>
-                    <div class="ball">?</div>
-                </div>
+            <div class="grid-label">ACTIVE SESSION STATS</div>
+            <div class="dashboard">
+                <div class="dash-item active"><div class="dash-val" id="wins">0</div><div class="dash-lbl">Total Wins</div></div>
+                <div class="dash-item active"><div class="dash-val" id="earnings" style="color:var(--gold)">₹0</div><div class="dash-lbl">Jackpot Earnings</div></div>
+                <div class="dash-item"><div class="dash-val" id="lvl">L1</div><div class="dash-lbl">Fixer Level</div></div>
+                <div class="dash-item"><div class="dash-val" id="acc">100%</div><div class="dash-lbl">Accuracy</div></div>
             </div>
         </div>
 
-        <div id="page-archive" class="tab-content">
-            <div class="grid-label">LIVE DATA DECRYPTION (HISTORY)</div>
+        <div id="page-archive" class="page container">
+            <div class="grid-label" style="margin-bottom: 20px;">SYSTEM LOGS (WIN/LOSS DECRYPTION)</div>
             <div id="historyList"></div>
         </div>
 
-        <div id="page-themes" class="tab-content">
-            <div class="grid-label">SYSTEM OVERRIDE: COLOR THEMES</div>
-            <button class="theme-btn" style="border-color: #ff0000; color: #ff0000;" onclick="changeTheme('red')">RED DRAGON (DEFAULT)</button>
-            <button class="theme-btn" style="border-color: #00ffaa; color: #00ffaa;" onclick="changeTheme('green')">NEON MINT (QUANTUM)</button>
-            <button class="theme-btn" style="border-color: #00ccff; color: #00ccff;" onclick="changeTheme('cyan')">AURA BLUE (CHILL)</button>
-            <button class="theme-btn" style="border-color: #ffd700; color: #ffd700;" onclick="changeTheme('gold')">VIP GOLD (LEGENDARY)</button>
-        </div>
-
-        <div id="page-profile" class="tab-content">
-            <div class="profile-card">
-                <div style="font-size: 50px; margin-bottom: 10px;">👤</div>
-                <h2 style="letter-spacing: 2px;">AHMAD ALI</h2>
-                <div class="vip-badge">SUPREME COMMANDER</div>
-                <p style="margin-top: 20px; font-size: 11px; color: #555;">UID: 8594-COMMANDER-050</p>
-                <p style="font-size: 11px; color: #555;">VERSION: 50.0.1 (STABLE)</p>
+        <div id="page-profile" class="page container" style="text-align: center;">
+            <div class="main-card">
+                <div style="font-size: 50px;">👤</div>
+                <h2 style="letter-spacing: 3px;">AHMAD BOSS</h2>
+                <div class="logic-badge" style="margin-top: 10px; color: var(--gold); border-color: var(--gold);">SUPREME COMMANDER</div>
+                <p style="margin-top: 20px; font-size: 11px; color: #555;">OWNER: AHMAD ALI</p>
+                <p style="font-size: 11px; color: #555;">STATUS: UNDER LEVEL 3 FIXER ACTIVE</p>
             </div>
         </div>
 
     </div>
 
     <div class="bottom-nav">
-        <div class="nav-btn active" onclick="switchTab('page-terminal', this)">
-            <span class="nav-icon">_></span>
-            <span>TERMINAL</span>
-        </div>
-        <div class="nav-btn" onclick="switchTab('page-archive', this)">
-            <span class="nav-icon">↺</span>
-            <span>ARCHIVE</span>
-        </div>
-        <div class="nav-btn" onclick="switchTab('page-themes', this)">
-            <span class="nav-icon">🎨</span>
-            <span>THEMES</span>
-        </div>
-        <div class="nav-btn" onclick="switchTab('page-profile', this)">
-            <span class="nav-icon">🕵️</span>
-            <span>PROFILE</span>
-        </div>
+        <div class="nav-btn active" onclick="tab('page-terminal', this)">TERMINAL</div>
+        <div class="nav-btn" onclick="tab('page-archive', this)">ARCHIVE</div>
+        <div class="nav-btn" onclick="tab('page-profile', this)">PROFILE</div>
     </div>
 
 <script>
-    // --- COMMANDER CONFIG ---
-    const API_ENDPOINT = "https://draw.ar-lottery01.com/WinGo/WinGo_30S/GetHistoryIssuePage.json?ts=";
+    // --- SUPREME COMMANDER CONFIG ---
+    const API = "https://draw.ar-lottery01.com/WinGo/WinGo_30S/GetHistoryIssuePage.json?ts=";
     const BOSS_MAP = { 0:[5,2], 1:[6,3], 2:[7,4], 3:[8,0], 4:[9,1], 5:[0,7], 6:[1,8], 7:[2,9], 8:[3,5], 9:[4,6] };
 
-    let lastPeriod = "";
-    let activePred = null;
-    let winCount = 0;
-    let totalCount = 0;
-    let currentLevel = 1;
+    let lastP = "", activePred = null, winCount = 0, totalCount = 0, level = 1, earnings = 0;
 
-    // --- SYSTEM TIMERS ---
-    setInterval(updateSystemTime, 1000);
-    setInterval(syncData, 1000);
+    // --- TIMERS & SYNC ---
+    setInterval(updateTimer, 1000);
+    setInterval(sync, 1000);
 
-    function updateSystemTime() {
-        const now = new Date();
-        const seconds = now.getSeconds();
-        const remaining = seconds < 30 ? 30 - seconds : 60 - seconds;
-        const timerEl = document.getElementById('timer');
-        timerEl.innerText = remaining < 10 ? "0" + remaining : remaining;
-        
-        if (remaining <= 5) {
-            timerEl.style.color = "var(--red)";
-            timerEl.style.borderColor = "var(--red)";
-        } else {
-            timerEl.style.color = "var(--primary)";
-            timerEl.style.borderColor = "var(--primary)";
-        }
+    function updateTimer() {
+        const s = new Date().getSeconds();
+        const r = s < 30 ? 30 - s : 60 - s;
+        const el = document.getElementById('timer');
+        el.innerText = r < 10 ? "0" + r : r;
+        el.style.color = r <= 5 ? "var(--red)" : "var(--primary)";
     }
 
-    async function syncData() {
+    async function sync() {
         try {
-            const response = await fetch(API_ENDPOINT + Date.now());
-            const json = await response.json();
-            const list = json.data.list;
-            const currentP = list[0].issueNumber;
-
-            if (currentP !== lastPeriod) {
-                if (activePred && lastPeriod !== "") processResult(list[0], activePred);
-                lastPeriod = currentP;
-                generateNeuralPrediction(list);
+            const res = await fetch(API + Date.now());
+            const data = await res.json();
+            const latest = data.data.list[0].issueNumber;
+            if (latest !== lastP) {
+                if (activePred && lastP !== "") check(data.data.list[0], activePred);
+                lastP = latest;
+                predict(data.data.list);
             }
-        } catch (err) { console.warn("Connecting to Commander Server..."); }
+        } catch (e) { console.log("Commander Syncing..."); }
     }
 
-    // --- V.50 NEURAL STICKY ENGINE ---
-    function generateNeuralPrediction(history) {
-        const lastNum = parseInt(history[0].number);
-        const lastBS = lastNum >= 5 ? "BIG" : "SMALL";
+    // --- UNDER LEVEL 3 FIXER LOGIC ---
+    function predict(history) {
+        const lastN = parseInt(history[0].number);
+        const lastBS = lastN >= 5 ? "BIG" : "SMALL";
         const prevBS = history[1].number >= 5 ? "BIG" : "SMALL";
+        const pPrevBS = history[2].number >= 5 ? "BIG" : "SMALL";
         
-        let [duo1, duo2] = BOSS_MAP[lastNum];
+        let [d1, d2] = BOSS_MAP[lastN];
         let nextP = (BigInt(history[0].issueNumber) + 1n).toString();
         let prediction, logic;
 
-        if (currentLevel === 2) {
-            // L2 SMART RECOVERY: STICK TO TREND
-            // If L1 failed, the market likely flipped into a Dragon or Sticky Trend.
-            if(lastNum === 0 || lastNum === 5) {
-                prediction = "SMALL"; logic = "L2: TRAP PROTECT";
-            } else {
-                prediction = lastBS; // Follow the flow
-                logic = "L2: STICKY RECOVERY";
-            }
-        } 
-        else {
-            // L1 NEURAL SENSING
-            if (lastBS === prevBS) {
-                prediction = lastBS; logic = "L1: STICKY DRAGON";
-            } else {
-                prediction = lastBS === "BIG" ? "SMALL" : "BIG";
-                logic = "L1: NEURAL FLIP";
-            }
+        if (level === 1) {
+            // L1: Trend Sensing (Dragon or Flip)
+            if (lastBS === prevBS) { prediction = lastBS; logic = "L1: STICKY DRAGON"; }
+            else { prediction = lastBS === "BIG" ? "SMALL" : "BIG"; logic = "L1: NEURAL FLIP"; }
+        } else if (level === 2) {
+            // L2: Recovery Mode (The Sticky Fixer)
+            // Agar L1 fail hua, matlab market Repeat hua hai. So FOLLOW.
+            prediction = lastBS; 
+            logic = "L2: STICKY RECOVERY";
+        } else {
+            // L3: Final Force Fixer (The Reverse Hammer)
+            // Agar L1/L2 dono fail, matlab market Trend Tod raha hai. So CUT.
+            prediction = lastBS === "BIG" ? "SMALL" : "BIG";
+            logic = "L3: TREND BREAKER FIX";
         }
 
         activePred = { pick: prediction, logic: logic };
-
+        
         // UI Updates
         document.getElementById('nextP').innerText = nextP.slice(-4);
         document.getElementById('prediction').innerText = prediction;
+        document.getElementById('prediction').style.color = prediction === "BIG" ? "var(--primary)" : "#fff";
         document.getElementById('logic').innerText = logic;
-        document.getElementById('lvl').innerText = "L" + currentLevel;
-        document.getElementById('duoBalls').innerHTML = `<div class="ball">${duo1}</div><div class="ball">${duo2}</div>`;
-        
-        // Color Sync
-        const predEl = document.getElementById('prediction');
-        predEl.style.color = prediction === "BIG" ? "var(--primary)" : "#fff";
+        document.getElementById('lvl').innerText = "L" + level;
+        document.getElementById('duo').innerHTML = `<div class="ball">${d1}</div><div class="ball">${d2}</div>`;
     }
 
-    function processResult(actual, pred) {
+    function check(actual, pred) {
         const actualBS = actual.number >= 5 ? "BIG" : "SMALL";
         const isWin = actualBS === pred.pick;
         totalCount++;
 
         if (isWin) {
-            winCount++; currentLevel = 1;
-            triggerEliteCelebration();
+            winCount++;
+            earnings += (level === 1 ? 100 : level === 2 ? 300 : 900);
+            level = 1;
+            triggerConfetti();
         } else {
-            currentLevel = 2;
+            level = level < 3 ? level + 1 : 1;
         }
 
-        // Stats UI
+        // Stats UI Update
         document.getElementById('wins').innerText = winCount;
-        document.getElementById('accuracy').innerText = Math.round((winCount / totalCount) * 100) + "%";
+        document.getElementById('earnings').innerText = "₹" + earnings;
+        document.getElementById('acc').innerText = Math.round((winCount / totalCount) * 100) + "%";
         
-        renderHistoryItem(actual, pred, isWin, actualBS);
-    }
-
-    function renderHistoryItem(actual, pred, isWin, resultText) {
-        const container = document.getElementById('historyList');
+        // Add to History (Right Side Shield/Cross)
+        const historyList = document.getElementById('historyList');
         const item = document.createElement('div');
-        item.className = `history-item ${isWin ? 'win' : 'loss'}`;
-        
+        item.className = `history-card ${isWin ? 'win' : 'loss'}`;
         item.innerHTML = `
-            <div class="item-info">
-                <span class="item-period">PERIOD #${actual.issueNumber.slice(-4)} (${pred.logic})</span>
-                <span class="item-logic">${isWin ? 'STATUS: DECRYPTED ✅' : 'STATUS: FAILED ❌'}</span>
+            <div class="h-left">
+                <span class="h-period">PERIOD #${actual.issueNumber.slice(-4)} (${pred.logic})</span>
+                <span class="h-logic">${isWin ? 'JACKPOT DECIPHERED' : 'FLOW FAILED'}</span>
             </div>
-            <div class="item-right">
-                <span class="item-res" style="color:${isWin?'var(--green)':'var(--red)'}">${resultText}</span>
-                <div class="icon-system">
-                    <div class="${isWin ? 'shield-icon' : 'cross-icon'}"></div>
+            <div class="h-right">
+                <span class="h-res">${actualBS} (${actual.number})</span>
+                <div class="icon-container">
+                    <div class="${isWin ? 'shield' : 'cross'}"></div>
                 </div>
             </div>
         `;
-        container.prepend(item);
-        if (container.children.length > 20) container.removeChild(container.lastChild);
+        historyList.prepend(item);
     }
 
-    function triggerEliteCelebration() {
-        const colors = ['#ffffff', '#ff0000', '#ffd700'];
-        confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 }, colors: colors });
-    }
-
-    // --- UI INTERFACE LOGIC ---
-    function switchTab(tabId, btn) {
-        document.querySelectorAll('.tab-content').forEach(p => p.classList.remove('active'));
-        document.getElementById(tabId).classList.add('active');
+    function tab(id, btn) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
     }
 
-    function changeTheme(theme) {
-        const root = document.documentElement;
-        let color;
-        if (theme === 'red') color = '#ff0000';
-        else if (theme === 'green') color = '#00ffaa';
-        else if (theme === 'cyan') color = '#00ccff';
-        else if (theme === 'gold') color = '#ffd700';
-
-        root.style.setProperty('--primary', color);
-        root.style.setProperty('--border', color + '4d');
+    function triggerConfetti() {
+        const colors = ['#ff0000', '#ffffff', '#ffd700'];
+        confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 }, colors: colors });
     }
 </script>
 </body>
-    </html>
+</html>
