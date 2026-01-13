@@ -3,17 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Darknet Supreme V.36</title>
+<title>Darknet V.37 Celebration</title>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 <style>
     *{box-sizing:border-box;margin:0;padding:0}
-    :root{ --bg:#050b14; --neon:#00e5ff; --glass:rgba(8,22,38,0.85); --border:rgba(0,229,255,0.4); --text:#e9faff; --green:#00ff9c; --red:#ff3b3b; }
+    :root{ --bg:#050b14; --neon:#00e5ff; --glass:rgba(8,22,38,0.9); --border:rgba(0,229,255,0.4); --text:#e9faff; --green:#00ff9c; --red:#ff3b3b; }
     body{ background:radial-gradient(circle at top,var(--bg),#02060c 80%); font-family: 'Segoe UI', sans-serif; color:var(--text); min-height: 100vh; overflow-x: hidden; }
     .app{ max-width:420px; margin:auto; padding:15px; padding-bottom: 90px; }
 
-    /* HEADER - SUPREME STYLE */
+    /* HEADER */
     .header{ padding:18px; border-radius:18px; background:linear-gradient(135deg,var(--glass),#020b14); border:1px solid var(--border); box-shadow:0 0 30px rgba(0,229,255,0.2), inset 0 0 20px rgba(0,229,255,0.1); display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px; }
     .aura{ font-size:20px; font-weight:800; color:var(--neon); text-shadow:0 0 15px var(--neon); letter-spacing:1px; }
-    .timer-badge{ background:#000; color:var(--neon); padding:5px 12px; border-radius:8px; border:1px solid var(--neon); font-weight:bold; box-shadow:0 0 10px var(--neon); }
+    .timer-badge{ background:#000; color:var(--neon); padding:5px 12px; border-radius:8px; border:1px solid var(--neon); font-weight:bold; box-shadow:0 0 10px var(--neon); font-size:18px; }
 
     /* MAIN CARD */
     .card{ position:relative; padding:20px; border-radius:22px; background:var(--glass); backdrop-filter:blur(14px); border:1px solid var(--border); box-shadow:0 0 25px rgba(0,0,0,0.6), inset 0 0 15px rgba(0,229,255,0.05); margin-bottom:15px; overflow:hidden; }
@@ -33,17 +34,28 @@
     .stat-box h3{ font-size:24px; margin:0; }
     .stat-box p{ font-size:10px; opacity:0.6; margin:0; }
 
-    /* ARCHIVE SUPREME */
-    .arc-card { position:relative; background:linear-gradient(145deg,#0b1622,#04080d); border-radius:16px; padding:15px 18px; margin-top:12px; border-left: 5px solid var(--green); overflow:hidden; box-shadow:0 5px 15px rgba(0,0,0,0.5); }
+    /* ARCHIVE SUPREME (FIXED ICONS & LAYOUT) */
+    .arc-card { position:relative; background:linear-gradient(145deg,#0b1622,#04080d); border-radius:16px; padding:15px 18px; margin-top:12px; border-left: 5px solid var(--green); overflow:hidden; box-shadow:0 5px 15px rgba(0,0,0,0.5); display: flex; justify-content: space-between; align-items: center; }
     .arc-card.loss { border-left-color: var(--red); }
-    .arc-top { display:flex; justify-content:space-between; font-size:10px; opacity:0.7; margin-bottom:5px; }
-    .arc-res { font-size:20px; font-weight:bold; color:#fff; }
     
-    .icon { position:absolute; right:18px; top:50%; transform:translateY(-50%); }
-    .shield { width:30px; height:30px; background:var(--green); clip-path: polygon(50% 0%, 95% 20%, 95% 60%, 50% 100%, 5% 60%, 5% 20%); box-shadow:0 0 10px var(--green); }
-    .cross { width:30px; height:30px; border-radius:50%; background:var(--red); position:relative; box-shadow:0 0 10px var(--red); }
-    .cross::before, .cross::after { content:""; position:absolute; width:16px; height:3px; background:white; top:50%; left:50%; transform:translate(-50%,-50%) rotate(45deg); }
-    .cross::after { transform:translate(-50%,-50%) rotate(-45deg); }
+    .arc-info { display: flex; flex-direction: column; }
+    .arc-round { font-size: 11px; opacity: 0.7; margin-bottom: 2px; }
+    .arc-res { font-size: 20px; font-weight: bold; color: #fff; }
+
+    /* UNIFIED ICON POSITIONING (RIGHT SIDE) */
+    .status-icon {
+        width: 32px; height: 32px;
+        display: flex; align-items: center; justify-content: center;
+    }
+
+    /* SHIELD ICON */
+    .shield { background: var(--green); clip-path: polygon(50% 0%, 95% 20%, 95% 60%, 50% 100%, 5% 60%, 5% 20%); box-shadow: 0 0 10px var(--green); }
+    
+    /* CROSS ICON */
+    .cross { background: var(--red); border-radius: 50%; box-shadow: 0 0 10px var(--red); position: relative; }
+    .cross::before, .cross::after { content: ""; position: absolute; width: 18px; height: 3px; background: white; top: 50%; left: 50%; }
+    .cross::before { transform: translate(-50%, -50%) rotate(45deg); }
+    .cross::after { transform: translate(-50%, -50%) rotate(-45deg); }
 
     /* FOOTER NAV */
     .footer{ position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 92%; padding: 15px; border-radius: 18px; display: flex; justify-content: space-around; background: linear-gradient(135deg,#041423,var(--glass)); border: 1px solid var(--border); box-shadow: 0 0 20px var(--neon); z-index: 100; backdrop-filter: blur(10px); }
@@ -55,8 +67,8 @@
 
 <div class="app">
     <div class="header">
-        <div class="aura">DARKNET SUPREME</div>
-        <div class="timer-box" id="timer">00</div>
+        <div class="aura">DARKNET V.37 CELEB</div>
+        <div class="timer-badge" id="timer">00</div>
     </div>
 
     <div id="page-terminal">
@@ -64,12 +76,12 @@
             <div class="period-box"><span>TARGET: 30S</span><span id="nextP">SYNCING...</span></div>
             <div class="prediction-val" id="pred">WAIT</div>
             <div class="jackpot-box" id="jack"><div>?</div><div>?</div></div>
-            <div class="logic-text" id="logic">HYBRID LOGIC ACTIVE</div>
+            <div class="logic-text" id="logic">HYBRID INTELLIGENCE ACTIVE</div>
         </div>
 
         <div class="stats-grid">
-            <div class="stat-box"><h3 id="wins" style="color:var(--green)">0</h3><p>SESSION WINS</p></div>
-            <div class="stat-box"><h3 id="lvl" style="color:var(--neon)">L1</h3><p>LEVEL STATUS</p></div>
+            <div class="stat-box"><h3 id="wins" style="color:var(--green)">0</h3><p>TOTAL WINS</p></div>
+            <div class="stat-box"><h3 id="lvl" style="color:var(--neon)">L1</h3><p>SNIPER LEVEL</p></div>
         </div>
     </div>
 
@@ -92,7 +104,7 @@
     let wins = 0;
     let level = 1;
 
-    // 30S Fast Timer
+    // Fast Sync
     setInterval(sync, 1500);
     setInterval(updateTimer, 1000);
 
@@ -103,7 +115,7 @@
         const el = document.getElementById('timer');
         el.innerText = remaining < 10 ? "0"+remaining : remaining;
         el.style.color = remaining <= 5 ? "var(--red)" : "var(--neon)";
-        el.style.boxShadow = remaining <= 5 ? "0 0 15px var(--red)" : "0 0 10px var(--neon)";
+        el.style.borderColor = remaining <= 5 ? "var(--red)" : "var(--neon)";
     }
 
     async function sync() {
@@ -118,7 +130,7 @@
                 lastPeriod = currentP;
                 generateHybridPrediction(list);
             }
-        } catch (e) { console.log("Sync..."); }
+        } catch (e) { console.log("Syncing..."); }
     }
 
     function generateHybridPrediction(history) {
@@ -136,29 +148,21 @@
         if(lastBS === prevBS) streak = 2;
         if(streak === 2 && prevBS === pPrevBS) streak = 3;
 
-        // --- V.35 HYBRID LOGIC ---
-        
+        // --- V.35 HYBRID LOGIC (Your Request) ---
         if (level === 2) {
-            // L2 INTELLIGENCE: Consult Map for Flip vs Follow
             let mapTargetBS = n1 >= 5 ? "BIG" : "SMALL";
-            
             if (lastNum === 0 || lastNum === 5) {
                 prediction = "SMALL"; logic = "L2: TRAP LOCK (0/5)";
-            } 
-            else if (streak >= 3) {
+            } else if (streak >= 3) {
                 prediction = lastBS; logic = "L2: DRAGON RIDE (SAFE)";
-            }
-            else {
-                // Decision for Streak 1 or 2
+            } else {
                 if (mapTargetBS !== lastBS) {
                     prediction = mapTargetBS; logic = "L2: MAP-BASED CUT";
                 } else {
                     prediction = lastBS; logic = "L2: MAP-BASED FOLLOW";
                 }
             }
-        } 
-        else {
-            // L1 STANDARD SPEED LOGIC
+        } else {
             if (lastBS !== prevBS && prevBS !== pPrevBS) {
                 prediction = lastBS === "BIG" ? "SMALL" : "BIG";
                 logic = "L1: ZIG-ZAG MOMENTUM";
@@ -185,19 +189,30 @@
         const actualBS = actual.number >= 5 ? "BIG" : "SMALL";
         const isWin = actualBS === pred.pred;
         
-        if (isWin) { wins++; level = 1; } else { level = level === 1 ? 2 : 1; }
+        if (isWin) { 
+            wins++; level = 1; 
+            // TRIGGER CELEBRATION
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#00e5ff', '#00ff9c', '#ffffff']
+            });
+        } else { 
+            level = level === 1 ? 2 : 1; 
+        }
         
         document.getElementById('wins').innerText = wins;
         const list = document.getElementById('list');
         const card = document.createElement('div');
         card.className = `arc-card ${isWin ? '' : 'loss'}`;
+        // UI FIX: ICONS ON RIGHT
         card.innerHTML = `
-            <div class="arc-top">
-                <span>#${actual.issueNumber.slice(-5)}</span>
-                <span>${pred.logic}</span>
+            <div class="arc-info">
+                <div class="arc-round">#${actual.issueNumber.slice(-5)} (${pred.logic})</div>
+                <div class="arc-res" style="color:${isWin?'var(--green)':'var(--red)'}">${actualBS} (${actual.number})</div>
             </div>
-            <div class="arc-res" style="color:${isWin?'var(--green)':'var(--red)'}">${actualBS} (${actual.number})</div>
-            <div class="icon ${isWin ? 'shield' : 'cross'}"></div>
+            <div class="status-icon ${isWin ? 'shield' : 'cross'}"></div>
         `;
         list.prepend(card);
     }
