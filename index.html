@@ -3,340 +3,288 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Darknet V.60 - Supreme Commander</title>
+    <title>AHMAD BOSS V.70 PLATINUM</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <style>
-        /* --- CORE COMMANDER THEME --- */
+        /* --- AHMAD BOSS PLATINUM DESIGN SYSTEM --- */
         :root {
-            --primary: #ff0000; 
             --bg: #050505;
-            --card-bg: #0a0a0a;
-            --green: #00ff6a;
-            --red: #ff2f2f;
-            --gold: #ffd700;
-            --text-glow: 0 0 10px var(--primary);
-            --box-glow: 0 0 15px var(--primary), inset 0 0 10px rgba(255, 0, 0, 0.2);
-            --font-main: 'Courier New', Courier, monospace;
+            --surface: rgba(20, 20, 30, 0.7);
+            --primary: #8a2be2; /* Electric Purple */
+            --secondary: #00f2ff; /* Cyan */
+            --accent: #ffd700; /* Gold */
+            --success: #00ff88;
+            --danger: #ff3e3e;
+            --text: #ffffff;
+            --text-dim: #a0a0b0;
+            --glass-border: rgba(255, 255, 255, 0.1);
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
 
         body {
-            background-color: var(--bg);
-            color: white;
-            font-family: var(--font-main);
-            margin: 0; padding: 0;
+            background: var(--bg);
+            background-image: 
+                radial-gradient(circle at 10% 10%, rgba(138, 43, 226, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 90%, rgba(0, 242, 255, 0.15) 0%, transparent 40%);
+            color: var(--text);
             min-height: 100vh;
             overflow-x: hidden;
-            user-select: none;
+            display: flex; flex-direction: column; align-items: center;
         }
 
-        /* --- HEADER --- */
+        /* --- PREMIUM HEADER --- */
         .header {
-            width: 100%; padding: 20px;
-            border-bottom: 2px solid var(--primary);
-            box-shadow: 0 4px 20px -5px var(--primary);
-            background: linear-gradient(180deg, rgba(20,0,0,1) 0%, rgba(0,0,0,0) 100%);
+            width: 100%; padding: 25px 20px;
             display: flex; justify-content: space-between; align-items: center;
+            backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border);
             position: sticky; top: 0; z-index: 1000;
         }
+        .header-title h1 { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; background: linear-gradient(90deg, #fff, var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .header-title span { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; }
 
-        .title-group h1 { margin: 0; font-size: 22px; text-shadow: var(--text-glow); color: var(--primary); font-weight: 900; }
-        .title-group span { font-size: 10px; color: #888; display: block; letter-spacing: 1px; }
-
-        .timer-box { border: 1px solid var(--primary); padding: 5px 10px; border-radius: 8px; box-shadow: var(--box-glow); text-align: center; min-width: 60px; }
-        .timer-digits { font-size: 22px; font-weight: bold; color: var(--primary); text-shadow: 0 0 5px var(--primary); }
-
-        /* --- MAIN LAYOUT --- */
-        .container { width: 90%; max-width: 400px; margin: 25px auto; padding-bottom: 120px; }
-        .section { display: none; animation: fadeIn 0.4s ease; }
-        .active { display: block; }
-        @keyframes fadeIn { from {opacity: 0; transform: translateY(10px);} to {opacity: 1; transform: translateY(0);} }
-
-        /* --- TERMINAL: MAIN CARD --- */
-        .main-card {
-            border: 2px solid var(--primary); border-radius: 20px; padding: 20px;
-            text-align: center; box-shadow: var(--box-glow); margin-bottom: 25px;
-            background: radial-gradient(circle, rgba(20,0,0,0.8) 0%, rgba(0,0,0,1) 100%);
-            position: relative; overflow: hidden;
-        }
-        .main-card::after {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
-            background: var(--primary); box-shadow: 0 0 15px var(--primary);
-            animation: scan 3s linear infinite;
-        }
-        @keyframes scan { 0% {top:0} 100% {top:100%} }
-
-        .period-info { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--primary); margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
-        .period-number { background: #000; padding: 4px 10px; border-radius: 5px; border: 1px solid var(--primary); font-weight: bold; box-shadow: 0 0 5px var(--primary); }
-
-        .result-text { font-size: 65px; font-weight: 900; color: var(--primary); text-shadow: 0 0 25px var(--primary); margin: 15px 0; letter-spacing: 3px; }
-
-        /* --- DASHBOARD STATS --- */
-        .grid-header { text-align: left; font-size: 11px; color: var(--primary); margin-bottom: 5px; text-transform: uppercase; }
-        .grid-section { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .grid-item { border: 1px solid #333; border-radius: 12px; padding: 12px; text-align: center; background: #080808; }
-        .grid-item.active { border-color: var(--primary); box-shadow: inset 0 0 10px rgba(255,0,0,0.3); }
-        .grid-label { font-size: 10px; text-transform: uppercase; color: #ccc; margin-bottom: 5px; }
-        .grid-value { font-size: 14px; color: white; font-weight: bold; }
-
-        /* --- JACKPOT DUO --- */
-        .jackpot-box { border: 1px solid var(--primary); border-radius: 15px; padding: 15px; margin-top: 20px; background: rgba(10,0,0,0.4); }
-        .jackpot-seeds { display: flex; justify-content: center; gap: 15px; margin-top: 10px; }
-        .ball { width: 45px; height: 45px; border-radius: 50%; background-color: var(--primary); color: black; font-weight: 900; display: flex; align-items: center; justify-content: center; font-size: 20px; box-shadow: 0 0 15px var(--primary); border: 2px solid white; }
-
-        /* --- ARCHIVE: ELITE CARDS --- */
-        .history-card {
-            background: var(--card-bg); border: 1px solid #222; border-radius: 12px;
-            padding: 15px 20px; margin-bottom: 10px; display: flex; justify-content: space-between;
-            align-items: center; border-left: 4px solid #333;
-        }
-        .history-card.win-border { border-left-color: var(--green); }
-        .history-card.loss-border { border-left-color: var(--red); }
-
-        .h-left { display: flex; flex-direction: column; gap: 5px; }
-        .h-period { font-size: 12px; color: #666; font-family: monospace; }
-        .h-logic { font-size: 11px; color: var(--primary); font-weight: bold; }
-
-        .h-right { display: flex; align-items: center; gap: 15px; }
-        .h-res { font-size: 18px; font-weight: 900; }
-
-        /* Icons */
-        .icon { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; }
-        .shield { width: 26px; height: 26px; background: var(--green); clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); box-shadow: 0 0 10px var(--green); }
-        .cross { width: 26px; height: 26px; background: var(--red); border-radius: 50%; position: relative; box-shadow: 0 0 10px var(--red); }
-        .cross::before, .cross::after { content: ''; position: absolute; width: 14px; height: 2px; background: #fff; top: 50%; left: 50%; }
-        .cross::before { transform: translate(-50%, -50%) rotate(45deg); }
-        .cross::after { transform: translate(-50%, -50%) rotate(-45deg); }
-
-        /* --- THEME BOX --- */
-        .theme-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .theme-btn { 
-            padding: 15px; border-radius: 12px; border: 1px solid #333; background: #080808;
-            color: white; font-family: inherit; font-weight: bold; cursor: pointer; text-align: center;
+        .timer-badge {
+            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border);
+            padding: 8px 16px; border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace; font-weight: bold; font-size: 18px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); color: var(--secondary);
         }
 
-        /* --- BOTTOM NAV --- */
-        .bottom-nav {
-            position: fixed; bottom: 20px; width: 90%; max-width: 400px; left: 50%; transform: translateX(-50%);
-            background-color: #000; border: 2px solid var(--primary); border-radius: 35px;
-            display: flex; justify-content: space-around; padding: 12px 0;
-            box-shadow: 0 0 20px var(--primary); z-index: 1000; backdrop-filter: blur(10px);
+        /* --- MAIN APP CONTAINER --- */
+        .container { width: 92%; max-width: 420px; margin: 30px auto; padding-bottom: 120px; }
+
+        /* --- PLATINUM PREDICTION CARD --- */
+        .glass-card {
+            background: var(--surface); backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border); border-radius: 30px;
+            padding: 35px 25px; position: relative; overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            text-align: center; margin-bottom: 25px;
         }
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: #444; font-size: 10px; cursor: pointer; transition: 0.3s; width: 25%; font-weight: bold; }
-        .nav-item.active { color: var(--primary); text-shadow: 0 0 8px var(--primary); }
-        .nav-icon { font-size: 20px; margin-bottom: 4px; }
+        .glass-card::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: conic-gradient(from 0deg, transparent, var(--primary), transparent, var(--secondary), transparent);
+            animation: rotate 6s linear infinite; opacity: 0.1;
+        }
+        @keyframes rotate { 100% { transform: rotate(360deg); } }
+
+        .card-meta { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-dim); margin-bottom: 25px; font-weight: 600; text-transform: uppercase; }
+        .period-pill { background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 8px; color: #fff; }
+
+        .prediction-value {
+            font-size: 82px; font-weight: 900; letter-spacing: -2px; margin: 10px 0;
+            background: linear-gradient(180deg, #fff 30%, var(--text-dim));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 30px rgba(138, 43, 226, 0.4));
+        }
+
+        .status-pill {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(0, 255, 136, 0.1); color: var(--success);
+            padding: 8px 16px; border-radius: 100px; font-size: 12px; font-weight: 700;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+        }
+        .status-dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; animation: blink 1.5s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+        /* --- STATS GRID --- */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+        .stat-card {
+            background: var(--surface); border: 1px solid var(--glass-border);
+            padding: 20px; border-radius: 20px; text-align: center;
+        }
+        .stat-val { font-size: 24px; font-weight: 800; color: var(--secondary); }
+        .stat-lbl { font-size: 10px; color: var(--text-dim); text-transform: uppercase; margin-top: 5px; font-weight: 700; }
+
+        /* --- SURESHOT DUO SECTION --- */
+        .duo-section {
+            background: linear-gradient(145deg, rgba(255,215,0,0.05), rgba(0,0,0,0));
+            border: 1px solid rgba(255, 215, 0, 0.2); border-radius: 25px; padding: 20px;
+        }
+        .duo-title { font-size: 11px; color: var(--accent); font-weight: 800; text-transform: uppercase; margin-bottom: 15px; text-align: center; letter-spacing: 1px; }
+        .duo-balls { display: flex; justify-content: center; gap: 20px; }
+        .ball {
+            width: 55px; height: 55px; border-radius: 18px;
+            background: linear-gradient(135deg, var(--surface), #000);
+            border: 1px solid var(--glass-border); color: var(--accent);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px; font-weight: 900; box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        /* --- ARCHIVE SECTION --- */
+        .archive-title { font-size: 14px; font-weight: 800; color: #fff; margin: 30px 0 15px; padding-left: 10px; }
+        .history-row {
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--surface); border: 1px solid var(--glass-border);
+            padding: 16px 20px; border-radius: 20px; margin-bottom: 12px;
+            transition: 0.3s;
+        }
+        .hist-left { display: flex; flex-direction: column; gap: 4px; }
+        .hist-period { font-size: 12px; color: var(--text-dim); font-family: monospace; }
+        .hist-logic { font-size: 10px; color: var(--secondary); font-weight: 700; }
+        .hist-right { display: flex; align-items: center; gap: 15px; }
+        .hist-res { font-size: 18px; font-weight: 800; }
+        .indicator {
+            width: 32px; height: 32px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center; font-size: 14px;
+        }
+        .win-ind { background: rgba(0, 255, 136, 0.1); color: var(--success); border: 1px solid var(--success); }
+        .loss-ind { background: rgba(255, 62, 62, 0.1); color: var(--danger); border: 1px solid var(--danger); }
+
+        /* --- FLOATING NAVIGATION --- */
+        .nav-bar {
+            position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
+            width: 85%; max-width: 380px; background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px); border: 1px solid var(--glass-border);
+            border-radius: 24px; display: flex; justify-content: space-around; padding: 10px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6); z-index: 2000;
+        }
+        .nav-item { color: var(--text-dim); font-size: 11px; font-weight: 700; cursor: pointer; text-align: center; padding: 10px; border-radius: 15px; transition: 0.3s; }
+        .nav-item.active { color: var(--secondary); background: rgba(0, 242, 255, 0.1); }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <div class="title-group">
-            <h1 id="brand-name">DARKNET V.60</h1>
-            <span>SUPREME COMMANDER</span>
+    <header class="header">
+        <div class="header-title">
+            <h1>AHMAD BOSS V.70</h1>
+            <span>Platinum Sureshot Engine</span>
         </div>
-        <div class="timer-box">
-            <small style="font-size: 8px; color: #fff; display:block;">SEC TO DRAW</small>
-            <span class="timer-digits" id="timer">00</span>
+        <div class="timer-badge" id="timer">00</div>
+    </header>
+
+    <div class="container" id="terminal-page">
+        <div class="glass-card">
+            <div class="card-meta">
+                <span>Network: Encrypted</span>
+                <span class="period-pill" id="nextP">....</span>
+            </div>
+            <div class="prediction-value" id="pred">WAIT</div>
+            <div class="status-pill">
+                <div class="status-dot"></div>
+                <span id="logic">ANALYZING QUANTUM FLOW</span>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-val" id="wins">0</div>
+                <div class="stat-lbl">L1 Wins</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-val" id="acc">100%</div>
+                <div class="stat-lbl">Accuracy</div>
+            </div>
+        </div>
+
+        <div class="duo-section">
+            <div class="duo-title">Jackpot Sureshot Duo</div>
+            <div class="duo-balls" id="duo">
+                <div class="ball">?</div>
+                <div class="ball">?</div>
+            </div>
         </div>
     </div>
 
-    <div class="container">
+    <div class="container" id="archive-page" style="display: none;">
+        <div class="archive-title">SESSION LOGS</div>
+        <div id="historyList"></div>
+    </div>
+
+    <nav class="nav-bar">
+        <div class="nav-item active" onclick="tab('terminal-page', this)">TERMINAL</div>
+        <div class="nav-item" onclick="tab('archive-page', this)">ARCHIVE</div>
+        <div class="nav-item" onclick="alert('Profile: Ahmad Boss VIP')">PROFILE</div>
+    </nav>
+
+<script>
+    const API = "https://draw.ar-lottery01.com/WinGo/WinGo_30S/GetHistoryIssuePage.json?ts=";
+    const BOSS_MAP = { 0:[5,2], 1:[6,3], 2:[7,4], 3:[8,0], 4:[9,1], 5:[0,7], 6:[1,8], 7:[2,9], 8:[3,5], 9:[4,6] };
+
+    let lastP = "", activePred = null, winCount = 0, totalCount = 0;
+
+    setInterval(sync, 1000);
+    setInterval(() => {
+        const s = new Date().getSeconds();
+        const r = s < 30 ? 30 - s : 60 - s;
+        document.getElementById('timer').innerText = r < 10 ? "0" + r : r;
+    }, 1000);
+
+    async function sync() {
+        try {
+            const res = await fetch(API + Date.now());
+            const json = await res.json();
+            const list = json.data.list;
+            if (list[0].issueNumber !== lastP) {
+                if (activePred && lastP !== "") check(list[0], activePred);
+                lastP = list[0].issueNumber;
+                predict(list);
+            }
+        } catch (e) {}
+    }
+
+    // --- PLATINUM L1 FIXER LOGIC ---
+    function predict(history) {
+        const lastN = parseInt(history[0].number);
+        const lastBS = lastN >= 5 ? "BIG" : "SMALL";
+        const prevBS = history[1].number >= 5 ? "BIG" : "SMALL";
+        const pPrevBS = history[2].number >= 5 ? "BIG" : "SMALL";
         
-        <div id="section-terminal" class="section active">
-            <div class="main-card">
-                <div class="period-info">
-                    <span>Target Period</span>
-                    <span class="period-number" id="nextP">....</span>
-                </div>
-                <div class="sub-info">QUANTUM LEVEL 3 FIXER ACTIVE</div>
-                <div class="result-text" id="res">WAIT</div>
-                <div class="sub-info" id="logic" style="color: var(--primary);">ANALYZING FLOW...</div>
+        let [d1, d2] = BOSS_MAP[lastN];
+        let nextP = (BigInt(history[0].issueNumber) + 1n).toString();
+        
+        // Sureshot L1 Sensing: Logic based on Seed Volatility
+        let prediction;
+        if (lastBS === prevBS && prevBS === pPrevBS) {
+            prediction = lastBS === "BIG" ? "SMALL" : "BIG"; // Trend Break
+        } else if (lastBS !== prevBS) {
+            prediction = lastBS; // Trend Follow
+        } else {
+            prediction = lastBS; // Default Sureshot
+        }
+
+        activePred = { pick: prediction, logic: "L1 PLATINUM FIX" };
+        
+        document.getElementById('nextP').innerText = nextP.slice(-4);
+        document.getElementById('pred').innerText = prediction;
+        document.getElementById('logic').innerText = "L1 FIXER ACTIVE";
+        document.getElementById('duo').innerHTML = `<div class="ball">${d1}</div><div class="ball">${d2}</div>`;
+    }
+
+    function check(actual, pred) {
+        const actualBS = actual.number >= 5 ? "BIG" : "SMALL";
+        const isWin = actualBS === pred.pick;
+        totalCount++;
+
+        if (isWin) {
+            winCount++;
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#8a2be2', '#00f2ff', '#ffffff'] });
+        }
+
+        document.getElementById('wins').innerText = winCount;
+        document.getElementById('acc').innerText = Math.round((winCount / totalCount) * 100) + "%";
+        
+        const item = document.createElement('div');
+        item.className = 'history-row';
+        item.innerHTML = `
+            <div class="hist-left">
+                <span class="hist-period">#${actual.issueNumber.slice(-4)}</span>
+                <span class="hist-logic">${pred.logic}</span>
             </div>
-
-            <div class="grid-header">LIVE COMMANDER STATS</div>
-            <div class="grid-section">
-                <div class="grid-item active">
-                    <div class="grid-label">WINS</div>
-                    <div class="grid-value" id="win-count">0</div>
-                </div>
-                <div class="grid-item">
-                    <div class="grid-label">JACKPOT</div>
-                    <div class="grid-value" id="earnings" style="color: var(--gold);">₹0</div>
-                </div>
-                <div class="grid-item">
-                    <div class="grid-label">FIXER</div>
-                    <div class="grid-value" id="lvl">L1</div>
-                </div>
-                <div class="grid-item">
-                    <div class="grid-label">ACCURACY</div>
-                    <div class="grid-value" id="accuracy">100%</div>
-                </div>
+            <div class="hist-right">
+                <span class="hist-res">${actualBS}</span>
+                <div class="indicator ${isWin ? 'win-ind' : 'loss-ind'}">${isWin ? '✔' : '✘'}</div>
             </div>
+        `;
+        document.getElementById('historyList').prepend(item);
+    }
 
-            <div class="jackpot-box">
-                <div class="grid-header" style="text-align:center;">SURESHOT DUO (95% PROBABILITY)</div>
-                <div class="jackpot-seeds" id="duo">
-                    <div class="ball">?</div>
-                    <div class="ball">?</div>
-                </div>
-            </div>
-        </div>
-
-        <div id="section-archive" class="section">
-            <div class="grid-header">DECRYPTED HISTORY LOGS</div>
-            <div id="history-list"></div>
-        </div>
-
-        <div id="section-themes" class="section">
-            <div class="grid-header">SYSTEM OVERRIDE: THEMES</div>
-            <div class="theme-grid">
-                <div class="theme-btn" onclick="setTheme('red')" style="color:red; border-color:red;">RED DRAGON</div>
-                <div class="theme-btn" onclick="setTheme('green')" style="color:#00ff6a; border-color:#00ff6a;">NEON GREEN</div>
-                <div class="theme-btn" onclick="setTheme('cyan')" style="color:#00f2ff; border-color:#00f2ff;">AURA CYAN</div>
-                <div class="theme-btn" onclick="setTheme('gold')" style="color:#ffd700; border-color:#ffd700;">VIP GOLD</div>
-            </div>
-        </div>
-
-        <div id="section-profile" class="section">
-            <div class="main-card" style="padding: 40px 20px;">
-                <div style="font-size: 50px; margin-bottom: 10px;">👤</div>
-                <div class="result-text" style="font-size: 24px; margin: 0;">AHMAD BOSS</div>
-                <div class="sub-info" style="margin-top: 10px;">SUPREME COMMANDER</div>
-                <div class="sub-info" style="color: var(--gold); margin-top: 5px;">[ STATUS: LIFETIME VIP ]</div>
-            </div>
-        </div>
-
-    </div>
-
-    <div class="bottom-nav">
-        <div class="nav-item active" onclick="showPage('section-terminal', this)">
-            <span class="nav-icon">_></span>
-            <span>TERMINAL</span>
-        </div>
-        <div class="nav-item" onclick="showPage('section-archive', this)">
-            <span class="nav-icon">📜</span>
-            <span>ARCHIVE</span>
-        </div>
-        <div class="nav-item" onclick="showPage('section-themes', this)">
-            <span class="nav-icon">🎨</span>
-            <span>THEMES</span>
-        </div>
-        <div class="nav-item" onclick="showPage('section-profile', this)">
-            <span class="nav-icon">🕵️</span>
-            <span>PROFILE</span>
-        </div>
-    </div>
-
-    <script>
-        const API = "https://draw.ar-lottery01.com/WinGo/WinGo_30S/GetHistoryIssuePage.json?ts=";
-        const BOSS_MAP = { 0:[5,2], 1:[6,3], 2:[7,4], 3:[8,0], 4:[9,1], 5:[0,7], 6:[1,8], 7:[2,9], 8:[3,5], 9:[4,6] };
-
-        let lastP = "", activePred = null, wins = 0, total = 0, level = 1, cash = 0;
-
-        // --- SYSTEM ENGINE ---
-        setInterval(sync, 1000);
-        setInterval(updateTimer, 1000);
-
-        function updateTimer() {
-            const s = new Date().getSeconds();
-            const r = s < 30 ? 30 - s : 60 - s;
-            document.getElementById('timer').innerText = r < 10 ? "0"+r : r;
-        }
-
-        async function sync() {
-            try {
-                const res = await fetch(API + Date.now());
-                const data = await res.json();
-                const list = data.data.list;
-                if (list[0].issueNumber !== lastP) {
-                    if (activePred && lastP !== "") checkResult(list[0], activePred);
-                    lastP = list[0].issueNumber;
-                    predict(list);
-                }
-            } catch(e) {}
-        }
-
-        // --- LEVEL 3 FIXER LOGIC ---
-        function predict(history) {
-            const lastN = parseInt(history[0].number);
-            const lastBS = lastN >= 5 ? "BIG" : "SMALL";
-            const prevBS = history[1].number >= 5 ? "BIG" : "SMALL";
-            let [n1, n2] = BOSS_MAP[lastN];
-            let nextP = (BigInt(history[0].issueNumber) + 1n).toString();
-            let pred, logic;
-
-            if (level === 1) {
-                if (lastBS === prevBS) { pred = lastBS; logic = "L1: STICKY TREND"; }
-                else { pred = (lastBS === "BIG" ? "SMALL" : "BIG"); logic = "L1: FLIP SENSE"; }
-            } else if (level === 2) {
-                pred = lastBS; logic = "L2: STICKY FIX";
-            } else {
-                pred = (lastBS === "BIG" ? "SMALL" : "BIG"); logic = "L3: FINAL HAMMER";
-            }
-
-            activePred = { pred, logic };
-            document.getElementById('nextP').innerText = nextP.slice(-4);
-            document.getElementById('res').innerText = pred;
-            document.getElementById('logic').innerText = logic;
-            document.getElementById('lvl').innerText = "L" + level;
-            document.getElementById('duo').innerHTML = `<div class="ball">${n1}</div><div class="ball">${n2}</div>`;
-        }
-
-        function checkResult(actual, pred) {
-            const actualBS = actual.number >= 5 ? "BIG" : "SMALL";
-            const won = actualBS === pred.pred;
-            total++;
-
-            if (won) {
-                wins++; cash += (level === 1 ? 100 : level === 2 ? 300 : 900);
-                level = 1; triggerWin();
-            } else {
-                level = (level < 3) ? level + 1 : 1;
-            }
-
-            document.getElementById('win-count').innerText = wins;
-            document.getElementById('earnings').innerText = "₹" + cash;
-            document.getElementById('accuracy').innerText = Math.round((wins/total)*100) + "%";
-            
-            // ARCHIVE CARD INJECTION (Right Side Icons)
-            const item = document.createElement('div');
-            item.className = `history-card ${won ? 'win-border' : 'loss-border'}`;
-            item.innerHTML = `
-                <div class="h-left">
-                    <span class="h-period">#${actual.issueNumber.slice(-4)} (${pred.logic})</span>
-                    <span class="h-logic">${won ? 'JACKPOT DECIPHERED' : 'FLOW INTERRUPTED'}</span>
-                </div>
-                <div class="h-right">
-                    <span class="h-res">${actualBS}</span>
-                    <div class="icon"><div class="${won ? 'shield' : 'cross'}"></div></div>
-                </div>
-            `;
-            document.getElementById('history-list').prepend(item);
-        }
-
-        // --- UI UTILS ---
-        function showPage(id, btn) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            btn.classList.add('active');
-        }
-
-        function setTheme(theme) {
-            const root = document.documentElement;
-            let color = '#ff0000';
-            if (theme === 'green') color = '#00ff6a';
-            if (theme === 'cyan') color = '#00f2ff';
-            if (theme === 'gold') color = '#ffd700';
-
-            root.style.setProperty('--primary', color);
-            root.style.setProperty('--text-glow', `0 0 10px ${color}`);
-            root.style.setProperty('--box-glow', `0 0 15px ${color}, inset 0 0 10px rgba(255,0,0,0.1)`);
-        }
-
-        function triggerWin() {
-            const color = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: [color, '#ffffff'] });
-        }
-    </script>
+    function tab(id, btn) {
+        document.querySelectorAll('.container').forEach(p => p.style.display = 'none');
+        document.getElementById(id).style.display = 'block';
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        btn.classList.add('active');
+    }
+</script>
 </body>
 </html>
