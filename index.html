@@ -1,64 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>30S HYBRID V.35</title>
-    <style>
-        *{box-sizing:border-box;margin:0;padding:0}
-        :root{ --bg:#000; --neon:#ff003c; --cyan:#00f3ff; --glass:rgba(20, 0, 10, 0.95); --border:rgba(255, 0, 60, 0.3); --green:#00ff9c; --red:#ff3b3b; }
-        body{ background:radial-gradient(circle at center,#1a0005,#000); font-family: 'Segoe UI', sans-serif; color:#fff; min-height: 100vh; overflow-x: hidden; }
-        .app{ max-width:420px; margin:auto; padding:12px; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Darknet Supreme V.36</title>
+<style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    :root{ --bg:#050b14; --neon:#00e5ff; --glass:rgba(8,22,38,0.85); --border:rgba(0,229,255,0.4); --text:#e9faff; --green:#00ff9c; --red:#ff3b3b; }
+    body{ background:radial-gradient(circle at top,var(--bg),#02060c 80%); font-family: 'Segoe UI', sans-serif; color:var(--text); min-height: 100vh; overflow-x: hidden; }
+    .app{ max-width:420px; margin:auto; padding:15px; padding-bottom: 90px; }
 
-        /* TIMER & HEADER */
-        .header{ padding:15px; border-radius:15px; background:var(--glass); border:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; box-shadow:0 0 20px rgba(255,0,60,0.2); margin-bottom:15px; }
-        .aura{ font-size:18px; font-weight:900; color:var(--neon); text-shadow:0 0 10px var(--neon); letter-spacing:1px; }
-        .timer-box{ background:#000; padding:5px 15px; border-radius:10px; border:1px solid var(--cyan); color:var(--cyan); font-weight:bold; font-size:18px; }
+    /* HEADER - SUPREME STYLE */
+    .header{ padding:18px; border-radius:18px; background:linear-gradient(135deg,var(--glass),#020b14); border:1px solid var(--border); box-shadow:0 0 30px rgba(0,229,255,0.2), inset 0 0 20px rgba(0,229,255,0.1); display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px; }
+    .aura{ font-size:20px; font-weight:800; color:var(--neon); text-shadow:0 0 15px var(--neon); letter-spacing:1px; }
+    .timer-badge{ background:#000; color:var(--neon); padding:5px 12px; border-radius:8px; border:1px solid var(--neon); font-weight:bold; box-shadow:0 0 10px var(--neon); }
 
-        /* HYBRID CARD */
-        .card{ padding:20px; border-radius:20px; background:var(--glass); border:1px solid var(--border); box-shadow:0 0 30px rgba(255,0,60,0.15); margin-bottom:15px; position:relative; }
-        .p-info{ display:flex; justify-content:space-between; font-size:12px; color:#aaa; margin-bottom:10px; }
-        .p-text{ font-size:64px; font-weight:900; color:var(--cyan); text-align:center; text-shadow:0 0 40px var(--cyan); margin:5px 0; }
-        
-        .jack-row{ display:flex; justify-content:center; gap:20px; margin-top:15px; }
-        .jack-row div{ width:50px; height:50px; border-radius:12px; background:#1a0505; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-weight:bold; font-size: 22px; color: #ffcc00; box-shadow:0 0 15px var(--neon); }
+    /* MAIN CARD */
+    .card{ position:relative; padding:20px; border-radius:22px; background:var(--glass); backdrop-filter:blur(14px); border:1px solid var(--border); box-shadow:0 0 25px rgba(0,0,0,0.6), inset 0 0 15px rgba(0,229,255,0.05); margin-bottom:15px; overflow:hidden; }
+    .card::after{ content:''; position:absolute; top:0; left:0; width:100%; height:2px; background:linear-gradient(90deg, transparent, var(--neon), transparent); animation: scan 3s infinite linear; }
+    @keyframes scan{ 0%{left:-100%} 100%{left:100%} }
 
-        /* LOGIC BADGE */
-        .logic-badge { text-align:center; font-size:10px; margin-top:10px; color:var(--green); letter-spacing:1px; background:rgba(0,255,156,0.1); padding:4px; border-radius:4px; }
+    .period-box{ display:flex; justify-content:space-between; font-size:12px; color:var(--neon); margin-bottom:10px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:8px; }
+    .prediction-val{ font-size:56px; font-weight:900; color:var(--text); text-shadow:0 0 25px var(--neon); text-align:center; margin:10px 0; }
+    .jackpot-box{ display:flex; justify-content:center; gap:15px; margin-top:10px; }
+    .jackpot-box div{ width:50px; height:50px; border-radius:12px; background:#071b2d; border:1px solid var(--border); box-shadow:0 0 12px var(--neon); display:flex; align-items:center; justify-content:center; font-weight:bold; font-size: 20px; color: #ffcc00; }
+    
+    .logic-text { text-align:center; font-size:10px; color:var(--green); letter-spacing:2px; margin-top:10px; opacity:0.8; }
 
-        /* ARCHIVE */
-        .arc-item { position:relative; background:rgba(20,5,10,0.95); border-radius:12px; padding:15px; margin-top:10px; border-left: 5px solid var(--green); display:flex; justify-content:space-between; align-items:center; }
-        .arc-item.loss { border-left-color: var(--red); }
-        .res-badge { font-weight:bold; font-size:18px; }
-        
-        .nav{ position:fixed; bottom:10px; left:50%; transform:translateX(-50%); width:94%; background:var(--glass); padding:15px; border-radius:20px; display:flex; justify-content:space-around; border:1px solid var(--border); backdrop-filter:blur(10px); z-index:99; }
-        .nav span{ font-size:12px; font-weight:bold; opacity:0.6; }
-        .active { color:var(--neon); opacity:1 !important; text-shadow:0 0 10px var(--neon); }
-    </style>
+    /* STATS GRID */
+    .stats-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:15px; }
+    .stat-box{ padding:15px; border-radius:16px; background:rgba(0,0,0,0.4); border:1px solid var(--border); text-align:center; }
+    .stat-box h3{ font-size:24px; margin:0; }
+    .stat-box p{ font-size:10px; opacity:0.6; margin:0; }
+
+    /* ARCHIVE SUPREME */
+    .arc-card { position:relative; background:linear-gradient(145deg,#0b1622,#04080d); border-radius:16px; padding:15px 18px; margin-top:12px; border-left: 5px solid var(--green); overflow:hidden; box-shadow:0 5px 15px rgba(0,0,0,0.5); }
+    .arc-card.loss { border-left-color: var(--red); }
+    .arc-top { display:flex; justify-content:space-between; font-size:10px; opacity:0.7; margin-bottom:5px; }
+    .arc-res { font-size:20px; font-weight:bold; color:#fff; }
+    
+    .icon { position:absolute; right:18px; top:50%; transform:translateY(-50%); }
+    .shield { width:30px; height:30px; background:var(--green); clip-path: polygon(50% 0%, 95% 20%, 95% 60%, 50% 100%, 5% 60%, 5% 20%); box-shadow:0 0 10px var(--green); }
+    .cross { width:30px; height:30px; border-radius:50%; background:var(--red); position:relative; box-shadow:0 0 10px var(--red); }
+    .cross::before, .cross::after { content:""; position:absolute; width:16px; height:3px; background:white; top:50%; left:50%; transform:translate(-50%,-50%) rotate(45deg); }
+    .cross::after { transform:translate(-50%,-50%) rotate(-45deg); }
+
+    /* FOOTER NAV */
+    .footer{ position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 92%; padding: 15px; border-radius: 18px; display: flex; justify-content: space-around; background: linear-gradient(135deg,#041423,var(--glass)); border: 1px solid var(--border); box-shadow: 0 0 20px var(--neon); z-index: 100; backdrop-filter: blur(10px); }
+    .footer span{ opacity: 0.5; cursor: pointer; font-size: 13px; font-weight: bold; }
+    .active-nav { opacity: 1 !important; color: var(--neon); text-shadow: 0 0 10px var(--neon); }
+</style>
 </head>
 <body>
 
 <div class="app">
     <div class="header">
-        <div class="aura">HYBRID V.35 30S</div>
+        <div class="aura">DARKNET SUPREME</div>
         <div class="timer-box" id="timer">00</div>
     </div>
 
     <div id="page-terminal">
         <div class="card">
-            <div class="p-info"><span>TARGET PERIOD</span><span id="nextP" style="color:#fff">SYNCING...</span></div>
-            <div class="p-text" id="pred">WAIT</div>
-            <div class="jack-row" id="jack"><div>?</div><div>?</div></div>
-            <div class="logic-badge" id="logic">ANALYZING MAP DATA...</div>
+            <div class="period-box"><span>TARGET: 30S</span><span id="nextP">SYNCING...</span></div>
+            <div class="prediction-val" id="pred">WAIT</div>
+            <div class="jackpot-box" id="jack"><div>?</div><div>?</div></div>
+            <div class="logic-text" id="logic">HYBRID LOGIC ACTIVE</div>
         </div>
 
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:15px;">
-            <div style="background:rgba(0,0,0,0.5); padding:10px; border-radius:10px; text-align:center; border:1px solid var(--border);">
-                <h3 id="wins" style="margin:0; color:var(--neon)">0</h3><small style="font-size:10px;">TOTAL WINS</small>
-            </div>
-            <div style="background:rgba(0,0,0,0.5); padding:10px; border-radius:10px; text-align:center; border:1px solid var(--border);">
-                <h3 id="lvl" style="margin:0; color:#fff">L1</h3><small style="font-size:10px;">STATUS</small>
-            </div>
+        <div class="stats-grid">
+            <div class="stat-box"><h3 id="wins" style="color:var(--green)">0</h3><p>SESSION WINS</p></div>
+            <div class="stat-box"><h3 id="lvl" style="color:var(--neon)">L1</h3><p>LEVEL STATUS</p></div>
         </div>
     </div>
 
@@ -66,8 +77,8 @@
         <div id="list"></div>
     </div>
 
-    <div class="nav">
-        <span class="active" onclick="tab('page-terminal', this)">TERMINAL</span>
+    <div class="footer">
+        <span class="active-nav" onclick="tab('page-terminal', this)">TERMINAL</span>
         <span onclick="tab('page-archive', this)">ARCHIVE</span>
     </div>
 </div>
@@ -81,6 +92,7 @@
     let wins = 0;
     let level = 1;
 
+    // 30S Fast Timer
     setInterval(sync, 1500);
     setInterval(updateTimer, 1000);
 
@@ -90,7 +102,8 @@
         let remaining = s < 30 ? 30 - s : 60 - s;
         const el = document.getElementById('timer');
         el.innerText = remaining < 10 ? "0"+remaining : remaining;
-        el.style.color = remaining <= 5 ? "var(--red)" : "var(--cyan)";
+        el.style.color = remaining <= 5 ? "var(--red)" : "var(--neon)";
+        el.style.boxShadow = remaining <= 5 ? "0 0 15px var(--red)" : "0 0 10px var(--neon)";
     }
 
     async function sync() {
@@ -103,12 +116,12 @@
             if (currentP !== lastPeriod) {
                 if (activePred && lastPeriod !== "") checkResult(list[0], activePred);
                 lastPeriod = currentP;
-                generate30sPrediction(list);
+                generateHybridPrediction(list);
             }
-        } catch (e) { console.log("Connecting..."); }
+        } catch (e) { console.log("Sync..."); }
     }
 
-    function generate30sPrediction(history) {
+    function generateHybridPrediction(history) {
         const lastNum = parseInt(history[0].number);
         const lastBS = lastNum >= 5 ? "BIG" : "SMALL";
         const prevBS = history[1].number >= 5 ? "BIG" : "SMALL";
@@ -118,41 +131,34 @@
         let [n1, n2] = BOSS_MAP[lastNum];
         let nextP = (BigInt(history[0].issueNumber) + 1n).toString();
 
+        // Streak Check
         let streak = 1;
         if(lastBS === prevBS) streak = 2;
         if(streak === 2 && prevBS === pPrevBS) streak = 3;
 
-        // --- LEVEL 2 HYBRID INTELLIGENCE ---
+        // --- V.35 HYBRID LOGIC ---
+        
         if (level === 2) {
-            // Check Boss Map for Flip Signal
-            // n1 is Primary Mirror. If n1 is opposite to current trend, it suggests a FLIP.
+            // L2 INTELLIGENCE: Consult Map for Flip vs Follow
             let mapTargetBS = n1 >= 5 ? "BIG" : "SMALL";
             
             if (lastNum === 0 || lastNum === 5) {
-                // Trap Logic overrides everything
-                prediction = "SMALL"; 
-                logic = "L2: TRAP LOCK (0/5)";
+                prediction = "SMALL"; logic = "L2: TRAP LOCK (0/5)";
             } 
             else if (streak >= 3) {
-                // If strong Dragon, ignore Map and Ride
-                prediction = lastBS;
-                logic = "L2: DRAGON RIDE (SAFE)";
+                prediction = lastBS; logic = "L2: DRAGON RIDE (SAFE)";
             }
             else {
-                // For ZigZag or 2-Streak, Consult the Map
+                // Decision for Streak 1 or 2
                 if (mapTargetBS !== lastBS) {
-                    // Map says FLIP -> We CUT
-                    prediction = mapTargetBS;
-                    logic = "L2: MAP-BASED CUT";
+                    prediction = mapTargetBS; logic = "L2: MAP-BASED CUT";
                 } else {
-                    // Map says SAME -> We FOLLOW
-                    prediction = lastBS;
-                    logic = "L2: MAP-BASED FOLLOW";
+                    prediction = lastBS; logic = "L2: MAP-BASED FOLLOW";
                 }
             }
         } 
-        // --- LEVEL 1 SPEED LOGIC ---
         else {
+            // L1 STANDARD SPEED LOGIC
             if (lastBS !== prevBS && prevBS !== pPrevBS) {
                 prediction = lastBS === "BIG" ? "SMALL" : "BIG";
                 logic = "L1: ZIG-ZAG MOMENTUM";
@@ -169,6 +175,7 @@
 
         document.getElementById('nextP').innerText = nextP.slice(-5);
         document.getElementById('pred').innerText = prediction;
+        document.getElementById('pred').style.color = prediction === 'BIG' ? 'var(--neon)' : 'var(--text)';
         document.getElementById('jack').innerHTML = `<div>${n1}</div><div>${n2}</div>`;
         document.getElementById('logic').innerText = logic;
         document.getElementById('lvl').innerText = "L" + level;
@@ -183,13 +190,14 @@
         document.getElementById('wins').innerText = wins;
         const list = document.getElementById('list');
         const card = document.createElement('div');
-        card.className = `arc-item ${isWin ? '' : 'loss'}`;
+        card.className = `arc-card ${isWin ? '' : 'loss'}`;
         card.innerHTML = `
-            <div>
-                <div style="font-size:10px; opacity:0.7">#${actual.issueNumber.slice(-5)} (${pred.logic})</div>
-                <div style="font-size:9px; color:var(--cyan)">${pred.logic.includes('L2') ? '⚠️ RECOVERY' : '✅ LEVEL 1'}</div>
+            <div class="arc-top">
+                <span>#${actual.issueNumber.slice(-5)}</span>
+                <span>${pred.logic}</span>
             </div>
-            <div class="res-badge" style="color:${isWin?'var(--green)':'var(--red)'}">${actualBS} (${actual.number})</div>
+            <div class="arc-res" style="color:${isWin?'var(--green)':'var(--red)'}">${actualBS} (${actual.number})</div>
+            <div class="icon ${isWin ? 'shield' : 'cross'}"></div>
         `;
         list.prepend(card);
     }
@@ -197,8 +205,8 @@
     function tab(id, btn) {
         document.getElementById('page-terminal').style.display = id === 'page-terminal' ? 'block' : 'none';
         document.getElementById('page-archive').style.display = id === 'page-archive' ? 'block' : 'none';
-        document.querySelectorAll('.nav span').forEach(s => s.classList.remove('active'));
-        btn.classList.add('active');
+        document.querySelectorAll('.footer span').forEach(s => s.classList.remove('active-nav'));
+        btn.classList.add('active-nav');
     }
 </script>
 </body>
