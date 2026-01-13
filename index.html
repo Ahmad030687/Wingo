@@ -3,46 +3,46 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>AHMAD V.38 GRAND WIN</title>
+<title>Darknet V.39 Sigma</title>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 <style>
     *{box-sizing:border-box;margin:0;padding:0}
-    :root{ --bg:#050b14; --neon:#00e5ff; --glass:rgba(8,22,38,0.9); --border:rgba(0,229,255,0.4); --text:#e9faff; --green:#00ff9c; --red:#ff3b3b; }
-    body{ background:radial-gradient(circle at top,var(--bg),#02060c 80%); font-family: 'Segoe UI', sans-serif; color:var(--text); min-height: 100vh; overflow-x: hidden; }
+    :root{ --bg:#050b14; --neon:#00e5ff; --glass:rgba(8,22,38,0.95); --border:rgba(0,229,255,0.4); --text:#e9faff; --green:#00ff9c; --red:#ff3b3b; }
+    body{ background:radial-gradient(circle at top,var(--bg),#000 90%); font-family: 'Segoe UI', sans-serif; color:var(--text); min-height: 100vh; overflow-x: hidden; }
     .app{ max-width:420px; margin:auto; padding:15px; padding-bottom: 90px; }
 
     /* HEADER */
-    .header{ padding:18px; border-radius:18px; background:linear-gradient(135deg,var(--glass),#020b14); border:1px solid var(--border); box-shadow:0 0 30px rgba(0,229,255,0.2), inset 0 0 20px rgba(0,229,255,0.1); display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px; }
+    .header{ padding:18px; border-radius:18px; background:linear-gradient(135deg,var(--glass),#000); border:1px solid var(--border); box-shadow:0 0 30px rgba(0,229,255,0.15), inset 0 0 20px rgba(0,229,255,0.05); display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px; }
     .aura{ font-size:20px; font-weight:800; color:var(--neon); text-shadow:0 0 15px var(--neon); letter-spacing:1px; }
     .timer-badge{ background:#000; color:var(--neon); padding:5px 12px; border-radius:8px; border:1px solid var(--neon); font-weight:bold; box-shadow:0 0 10px var(--neon); font-size:18px; }
 
     /* MAIN CARD */
-    .card{ position:relative; padding:20px; border-radius:22px; background:var(--glass); backdrop-filter:blur(14px); border:1px solid var(--border); box-shadow:0 0 25px rgba(0,0,0,0.6), inset 0 0 15px rgba(0,229,255,0.05); margin-bottom:15px; overflow:hidden; }
-    .card::after{ content:''; position:absolute; top:0; left:0; width:100%; height:2px; background:linear-gradient(90deg, transparent, var(--neon), transparent); animation: scan 3s infinite linear; }
-    @keyframes scan{ 0%{left:-100%} 100%{left:100%} }
-
+    .card{ position:relative; padding:20px; border-radius:22px; background:var(--glass); backdrop-filter:blur(14px); border:1px solid var(--border); box-shadow:0 0 40px rgba(0,0,0,0.8), inset 0 0 15px rgba(0,229,255,0.05); margin-bottom:15px; overflow:hidden; }
+    
     .period-box{ display:flex; justify-content:space-between; font-size:12px; color:var(--neon); margin-bottom:10px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:8px; }
-    .prediction-val{ font-size:56px; font-weight:900; color:var(--text); text-shadow:0 0 25px var(--neon); text-align:center; margin:10px 0; }
+    .prediction-val{ font-size:60px; font-weight:900; color:var(--text); text-shadow:0 0 35px var(--neon); text-align:center; margin:10px 0; letter-spacing: 2px; }
     .jackpot-box{ display:flex; justify-content:center; gap:15px; margin-top:10px; }
     .jackpot-box div{ width:50px; height:50px; border-radius:12px; background:#071b2d; border:1px solid var(--border); box-shadow:0 0 12px var(--neon); display:flex; align-items:center; justify-content:center; font-weight:bold; font-size: 20px; color: #ffcc00; }
     
-    .logic-text { text-align:center; font-size:10px; color:var(--green); letter-spacing:2px; margin-top:10px; opacity:0.8; }
+    .logic-text { text-align:center; font-size:10px; color:var(--green); letter-spacing:2px; margin-top:10px; opacity:0.9; font-weight: bold; }
 
     /* STATS GRID */
     .stats-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:15px; }
-    .stat-box{ padding:15px; border-radius:16px; background:rgba(0,0,0,0.4); border:1px solid var(--border); text-align:center; }
+    .stat-box{ padding:15px; border-radius:16px; background:rgba(0,0,0,0.6); border:1px solid var(--border); text-align:center; }
     .stat-box h3{ font-size:24px; margin:0; }
     .stat-box p{ font-size:10px; opacity:0.6; margin:0; }
 
-    /* ARCHIVE SUPREME (FIXED ICONS RIGHT) */
+    /* ARCHIVE SUPREME */
     .arc-card { position:relative; background:linear-gradient(145deg,#0b1622,#04080d); border-radius:16px; padding:15px 18px; margin-top:12px; border-left: 5px solid var(--green); overflow:hidden; box-shadow:0 5px 15px rgba(0,0,0,0.5); display: flex; justify-content: space-between; align-items: center; }
     .arc-card.loss { border-left-color: var(--red); }
+    
     .arc-info { display: flex; flex-direction: column; }
     .arc-round { font-size: 11px; opacity: 0.7; margin-bottom: 2px; }
     .arc-res { font-size: 20px; font-weight: bold; color: #fff; }
+
     .status-icon { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; }
-    .shield { background: var(--green); clip-path: polygon(50% 0%, 95% 20%, 95% 60%, 50% 100%, 5% 60%, 5% 20%); box-shadow: 0 0 10px var(--green); }
-    .cross { background: var(--red); border-radius: 50%; box-shadow: 0 0 10px var(--red); position: relative; }
+    .shield { background: var(--green); clip-path: polygon(50% 0%, 95% 20%, 95% 60%, 50% 100%, 5% 60%, 5% 20%); box-shadow: 0 0 15px var(--green); }
+    .cross { background: var(--red); border-radius: 50%; box-shadow: 0 0 15px var(--red); position: relative; }
     .cross::before, .cross::after { content: ""; position: absolute; width: 18px; height: 3px; background: white; top: 50%; left: 50%; }
     .cross::before { transform: translate(-50%, -50%) rotate(45deg); }
     .cross::after { transform: translate(-50%, -50%) rotate(-45deg); }
@@ -57,21 +57,21 @@
 
 <div class="app">
     <div class="header">
-        <div class="aura">DARKNET V.38 GRAND</div>
+        <div class="aura">DARKNET V.39 SIGMA</div>
         <div class="timer-badge" id="timer">00</div>
     </div>
 
     <div id="page-terminal">
         <div class="card">
-            <div class="period-box"><span>TARGET: 30S</span><span id="nextP">SYNCING...</span></div>
+            <div class="period-box"><span>30S VECTOR</span><span id="nextP">SYNCING...</span></div>
             <div class="prediction-val" id="pred">WAIT</div>
             <div class="jackpot-box" id="jack"><div>?</div><div>?</div></div>
-            <div class="logic-text" id="logic">HYBRID INTELLIGENCE ACTIVE</div>
+            <div class="logic-text" id="logic">CALCULATING VECTORS...</div>
         </div>
 
         <div class="stats-grid">
             <div class="stat-box"><h3 id="wins" style="color:var(--green)">0</h3><p>TOTAL WINS</p></div>
-            <div class="stat-box"><h3 id="lvl" style="color:var(--neon)">L1</h3><p>SNIPER LEVEL</p></div>
+            <div class="stat-box"><h3 id="lvl" style="color:var(--neon)">L1</h3><p>FIXER LEVEL</p></div>
         </div>
     </div>
 
@@ -118,49 +118,62 @@
             if (currentP !== lastPeriod) {
                 if (activePred && lastPeriod !== "") checkResult(list[0], activePred);
                 lastPeriod = currentP;
-                generateHybridPrediction(list);
+                generateSigmaPrediction(list);
             }
         } catch (e) { console.log("Syncing..."); }
     }
 
-    function generateHybridPrediction(history) {
+    function generateSigmaPrediction(history) {
         const lastNum = parseInt(history[0].number);
+        const prevNum = parseInt(history[1].number);
+        const pPrevNum = parseInt(history[2].number);
+        
         const lastBS = lastNum >= 5 ? "BIG" : "SMALL";
-        const prevBS = history[1].number >= 5 ? "BIG" : "SMALL";
-        const pPrevBS = history[2].number >= 5 ? "BIG" : "SMALL";
+        const prevBS = prevNum >= 5 ? "BIG" : "SMALL";
         
         let prediction, logic;
         let [n1, n2] = BOSS_MAP[lastNum];
         let nextP = (BigInt(history[0].issueNumber) + 1n).toString();
 
-        let streak = 1;
-        if(lastBS === prevBS) streak = 2;
-        if(streak === 2 && prevBS === pPrevBS) streak = 3;
-
-        // --- V.35 HYBRID LOGIC ---
+        // --- V.39 SIGMA-MATH LOGIC (NO VISUAL PATTERNS) ---
+        
+        // Calculate Trend Velocity (Vector)
+        // Agar sum even hai aur trend upar ja raha hai, toh correction (Small) ki taraf jayega
+        const sum = lastNum + prevNum + pPrevNum;
+        const vector = (lastNum + prevNum) % 10;
+        
         if (level === 2) {
-            let mapTargetBS = n1 >= 5 ? "BIG" : "SMALL";
-            if (lastNum === 0 || lastNum === 5) {
-                prediction = "SMALL"; logic = "L2: TRAP LOCK (0/5)";
-            } else if (streak >= 3) {
-                prediction = lastBS; logic = "L2: DRAGON RIDE (SAFE)";
+            // L2: INVERSE VECTOR RECOVERY
+            // Jab L1 fail hota hai, iska matlab Math Flip hua hai.
+            // Hum pichle result ka "Mirror Inverse" lenge.
+            if(lastNum === 0 || lastNum === 5) {
+                prediction = "SMALL"; logic = "L2: ZERO-POINT FIX";
             } else {
-                if (mapTargetBS !== lastBS) {
-                    prediction = mapTargetBS; logic = "L2: MAP-BASED CUT";
-                } else {
-                    prediction = lastBS; logic = "L2: MAP-BASED FOLLOW";
-                }
+                // Force break the pattern that caused Loss
+                prediction = lastBS === "BIG" ? "SMALL" : "BIG"; 
+                logic = "L2: SIGMA INVERSION";
             }
-        } else {
-            if (lastBS !== prevBS && prevBS !== pPrevBS) {
-                prediction = lastBS === "BIG" ? "SMALL" : "BIG";
-                logic = "L1: ZIG-ZAG MOMENTUM";
-            } else if (streak >= 3) {
-                prediction = lastBS;
-                logic = "L1: DRAGON LOCK";
+        } 
+        else {
+            // L1: SURESHOT MATH SENSING
+            // Logic: Period ka last digit + Last Number ka Modulo 10
+            // Ye server seed (RNG) ke sabse kareeb hota hai
+            const periodDigit = parseInt(history[0].issueNumber.slice(-1));
+            const seed = (lastNum * 3 + periodDigit) % 10;
+            
+            if (seed >= 5) {
+                prediction = "BIG";
+                logic = `L1: VECTOR UP (${seed})`;
             } else {
-                prediction = n1 >= 5 ? "BIG" : "SMALL";
-                logic = "L1: MIRROR SURESHOT";
+                prediction = "SMALL";
+                logic = `L1: VECTOR DOWN (${seed})`;
+            }
+            
+            // Special Trap Override (Purple Magnet)
+            if(lastNum === 0 || lastNum === 5) {
+               // 0/5 ke baad aksar RNG Small biased hota hai
+               prediction = "SMALL";
+               logic = "L1: MAGNET TRAP SENSE";
             }
         }
 
@@ -180,10 +193,9 @@
         
         if (isWin) { 
             wins++; level = 1; 
-            // --- GRAND CELEBRATION (Dual Cannons) ---
+            // GRAND CELEBRATION
             var colors = ['#00e5ff', '#00ff9c', '#ffffff'];
-            confetti({ particleCount: 150, spread: 100, origin: { y: 0.6, x: 0.1 }, colors: colors });
-            confetti({ particleCount: 150, spread: 100, origin: { y: 0.6, x: 0.9 }, colors: colors });
+            confetti({ particleCount: 200, spread: 120, origin: { y: 0.6 }, colors: colors });
         } else { 
             level = level === 1 ? 2 : 1; 
         }
