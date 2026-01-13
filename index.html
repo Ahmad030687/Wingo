@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Master Universal V.27</title>
+    <title>Master Universal V.28</title>
     <style>
         *{box-sizing:border-box;margin:0;padding:0}
         :root{ --bg:#010409; --neon:#00e5ff; --glass:rgba(10,25,45,0.95); --border:rgba(0,229,255,0.4); --green:#00ff9c; --red:#ff3b3b; }
@@ -11,10 +11,10 @@
         .app{ max-width:420px; margin:auto; padding:15px; }
 
         /* HEADER */
-        .header{ padding:20px; border-radius:20px; background:var(--glass); border:1px solid var(--border); box-shadow:0 0 25px var(--neon); text-align: center; margin-bottom: 20px; }
+        .header{ padding:20px; border-radius:20px; background:var(--glass); border:1px solid var(--border); box-shadow:0 0 30px var(--neon); text-align: center; margin-bottom: 20px; }
         .aura{ font-size:26px; font-weight:900; color:var(--neon); text-shadow:0 0 15px var(--neon); letter-spacing:2px; }
 
-        /* MAIN PREDICTION CARD */
+        /* PREDICTION CARD */
         .card{ padding:25px; border-radius:22px; background:var(--glass); backdrop-filter:blur(10px); border:1px solid var(--border); box-shadow:0 0 20px rgba(0,0,0,0.5), inset 0 0 15px var(--neon); margin-bottom:15px; }
         .p-info{ display:flex; justify-content:space-between; font-size:12px; font-weight:bold; color:var(--neon); margin-bottom:15px; border-bottom:1px solid rgba(0,229,255,0.1); padding-bottom:10px; }
         .p-text{ font-size:62px; font-weight:900; color:var(--neon); text-shadow:0 0 35px var(--neon); text-align:center; }
@@ -45,8 +45,8 @@
 
 <div class="app">
     <div class="header">
-        <div class="aura">UNIVERSAL BOSS V.27</div>
-        <div id="logic-label" style="font-size:10px; color:var(--green); letter-spacing:2px; margin-top:5px;">SENSING TRANSITIONS...</div>
+        <div class="aura">MASTER UNIVERSAL V.28</div>
+        <div id="logic-label" style="font-size:10px; color:var(--green); letter-spacing:2px; margin-top:5px;">TRAP & TREND SENSOR ACTIVE</div>
     </div>
 
     <div id="page-terminal" class="tab-content">
@@ -88,12 +88,12 @@
             if (list[0].issueNumber !== lastPeriod) {
                 if (activePred && lastPeriod !== "") checkResult(list[0], activePred);
                 lastPeriod = list[0].issueNumber;
-                runLogicSwitcher(list);
+                masterEngine(list);
             }
         } catch (e) { console.log("Syncing..."); }
     }
 
-    function runLogicSwitcher(history) {
+    function masterEngine(history) {
         const lastNum = parseInt(history[0].number);
         const lastBS = lastNum >= 5 ? "BIG" : "SMALL";
         const prevBS = history[1].number >= 5 ? "BIG" : "SMALL";
@@ -102,22 +102,39 @@
         let prediction, logic;
         let [n1, n2] = BOSS_MAP[lastNum];
 
-        // --- UNIVERSAL SWITCHING LOGIC ---
+        // --- MASTER LOGIC STACK V.28 ---
         
+        // 1. LEVEL 2 SMART RECOVERY (TRAP GUARD)
         if (level === 2) {
-            // FIXED LEVEL 2 RECOVERY
-            prediction = lastBS === "BIG" ? "SMALL" : "BIG";
-            logic = "LEVEL 2: RECOVERY STRIKE";
-        } else if (lastBS !== prevBS && prevBS !== pPrevBS) {
-            // ZIG-ZAG DETECTION
+            if (lastNum === 0 || lastNum === 5) {
+                // Trap Number Recovery Logic
+                prediction = "SMALL"; 
+                logic = "LEVEL 2: TRAP RECOVERY (0/5)";
+            } else {
+                // Standard Reversal
+                prediction = lastBS === "BIG" ? "SMALL" : "BIG";
+                logic = "LEVEL 2: RECOVERY STRIKE";
+            }
+        }
+        
+        // 2. LEVEL 1: UNIVERSAL SENSING
+        else if (lastNum === 0) {
+            // Trap Protection Level 1
+            prediction = "SMALL";
+            logic = "PURPLE MAGNET (0) DETECTED";
+        }
+        else if (lastBS !== prevBS && prevBS !== pPrevBS) {
+            // Zig-Zag Mode
             prediction = lastBS === "BIG" ? "SMALL" : "BIG";
             logic = "ZIG-ZAG PATTERN DETECTED";
-        } else if (lastBS === prevBS && prevBS === pPrevBS) {
-            // DRAGON SENSOR
+        } 
+        else if (lastBS === prevBS && prevBS === pPrevBS) {
+            // Dragon Mode
             prediction = lastBS;
             logic = "DRAGON TREND LOCKED";
-        } else {
-            // MASTER MIRROR FOUNDATION
+        } 
+        else {
+            // Base Mirror Mode
             prediction = n1 >= 5 ? "BIG" : "SMALL";
             logic = "MASTER MIRROR STRIKE";
         }
@@ -135,7 +152,9 @@
     }
 
     function checkResult(actual, pred) {
-        const isWin = (actual.number >= 5 ? "BIG" : "SMALL") === pred.pred;
+        const actualBS = actual.number >= 5 ? "BIG" : "SMALL";
+        const isWin = actualBS === pred.pred;
+        
         if (isWin) { wins++; level = 1; } else { level = level === 1 ? 2 : 1; }
         
         document.getElementById('sessionWins').innerText = wins;
@@ -144,7 +163,7 @@
         card.className = `arc-item ${isWin ? '' : 'loss'}`;
         card.innerHTML = `
             <div style="font-size:11px; opacity:0.6;">#${actual.issueNumber.slice(-5)} (${pred.logic})</div>
-            <div style="font-size:22px; font-weight:bold; color:var(--neon);">${actual.number >= 5 ? 'BIG' : 'SMALL'} (${actual.number})</div>
+            <div style="font-size:22px; font-weight:bold; color:var(--neon);">${actualBS} (${actual.number})</div>
             <div class="${isWin ? 'shield' : 'cross'}"></div>
         `;
         list.prepend(card);
