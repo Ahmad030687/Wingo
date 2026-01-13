@@ -3,151 +3,108 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>PREMIUM V.44 BLACK</title>
+<title>AHMAD PRO V.45</title>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 <style>
-    /* --- PREMIUM BLACK UI THEME --- */
+    /* --- PROFESSIONAL DASHBOARD THEME --- */
     *{box-sizing:border-box;margin:0;padding:0;user-select:none;-webkit-tap-highlight-color:transparent;}
     :root{ 
-        --bg: #000000; 
-        --card-bg: #0b0b0b;
-        --primary: #00f2ff; /* Cyan Neon */
-        --accent: #ffd700; /* Gold */
-        --success: #00ff88; 
-        --danger: #ff2a2a;
-        --text-main: #ffffff;
-        --text-dim: #666666;
-        --border: #1f1f1f;
-        --glow: 0 0 15px rgba(0, 242, 255, 0.2);
+        --bg: #050505; 
+        --card: #121212;
+        --cyan: #00f2ff; 
+        --gold: #ffc107; 
+        --green: #00e676; 
+        --red: #ff3d00;
+        --text: #ffffff;
+        --text-muted: #888888;
+        --border: #222222;
     }
     
     body{ 
         background-color: var(--bg); 
-        background-image: radial-gradient(circle at 50% 0%, #1a1a1a 0%, #000 60%);
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
-        color: var(--text-main); 
-        min-height: 100vh; 
-        overflow-x: hidden;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+        color: var(--text); min-height: 100vh; overflow-x: hidden;
     }
     
-    .app{ max-width:420px; margin:auto; padding:20px; padding-bottom: 90px; }
+    .app{ max-width:420px; margin:auto; padding:15px; padding-bottom: 90px; }
 
     /* HEADER */
     .header{ 
         display: flex; justify-content: space-between; align-items: center;
-        padding: 10px 5px; margin-bottom: 25px;
+        padding: 10px 5px; margin-bottom: 20px; border-bottom: 1px solid var(--border);
     }
-    .brand{ 
-        font-size: 20px; font-weight: 900; letter-spacing: 1px; 
-        background: linear-gradient(90deg, #fff, var(--primary)); 
-        -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
-        text-transform: uppercase;
-    }
+    .brand{ font-size: 18px; font-weight: 800; letter-spacing: 1px; color: var(--cyan); }
     .timer-pill{ 
-        background: rgba(0, 242, 255, 0.05); border: 1px solid var(--primary); 
-        padding: 6px 14px; border-radius: 20px; 
-        font-family: 'Courier New', monospace; font-weight: bold;
-        font-size: 16px; color: var(--primary); box-shadow: var(--glow); 
+        background: #000; border: 1px solid var(--border); color: var(--cyan);
+        padding: 4px 12px; border-radius: 4px; font-family: monospace; font-size: 16px;
     }
 
-    /* HOLOGRAPHIC CARD */
-    .holo-card {
-        background: var(--card-bg);
-        border: 1px solid var(--border);
-        border-radius: 24px;
-        padding: 30px 20px;
-        position: relative;
-        overflow: hidden;
-        box-shadow: 0 20px 50px -20px rgba(0,0,0,0.9);
-        margin-bottom: 25px;
-        text-align: center;
+    /* PREDICTION CARD */
+    .pro-card {
+        background: var(--card); border: 1px solid var(--border);
+        border-radius: 12px; padding: 25px; margin-bottom: 20px;
+        text-align: center; position: relative; overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.5);
     }
-    
-    /* Scanning Animation */
-    .holo-card::after {
-        content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
-        background: linear-gradient(90deg, transparent, var(--primary), transparent);
-        animation: scanline 3s linear infinite;
-        opacity: 0.7;
+    .pro-card::before {
+        content:''; position:absolute; top:0; left:0; width:100%; height:3px;
+        background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+        animation: scan 2s infinite linear;
     }
-    @keyframes scanline { 0% { top: 0%; } 100% { top: 100%; } }
+    @keyframes scan { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
 
-    .card-label { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
-    
-    .prediction-big {
-        font-size: 64px; font-weight: 900; 
-        margin: 5px 0; letter-spacing: 2px;
-        background: linear-gradient(180deg, #fff, var(--text-dim));
+    .card-title { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; }
+    .pred-text { 
+        font-size: 56px; font-weight: 900; margin: 10px 0; 
+        background: linear-gradient(180deg, #fff, #888); 
         -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        text-shadow: 0 0 30px rgba(255,255,255,0.1);
     }
-    
-    .logic-pill {
-        display: inline-block; font-size: 10px; color: var(--success);
-        background: rgba(0, 255, 136, 0.1); padding: 6px 12px;
-        border-radius: 20px; margin-top: 10px;
-        border: 1px solid rgba(0, 255, 136, 0.3); letter-spacing: 1px;
+    .logic-tag { 
+        font-size: 11px; color: var(--gold); background: rgba(255, 193, 7, 0.1);
+        padding: 4px 8px; border-radius: 4px; display: inline-block; border: 1px solid rgba(255, 193, 7, 0.2);
     }
 
-    /* STATS ROW */
-    .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
-    .stat-box { 
-        background: #0f0f0f; border: 1px solid var(--border); 
-        border-radius: 16px; padding: 15px; text-align: center; 
+    /* --- PROFESSIONAL STATS DASHBOARD --- */
+    .dashboard-grid {
+        display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px;
     }
-    .stat-val { font-size: 22px; font-weight: 800; color: var(--primary); }
-    .stat-lbl { font-size: 10px; color: var(--text-dim); text-transform: uppercase; margin-top: 4px; }
-
-    /* HISTORY LIST - PROFESSIONAL STYLE */
-    .list-header { 
-        font-size: 12px; font-weight: 700; color: var(--text-dim); 
-        margin-bottom: 15px; padding-left: 10px; letter-spacing: 1px;
+    .dash-box {
+        background: var(--card); border: 1px solid var(--border);
+        border-radius: 8px; padding: 12px; text-align: center;
     }
+    .dash-val { font-size: 20px; font-weight: 800; }
+    .dash-lbl { font-size: 9px; color: var(--text-muted); text-transform: uppercase; margin-top: 4px; }
     
+    .win-text { color: var(--green); }
+    .loss-text { color: var(--red); }
+    .acc-text { color: var(--gold); }
+
+    /* HISTORY LIST */
+    .history-label { font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 10px; }
     .history-item {
         display: flex; justify-content: space-between; align-items: center;
-        background: linear-gradient(90deg, #0a0a0a, #050505); 
-        border-bottom: 1px solid #151515;
-        padding: 18px 20px; margin-bottom: 8px; border-radius: 16px;
-        position: relative; overflow: hidden;
+        background: var(--card); border-bottom: 1px solid var(--border);
+        padding: 15px; margin-bottom: 6px; border-radius: 8px;
     }
+    .hist-left { display: flex; flex-direction: column; }
+    .hist-period { font-size: 12px; color: var(--text-muted); font-family: monospace; }
+    .hist-logic { font-size: 10px; color: var(--cyan); }
     
-    /* Result Indicator Line */
-    .indicator { position: absolute; left: 0; top: 0; bottom: 0; width: 4px; }
-    .ind-win { background: var(--success); box-shadow: 0 0 10px var(--success); }
-    .ind-loss { background: var(--danger); }
-
-    .item-left { display: flex; flex-direction: column; gap: 4px; padding-left: 10px; }
-    .item-period { font-size: 12px; color: var(--text-dim); font-family: monospace; }
-    .item-logic { font-size: 11px; color: var(--primary); font-weight: 600; opacity: 0.8; }
-    
-    .item-right { display: flex; align-items: center; gap: 15px; }
-    .item-result { font-size: 18px; font-weight: 800; color: #fff; }
-    
-    /* Right Side Status Icons */
-    .status-icon {
-        width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;
-        border-radius: 50%; font-size: 12px;
+    .hist-right { display: flex; align-items: center; gap: 10px; }
+    .hist-res { font-size: 16px; font-weight: 700; color: #fff; }
+    .status-badge {
+        font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 3px;
+        min-width: 40px; text-align: center;
     }
-    .icon-win { background: rgba(0, 255, 136, 0.2); color: var(--success); border: 1px solid var(--success); }
-    .icon-loss { background: rgba(255, 42, 42, 0.2); color: var(--danger); border: 1px solid var(--danger); }
+    .badge-win { background: rgba(0, 230, 118, 0.2); color: var(--green); border: 1px solid var(--green); }
+    .badge-loss { background: rgba(255, 61, 0, 0.2); color: var(--red); border: 1px solid var(--red); }
 
-    /* BOTTOM NAV */
-    .nav-bar {
-        position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-        width: 90%; max-width: 400px;
-        background: rgba(10, 10, 10, 0.9); backdrop-filter: blur(20px);
-        border: 1px solid #222; border-radius: 20px;
-        display: flex; padding: 6px; z-index: 100;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+    /* RESET BUTTON */
+    .reset-btn {
+        width: 100%; padding: 12px; background: #111; color: #555;
+        border: 1px solid var(--border); border-radius: 8px;
+        font-size: 11px; font-weight: bold; margin-top: 20px; cursor: pointer;
     }
-    .nav-btn {
-        flex: 1; padding: 12px; text-align: center;
-        font-size: 12px; font-weight: 700; color: #555;
-        border-radius: 14px; transition: all 0.3s;
-    }
-    .nav-btn.active { background: #1a1a1a; color: var(--primary); box-shadow: 0 2px 10px rgba(0,0,0,0.5); }
-
 </style>
 </head>
 <body>
@@ -155,218 +112,201 @@
 <div class="app">
     
     <div class="header">
-        <div class="brand">PREMIUM V.44</div>
+        <div class="brand">AHMAD PRO V.45</div>
         <div class="timer-pill" id="timer">00</div>
     </div>
 
-    <div id="page-terminal">
-        
-        <div class="holo-card">
-            <div class="card-label">AI PREDICTION ENGINE</div>
-            <div class="prediction-big" id="pred">---</div>
-            <div class="logic-pill" id="logic">CONNECTING TO 30S API...</div>
-            <div style="margin-top: 15px; font-size: 10px; color: var(--text-dim); letter-spacing: 2px;">TARGET: WINGO 30S</div>
+    <div class="pro-card">
+        <div class="card-title">NEXT PERIOD: <span id="nextP" style="color:#fff">...</span></div>
+        <div class="pred-text" id="pred">WAIT</div>
+        <div class="logic-tag" id="logic">ANALYZING MARKET DATA...</div>
+        <div style="margin-top:10px; font-size:10px; color:#555;" id="lvl">LEVEL 1</div>
+    </div>
+
+    <div class="dashboard-grid">
+        <div class="dash-box">
+            <div class="dash-val win-text" id="totalWins">0</div>
+            <div class="dash-lbl">Total Wins</div>
         </div>
-
-        <div class="stats-row">
-            <div class="stat-box">
-                <div class="stat-val" id="wins">0</div>
-                <div class="stat-lbl">Win Streak</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-val" id="lvl" style="color: #fff">L1</div>
-                <div class="stat-lbl">Bet Level</div>
-            </div>
+        <div class="dash-box">
+            <div class="dash-val loss-text" id="totalLoss">0</div>
+            <div class="dash-lbl">Total Losses</div>
         </div>
-
+        <div class="dash-box">
+            <div class="dash-val acc-text" id="accuracy">0%</div>
+            <div class="dash-lbl">Accuracy</div>
+        </div>
     </div>
 
-    <div id="page-archive" style="display:none">
-        <div class="list-header">LIVE TRADE HISTORY</div>
-        <div id="list"></div>
-    </div>
+    <div class="history-label">SESSION HISTORY</div>
+    <div id="list"></div>
 
-    <div class="nav-bar">
-        <div class="nav-btn active" onclick="switchTab('page-terminal', this)">TERMINAL</div>
-        <div class="nav-btn" onclick="switchTab('page-archive', this)">HISTORY</div>
-    </div>
-
+    <button class="reset-btn" onclick="resetStats()">RESET SESSION STATS</button>
 </div>
 
 <script>
-    // --- CONFIGURATION ---
-    const API_URL = "https://draw.ar-lottery01.com/WinGo/WinGo_30S/GetHistoryIssuePage.json?ts=";
+    const API = "https://draw.ar-lottery01.com/WinGo/WinGo_30S/GetHistoryIssuePage.json?ts=";
     
-    // --- STATE ---
-    let lastIssue = "";
-    let currentPrediction = null;
-    let winCount = 0;
+    // --- SESSION STATE ---
+    let sessionWins = 0;
+    let sessionLosses = 0;
     let currentLevel = 1;
+    let lastIssue = "";
+    let currentPred = null;
 
     // --- TIMERS ---
     setInterval(updateTimer, 1000);
-    setInterval(fetchData, 1000); // 1-second sync for 30S
+    setInterval(fetchData, 1000);
 
-    // --- TIMER LOGIC ---
     function updateTimer() {
         const d = new Date();
         const s = d.getSeconds();
         const remaining = s < 30 ? 30 - s : 60 - s;
         const el = document.getElementById('timer');
-        el.innerText = remaining < 10 ? `0${remaining}` : `${remaining}`;
+        el.innerText = remaining < 10 ? `0${remaining}` : remaining;
         
-        if (remaining <= 5) {
-            el.style.borderColor = "var(--danger)";
-            el.style.color = "var(--danger)";
-            el.style.boxShadow = "0 0 15px rgba(255, 42, 42, 0.4)";
-        } else {
-            el.style.borderColor = "var(--primary)";
-            el.style.color = "var(--primary)";
-            el.style.boxShadow = "var(--glow)";
-        }
+        if (remaining <= 5) el.style.color = "var(--red)";
+        else el.style.color = "var(--cyan)";
     }
 
-    // --- CORE ENGINE (V.44 STICKY LOGIC) ---
     async function fetchData() {
         try {
-            const res = await fetch(API_URL + Date.now());
+            const res = await fetch(API + Date.now());
             const data = await res.json();
             const list = data.data.list;
-            const latestIssue = list[0].issueNumber;
+            const latest = list[0].issueNumber;
 
-            if (latestIssue !== lastIssue) {
-                if (currentPrediction && lastIssue !== "") {
-                    processResult(list[0], currentPrediction);
-                }
-                lastIssue = latestIssue;
-                makePrediction(list);
+            if (latest !== lastIssue) {
+                if (currentPred && lastIssue !== "") processResult(list[0], currentPred);
+                lastIssue = latest;
+                predict(list);
             }
-        } catch (e) {
-            console.log("Connecting...");
-        }
+        } catch (e) { console.log("Sync..."); }
     }
 
-    function makePrediction(list) {
-        const lastNum = parseInt(list[0].number);
-        const prevNum = parseInt(list[1].number);
+    // --- ENHANCED LOGIC ENGINE V.45 ---
+    function predict(history) {
+        const lastNum = parseInt(history[0].number);
         const lastBS = lastNum >= 5 ? "BIG" : "SMALL";
-        const prevBS = prevNum >= 5 ? "BIG" : "SMALL";
+        const prevBS = history[1].number >= 5 ? "BIG" : "SMALL";
+        const pPrevBS = history[2].number >= 5 ? "BIG" : "SMALL";
         
-        const nextPeriod = (BigInt(list[0].issueNumber) + 1n).toString();
         let prediction = "";
-        let logicTag = "";
+        let logic = "";
+        let nextP = (BigInt(history[0].issueNumber) + 1n).toString();
 
-        // --- V.44 LOGIC: STICKY TREND & SMART L2 ---
+        // PATTERN ANALYSIS
+        let streak = 1;
+        if (lastBS === prevBS) streak = 2;
+        if (streak === 2 && prevBS === pPrevBS) streak = 3;
 
+        // --- LEVEL 2: SAFETY NET (STICKY) ---
         if (currentLevel === 2) {
-            // L2 SMART FOLLOW: 
-            // Agar L1 fail hua, matlab market Repeat kar gaya (Stick ho gaya).
-            // L2 par humesha Last Result ko follow karo (Sticky Recovery).
-            // Exception: Trap Numbers (0/5) -> Go Small.
-            
             if (lastNum === 0 || lastNum === 5) {
-                prediction = "SMALL";
-                logicTag = "L2: TRAP SAFEGUARD";
+                prediction = "SMALL"; 
+                logic = "L2: TRAP GUARD";
             } else {
-                prediction = lastBS; // Follow the stickiness
-                logicTag = "L2: STICKY RECOVERY";
+                // If L1 failed, Trend likely started. Stick to it.
+                prediction = lastBS; 
+                logic = "L2: PRO RECOVERY";
             }
-
-        } else {
-            // LEVEL 1: TREND SENSING
-            if (lastBS === prevBS) {
-                // Last 2 same? Chipak jao! (Sticky)
+        }
+        // --- LEVEL 1: ACCURACY MODE ---
+        else {
+            if (streak >= 3) {
+                // Strong Dragon -> Ride it
                 prediction = lastBS;
-                logicTag = "L1: STICKY DRAGON 🐉";
+                logic = "L1: DRAGON MASTER";
+            } else if (lastBS === prevBS) {
+                // 2 Streak -> Assume Stickiness
+                prediction = lastBS;
+                logic = "L1: STICKY TREND";
             } else {
-                // Last 2 different? Flip karo (ZigZag)
+                // Zig-Zag (Flip)
                 prediction = lastBS === "BIG" ? "SMALL" : "BIG";
-                logicTag = "L1: FLIP PATTERN ⚡";
+                logic = "L1: FLIP DETECT";
             }
         }
 
-        currentPrediction = {
-            period: nextPeriod,
-            pick: prediction,
-            logic: logicTag
-        };
-
-        const predEl = document.getElementById('pred');
-        predEl.innerText = prediction;
-        // Neon color for BIG, White for SMALL
-        if(prediction === 'BIG') {
-            predEl.style.background = "linear-gradient(180deg, #fff, var(--primary))";
-            predEl.style.webkitBackgroundClip = "text";
-            predEl.style.webkitTextFillColor = "transparent";
+        currentPred = { pick: prediction, logic: logic };
+        
+        // UI Update
+        document.getElementById('nextP').innerText = nextP.slice(-5);
+        document.getElementById('pred').innerText = prediction;
+        document.getElementById('logic').innerText = logic;
+        
+        // Color Coding
+        const pEl = document.getElementById('pred');
+        if (prediction === 'BIG') {
+            pEl.style.background = "linear-gradient(180deg, #fff, #00f2ff)";
+            pEl.style.webkitBackgroundClip = "text"; 
+            pEl.style.webkitTextFillColor = "transparent";
         } else {
-            predEl.style.background = "linear-gradient(180deg, #fff, #aaa)";
-            predEl.style.webkitBackgroundClip = "text";
-            predEl.style.webkitTextFillColor = "transparent";
+            pEl.style.background = "linear-gradient(180deg, #fff, #ffc107)";
+            pEl.style.webkitBackgroundClip = "text"; 
+            pEl.style.webkitTextFillColor = "transparent";
         }
-
-        document.getElementById('logic').innerText = logicTag;
-        document.getElementById('lvl').innerText = "L" + currentLevel;
-        document.getElementById('lvl').style.color = currentLevel === 1 ? "var(--success)" : "var(--accent)";
+        
+        document.getElementById('lvl').innerText = currentLevel === 1 ? "LEVEL 1 (SAFE)" : "LEVEL 2 (RECOVERY)";
+        document.getElementById('lvl').style.color = currentLevel === 1 ? "var(--green)" : "var(--gold)";
     }
 
-    function processResult(resultData, pred) {
-        const actualBS = resultData.number >= 5 ? "BIG" : "SMALL";
+    function processResult(actual, pred) {
+        const actualBS = actual.number >= 5 ? "BIG" : "SMALL";
         const won = actualBS === pred.pick;
 
         if (won) {
-            winCount++;
+            sessionWins++;
             currentLevel = 1;
-            triggerCelebration();
+            triggerConfetti();
         } else {
-            currentLevel = 2; // Move to Fixed L2
-            winCount = 0;
+            sessionLosses++;
+            currentLevel = 2; // Level 2 Logic activates next
         }
 
-        document.getElementById('wins').innerText = winCount;
-        addToHistory(resultData, pred, won, actualBS);
+        updateStatsUI();
+        addToHistory(actual, pred, won, actualBS);
     }
 
-    function addToHistory(data, pred, won, actual) {
+    function updateStatsUI() {
+        document.getElementById('totalWins').innerText = sessionWins;
+        document.getElementById('totalLoss').innerText = sessionLosses;
+        
+        const total = sessionWins + sessionLosses;
+        const acc = total === 0 ? 0 : Math.round((sessionWins / total) * 100);
+        document.getElementById('accuracy').innerText = acc + "%";
+    }
+
+    function addToHistory(data, pred, won, actualResult) {
         const list = document.getElementById('list');
         const item = document.createElement('div');
         item.className = 'history-item';
         
-        // Custom Right-Side Icons (Check/X)
-        const iconHtml = won 
-            ? `<div class="status-icon icon-win">✔</div>` 
-            : `<div class="status-icon icon-loss">✖</div>`;
-            
-        const indicatorClass = won ? 'ind-win' : 'ind-loss';
-
         item.innerHTML = `
-            <div class="indicator ${indicatorClass}"></div>
-            <div class="item-left">
-                <span class="item-period">#${data.issueNumber.slice(-5)}</span>
-                <span class="item-logic">${pred.logic}</span>
+            <div class="hist-left">
+                <span class="hist-period">Period #${data.issueNumber.slice(-5)}</span>
+                <span class="hist-logic">${pred.logic}</span>
             </div>
-            <div class="item-right">
-                <span class="item-result" style="color:${won ? 'var(--success)' : 'var(--danger)'}">
-                    ${actual} (${data.number})
-                </span>
-                ${iconHtml}
+            <div class="hist-right">
+                <span class="hist-res">${actualResult}</span>
+                <div class="status-badge ${won ? 'badge-win' : 'badge-loss'}">
+                    ${won ? 'WIN' : 'LOSS'}
+                </div>
             </div>
         `;
         list.prepend(item);
     }
 
-    function triggerCelebration() {
-        // Gold and Cyan Blast
-        const colors = ['#00f2ff', '#ffd700', '#ffffff'];
-        confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 }, colors: colors });
+    function resetStats() {
+        sessionWins = 0;
+        sessionLosses = 0;
+        updateStatsUI();
+        document.getElementById('list').innerHTML = "";
     }
 
-    function switchTab(tabId, btn) {
-        document.getElementById('page-terminal').style.display = 'none';
-        document.getElementById('page-archive').style.display = 'none';
-        document.getElementById(tabId).style.display = 'block';
-        
-        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
+    function triggerConfetti() {
+        const colors = ['#00e676', '#00f2ff', '#ffffff'];
+        confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors: colors });
     }
 </script>
 </body>
