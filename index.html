@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Darknet V.37 Celebration</title>
+<title>AHMAD V.38 GRAND WIN</title>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 <style>
     *{box-sizing:border-box;margin:0;padding:0}
@@ -34,24 +34,14 @@
     .stat-box h3{ font-size:24px; margin:0; }
     .stat-box p{ font-size:10px; opacity:0.6; margin:0; }
 
-    /* ARCHIVE SUPREME (FIXED ICONS & LAYOUT) */
+    /* ARCHIVE SUPREME (FIXED ICONS RIGHT) */
     .arc-card { position:relative; background:linear-gradient(145deg,#0b1622,#04080d); border-radius:16px; padding:15px 18px; margin-top:12px; border-left: 5px solid var(--green); overflow:hidden; box-shadow:0 5px 15px rgba(0,0,0,0.5); display: flex; justify-content: space-between; align-items: center; }
     .arc-card.loss { border-left-color: var(--red); }
-    
     .arc-info { display: flex; flex-direction: column; }
     .arc-round { font-size: 11px; opacity: 0.7; margin-bottom: 2px; }
     .arc-res { font-size: 20px; font-weight: bold; color: #fff; }
-
-    /* UNIFIED ICON POSITIONING (RIGHT SIDE) */
-    .status-icon {
-        width: 32px; height: 32px;
-        display: flex; align-items: center; justify-content: center;
-    }
-
-    /* SHIELD ICON */
+    .status-icon { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; }
     .shield { background: var(--green); clip-path: polygon(50% 0%, 95% 20%, 95% 60%, 50% 100%, 5% 60%, 5% 20%); box-shadow: 0 0 10px var(--green); }
-    
-    /* CROSS ICON */
     .cross { background: var(--red); border-radius: 50%; box-shadow: 0 0 10px var(--red); position: relative; }
     .cross::before, .cross::after { content: ""; position: absolute; width: 18px; height: 3px; background: white; top: 50%; left: 50%; }
     .cross::before { transform: translate(-50%, -50%) rotate(45deg); }
@@ -67,7 +57,7 @@
 
 <div class="app">
     <div class="header">
-        <div class="aura">DARKNET V.37 CELEB</div>
+        <div class="aura">DARKNET V.38 GRAND</div>
         <div class="timer-badge" id="timer">00</div>
     </div>
 
@@ -143,12 +133,11 @@
         let [n1, n2] = BOSS_MAP[lastNum];
         let nextP = (BigInt(history[0].issueNumber) + 1n).toString();
 
-        // Streak Check
         let streak = 1;
         if(lastBS === prevBS) streak = 2;
         if(streak === 2 && prevBS === pPrevBS) streak = 3;
 
-        // --- V.35 HYBRID LOGIC (Your Request) ---
+        // --- V.35 HYBRID LOGIC ---
         if (level === 2) {
             let mapTargetBS = n1 >= 5 ? "BIG" : "SMALL";
             if (lastNum === 0 || lastNum === 5) {
@@ -191,13 +180,10 @@
         
         if (isWin) { 
             wins++; level = 1; 
-            // TRIGGER CELEBRATION
-            confetti({
-                particleCount: 100,
-                spread: 70,
-                origin: { y: 0.6 },
-                colors: ['#00e5ff', '#00ff9c', '#ffffff']
-            });
+            // --- GRAND CELEBRATION (Dual Cannons) ---
+            var colors = ['#00e5ff', '#00ff9c', '#ffffff'];
+            confetti({ particleCount: 150, spread: 100, origin: { y: 0.6, x: 0.1 }, colors: colors });
+            confetti({ particleCount: 150, spread: 100, origin: { y: 0.6, x: 0.9 }, colors: colors });
         } else { 
             level = level === 1 ? 2 : 1; 
         }
@@ -206,7 +192,6 @@
         const list = document.getElementById('list');
         const card = document.createElement('div');
         card.className = `arc-card ${isWin ? '' : 'loss'}`;
-        // UI FIX: ICONS ON RIGHT
         card.innerHTML = `
             <div class="arc-info">
                 <div class="arc-round">#${actual.issueNumber.slice(-5)} (${pred.logic})</div>
