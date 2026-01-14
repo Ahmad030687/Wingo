@@ -3,17 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>V.35000 TITANIUM</title>
+<title>V.40000 SILENT KILLER</title>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 <style>
-    /* --- THEME: NEURAL GOLD GOD MODE (UNCHANGED) --- */
+    /* --- THEME: NEURAL GOLD (USER FAVORITE) --- */
     :root { 
         --bg: #000; 
         --gold: #ffcc00; 
         --neon: #00ff41; 
         --red: #ff0033; 
         --blue: #00f3ff;
-        --titanium: #e0e0e0;
+        --orange: #ff9900;
         --panel: #0a0a0a;
         --font: 'Courier New', monospace; 
     }
@@ -29,7 +29,7 @@
 
     /* HEADER */
     .header { width:100%; padding:15px; border-bottom:2px solid var(--gold); background:#000; position:sticky; top:0; z-index:100; display:flex; justify-content:space-between; align-items:center; box-shadow: 0 0 20px rgba(255, 204, 0, 0.2); }
-    .ai-badge { font-size:10px; background:var(--titanium); color:#000; padding:2px 6px; border-radius:4px; font-weight:bold; }
+    .ai-badge { font-size:10px; background:var(--orange); color:#000; padding:2px 6px; border-radius:4px; font-weight:bold; }
     .timer { font-size:24px; font-weight:900; color:var(--gold); }
 
     /* AI HUD */
@@ -40,6 +40,11 @@
     /* CARD */
     .card { width:95%; max-width:450px; margin:15px 0; border:2px solid var(--gold); border-top:5px solid var(--gold); padding:20px; text-align:center; position:relative; background:#050500; box-shadow:0 0 30px rgba(255, 204, 0, 0.1); }
     
+    /* OVERLAY FOR WAIT MODE */
+    .wait-layer { display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); flex-direction:column; justify-content:center; align-items:center; z-index:10; }
+    .wait-title { font-size:40px; font-weight:900; color:var(--orange); text-shadow:0 0 20px var(--orange); animation: pulse 1s infinite; }
+    @keyframes pulse { 0%{opacity:0.5} 50%{opacity:1} 100%{opacity:0.5} }
+    
     .period-row { display:flex; justify-content:space-between; border-bottom:1px solid #333; padding-bottom:8px; margin-bottom:10px; font-size:12px; color:#fff; }
     
     .prediction { font-size:80px; font-weight:900; margin:5px 0; letter-spacing:-4px; background: -webkit-linear-gradient(#ffd700, #ff8800); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
@@ -47,7 +52,6 @@
     .balls { display:flex; justify-content:center; gap:15px; margin:10px 0; }
     .ball { width:55px; height:55px; border:2px solid var(--gold); display:flex; align-items:center; justify-content:center; font-size:24px; font-weight:bold; box-shadow:inset 0 0 15px var(--gold); background:#000; color:#fff; border-radius:10px; }
 
-    /* CONFIDENCE BAR */
     .vote-track { width:100%; height:10px; background:#111; border:1px solid #333; margin-top:10px; position:relative; }
     .vote-fill { height:100%; background:var(--neon); width:0%; transition:1s; }
     
@@ -65,11 +69,7 @@
     .log-entry { display:flex; justify-content:space-between; font-size:12px; padding:6px; border-bottom:1px dashed #222; }
     .log-win { color:var(--neon); }
     .log-loss { color:var(--red); }
-    .log-skip { color:var(--blue); }
-
-    /* SKIP OVERLAY */
-    .skip-layer { display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); flex-direction:column; justify-content:center; align-items:center; z-index:10; }
-    .skip-title { font-size:50px; font-weight:900; color:var(--blue); text-shadow:0 0 20px var(--blue); }
+    .log-wait { color:var(--orange); }
 
     /* NAV */
     .nav { position:fixed; bottom:0; left:0; width:100%; background:#000; border-top:2px solid var(--gold); padding:10px 0; display:flex; justify-content:space-around; z-index:999; }
@@ -89,7 +89,7 @@
 <div class="header">
     <div style="line-height:1.2">
         <div style="font-size:18px; font-weight:900; color:#fff;">AHMAD BOSS</div>
-        <div style="font-size:10px; color:var(--gold);">V.35000 <span class="ai-badge">TITANIUM</span></div>
+        <div style="font-size:10px; color:var(--gold);">V.40000 <span class="ai-badge">SILENT KILLER</span></div>
     </div>
     <div class="timer" id="timer">00</div>
 </div>
@@ -105,21 +105,22 @@
         <span class="strategy-score" id="scoreFlip">0%</span>
     </div>
     <div class="strategy-row">
-        <span>SAFETY GAP:</span>
-        <span class="strategy-score" id="scoreGap" style="color:#fff">0%</span>
+        <span>NEXT ACTION:</span>
+        <span class="strategy-score" id="nextAction" style="color:#fff">SCANNING</span>
     </div>
 </div>
 
 <div id="page-terminal" class="page" style="display:flex;">
     <div class="card" id="mainCard">
-        <div class="skip-layer" id="skipLayer">
-            <div class="skip-title">SKIP</div>
-            <div style="color:#fff; font-size:10px; margin-top:5px;">GAP < 20% (STRICT MODE)</div>
+        <div class="wait-layer" id="waitLayer">
+            <div class="wait-title">WAIT</div>
+            <div style="color:#fff; font-size:10px; margin-top:10px;">MARKET TURBULENCE DETECTED</div>
+            <div style="color:var(--orange); font-size:12px; margin-top:5px;">SKIPPING 1 PERIOD FOR SAFETY</div>
         </div>
 
         <div class="period-row">
             <span>TARGET: <b id="period">....</b></span>
-            <span id="lvlDisplay" style="color:var(--gold)">L1: TITANIUM SCAN</span>
+            <span id="lvlDisplay" style="color:var(--gold)">L1: NEURAL SCAN</span>
         </div>
         
         <div class="prediction" id="pred">--</div>
@@ -138,7 +139,7 @@
 
     <div class="stats">
         <div class="s-box"><div class="s-val" id="wins">0</div><div class="s-lbl">WINS</div></div>
-        <div class="s-box"><div class="s-val" id="l2wins">0</div><div class="s-lbl">RECOVERIES</div></div>
+        <div class="s-box"><div class="s-val" id="l2wins">0</div><div class="s-lbl">SNIPER HITS</div></div>
         <div class="s-box"><div class="s-val" id="acc" style="color:var(--neon)">100%</div><div class="s-lbl">ACC</div></div>
         <div class="s-box"><div class="s-val" id="profit" style="color:var(--gold)">0</div><div class="s-lbl">PROFIT</div></div>
     </div>
@@ -156,22 +157,22 @@
 <div id="page-nodes" class="page">
     <div style="padding:20px; text-align:center;">
         <h3 style="color:var(--gold)">NEURAL NETWORK</h3>
-        <p style="font-size:10px; color:#aaa; margin-bottom:10px;">L2: TITANIUM SHIELD PROTOCOL</p>
+        <p style="font-size:10px; color:#aaa; margin-bottom:10px;">DELAYED RECOVERY PROTOCOL</p>
         <div class="node-map" id="nodeMap"></div>
-        <div style="font-size:10px; margin-top:10px; color:var(--neon);">0/5 TRAP DETECTION: ACTIVE</div>
+        <div style="font-size:10px; margin-top:10px; color:var(--neon);">GAP-MODE: ACTIVE</div>
     </div>
 </div>
 
 <div id="page-profile" class="page">
     <div class="card" style="margin-top:50px;">
         <h2>AHMAD BOSS</h2>
-        <p style="color:var(--neon); margin-bottom:20px;">TITANIUM STATUS</p>
+        <p style="color:var(--neon); margin-bottom:20px;">V.40000 STATUS</p>
         <div style="text-align:left; font-size:12px; line-height:2.5; color:#fff;">
-            > ENGINE: V.35000<br>
-            > SKIP: STRICT (GAP < 20%)<br>
-            > L2: 0/5 -> FLIP<br>
-            > L2: NORMAL -> TREND<br>
-            > STATUS: UNSTOPPABLE
+            > ENGINE: V.40000 SILENT<br>
+            > L1: STANDARD NEURAL<br>
+            > LOSS DETECTED: AUTO-WAIT 1 MIN<br>
+            > L2: SNIPER SHOT (AFTER WAIT)<br>
+            > STATUS: ACTIVE
         </div>
     </div>
 </div>
@@ -192,6 +193,7 @@ let activeBet = null;
 let win = 0, l2Win = 0, total = 0, profit = 0;
 let level = 1;
 let firstLoad = true;
+let waitMode = false; // THE SILENT KILLER SWITCH
 
 // INITIALIZE NODE MAP
 const nodeMap = document.getElementById('nodeMap');
@@ -229,17 +231,18 @@ setInterval(async () => {
         if (latest.issueNumber !== lastIssue || firstLoad) {
             
             if (!firstLoad && activeBet && lastIssue !== "") {
-                if(activeBet.pick === "SKIP") {
-                     addLog(latest.issueNumber, "SKIPPED", "SKIPPED", "SKIP", 0);
+                if(activeBet.pick === "WAIT") {
+                    addLog(latest.issueNumber, "WAITING", "MARKET GAP", "WAIT", 0);
+                    waitMode = false; // Reset wait mode, now we play L2
                 } else {
-                     checkWin(latest, activeBet);
+                    checkWin(latest, activeBet);
                 }
             }
             
             lastIssue = latest.issueNumber;
             firstLoad = false;
             
-            runTitaniumEngine(data.data.list);
+            runSilentKiller(data.data.list);
         }
     } catch(e) {
         document.getElementById('connStatus').innerText = "RECONNECTING...";
@@ -247,8 +250,8 @@ setInterval(async () => {
     }
 }, 1000);
 
-// --- V.35000 TITANIUM ENGINE ---
-function runTitaniumEngine(history) {
+// --- V.40000 SILENT KILLER ENGINE ---
+function runSilentKiller(history) {
     let limit = Math.min(history.length, 10);
     if (limit < 2) return;
 
@@ -258,82 +261,73 @@ function runTitaniumEngine(history) {
     let [b1, b2] = BOSS_MAP[lastN];
 
     // 1. NEURAL ANALYSIS
-    let trendWins = 0;
-    let flipWins = 0;
-    let totalWeight = 0;
-
+    let trendWins = 0, flipWins = 0, totalWeight = 0;
     for(let i=0; i < limit - 1; i++){
         let curr = parseInt(history[i].number) >= 5 ? "BIG" : "SMALL";
         let prev = parseInt(history[i+1].number) >= 5 ? "BIG" : "SMALL";
         let weight = (i < 3) ? 3 : 1; 
-        
-        if(curr === prev) trendWins += (10 * weight);
-        else flipWins += (10 * weight);
+        if(curr === prev) trendWins += (10 * weight); else flipWins += (10 * weight);
         totalWeight += (10 * weight);
     }
-
     let trendPct = (trendWins / totalWeight) * 100;
     let flipPct = (flipWins / totalWeight) * 100;
-    let gap = Math.abs(trendPct - flipPct);
 
     document.getElementById('scoreTrend').innerText = trendPct.toFixed(0) + "%";
     document.getElementById('scoreFlip').innerText = flipPct.toFixed(0) + "%";
-    document.getElementById('scoreGap').innerText = gap.toFixed(0) + "%";
-
+    
     let pick, logic, conf;
-    let skip = false;
 
-    // 2. TITANIUM DECISION LOGIC
-    if (level === 2) {
-        // L2: TITANIUM SHIELD (CONTEXT AWARE RECOVERY)
-        // Check what caused the L1 Loss
-        let lossNumber = parseInt(history[0].number);
+    // 2. DECISION LOGIC (WITH DELAYED RECOVERY)
+    
+    // IF IN WAIT MODE (Because L1 Lost)
+    if (waitMode === true) {
+        pick = "WAIT";
+        logic = "SAFETY GAP (1 MIN)";
+        document.getElementById('waitLayer').style.display = 'flex';
+        document.getElementById('nextAction').innerText = "AVOIDING TURBULENCE";
+        document.getElementById('nextAction').style.color = "var(--orange)";
         
-        if (lossNumber === 0 || lossNumber === 5) {
-            // RULE 1: If 0 or 5 caused the loss, Market will FLIP.
-            pick = (lastBS === "BIG" ? "SMALL" : "BIG");
-            logic = "L2: VIOLET TRAP FIX (FLIP)";
+        // Setup for L2 logic (to be used NEXT turn, but for now we wait)
+        document.getElementById('mainCard').style.borderColor = "var(--orange)";
+    } 
+    else if (level === 2) {
+        // L2: SNIPER SHOT (After the Wait)
+        document.getElementById('waitLayer').style.display = 'none';
+        
+        // Analyze FRESH data (since we waited 1 min)
+        if (flipPct > trendPct) {
+             pick = (lastBS === "BIG" ? "SMALL" : "BIG"); logic = "L2: SNIPER FLIP";
         } else {
-            // RULE 2: If Standard Number caused the loss, Market will TREND (Dragon).
-            pick = lastBS;
-            logic = "L2: STANDARD FLOW (TREND)";
+             pick = lastBS; logic = "L2: SNIPER TREND";
         }
         
         document.getElementById('mainCard').style.borderColor = "var(--red)";
-        document.getElementById('lvlDisplay').innerText = "⚠️ L2: TITANIUM FIX";
+        document.getElementById('lvlDisplay').innerText = "⚠️ L2: SNIPER SHOT";
         document.getElementById('lvlDisplay').style.color = "var(--red)";
-        conf = 100;
-        document.getElementById('skipLayer').style.display = 'none';
+        document.getElementById('nextAction').innerText = "RECOVERY SHOT";
+        conf = 99;
     } 
     else {
-        // L1: STRICT SCAN
-        // Increased Skip Gap to 20% to avoid "Choppy" markets entirely.
-        if (gap < 20) { 
-            skip = true;
-            pick = "SKIP";
-            logic = "RISK: GAP < 20%";
-            document.getElementById('skipLayer').style.display = 'flex';
+        // L1: NORMAL PLAY
+        document.getElementById('waitLayer').style.display = 'none';
+        
+        if (trendPct >= flipPct) {
+            pick = lastBS; logic = `L1: TREND (${trendPct.toFixed(0)}%)`;
         } else {
-            document.getElementById('skipLayer').style.display = 'none';
-            if (trendPct >= flipPct) {
-                pick = lastBS;
-                logic = `L1: TREND (${trendPct.toFixed(0)}%)`;
-            } else {
-                pick = (lastBS === "BIG" ? "SMALL" : "BIG");
-                logic = `L1: FLIP (${flipPct.toFixed(0)}%)`;
-            }
+            pick = (lastBS === "BIG" ? "SMALL" : "BIG"); logic = `L1: FLIP (${flipPct.toFixed(0)}%)`;
         }
         
         conf = Math.max(trendPct, flipPct);
         document.getElementById('mainCard').style.borderColor = "var(--gold)";
-        document.getElementById('lvlDisplay').innerText = "L1: TITANIUM SCAN";
+        document.getElementById('lvlDisplay').innerText = "L1: NEURAL SCAN";
         document.getElementById('lvlDisplay').style.color = "var(--gold)";
+        document.getElementById('nextAction').innerText = "NORMAL BET";
     }
 
     // UPDATE UI
     document.getElementById('period').innerText = nextNum;
     
-    if(!skip) {
+    if(pick !== "WAIT") {
         document.getElementById('pred').innerText = pick;
         document.getElementById('pred').style.color = pick==="BIG" ? "var(--neon)" : "var(--gold)";
         document.getElementById('balls').innerHTML = `<div class="ball">${b1}</div><div class="ball">${b2}</div>`;
@@ -341,7 +335,6 @@ function runTitaniumEngine(history) {
     }
     
     document.getElementById('logic').innerText = logic;
-
     activeBet = { pick: pick, level: level, logic: logic };
 }
 
@@ -356,7 +349,15 @@ function checkWin(actual, bet) {
         level = 1;
         confetti({ particleCount: 300, spread: 150, colors: ['#ffcc00', '#ffffff'] });
     } else {
-        level = level === 1 ? 2 : 1; 
+        // HERE IS THE MAGIC:
+        // IF L1 Loss -> Go to Level 2 BUT Activate Wait Mode first
+        if (level === 1) {
+            level = 2;
+            waitMode = true; // FORCE WAIT
+        } else {
+            level = 1; // Reset if L2 lost (Should not happen often)
+            waitMode = false;
+        }
     }
 
     document.getElementById('wins').innerText = win;
@@ -369,9 +370,9 @@ function checkWin(actual, bet) {
 function addLog(issue, res, pick, isWin, lvl, logic) {
     let div = document.createElement('div');
     div.className = `log-entry`;
-    let status = isWin; if(pick === "SKIP") status = "SKIP";
-    let colorClass = status === true ? "log-win" : (status === false ? "log-loss" : "log-skip");
-    div.innerHTML = `<span style="width:20%">${issue.slice(-4)}</span><span style="width:50%; font-size:10px;">${logic}</span><span style="width:20%; font-weight:bold" class="${colorClass}">${status === true ? 'WIN' : (status==='SKIP' ? 'SKIP' : 'LOSS')}</span>`;
+    let status = isWin; if(pick === "WAIT") status = "WAIT";
+    let colorClass = status === true ? "log-win" : (status === false ? "log-loss" : "log-wait");
+    div.innerHTML = `<span style="width:20%">${issue.slice(-4)}</span><span style="width:50%; font-size:10px;">${logic}</span><span style="width:20%; font-weight:bold" class="${colorClass}">${status === true ? 'WIN' : (status==='WAIT' ? 'WAIT' : 'LOSS')}</span>`;
     document.getElementById('historyList').prepend(div);
 }
 
