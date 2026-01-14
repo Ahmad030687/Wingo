@@ -3,17 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>V.20000 JACKPOT SNIPER</title>
+<title>V.ETERNAL MICRO-SCAN</title>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 <style>
-    /* --- THEME: NEURAL GOLD --- */
+    /* --- THEME: GOLD GOD MODE --- */
     :root { 
         --bg: #000; 
         --gold: #ffcc00; 
         --neon: #00ff41; 
         --red: #ff0033; 
-        --blue: #00f3ff;
-        --white: #ffffff;
+        --panel: #0a0a0a;
         --font: 'Courier New', monospace; 
     }
     
@@ -28,7 +27,7 @@
 
     /* HEADER */
     .header { width:100%; padding:15px; border-bottom:2px solid var(--gold); background:#000; position:sticky; top:0; z-index:100; display:flex; justify-content:space-between; align-items:center; box-shadow: 0 0 20px rgba(255, 204, 0, 0.2); }
-    .ai-badge { font-size:10px; background:var(--white); color:#000; padding:2px 6px; border-radius:4px; font-weight:bold; }
+    .ai-badge { font-size:10px; background:var(--neon); color:#000; padding:2px 6px; border-radius:4px; font-weight:bold; }
     .timer { font-size:24px; font-weight:900; color:var(--gold); }
 
     /* AI HUD */
@@ -43,7 +42,14 @@
     
     .prediction { font-size:80px; font-weight:900; margin:5px 0; letter-spacing:-4px; background: -webkit-linear-gradient(#ffd700, #ff8800); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     
-    .logic-tag { font-size:11px; background:#111; border:1px solid var(--gold); color:var(--gold); padding:5px 10px; display:inline-block; margin-top:15px; text-transform:uppercase; font-weight:bold; }
+    .balls { display:flex; justify-content:center; gap:15px; margin:10px 0; }
+    .ball { width:55px; height:55px; border:2px solid var(--gold); display:flex; align-items:center; justify-content:center; font-size:24px; font-weight:bold; box-shadow:inset 0 0 15px var(--gold); background:#000; color:#fff; border-radius:10px; }
+
+    /* CONFIDENCE BAR */
+    .vote-track { width:100%; height:10px; background:#111; border:1px solid #333; margin-top:10px; position:relative; }
+    .vote-fill { height:100%; background:var(--neon); width:0%; transition:1s; }
+    
+    .logic-badge { font-size:11px; background:#111; border:1px solid var(--gold); color:var(--gold); padding:5px 10px; display:inline-block; margin-top:15px; text-transform:uppercase; font-weight:bold; }
 
     /* STATS */
     .stats { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:5px; width:95%; max-width:450px; margin-bottom:15px; }
@@ -57,18 +63,18 @@
     .log-entry { display:flex; justify-content:space-between; font-size:12px; padding:6px; border-bottom:1px dashed #222; }
     .log-win { color:var(--neon); }
     .log-loss { color:var(--red); }
-    .log-skip { color:var(--blue); }
-
-    /* WAIT OVERLAY */
-    .skip-layer { display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); flex-direction:column; justify-content:center; align-items:center; z-index:10; }
-    .skip-title { font-size:50px; font-weight:900; color:var(--blue); text-shadow:0 0 20px var(--blue); }
 
     /* NAV */
     .nav { position:fixed; bottom:0; left:0; width:100%; background:#000; border-top:2px solid var(--gold); padding:10px 0; display:flex; justify-content:space-around; z-index:999; }
     .nav-btn { background:none; border:none; color:#555; font-size:10px; font-weight:bold; cursor:pointer; display:flex; flex-direction:column; align-items:center; transition:0.3s; }
     .nav-btn.active { color:var(--gold); transform:scale(1.1); text-shadow:0 0 10px var(--gold); }
 
+    /* NODES PAGE */
     .page { display:none; width:100%; flex-direction:column; align-items:center; }
+    .node-map { width:95%; height:300px; border:1px solid var(--gold); position:relative; overflow:hidden; }
+    .node-dot { width:2px; height:2px; background:var(--neon); position:absolute; animation:twinkle 2s infinite; }
+    @keyframes twinkle { 0%{opacity:0.2} 50%{opacity:1} 100%{opacity:0.2} }
+
 </style>
 </head>
 <body>
@@ -76,151 +82,263 @@
 <div class="header">
     <div style="line-height:1.2">
         <div style="font-size:18px; font-weight:900; color:#fff;">AHMAD BOSS</div>
-        <div style="font-size:10px; color:var(--gold);">V.20000 <span class="ai-badge">JACKPOT</span></div>
+        <div style="font-size:10px; color:var(--gold);">MICRO-SCANNER <span class="ai-badge">WEIGHTED</span></div>
     </div>
     <div class="timer" id="timer">00</div>
 </div>
 
 <div class="ai-hud" id="aiHud">
-    <div style="border-bottom:1px solid var(--gold); margin-bottom:5px;">AI STATUS: <span id="connStatus" style="color:var(--neon)">ONLINE</span></div>
-    <div class="strategy-row"><span>TREND POWER:</span><span class="strategy-score" id="scoreTrend">0%</span></div>
-    <div class="strategy-row"><span>FLIP POWER:</span><span class="strategy-score" id="scoreFlip">0%</span></div>
-    <div class="strategy-row"><span>STABILITY:</span><span class="strategy-score" id="scoreGap" style="color:#fff">SCANNING</span></div>
+    <div style="border-bottom:1px solid var(--gold); margin-bottom:5px;">MICRO-TREND ANALYSIS (10 PDS)</div>
+    <div class="strategy-row">
+        <span>TREND POWER (Dragon):</span>
+        <span class="strategy-score" id="scoreTrend">0%</span>
+    </div>
+    <div class="strategy-row">
+        <span>FLIP POWER (ZigZag):</span>
+        <span class="strategy-score" id="scoreFlip">0%</span>
+    </div>
+    <div class="strategy-row">
+        <span>ACTIVE STRATEGY:</span>
+        <span class="strategy-score" id="activeStrat" style="color:var(--gold)">LOADING...</span>
+    </div>
 </div>
 
 <div id="page-terminal" class="page" style="display:flex;">
     <div class="card" id="mainCard">
-        <div class="skip-layer" id="skipLayer">
-            <div class="skip-title">WAIT</div>
-            <div style="color:#fff; font-size:10px;">SAFETY BREAK ACTIVE (1 PERIOD)</div>
-        </div>
-
         <div class="period-row">
             <span>TARGET: <b id="period">....</b></span>
-            <span id="lvlDisplay" style="color:var(--gold)">L1: NEURAL SCAN</span>
+            <span id="lvlDisplay" style="color:var(--gold)">L1: MICRO SCAN</span>
         </div>
         
         <div class="prediction" id="pred">--</div>
         
-        <div class="logic-tag" id="logic">ANALYZING...</div>
+        <div class="balls" id="balls">
+            <div class="ball">?</div><div class="ball">?</div>
+        </div>
+
+        <div style="font-size:10px; color:#aaa; margin-top:10px;">WEIGHTED CONFIDENCE</div>
+        <div class="vote-track">
+            <div class="vote-fill" id="confBar"></div>
+        </div>
+
+        <div class="logic-tag" id="logic">ANALYZING RECENCY...</div>
     </div>
 
     <div class="stats">
-        <div class="s-box"><div class="s-val" id="wins">0</div><div class="s-lbl">WINS</div></div>
-        <div class="s-box"><div class="s-val" id="l2wins">0</div><div class="s-lbl">JACKPOTS</div></div>
-        <div class="s-box"><div class="s-val" id="acc" style="color:var(--neon)">100%</div><div class="s-lbl">ACC</div></div>
+        <div class="s-box"><div class="s-val" id="wins">0</div><div class="s-lbl">DIRECT WINS</div></div>
+        <div class="s-box"><div class="s-val" id="l2wins">0</div><div class="s-lbl">RECOVERIES</div></div>
+        <div class="s-box"><div class="s-val" id="acc" style="color:var(--neon)">100%</div><div class="s-lbl">ACCURACY</div></div>
         <div class="s-box"><div class="s-val" id="profit" style="color:var(--gold)">0</div><div class="s-lbl">PROFIT</div></div>
     </div>
 </div>
 
 <div id="page-logs" class="page">
     <div class="archive-box">
+        <div style="border-bottom:1px solid #555; padding:5px; font-size:10px; color:#888; display:flex; justify-content:space-between;">
+            <span>ISSUE</span><span>STRATEGY</span><span>RESULT</span>
+        </div>
         <div class="log-list" id="historyList"></div>
+    </div>
+</div>
+
+<div id="page-nodes" class="page">
+    <div style="padding:20px; text-align:center;">
+        <h3 style="color:var(--gold)">NEURAL NETWORK</h3>
+        <p style="font-size:10px; color:#aaa; margin-bottom:10px;">WEIGHTED DATA PATHWAYS</p>
+        <div class="node-map" id="nodeMap"></div>
+        <div style="font-size:10px; margin-top:10px; color:var(--neon);" id="nodeStatus">RECENCY BIAS: ACTIVE</div>
+    </div>
+</div>
+
+<div id="page-profile" class="page">
+    <div class="card" style="margin-top:50px;">
+        <h2>AHMAD BOSS</h2>
+        <p style="color:var(--neon); margin-bottom:20px;">ETERNAL STATUS</p>
+        <div style="text-align:left; font-size:12px; line-height:2.5; color:#fff;">
+            > ENGINE: WEIGHTED AI<br>
+            > SCAN: 10 PERIODS<br>
+            > PRIORITY: LAST 3 RESULTS (3x)<br>
+            > STATUS: ACTIVE
+        </div>
     </div>
 </div>
 
 <div class="nav">
     <button class="nav-btn active" onclick="nav('terminal', this)"><span>⚡</span>TERMINAL</button>
     <button class="nav-btn" onclick="nav('logs', this)"><span>📜</span>LOGS</button>
+    <button class="nav-btn" onclick="nav('nodes', this)"><span>🌐</span>NODES</button>
+    <button class="nav-btn" onclick="nav('profile', this)"><span>👤</span>PROFILE</button>
 </div>
 
 <script>
 const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?ts=";
+const BOSS_MAP = { 0:[5,2], 1:[6,3], 2:[7,4], 3:[8,0], 4:[9,1], 5:[0,7], 6:[1,8], 7:[2,9], 8:[3,5], 9:[4,6] };
+
 let lastIssue = "";
 let activeBet = null;
 let win = 0, l2Win = 0, total = 0, profit = 0;
 let level = 1;
-let sniperBreak = false; // THE SAFETY SWITCH
-let lastL1Logic = "";
+let firstLoad = true;
 
+// INITIALIZE NODE MAP
+const nodeMap = document.getElementById('nodeMap');
+for(let i=0; i<100; i++){
+    let d = document.createElement('div');
+    d.className = 'node-dot';
+    d.style.left = Math.random()*100 + '%';
+    d.style.top = Math.random()*100 + '%';
+    d.style.animationDelay = Math.random()*2 + 's';
+    nodeMap.appendChild(d);
+}
+
+// Timer
+setInterval(() => {
+    let s = new Date().getSeconds();
+    let r = 60 - s; if(r===60) r=0;
+    let t = document.getElementById('timer');
+    t.innerText = r<10 ? "0"+r : r;
+    if(r<=10) t.style.color = "var(--red)";
+    else t.style.color = "var(--gold)";
+}, 1000);
+
+// Core Loop
 setInterval(async () => {
     try {
         let res = await fetch(API + Date.now());
         let data = await res.json();
+        
+        if(!data || !data.data || !data.data.list || data.data.list.length === 0) return;
         let latest = data.data.list[0];
-        if (latest.issueNumber !== lastIssue) {
-            if (activeBet && lastIssue !== "") checkWin(latest, activeBet);
+        
+        if (latest.issueNumber !== lastIssue || firstLoad) {
+            if (!firstLoad && activeBet && lastIssue !== "") {
+                checkWin(latest, activeBet);
+            }
             lastIssue = latest.issueNumber;
-            runJackpotEngine(data.data.list);
+            firstLoad = false;
+            runWeightedAI(data.data.list);
         }
-        document.getElementById('timer').innerText = 60 - new Date().getSeconds();
     } catch(e) {}
 }, 1000);
 
-function runJackpotEngine(history) {
+// --- WEIGHTED AI ENGINE (Make the 10 Periods Count!) ---
+function runWeightedAI(history) {
+    let limit = Math.min(history.length, 10);
+    if (limit < 2) return;
+
     let lastN = parseInt(history[0].number);
     let lastBS = lastN >= 5 ? "BIG" : "SMALL";
     let nextNum = (BigInt(history[0].issueNumber) + 1n).toString().slice(-4);
-    document.getElementById('period').innerText = nextNum;
+    let [b1, b2] = BOSS_MAP[lastN];
 
-    // Trend analysis
-    let trend = 0, flip = 0;
-    for(let i=0; i<5; i++) {
-        let curr = parseInt(history[i].number)>=5?"B":"S";
-        let prev = parseInt(history[i+1].number)>=5?"B":"S";
-        if(curr===prev) trend++; else flip++;
+    // SCORING WITH WEIGHTS
+    let trendScore = 0;
+    let flipScore = 0;
+    let totalWeight = 0;
+
+    for(let i=0; i < limit - 1; i++){
+        let curr = parseInt(history[i].number) >= 5 ? "BIG" : "SMALL";
+        let prev = parseInt(history[i+1].number) >= 5 ? "BIG" : "SMALL";
+        
+        // Weighting Logic:
+        // i=0 (Latest) -> Weight 4
+        // i=1 -> Weight 3
+        // i=2 -> Weight 2
+        // Others -> Weight 1
+        let weight = 1;
+        if(i === 0) weight = 4;
+        else if(i === 1) weight = 3;
+        else if(i === 2) weight = 2;
+
+        if(curr === prev) trendScore += (10 * weight);
+        else flipScore += (10 * weight);
+        
+        totalWeight += (10 * weight);
     }
-    document.getElementById('scoreTrend').innerText = (trend*20)+"%";
-    document.getElementById('scoreFlip').innerText = (flip*20)+"%";
 
-    let pick, logic;
+    // Normalize to Percentage
+    let trendPct = (trendScore / totalWeight) * 100;
+    let flipPct = (flipScore / totalWeight) * 100;
 
-    if (sniperBreak) {
-        pick = "SKIP"; logic = "SAFETY GAP: 1 PERIOD";
-        document.getElementById('skipLayer').style.display = 'flex';
-        document.getElementById('scoreGap').innerText = "WAITING...";
-    } else {
-        document.getElementById('skipLayer').style.display = 'none';
-        if (level === 2) {
-            // THE JACKPOT L2 LOGIC
-            pick = (lastL1Logic === "TREND") ? (lastBS==="BIG"?"SMALL":"BIG") : lastBS;
-            logic = "🔥 SURESHOT JACKPOT";
-            document.getElementById('lvlDisplay').innerText = "⚠️ L2: JACKPOT";
-            document.getElementById('lvlDisplay').style.color = "var(--red)";
-            document.getElementById('scoreGap').innerText = "JACKPOT READY";
+    document.getElementById('scoreTrend').innerText = trendPct.toFixed(0) + "%";
+    document.getElementById('scoreFlip').innerText = flipPct.toFixed(0) + "%";
+
+    let pick, logic, conf;
+
+    // DECISION
+    if (level === 2) {
+        // L2: WEIGHTED ADAPTATION
+        if (flipPct > 55) { // Slightly lower threshold for L2 flip
+            pick = (lastBS === "BIG" ? "SMALL" : "BIG");
+            logic = "L2: WEIGHTED FLIP";
         } else {
-            pick = (trend >= flip) ? lastBS : (lastBS==="BIG"?"SMALL":"BIG");
-            lastL1Logic = (trend >= flip) ? "TREND" : "FLIP";
-            logic = "L1: NEURAL SCAN";
-            document.getElementById('lvlDisplay').innerText = "L1: NEURAL SCAN";
-            document.getElementById('lvlDisplay').style.color = "var(--gold)";
-            document.getElementById('scoreGap').innerText = "STABLE";
+            pick = lastBS;
+            logic = "L2: WEIGHTED TREND";
         }
+        document.getElementById('mainCard').style.borderColor = "var(--red)";
+        document.getElementById('lvlDisplay').innerText = "⚠️ L2: MICRO-ADAPT";
+        document.getElementById('lvlDisplay').style.color = "var(--red)";
+        conf = 99;
+    } 
+    else {
+        // L1: WEIGHTED SNIPER
+        if (trendPct >= flipPct) {
+            pick = lastBS;
+            logic = `MICRO: TREND (${trendPct.toFixed(0)}%)`;
+            document.getElementById('activeStrat').innerText = "RECENCY: MOMENTUM";
+        } else {
+            pick = (lastBS === "BIG" ? "SMALL" : "BIG");
+            logic = `MICRO: FLIP (${flipPct.toFixed(0)}%)`;
+            document.getElementById('activeStrat').innerText = "RECENCY: ZIGZAG";
+        }
+        
+        conf = Math.max(trendPct, flipPct);
+        document.getElementById('mainCard').style.borderColor = "var(--gold)";
+        document.getElementById('lvlDisplay').innerText = "L1: MICRO SCAN";
+        document.getElementById('lvlDisplay').style.color = "var(--gold)";
     }
 
-    document.getElementById('pred').innerText = pick === "SKIP" ? "--" : pick;
-    document.getElementById('pred').style.color = pick==="BIG"?"var(--neon)":"var(--gold)";
+    // UI
+    document.getElementById('period').innerText = nextNum;
+    document.getElementById('pred').innerText = pick;
+    document.getElementById('pred').style.color = pick==="BIG" ? "var(--neon)" : "var(--gold)";
+    document.getElementById('balls').innerHTML = `<div class="ball">${b1}</div><div class="ball">${b2}</div>`;
     document.getElementById('logic').innerText = logic;
+    document.getElementById('confBar').style.width = conf + "%";
+
     activeBet = { pick: pick, level: level, logic: logic };
 }
 
 function checkWin(actual, bet) {
-    if(bet.pick === "SKIP") { sniperBreak = false; return; }
-    let res = parseInt(actual.number)>=5?"BIG":"SMALL";
-    let isWin = (res === bet.pick); total++;
+    let res = parseInt(actual.number) >= 5 ? "BIG" : "SMALL";
+    let isWin = (res === bet.pick);
+    total++;
 
-    if(isWin) { 
-        if(bet.level===1) win++; else { l2Win++; confetti(); }
-        profit += (bet.level===1?100:300); level = 1; sniperBreak = false;
-    } else { 
-        if(level === 1) { level = 2; sniperBreak = true; } 
-        else { level = 1; sniperBreak = false; }
+    if (isWin) {
+        if(bet.level === 1) win++; else l2Win++;
+        profit += (bet.level === 1 ? 100 : 300);
+        level = 1;
+        confetti({ particleCount: 300, spread: 150, colors: ['#ffcc00', '#ffffff'] });
+    } else {
+        level = level === 1 ? 2 : 1; 
     }
-    updateStats();
-    addLog(actual.issueNumber, res, isWin?"WIN":"LOSS", isWin?"log-win":"log-loss");
-}
 
-function updateStats() {
     document.getElementById('wins').innerText = win;
     document.getElementById('l2wins').innerText = l2Win;
     document.getElementById('profit').innerText = profit;
-    document.getElementById('acc').innerText = total>0?Math.round(((win+l2Win)/total)*100)+"%":"100%";
+    document.getElementById('acc').innerText = Math.round(((win+l2Win)/total)*100) + "%";
+
+    addLog(actual.issueNumber, res, bet.pick, isWin, bet.level, bet.logic);
 }
 
-function addLog(issue, res, status, cls) {
+function addLog(issue, res, pick, isWin, lvl, logic) {
     let div = document.createElement('div');
-    div.className = `log-entry ${cls}`;
-    div.innerHTML = `<span>${issue.slice(-4)}</span><span>${res}</span><span>${status}</span>`;
+    div.className = `log-entry`;
+    div.innerHTML = `
+        <span style="width:20%">${issue.slice(-4)}</span>
+        <span style="width:50%; font-size:10px;">${logic}</span>
+        <span style="width:20%; font-weight:bold" class="${isWin ? 'log-win' : 'log-loss'}">${isWin ? 'WIN' : 'LOSS'}</span>
+    `;
     document.getElementById('historyList').prepend(div);
 }
 
