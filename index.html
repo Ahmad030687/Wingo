@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>V.20000 SUPREME JACKPOT</title>
+<title>V.20000 JACKPOT SNIPER</title>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 <style>
-    /* --- THEME: NEURAL GOLD (ORIGINAL V.20000) --- */
+    /* --- THEME: NEURAL GOLD --- */
     :root { 
         --bg: #000; 
         --gold: #ffcc00; 
@@ -14,7 +14,6 @@
         --red: #ff0033; 
         --blue: #00f3ff;
         --white: #ffffff;
-        --panel: #0a0a0a;
         --font: 'Courier New', monospace; 
     }
     
@@ -44,12 +43,6 @@
     
     .prediction { font-size:80px; font-weight:900; margin:5px 0; letter-spacing:-4px; background: -webkit-linear-gradient(#ffd700, #ff8800); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     
-    .balls { display:flex; justify-content:center; gap:15px; margin:10px 0; }
-    .ball { width:55px; height:55px; border:2px solid var(--gold); display:flex; align-items:center; justify-content:center; font-size:24px; font-weight:bold; box-shadow:inset 0 0 15px var(--gold); background:#000; color:#fff; border-radius:10px; }
-
-    .vote-track { width:100%; height:10px; background:#111; border:1px solid #333; margin-top:10px; position:relative; }
-    .vote-fill { height:100%; background:var(--neon); width:0%; transition:1s; }
-    
     .logic-tag { font-size:11px; background:#111; border:1px solid var(--gold); color:var(--gold); padding:5px 10px; display:inline-block; margin-top:15px; text-transform:uppercase; font-weight:bold; }
 
     /* STATS */
@@ -66,8 +59,8 @@
     .log-loss { color:var(--red); }
     .log-skip { color:var(--blue); }
 
-    /* SKIP OVERLAY */
-    .skip-layer { display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); flex-direction:column; justify-content:center; align-items:center; z-index:10; }
+    /* WAIT OVERLAY */
+    .skip-layer { display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); flex-direction:column; justify-content:center; align-items:center; z-index:10; }
     .skip-title { font-size:50px; font-weight:900; color:var(--blue); text-shadow:0 0 20px var(--blue); }
 
     /* NAV */
@@ -76,8 +69,6 @@
     .nav-btn.active { color:var(--gold); transform:scale(1.1); text-shadow:0 0 10px var(--gold); }
 
     .page { display:none; width:100%; flex-direction:column; align-items:center; }
-    .node-map { width:95%; height:300px; border:1px solid var(--gold); position:relative; overflow:hidden; }
-    .node-dot { width:2px; height:2px; background:var(--neon); position:absolute; animation:twinkle 2s infinite; }
 </style>
 </head>
 <body>
@@ -85,32 +76,23 @@
 <div class="header">
     <div style="line-height:1.2">
         <div style="font-size:18px; font-weight:900; color:#fff;">AHMAD BOSS</div>
-        <div style="font-size:10px; color:var(--gold);">V.20000 <span class="ai-badge">SUPREME</span></div>
+        <div style="font-size:10px; color:var(--gold);">V.20000 <span class="ai-badge">JACKPOT</span></div>
     </div>
     <div class="timer" id="timer">00</div>
 </div>
 
 <div class="ai-hud" id="aiHud">
     <div style="border-bottom:1px solid var(--gold); margin-bottom:5px;">AI STATUS: <span id="connStatus" style="color:var(--neon)">ONLINE</span></div>
-    <div class="strategy-row">
-        <span>TREND POWER:</span>
-        <span class="strategy-score" id="scoreTrend">0%</span>
-    </div>
-    <div class="strategy-row">
-        <span>FLIP POWER:</span>
-        <span class="strategy-score" id="scoreFlip">0%</span>
-    </div>
-    <div class="strategy-row">
-        <span>JACKPOT CONFIDENCE:</span>
-        <span class="strategy-score" id="scoreGap" style="color:#fff">0%</span>
-    </div>
+    <div class="strategy-row"><span>TREND POWER:</span><span class="strategy-score" id="scoreTrend">0%</span></div>
+    <div class="strategy-row"><span>FLIP POWER:</span><span class="strategy-score" id="scoreFlip">0%</span></div>
+    <div class="strategy-row"><span>STABILITY:</span><span class="strategy-score" id="scoreGap" style="color:#fff">SCANNING</span></div>
 </div>
 
 <div id="page-terminal" class="page" style="display:flex;">
     <div class="card" id="mainCard">
         <div class="skip-layer" id="skipLayer">
-            <div class="skip-title">SKIP</div>
-            <div style="color:#fff; font-size:10px; margin-top:5px;">RISKY MARKET DETECTED</div>
+            <div class="skip-title">WAIT</div>
+            <div style="color:#fff; font-size:10px;">SAFETY BREAK ACTIVE (1 PERIOD)</div>
         </div>
 
         <div class="period-row">
@@ -120,15 +102,6 @@
         
         <div class="prediction" id="pred">--</div>
         
-        <div class="balls" id="balls">
-            <div class="ball">?</div><div class="ball">?</div>
-        </div>
-
-        <div style="font-size:10px; color:#aaa; margin-top:10px;">PREDICTION STRENGTH</div>
-        <div class="vote-track">
-            <div class="vote-fill" id="confBar"></div>
-        </div>
-
         <div class="logic-tag" id="logic">ANALYZING...</div>
     </div>
 
@@ -142,132 +115,97 @@
 
 <div id="page-logs" class="page">
     <div class="archive-box">
-        <div style="border-bottom:1px solid #555; padding:5px; font-size:10px; color:#888; display:flex; justify-content:space-between;">
-            <span>ISSUE</span><span>LOGIC</span><span>RESULT</span>
-        </div>
         <div class="log-list" id="historyList"></div>
-    </div>
-</div>
-
-<div id="page-nodes" class="page">
-    <div style="padding:20px; text-align:center;">
-        <h3 style="color:var(--gold)">NEURAL NETWORK</h3>
-        <p style="font-size:10px; color:#aaa; margin-bottom:10px;">L2: JACKPOT SNIPER MODE</p>
-        <div class="node-map" id="nodeMap"></div>
-        <div style="font-size:10px; margin-top:10px; color:var(--neon);">MEMORY MAP ACTIVE</div>
-    </div>
-</div>
-
-<div id="page-profile" class="page">
-    <div class="card" style="margin-top:50px;">
-        <h2>AHMAD BOSS</h2>
-        <p style="color:var(--neon); margin-bottom:20px;">SUPREME VIP</p>
-        <div style="text-align:left; font-size:12px; line-height:2.5; color:#fff;">
-            > ENGINE: V.20000 SUPREME<br>
-            > L2: INSTANT JACKPOT RECOVERY<br>
-            > SKIP: AUTO-FILTER RISKY MKT<br>
-            > STATUS: ACTIVE
-        </div>
     </div>
 </div>
 
 <div class="nav">
     <button class="nav-btn active" onclick="nav('terminal', this)"><span>⚡</span>TERMINAL</button>
     <button class="nav-btn" onclick="nav('logs', this)"><span>📜</span>LOGS</button>
-    <button class="nav-btn" onclick="nav('nodes', this)"><span>🌐</span>NODES</button>
-    <button class="nav-btn" onclick="nav('profile', this)"><span>👤</span>PROFILE</button>
 </div>
 
 <script>
 const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?ts=";
-const BOSS_MAP = { 0:[5,2], 1:[6,3], 2:[7,4], 3:[8,0], 4:[9,1], 5:[0,7], 6:[1,8], 7:[2,9], 8:[3,5], 9:[4,6] };
-
 let lastIssue = "";
 let activeBet = null;
 let win = 0, l2Win = 0, total = 0, profit = 0;
 let level = 1;
-let firstLoad = true;
-let lastL1Logic = ""; 
-
-const nodeMap = document.getElementById('nodeMap');
-for(let i=0; i<60; i++){
-    let d = document.createElement('div');
-    d.className = 'node-dot';
-    d.style.left = Math.random()*100 + '%';
-    d.style.top = Math.random()*100 + '%';
-    nodeMap.appendChild(d);
-}
-
-setInterval(() => {
-    let r = 60 - new Date().getSeconds();
-    document.getElementById('timer').innerText = r<10 ? "0"+r : r;
-}, 1000);
+let sniperBreak = false; // THE SAFETY SWITCH
+let lastL1Logic = "";
 
 setInterval(async () => {
     try {
         let res = await fetch(API + Date.now());
         let data = await res.json();
         let latest = data.data.list[0];
-        if (latest.issueNumber !== lastIssue || firstLoad) {
-            if (!firstLoad && activeBet && lastIssue !== "") checkWin(latest, activeBet);
-            lastIssue = latest.issueNumber; firstLoad = false;
-            runSupremeEngine(data.data.list);
+        if (latest.issueNumber !== lastIssue) {
+            if (activeBet && lastIssue !== "") checkWin(latest, activeBet);
+            lastIssue = latest.issueNumber;
+            runJackpotEngine(data.data.list);
         }
+        document.getElementById('timer').innerText = 60 - new Date().getSeconds();
     } catch(e) {}
 }, 1000);
 
-function runSupremeEngine(history) {
+function runJackpotEngine(history) {
     let lastN = parseInt(history[0].number);
     let lastBS = lastN >= 5 ? "BIG" : "SMALL";
     let nextNum = (BigInt(history[0].issueNumber) + 1n).toString().slice(-4);
     document.getElementById('period').innerText = nextNum;
 
+    // Trend analysis
     let trend = 0, flip = 0;
-    for(let i=0; i<9; i++) {
+    for(let i=0; i<5; i++) {
         let curr = parseInt(history[i].number)>=5?"B":"S";
         let prev = parseInt(history[i+1].number)>=5?"B":"S";
-        if(curr===prev) trend += (10-i); else flip += (10-i);
+        if(curr===prev) trend++; else flip++;
     }
-    let totalW = trend + flip;
-    let tPct = (trend/totalW)*100, fPct = (flip/totalW)*100, gap = Math.abs(tPct-fPct);
+    document.getElementById('scoreTrend').innerText = (trend*20)+"%";
+    document.getElementById('scoreFlip').innerText = (flip*20)+"%";
 
-    document.getElementById('scoreTrend').innerText = Math.round(tPct)+"%";
-    document.getElementById('scoreFlip').innerText = Math.round(fPct)+"%";
-    document.getElementById('scoreGap').innerText = Math.round(gap)+"%";
+    let pick, logic;
 
-    let pick, logic, skip = (gap < 20 || lastN===0 || lastN===5);
-
-    if (level === 2) {
-        // INSTANT JACKPOT LOGIC
-        pick = (lastL1Logic === "TREND") ? (lastBS==="BIG"?"SMALL":"BIG") : lastBS;
-        logic = "🔥 JACKPOT SNIPER";
-        document.getElementById('lvlDisplay').innerText = "⚠️ L2: JACKPOT";
-        document.getElementById('lvlDisplay').style.color = "var(--red)";
-        skip = false; // L2 par skip nahi, sird jackpot
+    if (sniperBreak) {
+        pick = "SKIP"; logic = "SAFETY GAP: 1 PERIOD";
+        document.getElementById('skipLayer').style.display = 'flex';
+        document.getElementById('scoreGap').innerText = "WAITING...";
     } else {
-        if (tPct >= fPct) { pick = lastBS; lastL1Logic = "TREND"; }
-        else { pick = (lastBS==="BIG"?"SMALL":"BIG"); lastL1Logic = "FLIP"; }
-        logic = `L1: NEURAL ${lastL1Logic}`;
-        document.getElementById('lvlDisplay').innerText = "L1: NEURAL SCAN";
-        document.getElementById('lvlDisplay').style.color = "var(--gold)";
+        document.getElementById('skipLayer').style.display = 'none';
+        if (level === 2) {
+            // THE JACKPOT L2 LOGIC
+            pick = (lastL1Logic === "TREND") ? (lastBS==="BIG"?"SMALL":"BIG") : lastBS;
+            logic = "🔥 SURESHOT JACKPOT";
+            document.getElementById('lvlDisplay').innerText = "⚠️ L2: JACKPOT";
+            document.getElementById('lvlDisplay').style.color = "var(--red)";
+            document.getElementById('scoreGap').innerText = "JACKPOT READY";
+        } else {
+            pick = (trend >= flip) ? lastBS : (lastBS==="BIG"?"SMALL":"BIG");
+            lastL1Logic = (trend >= flip) ? "TREND" : "FLIP";
+            logic = "L1: NEURAL SCAN";
+            document.getElementById('lvlDisplay').innerText = "L1: NEURAL SCAN";
+            document.getElementById('lvlDisplay').style.color = "var(--gold)";
+            document.getElementById('scoreGap').innerText = "STABLE";
+        }
     }
 
-    document.getElementById('skipLayer').style.display = (skip && level===1) ? 'flex' : 'none';
-    document.getElementById('pred').innerText = pick;
+    document.getElementById('pred').innerText = pick === "SKIP" ? "--" : pick;
     document.getElementById('pred').style.color = pick==="BIG"?"var(--neon)":"var(--gold)";
     document.getElementById('logic').innerText = logic;
-    document.getElementById('confBar').style.width = (gap+50) + "%";
-    activeBet = { pick: pick, level: level, logic: logic, skip: skip };
+    activeBet = { pick: pick, level: level, logic: logic };
 }
 
 function checkWin(actual, bet) {
-    if(bet.skip && bet.level === 1) { addLog(actual.issueNumber, "SKIP", "SKIP", "log-skip"); return; }
+    if(bet.pick === "SKIP") { sniperBreak = false; return; }
     let res = parseInt(actual.number)>=5?"BIG":"SMALL";
     let isWin = (res === bet.pick); total++;
+
     if(isWin) { 
         if(bet.level===1) win++; else { l2Win++; confetti(); }
-        profit += (bet.level===1?100:300); level = 1;
-    } else { level = (bet.level===1)?2:1; }
+        profit += (bet.level===1?100:300); level = 1; sniperBreak = false;
+    } else { 
+        if(level === 1) { level = 2; sniperBreak = true; } 
+        else { level = 1; sniperBreak = false; }
+    }
     updateStats();
     addLog(actual.issueNumber, res, isWin?"WIN":"LOSS", isWin?"log-win":"log-loss");
 }
