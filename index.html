@@ -3,16 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>V.20000 SUPREME</title>
+<title>V.20000 ULTRA SAFE</title>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 <style>
-    /* --- THEME: NEURAL GOLD GOD MODE (USER FAVORITE) --- */
+    /* --- THEME: NEURAL GOLD (USER FAVORITE) --- */
     :root { 
         --bg: #000; 
         --gold: #ffcc00; 
         --neon: #00ff41; 
         --red: #ff0033; 
         --blue: #00f3ff;
+        --white: #ffffff;
         --panel: #0a0a0a;
         --font: 'Courier New', monospace; 
     }
@@ -28,7 +29,7 @@
 
     /* HEADER */
     .header { width:100%; padding:15px; border-bottom:2px solid var(--gold); background:#000; position:sticky; top:0; z-index:100; display:flex; justify-content:space-between; align-items:center; box-shadow: 0 0 20px rgba(255, 204, 0, 0.2); }
-    .ai-badge { font-size:10px; background:var(--blue); color:#000; padding:2px 6px; border-radius:4px; font-weight:bold; }
+    .ai-badge { font-size:10px; background:var(--white); color:#000; padding:2px 6px; border-radius:4px; font-weight:bold; }
     .timer { font-size:24px; font-weight:900; color:var(--gold); }
 
     /* AI HUD */
@@ -87,7 +88,7 @@
 <div class="header">
     <div style="line-height:1.2">
         <div style="font-size:18px; font-weight:900; color:#fff;">AHMAD BOSS</div>
-        <div style="font-size:10px; color:var(--gold);">V.20000 <span class="ai-badge">SUPREME</span></div>
+        <div style="font-size:10px; color:var(--gold);">V.20000 <span class="ai-badge">ULTRA SAFE</span></div>
     </div>
     <div class="timer" id="timer">00</div>
 </div>
@@ -103,7 +104,7 @@
         <span class="strategy-score" id="scoreFlip">0%</span>
     </div>
     <div class="strategy-row">
-        <span>CONFIDENCE GAP:</span>
+        <span>GAP (CONFIDENCE):</span>
         <span class="strategy-score" id="scoreGap" style="color:#fff">0%</span>
     </div>
 </div>
@@ -112,7 +113,7 @@
     <div class="card" id="mainCard">
         <div class="skip-layer" id="skipLayer">
             <div class="skip-title">SKIP</div>
-            <div style="color:#fff; font-size:10px; margin-top:5px;">GAP < 25% (STRICT SAFETY)</div>
+            <div style="color:#fff; font-size:10px; margin-top:5px;">L2 SAFETY TRIGGERED (RISKY MKT)</div>
         </div>
 
         <div class="period-row">
@@ -154,7 +155,7 @@
 <div id="page-nodes" class="page">
     <div style="padding:20px; text-align:center;">
         <h3 style="color:var(--gold)">NEURAL NETWORK</h3>
-        <p style="font-size:10px; color:#aaa; margin-bottom:10px;">L2: SMART PATTERN RECOGNITION</p>
+        <p style="font-size:10px; color:#aaa; margin-bottom:10px;">L2: AUTO-SAFETY PROTOCOL</p>
         <div class="node-map" id="nodeMap"></div>
         <div style="font-size:10px; margin-top:10px; color:var(--neon);">LOGIC INVERTER: ACTIVE</div>
     </div>
@@ -163,10 +164,10 @@
 <div id="page-profile" class="page">
     <div class="card" style="margin-top:50px;">
         <h2>AHMAD BOSS</h2>
-        <p style="color:var(--neon); margin-bottom:20px;">SUPREME STATUS</p>
+        <p style="color:var(--neon); margin-bottom:20px;">ULTRA SAFE STATUS</p>
         <div style="text-align:left; font-size:12px; line-height:2.5; color:#fff;">
-            > ENGINE: V.20000 SUPREME<br>
-            > SKIP: GAP < 25% (STRICT)<br>
+            > ENGINE: V.20000 ULTRA SAFE<br>
+            > SKIP: ALSO APPLIES TO L2<br>
             > 0/5 RULE: AUTO-SKIP<br>
             > L2: SMART RECOVERY<br>
             > STATUS: ACTIVE
@@ -238,7 +239,7 @@ setInterval(async () => {
             lastIssue = latest.issueNumber;
             firstLoad = false;
             
-            runSupremeEngine(data.data.list);
+            runUltraSafeEngine(data.data.list);
         }
     } catch(e) {
         document.getElementById('connStatus').innerText = "RECONNECTING...";
@@ -246,8 +247,8 @@ setInterval(async () => {
     }
 }, 1000);
 
-// --- V.20000 SUPREME ENGINE ---
-function runSupremeEngine(history) {
+// --- V.20000 ULTRA SAFE ENGINE ---
+function runUltraSafeEngine(history) {
     let limit = Math.min(history.length, 10);
     if (limit < 3) return;
 
@@ -264,8 +265,7 @@ function runSupremeEngine(history) {
     for(let i=0; i < limit - 1; i++){
         let curr = parseInt(history[i].number) >= 5 ? "BIG" : "SMALL";
         let prev = parseInt(history[i+1].number) >= 5 ? "BIG" : "SMALL";
-        // SUPREME WEIGHTS: Recent history matters 5x more
-        let weight = (i < 3) ? 5 : 1; 
+        let weight = (i < 3) ? 4 : 1; 
         
         if(curr === prev) trendWins += (10 * weight);
         else flipWins += (10 * weight);
@@ -283,58 +283,43 @@ function runSupremeEngine(history) {
     let pick, logic, conf;
     let skip = false;
 
+    // CHECK FOR RISKY MARKET CONDITIONS (FOR BOTH L1 AND L2)
+    // If Gap < 25% OR Last Number was 0/5 -> MARKET IS RISKY
+    let isRisky = (gap < 25) || (lastN === 0 || lastN === 5);
+
     // 2. DECISION LOGIC
     if (level === 2) {
-        // L2: SMART INVERTER
-        // Normal Inverter: L1 Trend Loss -> L2 Flip
-        // BUT if Pattern is 2-2 (BBSS), Inverter fails.
-        // So we check for 2-2 pattern specifically.
+        // L2: ULTRA SAFE RECOVERY
+        // If market is risky, SKIP even on Level 2.
         
-        let p1 = parseInt(history[0].number) >= 5 ? "B" : "S";
-        let p2 = parseInt(history[1].number) >= 5 ? "B" : "S";
-        let p3 = parseInt(history[2].number) >= 5 ? "B" : "S";
-        
-        // If last 2 were Same (e.g. SS) and before that Different (B), likely 2-2 forming.
-        if (p1 === p2 && p2 !== p3) {
-             // 2-2 Detected: Follow Trend (e.g. if SS, bet S again? No. If BBSS, next is B?)
-             // No, standard 2-2 is BBSSBB.
-             // If we just had SS (Loss on L1 which bet B), then Pattern is SS.
-             // Next likely is B (to complete 2-2-1 flip or 2-2 stick).
-             // Let's stick to SIMPLE INVERTER but force Pattern check.
-             
-             if (lastL1Logic.includes("TREND")) {
-                pick = (lastBS === "BIG" ? "SMALL" : "BIG"); // Switch to Flip
-                logic = "L2: SMART FLIP";
-             } else {
-                pick = lastBS; // Switch to Trend
-                logic = "L2: SMART TREND";
-             }
-        } else {
-             // Default Inverter
-             if (lastL1Logic.includes("TREND")) {
+        if (isRisky) {
+            skip = true;
+            pick = "SKIP";
+            logic = "L2: MARKET RISKY (WAIT)";
+            document.getElementById('mainCard').style.borderColor = "var(--blue)";
+            document.getElementById('lvlDisplay').innerText = "L2: SAFETY SKIP";
+            document.getElementById('lvlDisplay').style.color = "var(--blue)";
+        } 
+        else {
+            // Safe to Recover -> Use Smart Inverter
+            if (lastL1Logic.includes("TREND")) {
                 pick = (lastBS === "BIG" ? "SMALL" : "BIG");
                 logic = "L2: RECOVERY FLIP";
             } else {
                 pick = lastBS;
                 logic = "L2: RECOVERY TREND";
             }
+            document.getElementById('mainCard').style.borderColor = "var(--red)";
+            document.getElementById('lvlDisplay').innerText = "⚠️ L2: RECOVERY";
+            document.getElementById('lvlDisplay').style.color = "var(--red)";
+            conf = 99;
         }
-
-        document.getElementById('mainCard').style.borderColor = "var(--red)";
-        document.getElementById('lvlDisplay').innerText = "⚠️ L2: SMART FIX";
-        document.getElementById('lvlDisplay').style.color = "var(--red)";
-        conf = 99;
-        document.getElementById('skipLayer').style.display = 'none';
     } 
     else {
         // L1: STRICT SCAN
-        // Added 0/5 Skip Rule + 25% Gap Rule
-        if (gap < 25) { 
+        if (isRisky) { 
             skip = true; pick = "SKIP"; logic = "RISK: GAP < 25%";
         } 
-        else if (lastN === 0 || lastN === 5) {
-            skip = true; pick = "SKIP"; logic = "RISK: VIOLET (0/5)";
-        }
         else {
             if (trendPct >= flipPct) {
                 pick = lastBS; logic = `L1: TREND (${trendPct.toFixed(0)}%)`; lastL1Logic = "TREND";
@@ -343,14 +328,15 @@ function runSupremeEngine(history) {
             }
         }
         
-        if (skip) document.getElementById('skipLayer').style.display = 'flex';
-        else document.getElementById('skipLayer').style.display = 'none';
-
-        conf = Math.max(trendPct, flipPct);
         document.getElementById('mainCard').style.borderColor = "var(--gold)";
         document.getElementById('lvlDisplay').innerText = "L1: NEURAL SCAN";
         document.getElementById('lvlDisplay').style.color = "var(--gold)";
+        conf = Math.max(trendPct, flipPct);
     }
+
+    // TOGGLE SKIP OVERLAY
+    if (skip) document.getElementById('skipLayer').style.display = 'flex';
+    else document.getElementById('skipLayer').style.display = 'none';
 
     // UPDATE UI
     document.getElementById('period').innerText = nextNum;
@@ -377,6 +363,8 @@ function checkWin(actual, bet) {
         level = 1;
         confetti({ particleCount: 300, spread: 150, colors: ['#ffcc00', '#ffffff'] });
     } else {
+        // IF WE LOST L1 -> GO TO L2
+        // IF WE LOST L2 -> RESET TO L1 (Stop Loss)
         level = level === 1 ? 2 : 1; 
     }
 
