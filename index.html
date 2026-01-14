@@ -3,15 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>V.ETERNAL MICRO-SCAN</title>
+<title>AHMAD MARKET SHIFTER</title>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 <style>
-    /* --- THEME: GOLD GOD MODE --- */
+    /* --- THEME: NEURAL GOLD --- */
     :root { 
         --bg: #000; 
         --gold: #ffcc00; 
         --neon: #00ff41; 
         --red: #ff0033; 
+        --blue: #00f3ff;
         --panel: #0a0a0a;
         --font: 'Courier New', monospace; 
     }
@@ -27,7 +28,7 @@
 
     /* HEADER */
     .header { width:100%; padding:15px; border-bottom:2px solid var(--gold); background:#000; position:sticky; top:0; z-index:100; display:flex; justify-content:space-between; align-items:center; box-shadow: 0 0 20px rgba(255, 204, 0, 0.2); }
-    .ai-badge { font-size:10px; background:var(--neon); color:#000; padding:2px 6px; border-radius:4px; font-weight:bold; }
+    .ai-badge { font-size:10px; background:var(--blue); color:#000; padding:2px 6px; border-radius:4px; font-weight:bold; }
     .timer { font-size:24px; font-weight:900; color:var(--gold); }
 
     /* AI HUD */
@@ -63,6 +64,11 @@
     .log-entry { display:flex; justify-content:space-between; font-size:12px; padding:6px; border-bottom:1px dashed #222; }
     .log-win { color:var(--neon); }
     .log-loss { color:var(--red); }
+    .log-skip { color:var(--blue); }
+
+    /* SKIP OVERLAY */
+    .skip-layer { display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); flex-direction:column; justify-content:center; align-items:center; z-index:10; }
+    .skip-title { font-size:50px; font-weight:900; color:var(--blue); text-shadow:0 0 20px var(--blue); }
 
     /* NAV */
     .nav { position:fixed; bottom:0; left:0; width:100%; background:#000; border-top:2px solid var(--gold); padding:10px 0; display:flex; justify-content:space-around; z-index:999; }
@@ -82,32 +88,37 @@
 <div class="header">
     <div style="line-height:1.2">
         <div style="font-size:18px; font-weight:900; color:#fff;">AHMAD BOSS</div>
-        <div style="font-size:10px; color:var(--gold);">MICRO-SCANNER <span class="ai-badge">WEIGHTED</span></div>
+        <div style="font-size:10px; color:var(--gold);">V.20000 <span class="ai-badge">NEURAL SHIFTER</span></div>
     </div>
     <div class="timer" id="timer">00</div>
 </div>
 
 <div class="ai-hud" id="aiHud">
-    <div style="border-bottom:1px solid var(--gold); margin-bottom:5px;">MICRO-TREND ANALYSIS (10 PDS)</div>
+    <div style="border-bottom:1px solid var(--gold); margin-bottom:5px;">AI STATUS: <span id="connStatus" style="color:var(--neon)">ONLINE</span></div>
     <div class="strategy-row">
-        <span>TREND POWER (Dragon):</span>
+        <span>TREND POWER:</span>
         <span class="strategy-score" id="scoreTrend">0%</span>
     </div>
     <div class="strategy-row">
-        <span>FLIP POWER (ZigZag):</span>
+        <span>FLIP POWER:</span>
         <span class="strategy-score" id="scoreFlip">0%</span>
     </div>
     <div class="strategy-row">
-        <span>ACTIVE STRATEGY:</span>
-        <span class="strategy-score" id="activeStrat" style="color:var(--gold)">LOADING...</span>
+        <span>GAP (CONFIDENCE):</span>
+        <span class="strategy-score" id="scoreGap" style="color:#fff">0%</span>
     </div>
 </div>
 
 <div id="page-terminal" class="page" style="display:flex;">
     <div class="card" id="mainCard">
+        <div class="skip-layer" id="skipLayer">
+            <div class="skip-title">SKIP</div>
+            <div style="color:#fff; font-size:10px;">LOW CONFIDENCE DETECTED</div>
+        </div>
+
         <div class="period-row">
             <span>TARGET: <b id="period">....</b></span>
-            <span id="lvlDisplay" style="color:var(--gold)">L1: MICRO SCAN</span>
+            <span id="lvlDisplay" style="color:var(--gold)">L1: NEURAL SCAN</span>
         </div>
         
         <div class="prediction" id="pred">--</div>
@@ -116,18 +127,18 @@
             <div class="ball">?</div><div class="ball">?</div>
         </div>
 
-        <div style="font-size:10px; color:#aaa; margin-top:10px;">WEIGHTED CONFIDENCE</div>
+        <div style="font-size:10px; color:#aaa; margin-top:10px;">PREDICTION STRENGTH</div>
         <div class="vote-track">
             <div class="vote-fill" id="confBar"></div>
         </div>
 
-        <div class="logic-tag" id="logic">ANALYZING RECENCY...</div>
+        <div class="logic-tag" id="logic">ANALYZING...</div>
     </div>
 
     <div class="stats">
-        <div class="s-box"><div class="s-val" id="wins">0</div><div class="s-lbl">DIRECT WINS</div></div>
-        <div class="s-box"><div class="s-val" id="l2wins">0</div><div class="s-lbl">RECOVERIES</div></div>
-        <div class="s-box"><div class="s-val" id="acc" style="color:var(--neon)">100%</div><div class="s-lbl">ACCURACY</div></div>
+        <div class="s-box"><div class="s-val" id="wins">0</div><div class="s-lbl">WINS</div></div>
+        <div class="s-box"><div class="s-val" id="l2wins">0</div><div class="s-lbl">FIXES</div></div>
+        <div class="s-box"><div class="s-val" id="acc" style="color:var(--neon)">100%</div><div class="s-lbl">ACC</div></div>
         <div class="s-box"><div class="s-val" id="profit" style="color:var(--gold)">0</div><div class="s-lbl">PROFIT</div></div>
     </div>
 </div>
@@ -135,7 +146,7 @@
 <div id="page-logs" class="page">
     <div class="archive-box">
         <div style="border-bottom:1px solid #555; padding:5px; font-size:10px; color:#888; display:flex; justify-content:space-between;">
-            <span>ISSUE</span><span>STRATEGY</span><span>RESULT</span>
+            <span>ISSUE</span><span>LOGIC</span><span>RESULT</span>
         </div>
         <div class="log-list" id="historyList"></div>
     </div>
@@ -144,21 +155,21 @@
 <div id="page-nodes" class="page">
     <div style="padding:20px; text-align:center;">
         <h3 style="color:var(--gold)">NEURAL NETWORK</h3>
-        <p style="font-size:10px; color:#aaa; margin-bottom:10px;">WEIGHTED DATA PATHWAYS</p>
+        <p style="font-size:10px; color:#aaa; margin-bottom:10px;">DYNAMIC PATTERN SHIFTING</p>
         <div class="node-map" id="nodeMap"></div>
-        <div style="font-size:10px; margin-top:10px; color:var(--neon);" id="nodeStatus">RECENCY BIAS: ACTIVE</div>
+        <div style="font-size:10px; margin-top:10px; color:var(--neon);">LOGIC INVERTER ACTIVE</div>
     </div>
 </div>
 
 <div id="page-profile" class="page">
     <div class="card" style="margin-top:50px;">
-        <h2>AHMAD ALI BOSS</h2>
-        <p style="color:var(--neon); margin-bottom:20px;">ETERNAL STATUS</p>
+        <h2>AHMAD BOSS</h2>
+        <p style="color:var(--neon); margin-bottom:20px;">NEURAL STATUS</p>
         <div style="text-align:left; font-size:12px; line-height:2.5; color:#fff;">
-            > ENGINE: WEIGHTED AI<br>
-            > SCAN: 10 PERIODS<br>
-            > PRIORITY: LAST 3 RESULTS (3x)<br>
-            > STATUS: ACTIVE
+            > ENGINE: V.20000<br>
+            > SKIP: LOW CONFIDENCE (<15%)<br>
+            > L2: LOGIC INVERTER<br>
+            > STATUS: UNSTOPPABLE
         </div>
     </div>
 </div>
@@ -179,6 +190,7 @@ let activeBet = null;
 let win = 0, l2Win = 0, total = 0, profit = 0;
 let level = 1;
 let firstLoad = true;
+let lastL1Logic = ""; // To track what L1 logic failed
 
 // INITIALIZE NODE MAP
 const nodeMap = document.getElementById('nodeMap');
@@ -211,18 +223,25 @@ setInterval(async () => {
         let latest = data.data.list[0];
         
         if (latest.issueNumber !== lastIssue || firstLoad) {
+            
             if (!firstLoad && activeBet && lastIssue !== "") {
-                checkWin(latest, activeBet);
+                if(activeBet.pick === "SKIP") {
+                     addLog(latest.issueNumber, "SKIPPED", "SKIPPED", "SKIP", 0);
+                } else {
+                     checkWin(latest, activeBet);
+                }
             }
+            
             lastIssue = latest.issueNumber;
             firstLoad = false;
-            runWeightedAI(data.data.list);
+            
+            runNeuralShifter(data.data.list);
         }
     } catch(e) {}
 }, 1000);
 
-// --- WEIGHTED AI ENGINE (Make the 10 Periods Count!) ---
-function runWeightedAI(history) {
+// --- V.20000 NEURAL SHIFTER ENGINE ---
+function runNeuralShifter(history) {
     let limit = Math.min(history.length, 10);
     if (limit < 2) return;
 
@@ -231,80 +250,98 @@ function runWeightedAI(history) {
     let nextNum = (BigInt(history[0].issueNumber) + 1n).toString().slice(-4);
     let [b1, b2] = BOSS_MAP[lastN];
 
-    // SCORING WITH WEIGHTS
-    let trendScore = 0;
-    let flipScore = 0;
+    // 1. ANALYSIS
+    let trendWins = 0;
+    let flipWins = 0;
     let totalWeight = 0;
 
     for(let i=0; i < limit - 1; i++){
         let curr = parseInt(history[i].number) >= 5 ? "BIG" : "SMALL";
         let prev = parseInt(history[i+1].number) >= 5 ? "BIG" : "SMALL";
+        let weight = (i < 3) ? 3 : 1; // Heavy weight on recent 3
         
-        // Weighting Logic:
-        // i=0 (Latest) -> Weight 4
-        // i=1 -> Weight 3
-        // i=2 -> Weight 2
-        // Others -> Weight 1
-        let weight = 1;
-        if(i === 0) weight = 4;
-        else if(i === 1) weight = 3;
-        else if(i === 2) weight = 2;
-
-        if(curr === prev) trendScore += (10 * weight);
-        else flipScore += (10 * weight);
+        if(curr === prev) trendWins += (10 * weight);
+        else flipWins += (10 * weight);
         
         totalWeight += (10 * weight);
     }
 
-    // Normalize to Percentage
-    let trendPct = (trendScore / totalWeight) * 100;
-    let flipPct = (flipScore / totalWeight) * 100;
+    let trendPct = (trendWins / totalWeight) * 100;
+    let flipPct = (flipWins / totalWeight) * 100;
+    
+    // CONFIDENCE GAP
+    let gap = Math.abs(trendPct - flipPct);
 
     document.getElementById('scoreTrend').innerText = trendPct.toFixed(0) + "%";
     document.getElementById('scoreFlip').innerText = flipPct.toFixed(0) + "%";
+    document.getElementById('scoreGap').innerText = gap.toFixed(0) + "%";
 
     let pick, logic, conf;
+    let skip = false;
 
-    // DECISION
+    // 2. DECISION LOGIC
     if (level === 2) {
-        // L2: WEIGHTED ADAPTATION
-        if (flipPct > 55) { // Slightly lower threshold for L2 flip
+        // L2: THE SHIFTER (LOGIC INVERTER)
+        // If L1 failed on Trend, we assume market shifted to Flip.
+        // If L1 failed on Flip, we assume market shifted to Trend.
+        
+        if (lastL1Logic.includes("TREND")) {
+            // L1 thought Trend, but Lost. So Switch to FLIP.
             pick = (lastBS === "BIG" ? "SMALL" : "BIG");
-            logic = "L2: WEIGHTED FLIP";
+            logic = "L2: SHIFT TO FLIP";
         } else {
+            // L1 thought Flip, but Lost. So Switch to TREND.
             pick = lastBS;
-            logic = "L2: WEIGHTED TREND";
+            logic = "L2: SHIFT TO TREND";
         }
+
         document.getElementById('mainCard').style.borderColor = "var(--red)";
-        document.getElementById('lvlDisplay').innerText = "⚠️ L2: MICRO-ADAPT";
+        document.getElementById('lvlDisplay').innerText = "⚠️ L2: LOGIC INVERT";
         document.getElementById('lvlDisplay').style.color = "var(--red)";
         conf = 99;
+
+        // Hide Skip Layer on L2 (Must Recover)
+        document.getElementById('skipLayer').style.display = 'none';
     } 
     else {
-        // L1: WEIGHTED SNIPER
-        if (trendPct >= flipPct) {
-            pick = lastBS;
-            logic = `MICRO: TREND (${trendPct.toFixed(0)}%)`;
-            document.getElementById('activeStrat').innerText = "RECENCY: MOMENTUM";
+        // L1: SMART SCAN (WITH SKIP)
+        
+        // CHECK CONFIDENCE GAP
+        if (gap < 15) { // If difference is less than 15%, Market is confused
+            skip = true;
+            pick = "SKIP";
+            logic = "RISK: LOW CONFIDENCE";
+            document.getElementById('skipLayer').style.display = 'flex';
         } else {
-            pick = (lastBS === "BIG" ? "SMALL" : "BIG");
-            logic = `MICRO: FLIP (${flipPct.toFixed(0)}%)`;
-            document.getElementById('activeStrat').innerText = "RECENCY: ZIGZAG";
+            document.getElementById('skipLayer').style.display = 'none';
+            if (trendPct >= flipPct) {
+                pick = lastBS;
+                logic = `L1: TREND (${trendPct.toFixed(0)}%)`;
+                lastL1Logic = "TREND";
+            } else {
+                pick = (lastBS === "BIG" ? "SMALL" : "BIG");
+                logic = `L1: FLIP (${flipPct.toFixed(0)}%)`;
+                lastL1Logic = "FLIP";
+            }
         }
         
         conf = Math.max(trendPct, flipPct);
         document.getElementById('mainCard').style.borderColor = "var(--gold)";
-        document.getElementById('lvlDisplay').innerText = "L1: MICRO SCAN";
+        document.getElementById('lvlDisplay').innerText = "L1: NEURAL SCAN";
         document.getElementById('lvlDisplay').style.color = "var(--gold)";
     }
 
-    // UI
+    // UPDATE UI
     document.getElementById('period').innerText = nextNum;
-    document.getElementById('pred').innerText = pick;
-    document.getElementById('pred').style.color = pick==="BIG" ? "var(--neon)" : "var(--gold)";
-    document.getElementById('balls').innerHTML = `<div class="ball">${b1}</div><div class="ball">${b2}</div>`;
+    
+    if(!skip) {
+        document.getElementById('pred').innerText = pick;
+        document.getElementById('pred').style.color = pick==="BIG" ? "var(--neon)" : "var(--gold)";
+        document.getElementById('balls').innerHTML = `<div class="ball">${b1}</div><div class="ball">${b2}</div>`;
+        document.getElementById('confBar').style.width = conf + "%";
+    }
+    
     document.getElementById('logic').innerText = logic;
-    document.getElementById('confBar').style.width = conf + "%";
 
     activeBet = { pick: pick, level: level, logic: logic };
 }
@@ -334,10 +371,19 @@ function checkWin(actual, bet) {
 function addLog(issue, res, pick, isWin, lvl, logic) {
     let div = document.createElement('div');
     div.className = `log-entry`;
+    
+    let status = isWin;
+    if(pick === "SKIP") status = "SKIP";
+    
+    let colorClass = "";
+    if(status === true) colorClass = "log-win";
+    else if(status === false) colorClass = "log-loss";
+    else colorClass = "log-skip";
+    
     div.innerHTML = `
         <span style="width:20%">${issue.slice(-4)}</span>
         <span style="width:50%; font-size:10px;">${logic}</span>
-        <span style="width:20%; font-weight:bold" class="${isWin ? 'log-win' : 'log-loss'}">${isWin ? 'WIN' : 'LOSS'}</span>
+        <span style="width:20%; font-weight:bold" class="${colorClass}">${status === true ? 'WIN' : (status==='SKIP' ? 'SKIP' : 'LOSS')}</span>
     `;
     document.getElementById('historyList').prepend(div);
 }
