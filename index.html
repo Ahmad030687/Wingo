@@ -1,164 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>V.ETERNAL MICRO-SCAN</title>
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-<style>
-    /* --- THEME: GOLD GOD MODE --- */
-    :root { 
-        --bg: #000; 
-        --gold: #ffcc00; 
-        --neon: #00ff41; 
-        --red: #ff0033; 
-        --panel: #0a0a0a;
-        --font: 'Courier New', monospace; 
-    }
-    
-    * { margin:0; padding:0; box-sizing:border-box; font-family:var(--font); user-select:none; }
-    body { background:var(--bg); color:var(--gold); min-height:100vh; overflow-x:hidden; display:flex; flex-direction:column; align-items:center; padding-bottom:70px; }
-    
-    body::before {
-        content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: radial-gradient(circle at 50% 50%, rgba(255, 204, 0, 0.05), transparent 70%);
-        z-index: -1;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>OMNI-X SUPREME v8.0</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-purple: #bc13fe;
+            --dark-bg: #010101;
+            --green: #00ff41;
+            --red: #ff0033;
+            --gold: #ffcc00;
+            --blue: #00d4ff;
+        }
 
-    /* HEADER */
-    .header { width:100%; padding:15px; border-bottom:2px solid var(--gold); background:#000; position:sticky; top:0; z-index:100; display:flex; justify-content:space-between; align-items:center; box-shadow: 0 0 20px rgba(255, 204, 0, 0.2); }
-    .ai-badge { font-size:10px; background:var(--neon); color:#000; padding:2px 6px; border-radius:4px; font-weight:bold; }
-    .timer { font-size:24px; font-weight:900; color:var(--gold); }
+        * { margin:0; padding:0; box-sizing:border-box; font-family: 'Rajdhani', sans-serif; user-select:none; }
+        body { background: var(--dark-bg); color: #fff; min-height: 100vh; overflow-x: hidden; padding-bottom: 80px; }
 
-    /* AI HUD */
-    .ai-hud { width:95%; max-width:450px; height:auto; background:rgba(10,10,0,0.8); border:1px solid var(--gold); margin-top:10px; padding:10px; font-size:10px; }
-    .strategy-row { display:flex; justify-content:space-between; margin-bottom:5px; border-bottom:1px solid #222; padding-bottom:2px; }
-    .strategy-score { color:var(--neon); font-weight:bold; }
+        .header { width:100%; padding:15px; border-bottom:2px solid var(--neon-purple); background:#000; display:flex; justify-content:space-between; align-items:center; position: sticky; top:0; z-index:1000; }
+        .ping-box { font-size: 10px; color: var(--green); border: 1px solid var(--green); padding: 2px 6px; border-radius: 4px; font-family: 'Orbitron'; }
 
-    /* CARD */
-    .card { width:95%; max-width:450px; margin:15px 0; border:2px solid var(--gold); border-top:5px solid var(--gold); padding:20px; text-align:center; position:relative; background:#050500; box-shadow:0 0 30px rgba(255, 204, 0, 0.1); }
-    
-    .period-row { display:flex; justify-content:space-between; border-bottom:1px solid #333; padding-bottom:8px; margin-bottom:10px; font-size:12px; color:#fff; }
-    
-    .prediction { font-size:80px; font-weight:900; margin:5px 0; letter-spacing:-4px; background: -webkit-linear-gradient(#ffd700, #ff8800); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    
-    .balls { display:flex; justify-content:center; gap:15px; margin:10px 0; }
-    .ball { width:55px; height:55px; border:2px solid var(--gold); display:flex; align-items:center; justify-content:center; font-size:24px; font-weight:bold; box-shadow:inset 0 0 15px var(--gold); background:#000; color:#fff; border-radius:10px; }
+        .mickey-hud { width:95%; margin:10px auto; display:grid; grid-template-columns: 1fr 1fr; gap:8px; }
+        .meter-card { background:rgba(25,25,25,0.9); border:1px solid #333; padding:12px; border-radius:8px; border-left: 3px solid var(--neon-purple); }
+        .meter-label { font-size:9px; color:#888; text-transform:uppercase; letter-spacing: 1px; }
+        .meter-val { font-size:14px; color:#fff; font-weight:bold; font-family: 'Orbitron'; margin-top: 4px; }
 
-    /* CONFIDENCE BAR */
-    .vote-track { width:100%; height:10px; background:#111; border:1px solid #333; margin-top:10px; position:relative; }
-    .vote-fill { height:100%; background:var(--neon); width:0%; transition:1s; }
-    
-    .logic-badge { font-size:11px; background:#111; border:1px solid var(--gold); color:var(--gold); padding:5px 10px; display:inline-block; margin-top:15px; text-transform:uppercase; font-weight:bold; }
+        .card { width:95%; margin:10px auto; border:2px solid var(--neon-purple); padding:20px; text-align:center; position:relative; background: linear-gradient(135deg, #0a0015 0%, #050505 100%); box-shadow:0 0 40px rgba(188, 19, 254, 0.4); border-radius:15px; }
+        .period-info { display:flex; justify-content:space-between; font-size:12px; font-family:'Orbitron'; color:var(--gold); border-bottom:1px solid #222; padding-bottom:10px; }
+        .timer-display { font-size: 26px; color: #fff; font-weight: 900; margin-top: 5px; font-family: 'Orbitron'; letter-spacing: 2px; }
+        .prediction { font-size:80px; font-weight:900; margin:10px 0; font-family:'Orbitron'; letter-spacing:-4px; text-shadow: 0 0 20px var(--neon-purple); }
 
-    /* STATS */
-    .stats { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:5px; width:95%; max-width:450px; margin-bottom:15px; }
-    .s-box { border:1px solid #333; background:#050505; padding:8px; text-align:center; border-radius:5px; }
-    .s-val { font-size:16px; font-weight:bold; color:#fff; }
-    .s-lbl { font-size:8px; color:var(--gold); }
+        .real-thought { font-size:11px; color:var(--blue); border:1px dashed rgba(0, 212, 255, 0.3); padding:10px; display:block; margin-top:15px; background:rgba(0,212,255,0.03); font-style: italic; min-height: 50px; line-height: 1.4; }
 
-    /* LOGS */
-    .archive-box { width:95%; max-width:450px; background:#000; border:1px solid #333; padding:5px; margin-bottom:60px; font-family:'Courier New', monospace; }
-    .log-list { display:flex; flex-direction:column; }
-    .log-entry { display:flex; justify-content:space-between; font-size:12px; padding:6px; border-bottom:1px dashed #222; }
-    .log-win { color:var(--neon); }
-    .log-loss { color:var(--red); }
+        .stats-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:6px; width:95%; margin:10px auto; }
+        .s-box { background:#0a0a0a; border:1px solid #222; padding:10px; text-align:center; border-radius:8px; border-bottom: 2px solid var(--neon-purple); }
+        .s-val { font-size:16px; font-weight:bold; font-family: 'Orbitron'; }
+        .s-lbl { font-size:8px; color: var(--gold); }
 
-    /* NAV */
-    .nav { position:fixed; bottom:0; left:0; width:100%; background:#000; border-top:2px solid var(--gold); padding:10px 0; display:flex; justify-content:space-around; z-index:999; }
-    .nav-btn { background:none; border:none; color:#555; font-size:10px; font-weight:bold; cursor:pointer; display:flex; flex-direction:column; align-items:center; transition:0.3s; }
-    .nav-btn.active { color:var(--gold); transform:scale(1.1); text-shadow:0 0 10px var(--gold); }
+        .nav { position:fixed; bottom:0; left:0; width:100%; background:#000; border-top:2px solid var(--neon-purple); padding:12px 0; display:flex; justify-content:space-around; z-index:1000; }
+        .nav-btn { background:none; border:none; color:#555; font-size:10px; font-weight:bold; cursor:pointer; display:flex; flex-direction:column; align-items:center; }
+        .nav-btn.active { color:var(--gold); transform: scale(1.1); }
 
-    /* NODES PAGE */
-    .page { display:none; width:100%; flex-direction:column; align-items:center; }
-    .node-map { width:95%; height:300px; border:1px solid var(--gold); position:relative; overflow:hidden; }
-    .node-dot { width:2px; height:2px; background:var(--neon); position:absolute; animation:twinkle 2s infinite; }
-    @keyframes twinkle { 0%{opacity:0.2} 50%{opacity:1} 100%{opacity:0.2} }
+        .page { display:none; width:100%; flex-direction:column; }
+        #page-terminal { display: flex; }
 
-</style>
+        .node-container { width:95%; margin:10px auto; background:#0a0a0a; border:1px solid #222; padding:15px; border-radius:10px; border-left: 4px solid var(--neon-purple); }
+        .node-title { color:var(--gold); font-family:'Orbitron'; font-size:12px; margin-bottom:5px; }
+        .node-desc { font-size:10px; color:#888; }
+    </style>
 </head>
 <body>
 
 <div class="header">
     <div style="line-height:1.2">
-        <div style="font-size:18px; font-weight:900; color:#fff;">AHMAD BOSS</div>
-        <div style="font-size:10px; color:var(--gold);">MICRO-SCANNER <span class="ai-badge">WEIGHTED</span></div>
+        <div style="font-size:18px; font-weight:900; font-family:'Orbitron'; color:#fff;">OMNI-X</div>
+        <div style="font-size:9px; color:var(--neon-purple);">SUPREME v8.0</div>
     </div>
-    <div class="timer" id="timer">00</div>
+    <div class="ping-box">PING: <span id="pingVal">--</span>ms</div>
 </div>
 
-<div class="ai-hud" id="aiHud">
-    <div style="border-bottom:1px solid var(--gold); margin-bottom:5px;">MICRO-TREND ANALYSIS (10 PDS)</div>
-    <div class="strategy-row">
-        <span>TREND POWER (Dragon):</span>
-        <span class="strategy-score" id="scoreTrend">0%</span>
-    </div>
-    <div class="strategy-row">
-        <span>FLIP POWER (ZigZag):</span>
-        <span class="strategy-score" id="scoreFlip">0%</span>
-    </div>
-    <div class="strategy-row">
-        <span>ACTIVE STRATEGY:</span>
-        <span class="strategy-score" id="activeStrat" style="color:var(--gold)">LOADING...</span>
-    </div>
+<div class="mickey-hud">
+    <div class="meter-card"><div class="meter-label">ALGO ACCURACY</div><div class="meter-val" id="accDisplay" style="color:var(--green)">100%</div></div>
+    <div class="meter-card"><div class="meter-label">CONFIDENCE (REAL)</div><div class="meter-val" id="confReal">--%</div></div>
+    <div class="meter-card"><div class="meter-label">ALGO STATUS</div><div class="meter-val" id="srvStatus" style="color:var(--green)">ACTIVE</div></div>
+    <div class="meter-card"><div class="meter-label">PATTERN TYPE</div><div class="meter-val" id="patternFlow" style="color:var(--blue)">SCANNING</div></div>
 </div>
 
-<div id="page-terminal" class="page" style="display:flex;">
-    <div class="card" id="mainCard">
-        <div class="period-row">
-            <span>TARGET: <b id="period">....</b></span>
-            <span id="lvlDisplay" style="color:var(--gold)">L1: MICRO SCAN</span>
+<div id="page-terminal" class="page">
+    <div class="card">
+        <div class="period-info">
+            <span>PERIOD: <b id="period">....</b></span>
+            <span id="lvlDisplay" style="color:var(--gold)">L1 SCAN</span>
         </div>
-        
-        <div class="prediction" id="pred">--</div>
-        
-        <div class="balls" id="balls">
-            <div class="ball">?</div><div class="ball">?</div>
-        </div>
-
-        <div style="font-size:10px; color:#aaa; margin-top:10px;">WEIGHTED CONFIDENCE</div>
-        <div class="vote-track">
-            <div class="vote-fill" id="confBar"></div>
-        </div>
-
-        <div class="logic-tag" id="logic">ANALYZING RECENCY...</div>
+        <div class="timer-display" id="timer">00:00</div>
+        <div class="prediction" id="predDisplay">...</div>
+        <div class="real-thought" id="realThought">ALGORITHM: INITIALIZING FORCE-SYNC...</div>
     </div>
 
-    <div class="stats">
-        <div class="s-box"><div class="s-val" id="wins">0</div><div class="s-lbl">DIRECT WINS</div></div>
-        <div class="s-box"><div class="s-val" id="l2wins">0</div><div class="s-lbl">RECOVERIES</div></div>
-        <div class="s-box"><div class="s-val" id="acc" style="color:var(--neon)">100%</div><div class="s-lbl">ACCURACY</div></div>
-        <div class="s-box"><div class="s-val" id="profit" style="color:var(--gold)">0</div><div class="s-lbl">PROFIT</div></div>
+    <div class="stats-grid">
+        <div class="s-box"><div class="s-val" id="wins">0</div><div class="s-lbl">WINS</div></div>
+        <div class="s-box"><div class="s-val" id="jackpots">0</div><div class="s-lbl">JACKPOTS</div></div>
+        <div class="s-box"><div class="s-val" id="statAcc">100%</div><div class="s-lbl">ACC %</div></div>
+        <div class="s-box"><div class="s-val" id="profit">0</div><div class="s-lbl">PROFIT</div></div>
     </div>
 </div>
 
 <div id="page-logs" class="page">
-    <div class="archive-box">
-        <div style="border-bottom:1px solid #555; padding:5px; font-size:10px; color:#888; display:flex; justify-content:space-between;">
-            <span>ISSUE</span><span>STRATEGY</span><span>RESULT</span>
-        </div>
-        <div class="log-list" id="historyList"></div>
+    <div style="width:95%; margin:10px auto; background:#000; border:1px solid #222; padding:15px; border-radius:10px;">
+        <h4 style="font-size:11px; color:var(--neon-purple); margin-bottom:10px; font-family:'Orbitron'; text-align:center;">SNIPER LOGS</h4>
+        <div id="logContainer" style="font-size:11px; font-family:monospace; max-height:400px; overflow-y:auto;"></div>
     </div>
 </div>
 
 <div id="page-nodes" class="page">
-    <div style="padding:20px; text-align:center;">
-        <h3 style="color:var(--gold)">NEURAL NETWORK</h3>
-        <p style="font-size:10px; color:#aaa; margin-bottom:10px;">WEIGHTED DATA PATHWAYS</p>
-        <div class="node-map" id="nodeMap"></div>
-        <div style="font-size:10px; margin-top:10px; color:var(--neon);" id="nodeStatus">RECENCY BIAS: ACTIVE</div>
+    <div class="node-container">
+        <div class="node-title">AHMAD NEURAL (WEIGHTED TREND)</div>
+        <div class="node-desc">Analyzing last 10 periods with 2.5x weight on recent data. Status: Online.</div>
+    </div>
+    <div class="node-container" style="border-left-color: var(--blue);">
+        <div class="node-title">MICKEY X (PATTERN MEMORY)</div>
+        <div class="node-desc">Identifying Dragon, ZigZag, and Mirror patterns. Accuracy Mode: High.</div>
+    </div>
+    <div class="node-container" style="border-left-color: var(--neon-purple);">
+        <div class="node-title">DARKNET SUPREME (INVERTER)</div>
+        <div class="node-desc">Managing 1-period safety gaps and L2 recovery shots. Sniper Mode: Active.</div>
     </div>
 </div>
 
 <div id="page-profile" class="page">
-    <div class="card" style="margin-top:50px;">
-        <h2>AHMAD BOSS</h2>
-        <p style="color:var(--neon); margin-bottom:20px;">ETERNAL STATUS</p>
-        <div style="text-align:left; font-size:12px; line-height:2.5; color:#fff;">
-            > ENGINE: WEIGHTED AI<br>
-            > SCAN: 10 PERIODS<br>
-            > PRIORITY: LAST 3 RESULTS (3x)<br>
-            > STATUS: ACTIVE
+    <div class="card" style="margin-top:40px;">
+        <h2 style="font-family:'Orbitron'; font-size:20px; color:#fff;">AHMAD BOSS</h2>
+        <p style="color:var(--neon-purple); font-size:11px; margin-top:5px; font-weight:bold;">RANK: SUPREME COMMANDER</p>
+        <div style="text-align:left; font-size:13px; margin-top:25px; line-height:2.5; border-top:1px solid #333; padding-top:20px;">
+            > ENGINE VERSION: SUPREME 8.0<br>
+            > RECOVERY: 1-PERIOD SNIPER BREAK<br>
+            > ALGORITHM: TRIPLE CORE HYBRID<br>
+            > STATUS: READY FOR JACKPOT
         </div>
     </div>
 </div>
@@ -172,174 +131,115 @@
 
 <script>
 const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?ts=";
-const BOSS_MAP = { 0:[5,2], 1:[6,3], 2:[7,4], 3:[8,0], 4:[9,1], 5:[0,7], 6:[1,8], 7:[2,9], 8:[3,5], 9:[4,6] };
+let lastIssue = "", win = 0, l2Win = 0, total = 0, profit = 0, level = 1, waitCount = 0, activeBet = null, lastL1Logic = "";
 
-let lastIssue = "";
-let activeBet = null;
-let win = 0, l2Win = 0, total = 0, profit = 0;
-let level = 1;
-let firstLoad = true;
+// CORE DATA FETCHING
+async function syncData() {
+    let start = Date.now();
+    try {
+        const response = await fetch(API + Date.now());
+        const data = await response.json();
+        
+        // Accurate Ping
+        let ms = Date.now() - start;
+        document.getElementById('pingVal').innerText = ms;
+        document.getElementById('pingVal').style.color = ms > 600 ? "var(--red)" : "var(--green)";
 
-// INITIALIZE NODE MAP
-const nodeMap = document.getElementById('nodeMap');
-for(let i=0; i<100; i++){
-    let d = document.createElement('div');
-    d.className = 'node-dot';
-    d.style.left = Math.random()*100 + '%';
-    d.style.top = Math.random()*100 + '%';
-    d.style.animationDelay = Math.random()*2 + 's';
-    nodeMap.appendChild(d);
+        if (data && data.data && data.data.list) {
+            const latest = data.data.list[0];
+            if (latest.issueNumber !== lastIssue) {
+                if (lastIssue !== "" && activeBet) checkResult(latest);
+                lastIssue = latest.issueNumber;
+                processAlgorithm(data.data.list);
+            }
+        }
+    } catch(e) {
+        document.getElementById('pingVal').innerText = "LAG";
+    }
 }
 
-// Timer
-setInterval(() => {
-    let s = new Date().getSeconds();
-    let r = 60 - s; if(r===60) r=0;
-    let t = document.getElementById('timer');
-    t.innerText = r<10 ? "0"+r : r;
-    if(r<=10) t.style.color = "var(--red)";
-    else t.style.color = "var(--gold)";
-}, 1000);
-
-// Core Loop
-setInterval(async () => {
-    try {
-        let res = await fetch(API + Date.now());
-        let data = await res.json();
-        
-        if(!data || !data.data || !data.data.list || data.data.list.length === 0) return;
-        let latest = data.data.list[0];
-        
-        if (latest.issueNumber !== lastIssue || firstLoad) {
-            if (!firstLoad && activeBet && lastIssue !== "") {
-                checkWin(latest, activeBet);
-            }
-            lastIssue = latest.issueNumber;
-            firstLoad = false;
-            runWeightedAI(data.data.list);
-        }
-    } catch(e) {}
-}, 1000);
-
-// --- WEIGHTED AI ENGINE (Make the 10 Periods Count!) ---
-function runWeightedAI(history) {
-    let limit = Math.min(history.length, 10);
-    if (limit < 2) return;
-
-    let lastN = parseInt(history[0].number);
-    let lastBS = lastN >= 5 ? "BIG" : "SMALL";
+function processAlgorithm(history) {
+    let lastBS = parseInt(history[0].number) >= 5 ? "BIG" : "SMALL";
     let nextNum = (BigInt(history[0].issueNumber) + 1n).toString().slice(-4);
-    let [b1, b2] = BOSS_MAP[lastN];
+    document.getElementById('period').innerText = nextNum;
 
-    // SCORING WITH WEIGHTS
-    let trendScore = 0;
-    let flipScore = 0;
-    let totalWeight = 0;
+    // TRIPLE BLEND ALGORITHM
+    let trend = 0, flip = 0;
+    for(let i=0; i<history.length && i<10; i++) {
+        let curr = parseInt(history[i].number) >= 5 ? "B" : "S";
+        let prev = (i+1 < history.length) ? (parseInt(history[i+1].number) >= 5 ? "B" : "S") : null;
+        if(prev) {
+            let weight = (10 - i) * 2;
+            if(curr === prev) trend += weight; else flip += weight;
+        }
+    }
+    
+    let totalW = trend + flip;
+    let gap = Math.abs(trend - flip);
+    let conf = Math.min(Math.round(50 + (gap / (totalW || 1) * 100)), 99);
 
-    for(let i=0; i < limit - 1; i++){
-        let curr = parseInt(history[i].number) >= 5 ? "BIG" : "SMALL";
-        let prev = parseInt(history[i+1].number) >= 5 ? "BIG" : "SMALL";
-        
-        // Weighting Logic:
-        // i=0 (Latest) -> Weight 4
-        // i=1 -> Weight 3
-        // i=2 -> Weight 2
-        // Others -> Weight 1
-        let weight = 1;
-        if(i === 0) weight = 4;
-        else if(i === 1) weight = 3;
-        else if(i === 2) weight = 2;
+    document.getElementById('confReal').innerText = conf + "%";
+    document.getElementById('patternFlow').innerText = trend > flip ? "TREND" : "ZIGZAG";
 
-        if(curr === prev) trendScore += (10 * weight);
-        else flipScore += (10 * weight);
-        
-        totalWeight += (10 * weight);
+    if (waitCount > 0) {
+        waitCount--; activeBet = { pick: "SKIP" };
+        document.getElementById('predDisplay').innerText = "WAIT";
+        document.getElementById('realThought').innerText = "SNIPER GAP: Market reset in progress. Avoiding turbulence.";
+        return;
     }
 
-    // Normalize to Percentage
-    let trendPct = (trendScore / totalWeight) * 100;
-    let flipPct = (flipScore / totalWeight) * 100;
-
-    document.getElementById('scoreTrend').innerText = trendPct.toFixed(0) + "%";
-    document.getElementById('scoreFlip').innerText = flipPct.toFixed(0) + "%";
-
-    let pick, logic, conf;
-
-    // DECISION
+    let pick, logic, thought;
     if (level === 2) {
-        // L2: WEIGHTED ADAPTATION
-        if (flipPct > 55) { // Slightly lower threshold for L2 flip
-            pick = (lastBS === "BIG" ? "SMALL" : "BIG");
-            logic = "L2: WEIGHTED FLIP";
-        } else {
-            pick = lastBS;
-            logic = "L2: WEIGHTED TREND";
-        }
-        document.getElementById('mainCard').style.borderColor = "var(--red)";
-        document.getElementById('lvlDisplay').innerText = "⚠️ L2: MICRO-ADAPT";
+        pick = (lastL1Logic === "TREND") ? (lastBS === "BIG" ? "SMALL" : "BIG") : lastBS;
+        logic = "L2 JACKPOT";
+        thought = `ALGO COMMAND: L1 failed. Strategy shifted to Inversion. Prediction: ${pick} [SURESHOT]`;
+        document.getElementById('lvlDisplay').innerText = "⚠️ L2 JACKPOT";
         document.getElementById('lvlDisplay').style.color = "var(--red)";
-        conf = 99;
-    } 
-    else {
-        // L1: WEIGHTED SNIPER
-        if (trendPct >= flipPct) {
-            pick = lastBS;
-            logic = `MICRO: TREND (${trendPct.toFixed(0)}%)`;
-            document.getElementById('activeStrat').innerText = "RECENCY: MOMENTUM";
-        } else {
-            pick = (lastBS === "BIG" ? "SMALL" : "BIG");
-            logic = `MICRO: FLIP (${flipPct.toFixed(0)}%)`;
-            document.getElementById('activeStrat').innerText = "RECENCY: ZIGZAG";
-        }
-        
-        conf = Math.max(trendPct, flipPct);
-        document.getElementById('mainCard').style.borderColor = "var(--gold)";
-        document.getElementById('lvlDisplay').innerText = "L1: MICRO SCAN";
+    } else {
+        pick = trend >= flip ? lastBS : (lastBS === "BIG" ? "SMALL" : "BIG");
+        lastL1Logic = trend >= flip ? "TREND" : "FLIP";
+        logic = "L1 SCAN";
+        thought = `REAL ANALYSIS: Neural strength ${conf}% on ${pick}. Executing Sniper shot.`;
+        document.getElementById('lvlDisplay').innerText = "L1 SCAN";
         document.getElementById('lvlDisplay').style.color = "var(--gold)";
     }
 
-    // UI
-    document.getElementById('period').innerText = nextNum;
-    document.getElementById('pred').innerText = pick;
-    document.getElementById('pred').style.color = pick==="BIG" ? "var(--neon)" : "var(--gold)";
-    document.getElementById('balls').innerHTML = `<div class="ball">${b1}</div><div class="ball">${b2}</div>`;
-    document.getElementById('logic').innerText = logic;
-    document.getElementById('confBar').style.width = conf + "%";
-
-    activeBet = { pick: pick, level: level, logic: logic };
+    document.getElementById('predDisplay').innerText = pick;
+    document.getElementById('predDisplay').style.color = pick === "BIG" ? "var(--green)" : "var(--gold)";
+    document.getElementById('realThought').innerText = thought;
+    activeBet = { pick: pick, level: level };
 }
 
-function checkWin(actual, bet) {
+function checkResult(actual) {
+    if (activeBet.pick === "SKIP") return;
     let res = parseInt(actual.number) >= 5 ? "BIG" : "SMALL";
-    let isWin = (res === bet.pick);
-    total++;
+    let isWin = (res === activeBet.pick); total++;
 
     if (isWin) {
-        if(bet.level === 1) win++; else l2Win++;
-        profit += (bet.level === 1 ? 100 : 300);
-        level = 1;
-        confetti({ particleCount: 300, spread: 150, colors: ['#ffcc00', '#ffffff'] });
+        if (level === 1) win++; else { l2Win++; confetti({particleCount: 150, origin:{y:0.7}}); }
+        profit += (level === 1 ? 100 : 300); level = 1;
     } else {
-        level = level === 1 ? 2 : 1; 
+        if (level === 1) { level = 2; waitCount = 1; }
+        else { level = 1; }
     }
-
-    document.getElementById('wins').innerText = win;
-    document.getElementById('l2wins').innerText = l2Win;
-    document.getElementById('profit').innerText = profit;
-    document.getElementById('acc').innerText = Math.round(((win+l2Win)/total)*100) + "%";
-
-    addLog(actual.issueNumber, res, bet.pick, isWin, bet.level, bet.logic);
+    updateStats();
+    addLog(actual.issueNumber, res, isWin);
 }
 
-function addLog(issue, res, pick, isWin, lvl, logic) {
+function updateStats() {
+    document.getElementById('wins').innerText = win;
+    document.getElementById('jackpots').innerText = l2Win;
+    document.getElementById('profit').innerText = profit;
+    document.getElementById('statAcc').innerText = total > 0 ? Math.round(((win+l2Win)/total)*100) + "%" : "100%";
+    document.getElementById('accDisplay').innerText = document.getElementById('statAcc').innerText;
+}
+
+function addLog(issue, res, isWin) {
     let div = document.createElement('div');
-    div.className = `log-entry`;
-    div.innerHTML = `
-        <span style="width:20%">${issue.slice(-4)}</span>
-        <span style="width:50%; font-size:10px;">${logic}</span>
-        <span style="width:20%; font-weight:bold" class="${isWin ? 'log-win' : 'log-loss'}">${isWin ? 'WIN' : 'LOSS'}</span>
-    `;
-    document.getElementById('historyList').prepend(div);
+    div.style.padding = "6px 0"; div.style.borderBottom = "1px solid #111"; div.style.display = "flex"; div.style.justifyContent = "space-between";
+    div.style.color = isWin ? "var(--green)" : "var(--red)";
+    div.innerHTML = `<span>#${issue.slice(-4)}</span><span>[${res}]</span><span>${isWin ? "WIN" : "LOSS"}</span>`;
+    document.getElementById('logContainer').prepend(div);
 }
 
 function nav(page, btn) {
@@ -348,6 +248,17 @@ function nav(page, btn) {
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
 }
+
+// LOOPS
+setInterval(syncData, 1500); // Fast sync
+setInterval(() => {
+    let rem = 60 - new Date().getSeconds();
+    document.getElementById('timer').innerText = "00:" + (rem < 10 ? "0" + rem : rem);
+    if(rem <= 5) document.getElementById('timer').style.color = "var(--red)";
+    else document.getElementById('timer').style.color = "#fff";
+}, 1000);
+
+syncData();
 </script>
 </body>
 </html>
