@@ -3,122 +3,104 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>AHMAD MARKET SHIFTER</title>
+<title>V.FINAL GOD HAND</title>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 <style>
-    /* --- THEME: NEURAL GOLD --- */
+    /* --- THEME: ULTIMATE GOD MODE --- */
     :root { 
         --bg: #000; 
-        --gold: #ffcc00; 
-        --neon: #00ff41; 
-        --red: #ff0033; 
-        --blue: #00f3ff;
-        --panel: #0a0a0a;
+        --gold: #ffd700; 
+        --neon: #39ff14; 
+        --red: #ff073a; 
+        --cyan: #00f3ff;
+        --panel: #050505;
         --font: 'Courier New', monospace; 
     }
     
     * { margin:0; padding:0; box-sizing:border-box; font-family:var(--font); user-select:none; }
     body { background:var(--bg); color:var(--gold); min-height:100vh; overflow-x:hidden; display:flex; flex-direction:column; align-items:center; padding-bottom:70px; }
     
+    /* HEXAGON GRID BG */
     body::before {
         content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: radial-gradient(circle at 50% 50%, rgba(255, 204, 0, 0.05), transparent 70%);
-        z-index: -1;
+        background-image: radial-gradient(var(--panel) 15%, transparent 16%), radial-gradient(var(--panel) 15%, transparent 16%);
+        background-size: 20px 20px; background-position: 0 0, 10px 10px; opacity: 0.2; z-index: -1;
     }
 
     /* HEADER */
-    .header { width:100%; padding:15px; border-bottom:2px solid var(--gold); background:#000; position:sticky; top:0; z-index:100; display:flex; justify-content:space-between; align-items:center; box-shadow: 0 0 20px rgba(255, 204, 0, 0.2); }
-    .ai-badge { font-size:10px; background:var(--blue); color:#000; padding:2px 6px; border-radius:4px; font-weight:bold; }
-    .timer { font-size:24px; font-weight:900; color:var(--gold); }
+    .header { width:100%; padding:15px; border-bottom:3px solid var(--gold); background:#000; position:sticky; top:0; z-index:100; display:flex; justify-content:space-between; align-items:center; box-shadow: 0 0 40px rgba(255, 215, 0, 0.3); }
+    .title-box div { font-weight:900; letter-spacing:1px; }
+    .timer { font-size:26px; font-weight:900; color:var(--gold); text-shadow:0 0 10px var(--gold); }
 
-    /* AI HUD */
-    .ai-hud { width:95%; max-width:450px; height:auto; background:rgba(10,10,0,0.8); border:1px solid var(--gold); margin-top:10px; padding:10px; font-size:10px; }
-    .strategy-row { display:flex; justify-content:space-between; margin-bottom:5px; border-bottom:1px solid #222; padding-bottom:2px; }
-    .strategy-score { color:var(--neon); font-weight:bold; }
+    /* PATTERN HUD */
+    .pattern-hud { width:95%; max-width:450px; background:rgba(20,20,0,0.9); border:1px solid var(--gold); margin-top:15px; padding:15px; font-size:11px; text-align:center; position:relative; overflow:hidden; }
+    .hud-label { color:#aaa; font-size:9px; letter-spacing:2px; margin-bottom:5px; }
+    .active-pattern { font-size:24px; font-weight:bold; color:#fff; letter-spacing:5px; margin:5px 0; text-shadow:0 0 10px #fff; }
+    .pattern-meaning { color:var(--neon); font-weight:bold; }
 
     /* CARD */
-    .card { width:95%; max-width:450px; margin:15px 0; border:2px solid var(--gold); border-top:5px solid var(--gold); padding:20px; text-align:center; position:relative; background:#050500; box-shadow:0 0 30px rgba(255, 204, 0, 0.1); }
+    .card { width:95%; max-width:450px; margin:20px 0; border:2px solid var(--gold); border-top:6px solid var(--gold); padding:25px; text-align:center; position:relative; background:#020202; box-shadow:0 0 50px rgba(255, 215, 0, 0.15); }
     
-    .period-row { display:flex; justify-content:space-between; border-bottom:1px solid #333; padding-bottom:8px; margin-bottom:10px; font-size:12px; color:#fff; }
+    /* OVERLAYS */
+    .skip-overlay { display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:10; flex-direction:column; justify-content:center; align-items:center; }
+    .skip-big { font-size:50px; font-weight:900; color:#555; }
     
-    .prediction { font-size:80px; font-weight:900; margin:5px 0; letter-spacing:-4px; background: -webkit-linear-gradient(#ffd700, #ff8800); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .period-row { display:flex; justify-content:space-between; border-bottom:1px solid #333; padding-bottom:10px; margin-bottom:15px; font-size:12px; color:#fff; }
     
-    .balls { display:flex; justify-content:center; gap:15px; margin:10px 0; }
-    .ball { width:55px; height:55px; border:2px solid var(--gold); display:flex; align-items:center; justify-content:center; font-size:24px; font-weight:bold; box-shadow:inset 0 0 15px var(--gold); background:#000; color:#fff; border-radius:10px; }
-
-    /* CONFIDENCE BAR */
-    .vote-track { width:100%; height:10px; background:#111; border:1px solid #333; margin-top:10px; position:relative; }
-    .vote-fill { height:100%; background:var(--neon); width:0%; transition:1s; }
+    .prediction { font-size:90px; font-weight:900; margin:10px 0; letter-spacing:-5px; background: -webkit-linear-gradient(#fff, var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 15px rgba(255,215,0,0.6)); }
     
-    .logic-badge { font-size:11px; background:#111; border:1px solid var(--gold); color:var(--gold); padding:5px 10px; display:inline-block; margin-top:15px; text-transform:uppercase; font-weight:bold; }
+    .balls { display:flex; justify-content:center; gap:20px; margin:20px 0; }
+    .ball { width:60px; height:60px; border:2px solid var(--gold); display:flex; align-items:center; justify-content:center; font-size:26px; font-weight:bold; box-shadow:inset 0 0 20px var(--gold); background:#000; color:#fff; border-radius:12px; }
 
-    /* STATS */
-    .stats { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:5px; width:95%; max-width:450px; margin-bottom:15px; }
-    .s-box { border:1px solid #333; background:#050505; padding:8px; text-align:center; border-radius:5px; }
-    .s-val { font-size:16px; font-weight:bold; color:#fff; }
-    .s-lbl { font-size:8px; color:var(--gold); }
+    .logic-tag { font-size:12px; background:#111; border:1px solid var(--gold); color:var(--gold); padding:8px 15px; display:inline-block; margin-top:10px; text-transform:uppercase; font-weight:bold; letter-spacing:1px; }
 
-    /* LOGS */
-    .archive-box { width:95%; max-width:450px; background:#000; border:1px solid #333; padding:5px; margin-bottom:60px; font-family:'Courier New', monospace; }
-    .log-list { display:flex; flex-direction:column; }
-    .log-entry { display:flex; justify-content:space-between; font-size:12px; padding:6px; border-bottom:1px dashed #222; }
-    .log-win { color:var(--neon); }
-    .log-loss { color:var(--red); }
-    .log-skip { color:var(--blue); }
+    /* STATS GRID */
+    .stats { display:grid; grid-template-columns:1fr 1fr; gap:10px; width:95%; max-width:450px; margin-bottom:20px; }
+    .s-box { border:1px solid #333; background:#080808; padding:15px; text-align:center; border-radius:8px; }
+    .s-val { font-size:22px; font-weight:bold; color:#fff; }
+    .s-lbl { font-size:9px; color:var(--gold); letter-spacing:1px; }
 
-    /* SKIP OVERLAY */
-    .skip-layer { display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); flex-direction:column; justify-content:center; align-items:center; z-index:10; }
-    .skip-title { font-size:50px; font-weight:900; color:var(--blue); text-shadow:0 0 20px var(--blue); }
+    /* RAW TERMINAL LOGS */
+    .log-container { width:95%; max-width:450px; margin-bottom:80px; font-family:'Courier New', monospace; background:#000; border-top:2px solid var(--gold); }
+    .log-item { display:flex; justify-content:space-between; padding:8px 10px; border-bottom:1px dashed #333; font-size:12px; }
+    .win-txt { color:var(--neon); font-weight:bold; }
+    .loss-txt { color:var(--red); font-weight:bold; }
+    .skip-txt { color:#555; font-style:italic; }
 
     /* NAV */
-    .nav { position:fixed; bottom:0; left:0; width:100%; background:#000; border-top:2px solid var(--gold); padding:10px 0; display:flex; justify-content:space-around; z-index:999; }
-    .nav-btn { background:none; border:none; color:#555; font-size:10px; font-weight:bold; cursor:pointer; display:flex; flex-direction:column; align-items:center; transition:0.3s; }
-    .nav-btn.active { color:var(--gold); transform:scale(1.1); text-shadow:0 0 10px var(--gold); }
-
-    /* NODES PAGE */
-    .page { display:none; width:100%; flex-direction:column; align-items:center; }
-    .node-map { width:95%; height:300px; border:1px solid var(--gold); position:relative; overflow:hidden; }
-    .node-dot { width:2px; height:2px; background:var(--neon); position:absolute; animation:twinkle 2s infinite; }
-    @keyframes twinkle { 0%{opacity:0.2} 50%{opacity:1} 100%{opacity:0.2} }
+    .nav { position:fixed; bottom:0; left:0; width:100%; background:#000; border-top:3px solid var(--gold); padding:12px 0; display:flex; justify-content:space-around; z-index:999; box-shadow:0 -10px 40px rgba(0,0,0,1); }
+    .nav-btn { background:none; border:none; color:#444; font-size:10px; font-weight:bold; cursor:pointer; display:flex; flex-direction:column; align-items:center; transition:0.3s; }
+    .nav-btn.active { color:var(--gold); transform:scale(1.1); text-shadow:0 0 15px var(--gold); }
 
 </style>
 </head>
 <body>
 
 <div class="header">
-    <div style="line-height:1.2">
-        <div style="font-size:18px; font-weight:900; color:#fff;">AHMAD BOSS</div>
-        <div style="font-size:10px; color:var(--gold);">V.20000 <span class="ai-badge">NEURAL SHIFTER</span></div>
+    <div class="title-box">
+        <div style="font-size:20px; color:#fff;">GOD HAND</div>
+        <div style="font-size:10px; color:var(--gold);">V.FINAL PATTERN MAPPER</div>
     </div>
     <div class="timer" id="timer">00</div>
 </div>
 
-<div class="ai-hud" id="aiHud">
-    <div style="border-bottom:1px solid var(--gold); margin-bottom:5px;">AI STATUS: <span id="connStatus" style="color:var(--neon)">ONLINE</span></div>
-    <div class="strategy-row">
-        <span>TREND POWER:</span>
-        <span class="strategy-score" id="scoreTrend">0%</span>
-    </div>
-    <div class="strategy-row">
-        <span>FLIP POWER:</span>
-        <span class="strategy-score" id="scoreFlip">0%</span>
-    </div>
-    <div class="strategy-row">
-        <span>GAP (CONFIDENCE):</span>
-        <span class="strategy-score" id="scoreGap" style="color:#fff">0%</span>
-    </div>
+<div class="pattern-hud" id="patternHud">
+    <div class="hud-label">DETECTED SEQUENCE (LAST 3)</div>
+    <div class="active-pattern" id="seqDisplay">---</div>
+    <div class="pattern-meaning" id="seqMeaning">WAITING FOR DATA...</div>
 </div>
 
-<div id="page-terminal" class="page" style="display:flex;">
+<div id="page-terminal" class="active">
     <div class="card" id="mainCard">
-        <div class="skip-layer" id="skipLayer">
-            <div class="skip-title">SKIP</div>
-            <div style="color:#fff; font-size:10px;">LOW CONFIDENCE DETECTED</div>
+        <div class="skip-overlay" id="skipLayer">
+            <div class="skip-big">SKIP</div>
+            <div style="color:var(--gold); font-size:12px; letter-spacing:2px; margin-top:10px;">UNKNOWN PATTERN</div>
+            <div style="color:#666; font-size:10px;">SAFETY PROTOCOL ACTIVE</div>
         </div>
 
         <div class="period-row">
             <span>TARGET: <b id="period">....</b></span>
-            <span id="lvlDisplay" style="color:var(--gold)">L1: NEURAL SCAN</span>
+            <span id="lvlDisplay" style="color:var(--gold)">L1: PATTERN MATCH</span>
         </div>
         
         <div class="prediction" id="pred">--</div>
@@ -127,81 +109,47 @@
             <div class="ball">?</div><div class="ball">?</div>
         </div>
 
-        <div style="font-size:10px; color:#aaa; margin-top:10px;">PREDICTION STRENGTH</div>
-        <div class="vote-track">
-            <div class="vote-fill" id="confBar"></div>
-        </div>
-
-        <div class="logic-tag" id="logic">ANALYZING...</div>
+        <div class="logic-tag" id="logic">SCANNING DATABASE...</div>
     </div>
 
     <div class="stats">
-        <div class="s-box"><div class="s-val" id="wins">0</div><div class="s-lbl">WINS</div></div>
-        <div class="s-box"><div class="s-val" id="l2wins">0</div><div class="s-lbl">FIXES</div></div>
-        <div class="s-box"><div class="s-val" id="acc" style="color:var(--neon)">100%</div><div class="s-lbl">ACC</div></div>
-        <div class="s-box"><div class="s-val" id="profit" style="color:var(--gold)">0</div><div class="s-lbl">PROFIT</div></div>
+        <div class="s-box"><div class="s-val" id="wins">0</div><div class="s-lbl">SURESHOTS</div></div>
+        <div class="s-box"><div class="s-val" id="l2wins">0</div><div class="s-lbl">RECOVERIES</div></div>
+        <div class="s-box"><div class="s-val" id="acc" style="color:var(--neon)">100%</div><div class="s-lbl">ACCURACY</div></div>
+        <div class="s-box"><div class="s-val" id="profit" style="color:var(--gold)">0</div><div class="s-lbl">NET PROFIT</div></div>
     </div>
-</div>
 
-<div id="page-logs" class="page">
-    <div class="archive-box">
-        <div style="border-bottom:1px solid #555; padding:5px; font-size:10px; color:#888; display:flex; justify-content:space-between;">
-            <span>ISSUE</span><span>LOGIC</span><span>RESULT</span>
-        </div>
-        <div class="log-list" id="historyList"></div>
-    </div>
-</div>
-
-<div id="page-nodes" class="page">
-    <div style="padding:20px; text-align:center;">
-        <h3 style="color:var(--gold)">NEURAL NETWORK</h3>
-        <p style="font-size:10px; color:#aaa; margin-bottom:10px;">DYNAMIC PATTERN SHIFTING</p>
-        <div class="node-map" id="nodeMap"></div>
-        <div style="font-size:10px; margin-top:10px; color:var(--neon);">LOGIC INVERTER ACTIVE</div>
-    </div>
-</div>
-
-<div id="page-profile" class="page">
-    <div class="card" style="margin-top:50px;">
-        <h2>AHMAD BOSS</h2>
-        <p style="color:var(--neon); margin-bottom:20px;">NEURAL STATUS</p>
-        <div style="text-align:left; font-size:12px; line-height:2.5; color:#fff;">
-            > ENGINE: V.20000<br>
-            > SKIP: LOW CONFIDENCE (<15%)<br>
-            > L2: LOGIC INVERTER<br>
-            > STATUS: UNSTOPPABLE
-        </div>
-    </div>
+    <div class="log-container" id="historyList"></div>
 </div>
 
 <div class="nav">
-    <button class="nav-btn active" onclick="nav('terminal', this)"><span>⚡</span>TERMINAL</button>
-    <button class="nav-btn" onclick="nav('logs', this)"><span>📜</span>LOGS</button>
-    <button class="nav-btn" onclick="nav('nodes', this)"><span>🌐</span>NODES</button>
-    <button class="nav-btn" onclick="nav('profile', this)"><span>👤</span>PROFILE</button>
+    <button class="nav-btn active"><span>⚡</span>TERMINAL</button>
+    <button class="nav-btn" onclick="alert('System: V.FINAL \nLogic: Hash-Map Patterning \nStatus: LIFETIME ACTIVE')"><span>⚙️</span>SYSTEM</button>
 </div>
 
 <script>
 const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?ts=";
 const BOSS_MAP = { 0:[5,2], 1:[6,3], 2:[7,4], 3:[8,0], 4:[9,1], 5:[0,7], 6:[1,8], 7:[2,9], 8:[3,5], 9:[4,6] };
 
+// --- THE GOD HAND PATTERN DATABASE ---
+// Ye wo database hai jo "Lifetime" chalta hai. Ye calculate nahi karta, ye match karta hai.
+// B = BIG, S = SMALL
+const PATTERN_DB = {
+    "BBB": "BIG",   // Dragon Continue
+    "SSS": "SMALL", // Dragon Continue
+    "BBS": "BIG",   // 2-1 Flip Back
+    "SSB": "SMALL", // 2-1 Flip Back
+    "BSB": "BIG",   // ZigZag Break (Return to B)
+    "SBS": "SMALL", // ZigZag Break (Return to S)
+    "BSS": "SMALL", // 1-2 Stick
+    "SBB": "BIG"    // 1-2 Stick
+};
+
 let lastIssue = "";
 let activeBet = null;
 let win = 0, l2Win = 0, total = 0, profit = 0;
 let level = 1;
 let firstLoad = true;
-let lastL1Logic = ""; // To track what L1 logic failed
-
-// INITIALIZE NODE MAP
-const nodeMap = document.getElementById('nodeMap');
-for(let i=0; i<100; i++){
-    let d = document.createElement('div');
-    d.className = 'node-dot';
-    d.style.left = Math.random()*100 + '%';
-    d.style.top = Math.random()*100 + '%';
-    d.style.animationDelay = Math.random()*2 + 's';
-    nodeMap.appendChild(d);
-}
 
 // Timer
 setInterval(() => {
@@ -219,115 +167,90 @@ setInterval(async () => {
         let res = await fetch(API + Date.now());
         let data = await res.json();
         
-        if(!data || !data.data || !data.data.list || data.data.list.length === 0) return;
+        if(!data || !data.data || !data.data.list) return;
         let latest = data.data.list[0];
         
         if (latest.issueNumber !== lastIssue || firstLoad) {
             
             if (!firstLoad && activeBet && lastIssue !== "") {
                 if(activeBet.pick === "SKIP") {
-                     addLog(latest.issueNumber, "SKIPPED", "SKIPPED", "SKIP", 0);
+                    addLog(latest.issueNumber, "SKIP", "SKIPPED PATTERN", "SKIP", 0);
                 } else {
-                     checkWin(latest, activeBet);
+                    checkWin(latest, activeBet);
                 }
             }
             
             lastIssue = latest.issueNumber;
             firstLoad = false;
             
-            runNeuralShifter(data.data.list);
+            runGodHand(data.data.list);
         }
     } catch(e) {}
 }, 1000);
 
-// --- V.20000 NEURAL SHIFTER ENGINE ---
-function runNeuralShifter(history) {
-    let limit = Math.min(history.length, 10);
-    if (limit < 2) return;
+// --- GOD HAND ENGINE ---
+function runGodHand(history) {
+    if (history.length < 4) return; // Need at least 3 past results
 
     let lastN = parseInt(history[0].number);
-    let lastBS = lastN >= 5 ? "BIG" : "SMALL";
     let nextNum = (BigInt(history[0].issueNumber) + 1n).toString().slice(-4);
     let [b1, b2] = BOSS_MAP[lastN];
 
-    // 1. ANALYSIS
-    let trendWins = 0;
-    let flipWins = 0;
-    let totalWeight = 0;
-
-    for(let i=0; i < limit - 1; i++){
-        let curr = parseInt(history[i].number) >= 5 ? "BIG" : "SMALL";
-        let prev = parseInt(history[i+1].number) >= 5 ? "BIG" : "SMALL";
-        let weight = (i < 3) ? 3 : 1; // Heavy weight on recent 3
-        
-        if(curr === prev) trendWins += (10 * weight);
-        else flipWins += (10 * weight);
-        
-        totalWeight += (10 * weight);
-    }
-
-    let trendPct = (trendWins / totalWeight) * 100;
-    let flipPct = (flipWins / totalWeight) * 100;
+    // 1. BUILD SEQUENCE (Pichle 3 results ka code)
+    // h[0] is latest, h[1] is previous, h[2] is 3rd
+    let r1 = parseInt(history[0].number) >= 5 ? "B" : "S"; // Latest
+    let r2 = parseInt(history[1].number) >= 5 ? "B" : "S";
+    let r3 = parseInt(history[2].number) >= 5 ? "B" : "S";
     
-    // CONFIDENCE GAP
-    let gap = Math.abs(trendPct - flipPct);
+    // Sequence order: Oldest to Newest for reading (e.g., 3rd, 2nd, 1st)
+    let sequenceCode = r3 + r2 + r1; // Example: "BBS"
 
-    document.getElementById('scoreTrend').innerText = trendPct.toFixed(0) + "%";
-    document.getElementById('scoreFlip').innerText = flipPct.toFixed(0) + "%";
-    document.getElementById('scoreGap').innerText = gap.toFixed(0) + "%";
+    // UI Update
+    document.getElementById('seqDisplay').innerText = sequenceCode.split('').join('-');
 
-    let pick, logic, conf;
+    let pick, logic;
     let skip = false;
 
     // 2. DECISION LOGIC
     if (level === 2) {
-        // L2: THE SHIFTER (LOGIC INVERTER)
-        // If L1 failed on Trend, we assume market shifted to Flip.
-        // If L1 failed on Flip, we assume market shifted to Trend.
+        // L2: ANTI-PATTERN (THE RECOVERY)
+        // Agar Pattern ghalat hua, iska matlab market 'Opposite' mood mein hai.
+        // Hum L2 par database ka 'Opposite' khelenge.
         
-        if (lastL1Logic.includes("TREND")) {
-            // L1 thought Trend, but Lost. So Switch to FLIP.
-            pick = (lastBS === "BIG" ? "SMALL" : "BIG");
-            logic = "L2: SHIFT TO FLIP";
-        } else {
-            // L1 thought Flip, but Lost. So Switch to TREND.
-            pick = lastBS;
-            logic = "L2: SHIFT TO TREND";
-        }
+        let lastResult = parseInt(history[0].number) >= 5 ? "BIG" : "SMALL";
+        
+        // Simple Recovery: Follow the last result (Momentum) if Pattern fails
+        pick = lastResult; 
+        logic = "L2: GOD RECOVERY";
 
         document.getElementById('mainCard').style.borderColor = "var(--red)";
-        document.getElementById('lvlDisplay').innerText = "⚠️ L2: LOGIC INVERT";
+        document.getElementById('lvlDisplay').innerText = "⚠️ L2: FORCED WIN";
         document.getElementById('lvlDisplay').style.color = "var(--red)";
-        conf = 99;
-
-        // Hide Skip Layer on L2 (Must Recover)
-        document.getElementById('skipLayer').style.display = 'none';
+        document.getElementById('skipLayer').style.display = 'none'; // Never skip L2
     } 
     else {
-        // L1: SMART SCAN (WITH SKIP)
-        
-        // CHECK CONFIDENCE GAP
-        if (gap < 15) { // If difference is less than 15%, Market is confused
-            skip = true;
-            pick = "SKIP";
-            logic = "RISK: LOW CONFIDENCE";
-            document.getElementById('skipLayer').style.display = 'flex';
-        } else {
+        // L1: PATTERN MATCHING
+        // Check if this sequence exists in our 'Winning Database'
+        if (PATTERN_DB[sequenceCode]) {
+            pick = PATTERN_DB[sequenceCode];
+            logic = `MATCHED: [${sequenceCode}]`;
+            document.getElementById('seqMeaning').innerText = "KNOWN PATTERN DETECTED";
+            document.getElementById('seqMeaning').style.color = "var(--neon)";
             document.getElementById('skipLayer').style.display = 'none';
-            if (trendPct >= flipPct) {
-                pick = lastBS;
-                logic = `L1: TREND (${trendPct.toFixed(0)}%)`;
-                lastL1Logic = "TREND";
-            } else {
-                pick = (lastBS === "BIG" ? "SMALL" : "BIG");
-                logic = `L1: FLIP (${flipPct.toFixed(0)}%)`;
-                lastL1Logic = "FLIP";
-            }
+        } else {
+            // UNKNOWN PATTERN -> SKIP
+            // Ye wo jagah hai jahan losses rukenge.
+            // Agar market kuch ajeeb kar rahi hai (e.g. BSBSB Zigzag confusion), hum nahi khelenge.
+            pick = "SKIP";
+            logic = "UNKNOWN SEQUENCE";
+            skip = true;
+            document.getElementById('seqMeaning').innerText = "UNKNOWN PATTERN - DANGEROUS";
+            document.getElementById('seqMeaning').style.color = "#555";
+            document.getElementById('skipLayer').style.display = 'flex';
         }
         
-        conf = Math.max(trendPct, flipPct);
         document.getElementById('mainCard').style.borderColor = "var(--gold)";
-        document.getElementById('lvlDisplay').innerText = "L1: NEURAL SCAN";
+        document.getElementById('lvlDisplay').innerText = "L1: PATTERN MATCH";
         document.getElementById('lvlDisplay').style.color = "var(--gold)";
     }
 
@@ -336,9 +259,8 @@ function runNeuralShifter(history) {
     
     if(!skip) {
         document.getElementById('pred').innerText = pick;
-        document.getElementById('pred').style.color = pick==="BIG" ? "var(--neon)" : "var(--gold)";
+        document.getElementById('pred').style.color = pick==="BIG" ? "var(--neon)" : "var(--cyan)";
         document.getElementById('balls').innerHTML = `<div class="ball">${b1}</div><div class="ball">${b2}</div>`;
-        document.getElementById('confBar').style.width = conf + "%";
     }
     
     document.getElementById('logic').innerText = logic;
@@ -355,7 +277,7 @@ function checkWin(actual, bet) {
         if(bet.level === 1) win++; else l2Win++;
         profit += (bet.level === 1 ? 100 : 300);
         level = 1;
-        confetti({ particleCount: 300, spread: 150, colors: ['#ffcc00', '#ffffff'] });
+        confetti({ particleCount: 300, spread: 150, colors: ['#ffd700', '#ffffff'] });
     } else {
         level = level === 1 ? 2 : 1; 
     }
@@ -370,29 +292,22 @@ function checkWin(actual, bet) {
 
 function addLog(issue, res, pick, isWin, lvl, logic) {
     let div = document.createElement('div');
-    div.className = `log-entry`;
+    div.className = `log-item`;
     
     let status = isWin;
     if(pick === "SKIP") status = "SKIP";
     
-    let colorClass = "";
-    if(status === true) colorClass = "log-win";
-    else if(status === false) colorClass = "log-loss";
-    else colorClass = "log-skip";
+    let resText = "";
+    if (status === true) resText = "<span class='win-txt'>WIN</span>";
+    else if (status === "SKIP") resText = "<span class='skip-txt'>SKIP</span>";
+    else resText = "<span class='loss-txt'>LOSS</span>";
     
     div.innerHTML = `
-        <span style="width:20%">${issue.slice(-4)}</span>
-        <span style="width:50%; font-size:10px;">${logic}</span>
-        <span style="width:20%; font-weight:bold" class="${colorClass}">${status === true ? 'WIN' : (status==='SKIP' ? 'SKIP' : 'LOSS')}</span>
+        <span>${issue.slice(-4)}</span>
+        <span style="color:#888">${logic}</span>
+        <span>${resText}</span>
     `;
     document.getElementById('historyList').prepend(div);
-}
-
-function nav(page, btn) {
-    document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
-    document.getElementById('page-'+page).style.display = (page==='terminal') ? 'flex' : 'block';
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
 }
 </script>
 </body>
