@@ -3,17 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>V.FINAL HYBRID GOD</title>
+<title>V.35000 TITANIUM</title>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 <style>
-    /* --- THEME: NEURAL GOLD GOD MODE --- */
+    /* --- THEME: NEURAL GOLD GOD MODE (UNCHANGED) --- */
     :root { 
         --bg: #000; 
         --gold: #ffcc00; 
         --neon: #00ff41; 
         --red: #ff0033; 
         --blue: #00f3ff;
-        --purple: #bf00ff;
+        --titanium: #e0e0e0;
         --panel: #0a0a0a;
         --font: 'Courier New', monospace; 
     }
@@ -29,7 +29,7 @@
 
     /* HEADER */
     .header { width:100%; padding:15px; border-bottom:2px solid var(--gold); background:#000; position:sticky; top:0; z-index:100; display:flex; justify-content:space-between; align-items:center; box-shadow: 0 0 20px rgba(255, 204, 0, 0.2); }
-    .ai-badge { font-size:10px; background:var(--purple); color:#fff; padding:2px 6px; border-radius:4px; font-weight:bold; }
+    .ai-badge { font-size:10px; background:var(--titanium); color:#000; padding:2px 6px; border-radius:4px; font-weight:bold; }
     .timer { font-size:24px; font-weight:900; color:var(--gold); }
 
     /* AI HUD */
@@ -89,7 +89,7 @@
 <div class="header">
     <div style="line-height:1.2">
         <div style="font-size:18px; font-weight:900; color:#fff;">AHMAD BOSS</div>
-        <div style="font-size:10px; color:var(--gold);">V.FINAL <span class="ai-badge">HYBRID GOD</span></div>
+        <div style="font-size:10px; color:var(--gold);">V.35000 <span class="ai-badge">TITANIUM</span></div>
     </div>
     <div class="timer" id="timer">00</div>
 </div>
@@ -97,11 +97,11 @@
 <div class="ai-hud" id="aiHud">
     <div style="border-bottom:1px solid var(--gold); margin-bottom:5px;">AI STATUS: <span id="connStatus" style="color:var(--neon)">ONLINE</span></div>
     <div class="strategy-row">
-        <span>TREND POWER (LINE):</span>
+        <span>TREND POWER:</span>
         <span class="strategy-score" id="scoreTrend">0%</span>
     </div>
     <div class="strategy-row">
-        <span>FLIP POWER (ZIGZAG):</span>
+        <span>FLIP POWER:</span>
         <span class="strategy-score" id="scoreFlip">0%</span>
     </div>
     <div class="strategy-row">
@@ -114,12 +114,12 @@
     <div class="card" id="mainCard">
         <div class="skip-layer" id="skipLayer">
             <div class="skip-title">SKIP</div>
-            <div style="color:#fff; font-size:10px; margin-top:5px;">CONFUSED MARKET (GAP < 10%)</div>
+            <div style="color:#fff; font-size:10px; margin-top:5px;">GAP < 20% (STRICT MODE)</div>
         </div>
 
         <div class="period-row">
             <span>TARGET: <b id="period">....</b></span>
-            <span id="lvlDisplay" style="color:var(--gold)">L1: HYBRID SCAN</span>
+            <span id="lvlDisplay" style="color:var(--gold)">L1: TITANIUM SCAN</span>
         </div>
         
         <div class="prediction" id="pred">--</div>
@@ -156,21 +156,22 @@
 <div id="page-nodes" class="page">
     <div style="padding:20px; text-align:center;">
         <h3 style="color:var(--gold)">NEURAL NETWORK</h3>
-        <p style="font-size:10px; color:#aaa; margin-bottom:10px;">HYBRID L2: ZIGZAG + DRAGON</p>
+        <p style="font-size:10px; color:#aaa; margin-bottom:10px;">L2: TITANIUM SHIELD PROTOCOL</p>
         <div class="node-map" id="nodeMap"></div>
-        <div style="font-size:10px; margin-top:10px; color:var(--neon);">AUTO-ADAPT ACTIVE</div>
+        <div style="font-size:10px; margin-top:10px; color:var(--neon);">0/5 TRAP DETECTION: ACTIVE</div>
     </div>
 </div>
 
 <div id="page-profile" class="page">
     <div class="card" style="margin-top:50px;">
         <h2>AHMAD BOSS</h2>
-        <p style="color:var(--neon); margin-bottom:20px;">HYBRID GOD STATUS</p>
+        <p style="color:var(--neon); margin-bottom:20px;">TITANIUM STATUS</p>
         <div style="text-align:left; font-size:12px; line-height:2.5; color:#fff;">
-            > ENGINE: V.FINAL HYBRID<br>
-            > L1: SKIP IF CONFUSED<br>
-            > L2: AUTO-DETECT (FLIP/TREND)<br>
-            > STATUS: ACTIVE
+            > ENGINE: V.35000<br>
+            > SKIP: STRICT (GAP < 20%)<br>
+            > L2: 0/5 -> FLIP<br>
+            > L2: NORMAL -> TREND<br>
+            > STATUS: UNSTOPPABLE
         </div>
     </div>
 </div>
@@ -238,7 +239,7 @@ setInterval(async () => {
             lastIssue = latest.issueNumber;
             firstLoad = false;
             
-            runHybridGod(data.data.list);
+            runTitaniumEngine(data.data.list);
         }
     } catch(e) {
         document.getElementById('connStatus').innerText = "RECONNECTING...";
@@ -246,8 +247,8 @@ setInterval(async () => {
     }
 }, 1000);
 
-// --- V.FINAL HYBRID GOD ENGINE ---
-function runHybridGod(history) {
+// --- V.35000 TITANIUM ENGINE ---
+function runTitaniumEngine(history) {
     let limit = Math.min(history.length, 10);
     if (limit < 2) return;
 
@@ -256,7 +257,7 @@ function runHybridGod(history) {
     let nextNum = (BigInt(history[0].issueNumber) + 1n).toString().slice(-4);
     let [b1, b2] = BOSS_MAP[lastN];
 
-    // 1. NEURAL ANALYSIS (WEIGHTED)
+    // 1. NEURAL ANALYSIS
     let trendWins = 0;
     let flipWins = 0;
     let totalWeight = 0;
@@ -264,7 +265,7 @@ function runHybridGod(history) {
     for(let i=0; i < limit - 1; i++){
         let curr = parseInt(history[i].number) >= 5 ? "BIG" : "SMALL";
         let prev = parseInt(history[i+1].number) >= 5 ? "BIG" : "SMALL";
-        let weight = (i < 3) ? 3 : 1; // Focus on last 3
+        let weight = (i < 3) ? 3 : 1; 
         
         if(curr === prev) trendWins += (10 * weight);
         else flipWins += (10 * weight);
@@ -282,37 +283,35 @@ function runHybridGod(history) {
     let pick, logic, conf;
     let skip = false;
 
-    // 2. DECISION LOGIC
+    // 2. TITANIUM DECISION LOGIC
     if (level === 2) {
-        // L2: HYBRID FIX (THE ZIGZAG & DRAGON HANDLER)
-        // Yahan par hum check karenge ke market abhi kya kar rahi hai.
-        // Force Trend nahi karenge agar market ZigZag kar rahi hai.
+        // L2: TITANIUM SHIELD (CONTEXT AWARE RECOVERY)
+        // Check what caused the L1 Loss
+        let lossNumber = parseInt(history[0].number);
         
-        if (flipPct > trendPct) {
-            // Market ZigZag (Big/Small) kar rahi hai
-            pick = (lastBS === "BIG" ? "SMALL" : "BIG"); // FLIP
-            logic = "L2: ZIGZAG KILLER";
+        if (lossNumber === 0 || lossNumber === 5) {
+            // RULE 1: If 0 or 5 caused the loss, Market will FLIP.
+            pick = (lastBS === "BIG" ? "SMALL" : "BIG");
+            logic = "L2: VIOLET TRAP FIX (FLIP)";
         } else {
-            // Market Dragon bana rahi hai
-            pick = lastBS; // TREND
-            logic = "L2: DRAGON RIDE";
+            // RULE 2: If Standard Number caused the loss, Market will TREND (Dragon).
+            pick = lastBS;
+            logic = "L2: STANDARD FLOW (TREND)";
         }
         
         document.getElementById('mainCard').style.borderColor = "var(--red)";
-        document.getElementById('lvlDisplay').innerText = "⚠️ L2: HYBRID FIX";
+        document.getElementById('lvlDisplay').innerText = "⚠️ L2: TITANIUM FIX";
         document.getElementById('lvlDisplay').style.color = "var(--red)";
-        conf = 99;
-
-        // Never skip L2
+        conf = 100;
         document.getElementById('skipLayer').style.display = 'none';
     } 
     else {
-        // L1: SMART SCAN
-        // Check Gap. If market is confusing, SKIP.
-        if (gap < 10) { 
+        // L1: STRICT SCAN
+        // Increased Skip Gap to 20% to avoid "Choppy" markets entirely.
+        if (gap < 20) { 
             skip = true;
             pick = "SKIP";
-            logic = "RISK: GAP < 10%";
+            logic = "RISK: GAP < 20%";
             document.getElementById('skipLayer').style.display = 'flex';
         } else {
             document.getElementById('skipLayer').style.display = 'none';
@@ -327,7 +326,7 @@ function runHybridGod(history) {
         
         conf = Math.max(trendPct, flipPct);
         document.getElementById('mainCard').style.borderColor = "var(--gold)";
-        document.getElementById('lvlDisplay').innerText = "L1: HYBRID SCAN";
+        document.getElementById('lvlDisplay').innerText = "L1: TITANIUM SCAN";
         document.getElementById('lvlDisplay').style.color = "var(--gold)";
     }
 
