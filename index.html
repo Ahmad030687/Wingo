@@ -3,225 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DARKNET SUPREME COMMANDER V.33 ORIGINAL FIX</title>
+    <title>DARKNET AURA 999+ V.45</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root { --neon: #39ff14; --danger: #ff0033; --bg: #000; --panel: #0a0a0a; --gold: #ffd700; }
-        * { margin:0; padding:0; box-sizing:border-box; font-family: 'Rajdhani', sans-serif; user-select:none; }
-        body { background: var(--bg); color: #fff; overflow-x: hidden; padding-bottom: 100px; }
+        
+        /* 10 DYNAMIC THEMES */
+        body.t-red { --neon: #ff0033; }
+        body.t-blue { --neon: #00d4ff; }
+        body.t-gold { --neon: #ffd700; }
+        body.t-purple { --neon: #bc13fe; }
+        body.t-cyan { --neon: #00ffff; }
+        body.t-white { --neon: #ffffff; }
+        body.t-pink { --neon: #ff00ff; }
+        body.t-orange { --neon: #ff6600; }
+        body.t-grey { --neon: #888888; }
 
-        /* HEADER */
+        * { margin:0; padding:0; box-sizing:border-box; font-family: 'Rajdhani', sans-serif; user-select:none; }
+        body { background: var(--bg); color: #fff; overflow-x: hidden; padding-bottom: 100px; transition: 0.3s; }
+
         .header { padding:20px; border-bottom:1px solid #1a1a1a; display:flex; justify-content:space-between; align-items:center; background:#000; position:sticky; top:0; z-index:1000; }
         .aura-brand { font-family:'Orbitron'; font-size:20px; color:var(--neon); text-shadow: 0 0 10px var(--neon); font-weight:900; }
-        .draw-timer { background: rgba(57, 255, 20, 0.1); border: 1px solid var(--neon); padding: 5px 10px; border-radius: 4px; font-family: 'Orbitron'; font-size: 12px; color: var(--neon); }
+        .draw-timer { background: rgba(0,0,0,0.5); border: 1px solid var(--neon); padding: 5px 12px; border-radius: 4px; font-family: 'Orbitron'; font-size: 14px; color: var(--neon); }
 
-        /* MISSION CARD (TERMINAL) */
         .page { display:none; padding:15px; flex-direction:column; }
         #page-terminal { display: flex; }
 
+        /* MISSION PANEL - PERIOD BOX FIXED */
         .mission-panel { background: var(--panel); border: 1px solid #1a1a1a; border-radius: 15px; padding: 25px; margin-top: 10px; border-top: 4px solid var(--neon); position: relative; }
-        .target-period { position: absolute; right: 15px; top: 15px; font-family: 'Orbitron'; font-size: 10px; color: #444; border: 1px solid #222; padding: 2px 8px; border-radius: 4px; }
-        .time-based-label { font-size: 10px; color: #666; font-family: 'Orbitron'; letter-spacing: 2px; }
-        .prediction-text { font-size: 65px; font-weight: 900; font-family: 'Orbitron'; color: var(--neon); margin: 10px 0; text-shadow: 0 0 20px rgba(57, 255, 20, 0.4); }
-        .strength-indicator { font-size: 12px; color: var(--neon); font-family: 'Orbitron'; margin-bottom: 20px; }
+        .target-box { position: absolute; right: 15px; top: 15px; background: #111; border: 1px solid #333; padding: 5px 12px; border-radius: 6px; text-align: center; min-width: 90px; }
+        .target-label { font-size: 7px; color: var(--neon); font-family: 'Orbitron'; margin-bottom: 2px; }
+        .target-val { font-size: 15px; font-family: 'Orbitron'; font-weight: 900; color: #ffffff; letter-spacing: 1px; display: block; }
 
-        /* JACKPOT SEEDS (BALLS) */
+        .time-label { font-size: 10px; color: #666; font-family: 'Orbitron'; letter-spacing: 2px; margin-bottom: 10px; }
+        .prediction-text { font-size: 65px; font-weight: 900; font-family: 'Orbitron'; color: var(--neon); margin: 10px 0; text-shadow: 0 0 20px rgba(57, 255, 20, 0.4); text-align: center; }
+        .strength-indicator { font-size: 12px; color: var(--neon); font-family: 'Orbitron'; margin-bottom: 20px; text-align: center; font-weight: bold; }
+
         .seeds-container { display: flex; justify-content: center; gap: 15px; margin: 20px 0; border-top: 1px solid #1a1a1a; padding-top: 20px; }
-        .seed-ball { width: 50px; height: 50px; background: radial-gradient(circle at 30% 30%, #444, #000); border: 2px solid var(--neon); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Orbitron'; font-size: 20px; font-weight: 900; color: var(--neon); box-shadow: 0 10px 20px rgba(0,0,0,0.5), inset 0 0 10px var(--neon); }
+        .seed-ball { width: 50px; height: 50px; background: radial-gradient(circle at 30% 30%, #444, #000); border: 2.5px solid var(--neon); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Orbitron'; font-size: 20px; font-weight: 900; color: var(--neon); box-shadow: 0 10px 20px rgba(0,0,0,0.5), inset 0 0 10px var(--neon); }
 
-        /* QUANTUM COUNCIL GRID */
-        .council-header { font-family: 'Orbitron'; font-size: 10px; color: #444; text-align: center; margin: 25px 0 10px 0; letter-spacing: 3px; }
-        .council-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+        .council-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
         .council-node { background: #080808; border: 1px solid #1a1a1a; padding: 12px; border-radius: 8px; text-align: center; transition: 0.3s; }
-        .council-node.active-node { border-color: var(--neon); box-shadow: 0 0 15px rgba(57, 255, 20, 0.2); }
-        .node-icon { font-size: 12px; margin-bottom: 5px; }
+        .active-node { border-color: var(--neon) !important; box-shadow: 0 0 15px var(--neon); transform: scale(1.05); }
         .node-name { font-size: 8px; font-family: 'Orbitron'; color: #666; text-transform: uppercase; }
         .node-acc { font-size: 11px; font-family: 'Orbitron'; color: var(--neon); }
 
-        /* ACCURACY HUD */
         .stats-hud { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .hud-box { background: var(--panel); border: 1px solid #1a1a1a; padding: 15px; border-radius: 10px; text-align: center; }
-        .hud-val { font-size: 24px; font-family: 'Orbitron'; font-weight: 900; }
-        .hud-lbl { font-size: 8px; color: #444; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* ARCHIVE MISSION CARDS */
-        #archive-list { display: flex; flex-direction: column; gap: 12px; }
-        .archive-card { background: #080808; border: 1px solid #1a1a1a; padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; position: relative; overflow: hidden; }
-        .archive-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: #222; }
-        .card-win::before { background: var(--neon); }
-        .card-loss::before { background: var(--danger); }
-        .card-info h4 { font-family: 'Orbitron'; font-size: 16px; margin: 2px 0; }
-        .card-info p { font-size: 10px; color: #666; }
-        .res-icon { font-size: 22px; filter: drop-shadow(0 0 5px var(--neon)); min-width: 30px; text-align: center; }
+        /* THEMES & PROFILE GRID */
+        .grid-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .t-btn { padding: 18px; background: #080808; border: 1px solid #222; border-radius: 10px; color: #fff; font-family: 'Orbitron'; font-size: 10px; cursor: pointer; }
+        .profile-card { background: var(--panel); border: 1px solid #1a1a1a; padding: 30px; border-radius: 15px; text-align: center; border-bottom: 4px solid var(--neon); }
 
-        /* NAVIGATION */
+        .archive-card { background: #080808; border: 1px solid #1a1a1a; padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; position: relative; border-left: 4px solid #222; margin-bottom: 12px; }
+        .card-win { border-left-color: var(--neon); }
+        .card-loss { border-left-color: var(--danger); }
+
         .nav-bar { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 1px solid #1a1a1a; display: flex; justify-content: space-around; padding: 15px 0; z-index: 2000; }
-        .nav-item { background: none; border: none; color: #333; display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: 0.3s; }
+        .nav-item { background: none; border: none; color: #444; display: flex; flex-direction: column; align-items: center; cursor: pointer; }
         .nav-item.active { color: var(--neon); }
         .nav-item span { font-size: 10px; font-family: 'Orbitron'; margin-top: 5px; font-weight: 700; }
-        .nav-icon { font-size: 22px; }
     </style>
 </head>
-<body>
+<body class="t-green">
 
 <div class="header">
     <div class="aura-brand">DARKNET AURA 999+</div>
-    <div class="draw-timer" id="timer">00:00</div>
+    <div class="draw-timer" id="timer">00</div>
 </div>
 
 <div id="page-terminal" class="page">
     <div class="mission-panel">
-        <div class="target-period" id="period">TARGET PERIOD: 0000</div>
-        <div class="time-based-label">TIME_BASED ANALYSIS</div>
-        <div class="prediction-text" id="prediction" style="text-align: center;">SCANNING</div>
-        <div class="strength-indicator" id="strength" style="text-align: center;">TIME_BASED : 0%</div>
-        
-        <div class="council-header">DARKNET JACKPOT SEEDS</div>
+        <div class="target-box">
+            <div class="target-label">PERIOD</div>
+            <div class="target-val" id="period">0000</div>
+        </div>
+        <div class="time-label">TIME_BASED ANALYSIS</div>
+        <div class="prediction-text" id="prediction">SCANNING</div>
+        <div class="strength-indicator" id="strength">TIME_BASED : 0%</div>
         <div class="seeds-container" id="jackpotSeeds">
             <div class="seed-ball">0</div>
             <div class="seed-ball">0</div>
         </div>
     </div>
 
-    <div class="council-header">QUANTUM AI COUNCIL</div>
-    <div class="council-grid" id="councilGrid">
-        <div class="council-node" id="node-titan"><div class="node-icon">💠</div><div class="node-name">Titan</div><div class="node-acc">92%</div></div>
-        <div class="council-node" id="node-zodiac"><div class="node-icon">⚛️</div><div class="node-name">Zodiac</div><div class="node-acc">88%</div></div>
-        <div class="council-node" id="node-orion"><div class="node-icon">🛡️</div><div class="node-name">Orion</div><div class="node-acc">85%</div></div>
-        <div class="council-node" id="node-neon"><div class="node-icon">⚡</div><div class="node-name">Neon</div><div class="node-acc">90%</div></div>
-        <div class="council-node" id="node-vector"><div class="node-icon">🛰️</div><div class="node-name">Vector</div><div class="node-acc">87%</div></div>
-        <div class="council-node" id="node-phantom"><div class="node-icon">👻</div><div class="node-name">Phantom</div><div class="node-acc">89%</div></div>
+    <div class="council-grid">
+        <div class="council-node" id="n-titan"><div style="font-size:12px">💠</div><div class="node-name">Titan</div><div class="node-acc">92%</div></div>
+        <div class="council-node" id="n-zodiac"><div style="font-size:12px">⚛️</div><div class="node-name">Zodiac</div><div class="node-acc">88%</div></div>
+        <div class="council-node" id="n-phantom"><div style="font-size:12px">👻</div><div class="node-name">Phantom</div><div class="node-acc">89%</div></div>
+        <div class="council-node" id="n-neon"><div style="font-size:12px">⚡</div><div class="node-name">Neon</div><div class="node-acc">90%</div></div>
+        <div class="council-node" id="n-vector"><div style="font-size:12px">🛰️</div><div class="node-name">Vector</div><div class="node-acc">87%</div></div>
+        <div class="council-node" id="n-orion"><div style="font-size:12px">🛡️</div><div class="node-name">Orion</div><div class="node-acc">85%</div></div>
     </div>
 
     <div class="stats-hud">
-        <div class="hud-box" style="border-left: 3px solid var(--neon);"><div class="hud-val" id="wins" style="color:var(--neon)">0</div><div class="hud-lbl">Total Wins</div></div>
-        <div class="hud-box" style="border-left: 3px solid var(--danger);"><div class="hud-val" id="losses" style="color:var(--danger)">0</div><div class="hud-lbl">Total Losses</div></div>
-        <div class="hud-box" style="grid-column: span 2;"><div class="hud-val" id="accuracy">100%</div><div class="hud-lbl">Council Accuracy</div></div>
+        <div class="hud-box" style="border-left: 3px solid var(--neon);"><div class="hud-val" id="wins" style="color:var(--neon)">0</div><div style="font-size:8px;color:#444">WINS</div></div>
+        <div class="hud-box" style="border-left: 3px solid var(--danger);"><div class="hud-val" id="losses" style="color:var(--danger)">0</div><div style="font-size:8px;color:#444">LOSSES</div></div>
     </div>
 </div>
 
 <div id="page-archive" class="page">
-    <div class="council-header" style="margin-top:0;">MISSION ARCHIVE</div>
     <div id="archive-list"></div>
 </div>
 
+<div id="page-themes" class="page">
+    <div class="grid-layout">
+        <button class="t-btn" onclick="setAura('green')" style="border-color:#39ff14;">GREEN</button>
+        <button class="t-btn" onclick="setAura('red')" style="border-color:#ff0033;">RED</button>
+        <button class="t-btn" onclick="setAura('blue')" style="border-color:#00d4ff;">BLUE</button>
+        <button class="t-btn" onclick="setAura('gold')" style="border-color:#ffd700;">GOLD</button>
+        <button class="t-btn" onclick="setAura('purple')" style="border-color:#bc13fe;">PURPLE</button>
+        <button class="t-btn" onclick="setAura('cyan')" style="border-color:#00ffff;">CYAN</button>
+        <button class="t-btn" onclick="setAura('pink')" style="border-color:#ff00ff;">PINK</button>
+        <button class="t-btn" onclick="setAura('orange')" style="border-color:#ff6600;">ORANGE</button>
+    </div>
+</div>
+
+<div id="page-profile" class="page">
+    <div class="profile-card">
+        <div style="font-size:40px; margin-bottom:10px;">👤</div>
+        <h2 style="font-family:'Orbitron';">AHMAD BOSS</h2>
+        <p style="font-size:10px; color:var(--neon); letter-spacing:3px;">SUPREME COMMANDER</p>
+    </div>
+</div>
+
 <div class="nav-bar">
-    <button class="nav-item active" onclick="switchPage('terminal', this)">
-        <div class="nav-icon">🎮</div><span>TERMINAL</span>
-    </button>
-    <button class="nav-item" onclick="switchPage('archive', this)">
-        <div class="nav-icon">📂</div><span>ARCHIVE</span>
-    </button>
-    <button class="nav-item">
-        <div class="nav-icon">🎨</div><span>THEMES</span>
-    </button>
-    <button class="nav-item">
-        <div class="nav-icon">🕵️</div><span>PROFILE</span>
-    </button>
+    <button class="nav-item active" onclick="nav('terminal', this)"><span>🎮 TERMINAL</span></button>
+    <button class="nav-item" onclick="nav('archive', this)"><span>📂 ARCHIVE</span></button>
+    <button class="nav-item" onclick="nav('themes', this)"><span>🎨 THEMES</span></button>
+    <button class="nav-item" onclick="nav('profile', this)"><span>👤 PROFILE</span></button>
 </div>
 
 <script>
 const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?ts=";
-let wins = 0, losses = 0, lastId = null, currentBet = null;
+let wins=0, losses=0, lastId=null, currentBet=null;
 
-async function fetchData() {
+async function sync() {
     try {
-        const response = await fetch(API + Date.now());
-        const data = await response.json();
+        const res = await fetch(API + Date.now());
+        const data = await res.json();
         const history = data.data.list;
-        const latest = history[0];
-
-        if (latest.issueNumber !== lastId) {
-            if (currentBet && currentBet.period === latest.issueNumber) verifyMission(latest);
-            lastId = latest.issueNumber;
-            let nextPeriod = (BigInt(latest.issueNumber) + 1n).toString();
-            runSingularityEngine(history, nextPeriod);
+        if (history[0].issueNumber !== lastId) {
+            if (currentBet && currentBet.period === history[0].issueNumber) verify(history[0]);
+            lastId = history[0].issueNumber;
+            let next = (BigInt(history[0].issueNumber) + 1n).toString();
+            updateEngine(history, next);
         }
     } catch(e) {}
 }
 
-function runSingularityEngine(history, nextPeriod) {
-    const lastNum = parseInt(history[0].number);
-    const lastSize = lastNum >= 5 ? "BIG" : "SMALL";
+function updateEngine(history, next) {
+    let big = 0, small = 0;
+    history.slice(0, 10).forEach(h => { if(parseInt(h.number) >= 5) big++; else small++; });
     
-    // SENSEI ADAPTIVE LOGIC
-    let counts = { BIG: 0, SMALL: 0 };
-    history.slice(0, 10).forEach(h => { if(parseInt(h.number) >= 5) counts.BIG++; else counts.SMALL++; });
-    
-    let pred = (counts.BIG > counts.SMALL) ? "BIG" : "SMALL";
-    if(counts.BIG === counts.SMALL) pred = (lastSize === "BIG") ? "SMALL" : "BIG";
+    // FIXER L1/L2 LOGIC
+    let lastSize = parseInt(history[0].number) >= 5 ? "BIG" : "SMALL";
+    let pred = (big > small) ? "BIG" : "SMALL";
+    if (big === small) pred = (lastSize === "BIG") ? "SMALL" : "BIG";
 
-    let seeds = (pred === "BIG") ? [7, 8] : [1, 2];
-    let strength = 65 + Math.floor(Math.random() * 30);
-
-    // Update Terminal
-    document.getElementById('period').innerText = `TARGET PERIOD: ${nextPeriod.slice(-4)}`;
+    document.getElementById('period').innerText = next.slice(-4);
     document.getElementById('prediction').innerText = pred;
     document.getElementById('prediction').style.color = (pred === "BIG") ? "var(--danger)" : "var(--neon)";
-    document.getElementById('strength').innerText = `TIME_BASED : ${strength}%`;
+    document.getElementById('strength').innerText = `TIME_BASED : ${70 + Math.floor(Math.random()*25)}%`;
+    
+    let seeds = (pred === "BIG") ? [7, 9] : [1, 2];
     document.getElementById('jackpotSeeds').innerHTML = `<div class="seed-ball">${seeds[0]}</div><div class="seed-ball">${seeds[1]}</div>`;
 
-    // Council Glow
-    const nodes = ['node-titan', 'node-zodiac', 'node-orion', 'node-neon', 'node-vector', 'node-phantom'];
+    const nodes = ['n-titan', 'n-zodiac', 'n-phantom', 'n-neon', 'n-vector', 'n-orion'];
     nodes.forEach(id => document.getElementById(id).classList.remove('active-node'));
     document.getElementById(nodes[Math.floor(Math.random() * nodes.length)]).classList.add('active-node');
 
-    createArchiveCard(nextPeriod.slice(-4), pred, seeds);
-    currentBet = { period: nextPeriod, pred: pred, seeds: seeds };
+    createArchive(next.slice(-4), pred, seeds);
+    currentBet = { period: next, pred: pred };
 }
 
-function verifyMission(result) {
-    const n = parseInt(result.number);
+function verify(res) {
+    const n = parseInt(res.number);
     const actual = n >= 5 ? "BIG" : "SMALL";
     const win = (currentBet.pred === actual);
-    
     win ? wins++ : losses++;
-    if(win) confetti({particleCount: 150, spread: 80, colors: ['#39ff14', '#ffffff']});
+    if(win) confetti({particleCount: 150, colors: [getComputedStyle(document.documentElement).getPropertyValue('--neon')]});
 
     document.getElementById('wins').innerText = wins;
     document.getElementById('losses').innerText = losses;
-    document.getElementById('accuracy').innerText = Math.round((wins / (wins + losses)) * 100) + "%";
 
-    const card = document.getElementById(`mission-${currentBet.period.slice(-4)}`);
+    const card = document.getElementById(`m-${currentBet.period.slice(-4)}`);
     if(card) {
         card.classList.add(win ? 'card-win' : 'card-loss');
-        card.querySelector('.status').innerHTML = win ? `<span style="color:var(--neon)">WIN! RESULT: ${n} (${actual})</span>` : `<span style="color:var(--danger)">FAILED. RESULT: ${n} (${actual})</span>`;
+        card.querySelector('.status').innerHTML = win ? `<span style="color:var(--neon)">SURESHOT WIN</span>` : `<span style="color:var(--danger)">FAILED</span>`;
         card.querySelector('.res-icon').innerHTML = win ? '🏆' : '✘';
-        card.querySelector('.res-icon').style.color = win ? 'var(--neon)' : 'var(--danger)';
     }
 }
 
-function createArchiveCard(period, pred, seeds) {
+function createArchive(period, pred, seeds) {
     const list = document.getElementById('archive-list');
     const div = document.createElement('div');
-    div.id = `mission-${period}`;
+    div.id = `m-${period}`;
     div.className = 'archive-card';
-    div.innerHTML = `
-        <div class="card-info">
-            <p>PERIOD #${period} · TIME_BASED</p>
-            <h4 style="color:${pred==='BIG'?'var(--danger)':'var(--neon)'}">${pred}</h4>
-            <p>SEEDS: ${seeds.join(', ')}</p>
-            <p class="status">PENDING RESULT...</p>
-        </div>
-        <div class="res-icon">⏳</div>
-    `;
+    div.innerHTML = `<div><p style="font-size:10px; color:#444">PERIOD #${period}</p><h4 style="color:${pred==='BIG'?'var(--danger)':'var(--neon)'}">${pred}</h4><p class="status">PENDING...</p></div><div class="res-icon">⏳</div>`;
     list.prepend(div);
 }
 
-function switchPage(pageId, btn) {
-    document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
-    document.getElementById(`page-${pageId}`).style.display = pageId === 'terminal' ? 'flex' : 'block';
-    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-    btn.classList.add('active');
+function nav(p, b) {
+    document.querySelectorAll('.page').forEach(x => x.style.display = 'none');
+    document.getElementById(`page-${p}`).style.display = p === 'terminal' ? 'flex' : 'block';
+    document.querySelectorAll('.nav-item').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
 }
 
-setInterval(fetchData, 2000);
+function setAura(c) { document.body.className = `t-${c}`; }
+
+setInterval(sync, 2000);
 setInterval(() => {
-    let rem = 60 - new Date().getSeconds();
-    document.getElementById('timer').innerText = "00:" + (rem < 10 ? "0" + rem : rem);
+    let s = 60 - new Date().getSeconds();
+    document.getElementById('timer').innerText = (s < 10 ? "0" + s : s);
 }, 1000);
-fetchData();
+sync();
 </script>
 </body>
 </html>
