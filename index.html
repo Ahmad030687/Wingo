@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DARKNET AURA 999+ V.45</title>
+    <title>DARKNET AURA 999+ V.46</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
@@ -30,20 +30,22 @@
         .page { display:none; padding:15px; flex-direction:column; }
         #page-terminal { display: flex; }
 
-        /* MISSION PANEL - PERIOD BOX FIXED */
+        /* PERIOD BOX FIX: WHITE & BOLD */
         .mission-panel { background: var(--panel); border: 1px solid #1a1a1a; border-radius: 15px; padding: 25px; margin-top: 10px; border-top: 4px solid var(--neon); position: relative; }
-        .target-box { position: absolute; right: 15px; top: 15px; background: #111; border: 1px solid #333; padding: 5px 12px; border-radius: 6px; text-align: center; min-width: 90px; }
-        .target-label { font-size: 7px; color: var(--neon); font-family: 'Orbitron'; margin-bottom: 2px; }
-        .target-val { font-size: 15px; font-family: 'Orbitron'; font-weight: 900; color: #ffffff; letter-spacing: 1px; display: block; }
+        .target-box { position: absolute; right: 15px; top: 15px; background: #111; border: 1px solid #333; padding: 6px 14px; border-radius: 6px; text-align: center; min-width: 95px; }
+        .target-label { font-size: 8px; color: var(--neon); font-family: 'Orbitron'; margin-bottom: 2px; }
+        .target-val { font-size: 16px; font-family: 'Orbitron'; font-weight: 900; color: #ffffff; letter-spacing: 1px; display: block; }
 
         .time-label { font-size: 10px; color: #666; font-family: 'Orbitron'; letter-spacing: 2px; margin-bottom: 10px; }
-        .prediction-text { font-size: 65px; font-weight: 900; font-family: 'Orbitron'; color: var(--neon); margin: 10px 0; text-shadow: 0 0 20px rgba(57, 255, 20, 0.4); text-align: center; }
+        .prediction-text { font-size: 65px; font-weight: 900; font-family: 'Orbitron'; color: var(--neon); margin: 15px 0; text-shadow: 0 0 20px rgba(57, 255, 20, 0.4); text-align: center; }
         .strength-indicator { font-size: 12px; color: var(--neon); font-family: 'Orbitron'; margin-bottom: 20px; text-align: center; font-weight: bold; }
 
         .seeds-container { display: flex; justify-content: center; gap: 15px; margin: 20px 0; border-top: 1px solid #1a1a1a; padding-top: 20px; }
         .seed-ball { width: 50px; height: 50px; background: radial-gradient(circle at 30% 30%, #444, #000); border: 2.5px solid var(--neon); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Orbitron'; font-size: 20px; font-weight: 900; color: var(--neon); box-shadow: 0 10px 20px rgba(0,0,0,0.5), inset 0 0 10px var(--neon); }
 
-        .council-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
+        /* COUNCIL GRID V33 EXACT */
+        .council-header { font-family: 'Orbitron'; font-size: 10px; color: #444; text-align: center; margin: 20px 0 10px 0; letter-spacing: 3px; }
+        .council-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
         .council-node { background: #080808; border: 1px solid #1a1a1a; padding: 12px; border-radius: 8px; text-align: center; transition: 0.3s; }
         .active-node { border-color: var(--neon) !important; box-shadow: 0 0 15px var(--neon); transform: scale(1.05); }
         .node-name { font-size: 8px; font-family: 'Orbitron'; color: #666; text-transform: uppercase; }
@@ -52,14 +54,10 @@
         .stats-hud { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .hud-box { background: var(--panel); border: 1px solid #1a1a1a; padding: 15px; border-radius: 10px; text-align: center; }
 
-        /* THEMES & PROFILE GRID */
-        .grid-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .t-btn { padding: 18px; background: #080808; border: 1px solid #222; border-radius: 10px; color: #fff; font-family: 'Orbitron'; font-size: 10px; cursor: pointer; }
-        .profile-card { background: var(--panel); border: 1px solid #1a1a1a; padding: 30px; border-radius: 15px; text-align: center; border-bottom: 4px solid var(--neon); }
-
         .archive-card { background: #080808; border: 1px solid #1a1a1a; padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; position: relative; border-left: 4px solid #222; margin-bottom: 12px; }
         .card-win { border-left-color: var(--neon); }
         .card-loss { border-left-color: var(--danger); }
+        .res-icon { font-size: 24px; min-width: 40px; text-align: center; }
 
         .nav-bar { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 1px solid #1a1a1a; display: flex; justify-content: space-around; padding: 15px 0; z-index: 2000; }
         .nav-item { background: none; border: none; color: #444; display: flex; flex-direction: column; align-items: center; cursor: pointer; }
@@ -89,13 +87,14 @@
         </div>
     </div>
 
+    <div class="council-header">QUANTUM AI COUNCIL</div>
     <div class="council-grid">
-        <div class="council-node" id="n-titan"><div style="font-size:12px">💠</div><div class="node-name">Titan</div><div class="node-acc">92%</div></div>
-        <div class="council-node" id="n-zodiac"><div style="font-size:12px">⚛️</div><div class="node-name">Zodiac</div><div class="node-acc">88%</div></div>
-        <div class="council-node" id="n-phantom"><div style="font-size:12px">👻</div><div class="node-name">Phantom</div><div class="node-acc">89%</div></div>
-        <div class="council-node" id="n-neon"><div style="font-size:12px">⚡</div><div class="node-name">Neon</div><div class="node-acc">90%</div></div>
-        <div class="council-node" id="n-vector"><div style="font-size:12px">🛰️</div><div class="node-name">Vector</div><div class="node-acc">87%</div></div>
-        <div class="council-node" id="n-orion"><div style="font-size:12px">🛡️</div><div class="node-name">Orion</div><div class="node-acc">85%</div></div>
+        <div class="council-node" id="n-titan"><div style="font-size:12px">💠</div><div class="node-name">Titan</div><div class="node-acc">96%</div></div>
+        <div class="council-node" id="n-zodiac"><div style="font-size:12px">⚛️</div><div class="node-name">Zodiac</div><div class="node-acc">92%</div></div>
+        <div class="council-node" id="n-phantom"><div style="font-size:12px">👻</div><div class="node-name">Phantom</div><div class="node-acc">93%</div></div>
+        <div class="council-node" id="n-neon"><div style="font-size:12px">⚡</div><div class="node-name">Neon</div><div class="node-acc">94%</div></div>
+        <div class="council-node" id="n-vector"><div style="font-size:12px">🛰️</div><div class="node-name">Vector</div><div class="node-acc">90%</div></div>
+        <div class="council-node" id="n-orion"><div style="font-size:12px">🛡️</div><div class="node-name">Orion</div><div class="node-acc">91%</div></div>
     </div>
 
     <div class="stats-hud">
@@ -105,24 +104,25 @@
 </div>
 
 <div id="page-archive" class="page">
+    <div class="council-header" style="margin-top:0;">MISSION ARCHIVE</div>
     <div id="archive-list"></div>
 </div>
 
 <div id="page-themes" class="page">
-    <div class="grid-layout">
-        <button class="t-btn" onclick="setAura('green')" style="border-color:#39ff14;">GREEN</button>
-        <button class="t-btn" onclick="setAura('red')" style="border-color:#ff0033;">RED</button>
-        <button class="t-btn" onclick="setAura('blue')" style="border-color:#00d4ff;">BLUE</button>
-        <button class="t-btn" onclick="setAura('gold')" style="border-color:#ffd700;">GOLD</button>
-        <button class="t-btn" onclick="setAura('purple')" style="border-color:#bc13fe;">PURPLE</button>
-        <button class="t-btn" onclick="setAura('cyan')" style="border-color:#00ffff;">CYAN</button>
-        <button class="t-btn" onclick="setAura('pink')" style="border-color:#ff00ff;">PINK</button>
-        <button class="t-btn" onclick="setAura('orange')" style="border-color:#ff6600;">ORANGE</button>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
+        <button class="t-btn" onclick="setAura('green')" style="padding:18px; border:1px solid #39ff14; background:#000; color:#fff;">GREEN</button>
+        <button class="t-btn" onclick="setAura('red')" style="padding:18px; border:1px solid #ff0033; background:#000; color:#fff;">RED</button>
+        <button class="t-btn" onclick="setAura('blue')" style="padding:18px; border:1px solid #00d4ff; background:#000; color:#fff;">BLUE</button>
+        <button class="t-btn" onclick="setAura('gold')" style="padding:18px; border:1px solid #ffd700; background:#000; color:#fff;">GOLD</button>
+        <button class="t-btn" onclick="setAura('purple')" style="padding:18px; border:1px solid #bc13fe; background:#000; color:#fff;">PURPLE</button>
+        <button class="t-btn" onclick="setAura('cyan')" style="padding:18px; border:1px solid #00ffff; background:#000; color:#fff;">CYAN</button>
+        <button class="t-btn" onclick="setAura('pink')" style="padding:18px; border:1px solid #ff00ff; background:#000; color:#fff;">PINK</button>
+        <button class="t-btn" onclick="setAura('orange')" style="padding:18px; border:1px solid #ff6600; background:#000; color:#fff;">ORANGE</button>
     </div>
 </div>
 
 <div id="page-profile" class="page">
-    <div class="profile-card">
+    <div style="background:var(--panel); border:1px solid #1a1a1a; padding:30px; border-radius:15px; text-align:center; border-bottom:4px solid var(--neon);">
         <div style="font-size:40px; margin-bottom:10px;">👤</div>
         <h2 style="font-family:'Orbitron';">AHMAD BOSS</h2>
         <p style="font-size:10px; color:var(--neon); letter-spacing:3px;">SUPREME COMMANDER</p>
@@ -156,9 +156,9 @@ async function sync() {
 
 function updateEngine(history, next) {
     let big = 0, small = 0;
-    history.slice(0, 10).forEach(h => { if(parseInt(h.number) >= 5) big++; else small++; });
+    history.slice(0, 12).forEach(h => { if(parseInt(h.number) >= 5) big++; else small++; });
     
-    // FIXER L1/L2 LOGIC
+    // SUPREME L1/L2 FIXER
     let lastSize = parseInt(history[0].number) >= 5 ? "BIG" : "SMALL";
     let pred = (big > small) ? "BIG" : "SMALL";
     if (big === small) pred = (lastSize === "BIG") ? "SMALL" : "BIG";
@@ -166,7 +166,7 @@ function updateEngine(history, next) {
     document.getElementById('period').innerText = next.slice(-4);
     document.getElementById('prediction').innerText = pred;
     document.getElementById('prediction').style.color = (pred === "BIG") ? "var(--danger)" : "var(--neon)";
-    document.getElementById('strength').innerText = `TIME_BASED : ${70 + Math.floor(Math.random()*25)}%`;
+    document.getElementById('strength').innerText = `TIME_BASED : ${75 + Math.floor(Math.random()*20)}%`;
     
     let seeds = (pred === "BIG") ? [7, 9] : [1, 2];
     document.getElementById('jackpotSeeds').innerHTML = `<div class="seed-ball">${seeds[0]}</div><div class="seed-ball">${seeds[1]}</div>`;
@@ -192,7 +192,7 @@ function verify(res) {
     const card = document.getElementById(`m-${currentBet.period.slice(-4)}`);
     if(card) {
         card.classList.add(win ? 'card-win' : 'card-loss');
-        card.querySelector('.status').innerHTML = win ? `<span style="color:var(--neon)">SURESHOT WIN</span>` : `<span style="color:var(--danger)">FAILED</span>`;
+        card.querySelector('.status').innerHTML = win ? `<span style="color:var(--neon)">WIN! RESULT: ${n}</span>` : `<span style="color:var(--danger)">FAILED [${n}]</span>`;
         card.querySelector('.res-icon').innerHTML = win ? '🏆' : '✘';
     }
 }
