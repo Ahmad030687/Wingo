@@ -3,54 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OMNI-X V.20 JACKPOT FIXER</title>
+    <title>OMNI-X V.21 NODE COMMANDER</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --neon-green: #00ff00;
-            --neon-red: #ff0000;
-            --dark-bg: #000000;
-            --card-bg: #050505;
-            --border: #1a1a1a;
+            --neon-pink: #ff00ff;
+            --neon-cyan: #00ffff;
+            --neon-red: #ff0033;
+            --neon-green: #00ff41;
+            --gold: #ffd700;
+            --dark-bg: #050505;
+            --panel-bg: #0a0a0a;
         }
 
         * { margin:0; padding:0; box-sizing:border-box; font-family: 'Rajdhani', sans-serif; user-select:none; }
         body { background: var(--dark-bg); color: #fff; min-height: 100vh; overflow-x: hidden; padding-bottom: 80px; }
 
-        /* HACKER HEADER */
-        .header { width:100%; padding:15px; border-bottom:1px solid var(--neon-green); background:#000; display:flex; justify-content:space-between; align-items:center; position: sticky; top:0; z-index:1000; box-shadow: 0 0 15px rgba(0, 255, 0, 0.2); }
-        .ping-box { font-size: 10px; color: var(--neon-green); border: 1px solid var(--neon-green); padding: 3px 8px; border-radius: 2px; font-family: 'Orbitron'; letter-spacing: 1px; }
+        /* HEADER */
+        .header { width:100%; padding:15px; border-bottom:2px solid var(--neon-cyan); background:#000; display:flex; justify-content:space-between; align-items:center; position: sticky; top:0; z-index:1000; }
+        .ping-box { font-size: 10px; color: #fff; border: 1px solid #555; padding: 3px 8px; border-radius: 4px; font-family: 'Orbitron'; }
 
-        /* MAIN CARD */
-        .card { width:95%; margin:20px auto; border:2px solid var(--neon-green); padding:20px; text-align:center; position:relative; background: var(--card-bg); box-shadow:0 0 30px rgba(0,255,0,0.1); border-radius:10px; }
-        
-        .period-info { display:flex; justify-content:space-between; font-size:14px; font-family:'Orbitron'; color:#888; border-bottom:1px solid #333; padding-bottom:12px; }
-        
-        .timer-display { font-size: 32px; color: #fff; font-weight: 900; margin-top: 15px; font-family: 'Orbitron'; letter-spacing: 3px; }
-        
-        /* PREDICTION TEXT */
-        .prediction { font-size:65px; font-weight:900; margin:10px 0; font-family:'Orbitron'; letter-spacing:-2px; text-transform: uppercase; text-shadow: 0 0 20px rgba(255,255,255,0.2); }
-        
-        /* JACKPOT NUMBERS */
-        .jackpot-box { display:flex; justify-content:center; gap:10px; margin-top:10px; }
-        .j-num { width:40px; height:40px; background:#111; border:1px solid var(--neon-green); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:bold; color:var(--neon-green); box-shadow: 0 0 10px rgba(0,255,0,0.3); }
+        /* HUD */
+        .mickey-hud { width:95%; margin:15px auto; display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+        .meter-card { background:rgba(20,20,20,0.95); border:1px solid #333; padding:12px; border-radius:8px; border-left: 3px solid var(--neon-cyan); }
+        .meter-label { font-size:9px; color:#aaa; text-transform:uppercase; letter-spacing: 1px; }
+        .meter-val { font-size:14px; color:#fff; font-weight:bold; font-family: 'Orbitron'; margin-top: 4px; }
 
-        .real-thought { font-size:10px; color:var(--neon-green); border-top:1px dashed #333; padding-top:10px; margin-top:15px; font-family: monospace; }
+        /* MAIN CARD (TERMINAL) */
+        .card { width:95%; margin:10px auto; border:2px solid #333; padding:25px; text-align:center; position:relative; background: var(--panel-bg); box-shadow:0 0 40px rgba(0,0,0,0.5); border-radius:16px; transition:0.3s; }
+        
+        .glow-size { border-color: var(--neon-cyan); box-shadow: 0 0 30px rgba(0, 255, 255, 0.2); }
+        .glow-color { border-color: var(--neon-pink); box-shadow: 0 0 30px rgba(255, 0, 255, 0.2); }
 
-        /* STATS GRID (NO PROFIT) */
+        .period-info { display:flex; justify-content:space-between; font-size:13px; font-family:'Orbitron'; color:var(--gold); border-bottom:1px solid #333; padding-bottom:12px; }
+        .timer-display { font-size: 28px; color: #fff; font-weight: 900; margin-top: 15px; font-family: 'Orbitron'; letter-spacing: 2px; }
+        .prediction { font-size:60px; font-weight:900; margin:10px 0; font-family:'Orbitron'; letter-spacing:-2px; text-transform: uppercase; }
+        .real-thought { font-size:11px; color:#fff; border:1px dashed #444; padding:10px; display:block; margin-top:15px; background:rgba(255,255,255,0.05); }
+
+        /* LOAD BARS */
+        .load-bars { margin-top:15px; }
+        .bar-wrap { margin-bottom:8px; }
+        .bar-lbl { display:flex; justify-content:space-between; font-size:9px; color:#888; margin-bottom:3px; }
+        .bar-track { width:100%; height:6px; background:#222; border-radius:3px; overflow:hidden; }
+        .bar-fill { height:100%; transition: width 0.5s; }
+
+        /* STATS GRID */
         .stats-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; width:95%; margin:15px auto; }
-        .s-box { background:#0a0a0a; border:1px solid #333; padding:10px 2px; text-align:center; border-radius:5px; }
-        .s-val { font-size:18px; font-weight:bold; font-family: 'Orbitron'; }
-        .s-lbl { font-size:8px; color: #666; letter-spacing:1px; margin-top:2px; }
+        .s-box { background:#0a0a0a; border:1px solid #333; padding:12px 5px; text-align:center; border-radius:8px; border-bottom: 2px solid var(--neon-cyan); }
+        .s-val { font-size:16px; font-weight:bold; font-family: 'Orbitron'; }
+        .s-lbl { font-size:8px; color: #888; }
 
-        /* COLORS */
-        .c-green { color: var(--neon-green); }
-        .c-red { color: var(--neon-red); }
-        .c-white { color: #fff; }
+        /* NODE SYSTEM STYLES */
+        .node-item { width:95%; margin:10px auto; background:#111; padding:15px; border-radius:8px; border:1px solid #333; display:flex; justify-content:space-between; align-items:center; transition:0.3s; opacity: 0.5; }
+        .node-active { border:1px solid var(--neon-green); box-shadow: 0 0 15px rgba(0,255,65,0.1); opacity: 1; transform: scale(1.02); }
+        .node-info { text-align:left; }
+        .node-name { font-family:'Orbitron'; font-size:12px; color:#fff; margin-bottom:4px; }
+        .node-desc { font-size:9px; color:#888; }
+        .node-status { font-size:10px; font-weight:bold; font-family:'Orbitron'; padding:4px 8px; border-radius:4px; background:#000; }
+        
+        .status-on { color:var(--neon-green); border:1px solid var(--neon-green); }
+        .status-off { color:#555; border:1px solid #333; }
 
-        .nav { position:fixed; bottom:0; left:0; width:100%; background:#000; border-top:1px solid #333; padding:15px 0; display:flex; justify-content:center; z-index:1000; }
-        .reset-btn { background:#222; color:#fff; border:1px solid #555; padding:8px 20px; font-size:12px; border-radius:4px; cursor:pointer; }
+        /* PAGES */
+        .page { display:none; width:100%; flex-direction:column; padding-bottom: 20px; }
+        #page-terminal { display: flex; }
+
+        /* NAVIGATION BAR */
+        .nav { position:fixed; bottom:0; left:0; width:100%; background:rgba(0,0,0,0.98); border-top:1px solid #333; padding:12px 0; display:flex; justify-content:space-around; z-index:1000; backdrop-filter:blur(5px); }
+        .nav-btn { background:none; border:none; color:#555; font-size:10px; font-weight:bold; cursor:pointer; display:flex; flex-direction:column; align-items:center; transition:0.3s; }
+        .nav-btn span { font-size: 16px; margin-bottom: 3px; }
+        .nav-btn.active { color:var(--neon-cyan); transform: translateY(-2px); text-shadow: 0 0 5px var(--neon-cyan); }
     </style>
 </head>
 <body>
@@ -58,58 +81,109 @@
 <div class="header">
     <div style="line-height:1.2">
         <div style="font-size:18px; font-weight:900; font-family:'Orbitron'; color:#fff;">OMNI-X</div>
-        <div style="font-size:9px; color:var(--neon-green); font-weight: bold;">V.20 JACKPOT FIXER</div>
+        <div style="font-size:9px; color:var(--neon-cyan); font-weight: bold;">NODE COMMANDER V.21</div>
     </div>
-    <div class="ping-box">L1 GOD MODE</div>
+    <div class="ping-box">SYSTEM: ONLINE</div>
 </div>
 
-<div class="card">
-    <div class="period-info">
-        <span>PERIOD: <b id="period">....</b></span>
-        <span id="statusTxt" style="color:var(--neon-green)">SCANNING...</span>
-    </div>
-    
-    <div class="timer-display" id="timer">00:00</div>
-    
-    <div class="prediction" id="predDisplay">...</div>
-    
-    <div style="font-size:10px; color:#666; margin-bottom:5px; letter-spacing:2px;">SUGGESTED NUMBERS</div>
-    <div class="jackpot-box" id="jackpotBox">
-        <div class="j-num">-</div>
-        <div class="j-num">-</div>
+<div id="page-terminal" class="page">
+    <div class="mickey-hud">
+        <div class="meter-card"><div class="meter-label">BEST SIGNAL</div><div class="meter-val" id="bestMode" style="color:var(--gold)">SCANNING</div></div>
+        <div class="meter-card"><div class="meter-label">TRAP PRESSURE</div><div class="meter-val" id="trapPressure">0%</div></div>
+        <div class="meter-card"><div class="meter-label">ACTIVE NODE</div><div class="meter-val" id="stratName" style="color:var(--neon-cyan)">AUTO</div></div>
+        <div class="meter-card"><div class="meter-label">NEXT MOVE</div><div class="meter-val" id="nextMove">WAITING</div></div>
     </div>
 
-    <div class="real-thought" id="logicDisplay">SYSTEM: WAITING FOR API DATA...</div>
+    <div class="card" id="mainCard">
+        <div class="period-info">
+            <span>PERIOD: <b id="period">....</b></span>
+            <span id="lvlDisplay">L1 ACTIVE</span>
+        </div>
+        
+        <div class="timer-display" id="timer">00:00</div>
+        <div class="prediction" id="predDisplay">...</div>
+        
+        <div class="load-bars">
+            <div class="bar-wrap">
+                <div class="bar-lbl"><span>BIG LOAD</span><span id="sizeLoadTxt">50%</span></div>
+                <div class="bar-track"><div class="bar-fill" id="sizeBar" style="background:var(--neon-cyan); width:50%"></div></div>
+            </div>
+            <div class="bar-wrap">
+                <div class="bar-lbl"><span>RED LOAD</span><span id="colLoadTxt">50%</span></div>
+                <div class="bar-track"><div class="bar-fill" id="colBar" style="background:var(--neon-pink); width:50%"></div></div>
+            </div>
+        </div>
+
+        <div class="real-thought" id="realThought">NODE COMMANDER: SCANNING ALL ALGORITHMS...</div>
+    </div>
+
+    <div class="stats-grid">
+        <div class="s-box"><div class="s-val" id="wins">0</div><div class="s-lbl">WINS</div></div>
+        <div class="s-box"><div class="s-val" id="jackpots">0</div><div class="s-lbl">L2 WINS</div></div>
+        <div class="s-box"><div class="s-val" id="statAcc">100%</div><div class="s-lbl">ACCURACY</div></div>
+        <div class="s-box"><div class="s-val" id="profit">0</div><div class="s-lbl">PROFIT</div></div>
+    </div>
 </div>
 
-<div class="stats-grid">
-    <div class="s-box" style="border-bottom: 2px solid var(--neon-green);">
-        <div class="s-val c-green" id="totalWin">0</div>
-        <div class="s-lbl">TOTAL WIN</div>
+<div id="page-nodes" class="page">
+    <div style="padding:15px; color:#aaa; font-size:12px; font-family:'Orbitron';">ACTIVE ENGINE STATUS</div>
+    
+    <div class="node-item" id="node-size">
+        <div class="node-info">
+            <div class="node-name">SIZE TRAP ENGINE</div>
+            <div class="node-desc">Detects Overload on Big/Small bets.</div>
+        </div>
+        <div class="node-status status-off" id="status-size">STANDBY</div>
     </div>
-    <div class="s-box" style="border-bottom: 2px solid var(--neon-red);">
-        <div class="s-val c-red" id="totalLoss">0</div>
-        <div class="s-lbl">TOTAL LOSS</div>
+
+    <div class="node-item" id="node-color">
+        <div class="node-info">
+            <div class="node-name">COLOR TRAP ENGINE</div>
+            <div class="node-desc">Detects Overload on Red/Green bets.</div>
+        </div>
+        <div class="node-status status-off" id="status-color">STANDBY</div>
     </div>
-    <div class="s-box" style="border-bottom: 2px solid gold;">
-        <div class="s-val" id="jackpotHit" style="color:gold">0</div>
-        <div class="s-lbl">JACKPOT</div>
+
+    <div class="node-item" id="node-l2">
+        <div class="node-info">
+            <div class="node-name">L2 TREND RECOVERY</div>
+            <div class="node-desc">Activates on Loss. Follows Streak.</div>
+        </div>
+        <div class="node-status status-off" id="status-l2">STANDBY</div>
     </div>
-    <div class="s-box" style="border-bottom: 2px solid #fff;">
-        <div class="s-val c-white" id="accuracy">100%</div>
-        <div class="s-lbl">ACCURACY</div>
+</div>
+
+<div id="page-logs" class="page">
+    <div style="width:95%; margin:10px auto; background:#0a0a0a; border:1px solid #222; padding:15px; border-radius:10px;">
+        <h4 style="font-size:11px; color:#aaa; margin-bottom:10px; font-family:'Orbitron'; text-align:center;">UNIVERSAL LOGS</h4>
+        <div id="logContainer" style="font-size:11px; font-family:monospace; max-height:400px; overflow-y:auto;"></div>
+    </div>
+</div>
+
+<div id="page-profile" class="page">
+    <div class="card" style="margin-top:40px;">
+        <h2 style="font-family:'Orbitron'; font-size:20px;">AHMAD BOSS</h2>
+        <p style="color:#aaa; font-size:11px;">NODE COMMANDER</p>
+        <div style="text-align:left; font-size:13px; margin-top:25px; line-height:2.5; border-top:1px solid #333;">
+            > VERSION: V.21.0<br>
+            > NAVIGATION: ACTIVE<br>
+            > NODES: DYNAMIC<br>
+            > STATUS: ONLINE
+        </div>
     </div>
 </div>
 
 <div class="nav">
-    <button class="reset-btn" onclick="resetStats()">RESET STATS</button>
+    <button class="nav-btn active" onclick="nav('terminal', this)"><span>⚡</span>TERMINAL</button>
+    <button class="nav-btn" onclick="nav('logs', this)"><span>📜</span>LOGS</button>
+    <button class="nav-btn" onclick="nav('nodes', this)"><span>🌐</span>NODES</button>
+    <button class="nav-btn" onclick="nav('profile', this)"><span>👤</span>PROFILE</button>
 </div>
 
 <script>
 const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?ts=";
-let lastIssue = "", wins = 0, losses = 0, jackpots = 0, activeBet = null;
+let lastIssue = "", win = 0, l2Win = 0, total = 0, profit = 0, level = 1, activeBet = null;
 
-// SYNC DATA
 async function syncData() {
     try {
         const response = await fetch(API + Date.now());
@@ -119,135 +193,174 @@ async function syncData() {
             if (latest.issueNumber !== lastIssue) {
                 if (lastIssue !== "" && activeBet) checkResult(latest);
                 lastIssue = latest.issueNumber;
-                generateFixerPrediction(data.data.list);
+                runUniversalLogic(data.data.list);
             }
         }
     } catch(e) {}
 }
 
-// THE FIXER LOGIC
-function generateFixerPrediction(history) {
+function runUniversalLogic(history) {
     let nextNum = (BigInt(history[0].issueNumber) + 1n).toString().slice(-4);
     document.getElementById('period').innerText = nextNum;
 
-    // 1. ANALYZE LOAD (Size vs Color)
-    let bigC=0, smallC=0, redC=0, greenC=0;
-    let counts = {}; // For Number Frequency
-
+    // --- LOGIC: CALCULATE LOAD ---
+    let bigC = 0, smallC = 0, redC = 0, greenC = 0;
     history.forEach(h => {
         let n = parseInt(h.number);
-        // Size
-        if(n>=5) bigC++; else smallC++;
-        // Color
-        if(n===1||n===3||n===7||n===9||n===5) greenC++; else redC++;
-        if(n===0) redC++; if(n===5) greenC++; // 0 is Red/Violet, 5 is Green/Violet
-        
-        // Count Exact Numbers
-        counts[n] = (counts[n] || 0) + 1;
+        if(n >= 5) bigC++; else smallC++;
+        if(n%2===1 || n===5) greenC++; else redC++;
+        if(n===0) redC++; if(n===5) greenC++;
     });
 
-    let bigLoad = (bigC/history.length)*100;
-    let redLoad = (redC/history.length)*100;
+    let totalHist = history.length;
+    let bigLoad = Math.round((bigC/totalHist)*100);
+    let redLoad = Math.round((redC/totalHist)*100);
 
-    // 2. DECIDE MAIN BET (Trap Logic)
-    let pick = "", type = "", logicText = "";
-    
-    // Check Size Pressure
+    // UI Update
+    document.getElementById('sizeBar').style.width = bigLoad + "%";
+    document.getElementById('sizeLoadTxt').innerText = bigLoad + "% BIG";
+    document.getElementById('colBar').style.width = redLoad + "%";
+    document.getElementById('colLoadTxt').innerText = redLoad + "% RED";
+
     let sizePressure = Math.abs(bigLoad - 50);
     let colPressure = Math.abs(redLoad - 50);
 
-    if (sizePressure >= colPressure) {
-        type = "SIZE";
-        // If Big is Overloaded (>60%), Bet SMALL. Else BIG.
-        if (bigLoad > 60) pick = "SMALL"; 
-        else if (bigLoad < 40) pick = "BIG";
-        else pick = parseInt(history[0].number) >= 5 ? "BIG" : "SMALL"; // Trend fallback
-    } else {
-        type = "COLOR";
-        // If Red Overloaded (>60%), Bet GREEN. Else RED.
-        if (redLoad > 60) pick = "GREEN";
-        else if (redLoad < 40) pick = "RED";
-        else {
-             let lastN = parseInt(history[0].number);
-             pick = (lastN%2===1||lastN===5) ? "GREEN" : "RED"; // Trend fallback
-             if(lastN===0) pick="RED";
+    let mode = "", pick = "", logic = "", thought = "";
+    let activeNodeID = "";
+
+    if (level === 2) {
+        // L2: TREND FOLLOW
+        let lastN = parseInt(history[0].number);
+        if (sizePressure >= colPressure) {
+            mode = "SIZE";
+            pick = lastN >= 5 ? "BIG" : "SMALL";
+        } else {
+            mode = "COLOR";
+            pick = (lastN%2===1||lastN===5) ? "GREEN" : "RED";
+            if(lastN===0) pick="RED";
         }
+        logic = "L2 RECOVERY";
+        thought = `L1 Failed. Switching to Trend Follow on ${mode} (${pick}).`;
+        activeNodeID = "node-l2"; // Active Node
+        
+        document.getElementById('lvlDisplay').innerText = "⚠️ L2 ACTIVE";
+        document.getElementById('lvlDisplay').style.color = "var(--neon-red)";
+    } 
+    else {
+        // L1: TRAP SCANNER
+        if (sizePressure >= colPressure) {
+            mode = "SIZE";
+            activeNodeID = "node-size"; // Active Node
+            if(bigLoad > 50) pick = "SMALL"; else pick = "BIG";
+            logic = "SIZE TRAP";
+            thought = `Size Market Overloaded (${bigLoad > 50 ? 'BIG' : 'SMALL'}). Reversal to ${pick}.`;
+        } else {
+            mode = "COLOR";
+            activeNodeID = "node-color"; // Active Node
+            if(redLoad > 50) pick = "GREEN"; else pick = "RED";
+            logic = "COLOR TRAP";
+            thought = `Color Market Overloaded (${redLoad > 50 ? 'RED' : 'GREEN'}). Reversal to ${pick}.`;
+        }
+        
+        // Safety for balanced market
+        if(Math.max(sizePressure, colPressure) < 10) {
+           mode = "SIZE"; activeNodeID = "node-size";
+           let lastS = parseInt(history[0].number) >= 5 ? "BIG" : "SMALL";
+           pick = lastS==="BIG"?"SMALL":"BIG";
+           logic = "FORCE FLIP";
+        }
+
+        document.getElementById('lvlDisplay').innerText = "L1 TRAP SCAN";
+        document.getElementById('lvlDisplay').style.color = "var(--gold)";
     }
 
-    // 3. GENERATE JACKPOT NUMBERS (Based on Prediction)
-    let possibleNums = [];
-    if(pick === "BIG") possibleNums = [5,6,7,8,9];
-    else if(pick === "SMALL") possibleNums = [0,1,2,3,4];
-    else if(pick === "GREEN") possibleNums = [1,3,7,9,5];
-    else if(pick === "RED") possibleNums = [2,4,6,8,0];
+    // UPDATE UI CARD
+    let card = document.getElementById('mainCard');
+    if(mode === "SIZE") {
+        card.className = "card glow-size";
+        document.getElementById('predDisplay').style.color = pick==="BIG" ? "var(--gold)" : "var(--neon-cyan)";
+    } else {
+        card.className = "card glow-color";
+        document.getElementById('predDisplay').style.color = pick==="RED" ? "var(--neon-red)" : "var(--neon-green)";
+    }
 
-    // Find the 2 most frequent numbers from history that match our Prediction
-    // e.g. If predicting BIG, find which of 5,6,7,8,9 appeared most recently
-    let topNums = possibleNums.sort((a,b) => (counts[b]||0) - (counts[a]||0)).slice(0, 2);
+    document.getElementById('bestMode').innerText = mode;
+    document.getElementById('trapPressure').innerText = Math.max(sizePressure, colPressure)*2 + "%";
+    document.getElementById('stratName').innerText = logic;
+    document.getElementById('predDisplay').innerText = pick;
+    document.getElementById('realThought').innerText = thought;
+    document.getElementById('nextMove').innerText = level === 2 ? "HIGH BET" : "NORMAL";
 
-    // DISPLAY
-    let predElem = document.getElementById('predDisplay');
-    predElem.innerText = pick;
-    
-    if(pick==="BIG" || pick==="SMALL") predElem.style.color = pick==="BIG"?"#ffd700":"#00f3ff";
-    else predElem.style.color = pick==="GREEN"?"#00ff00":"#ff0000";
+    // --- UPDATE NODES TAB (DYNAMIC) ---
+    updateActiveNode(activeNodeID);
 
-    // Show Jackpot Numbers
-    let jBox = document.getElementById('jackpotBox');
-    jBox.innerHTML = `
-        <div class="j-num">${topNums[0]}</div>
-        <div class="j-num">${topNums[1]}</div>
-    `;
-
-    document.getElementById('logicDisplay').innerText = `>> FIXER: ${type} Pressure Detected. Targeting ${pick} + Nums [${topNums}]`;
-    document.getElementById('statusTxt').innerText = "TARGET LOCKED";
-
-    activeBet = { pick: pick, type: type, nums: topNums };
+    activeBet = { pick: pick, mode: mode, level: level };
 }
 
-// CHECK WIN/LOSS
-function checkResult(actual) {
-    if(!activeBet) return;
+function updateActiveNode(activeId) {
+    // Reset all nodes
+    const nodes = ['node-size', 'node-color', 'node-l2'];
+    nodes.forEach(id => {
+        let el = document.getElementById(id);
+        let status = document.getElementById('status-' + id.split('-')[1]);
+        el.className = "node-item";
+        status.className = "node-status status-off";
+        status.innerText = "STANDBY";
+    });
 
+    // Set Active Node
+    let activeEl = document.getElementById(activeId);
+    let activeStatus = document.getElementById('status-' + activeId.split('-')[1]);
+    if(activeEl) {
+        activeEl.className = "node-item node-active";
+        activeStatus.className = "node-status status-on";
+        activeStatus.innerText = "🟢 ACTIVE";
+    }
+}
+
+function checkResult(actual) {
+    if(!activeBet || activeBet.pick === "SKIP") return;
+    
     let n = parseInt(actual.number);
     let sRes = n >= 5 ? "BIG" : "SMALL";
-    let cRes = (n===1||n===3||n===7||n===9||n===5) ? "GREEN" : "RED";
+    let cRes = (n%2===1||n===5) ? "GREEN" : "RED";
     if(n===0) cRes="RED"; if(n===5) cRes="GREEN";
 
-    // Main Win Check
-    let mainWin = false;
-    if(activeBet.type === "SIZE" && activeBet.pick === sRes) mainWin = true;
-    if(activeBet.type === "COLOR" && activeBet.pick === cRes) mainWin = true;
+    let win = false;
+    if(activeBet.mode === "SIZE" && activeBet.pick === sRes) win = true;
+    if(activeBet.mode === "COLOR" && activeBet.pick === cRes) win = true;
 
-    // Jackpot Check
-    let jackpotWin = activeBet.nums.includes(n);
-
-    if (mainWin) {
-        wins++;
-        if(jackpotWin) {
-            jackpots++;
-            confetti({particleCount: 300, spread: 100});
-        }
+    if (win) {
+        if (level === 1) win++; else { l2Win++; confetti({particleCount: 200}); }
+        profit += (level === 1 ? 100 : 300); level = 1;
     } else {
-        losses++;
+        level = level === 1 ? 2 : 1; 
     }
-
     updateStats();
+    addLog(actual.issueNumber, (activeBet.mode==="SIZE"?sRes:cRes), win);
 }
 
 function updateStats() {
-    document.getElementById('totalWin').innerText = wins;
-    document.getElementById('totalLoss').innerText = losses;
-    document.getElementById('jackpotHit').innerText = jackpots;
-    
-    let total = wins + losses;
-    let acc = total > 0 ? Math.round((wins/total)*100) : 100;
-    document.getElementById('accuracy').innerText = acc + "%";
+    document.getElementById('wins').innerText = win;
+    document.getElementById('jackpots').innerText = l2Win;
+    document.getElementById('profit').innerText = profit;
+    document.getElementById('statAcc').innerText = total>0 ? Math.round(((win+l2Win)/total)*100)+"%" : "100%";
 }
 
-function resetStats() {
-    wins = 0; losses = 0; jackpots = 0;
-    updateStats();
+function addLog(issue, res, isWin) {
+    let div = document.createElement('div');
+    div.style.padding = "6px 0"; div.style.borderBottom = "1px solid #222"; div.style.display = "flex"; div.style.justifyContent = "space-between";
+    div.style.color = isWin ? "var(--neon-green)" : "var(--neon-red)";
+    div.innerHTML = `<span>#${issue.slice(-4)}</span><span>[${res}]</span><span>${isWin ? "WIN" : "LOSS"}</span>`;
+    document.getElementById('logContainer').prepend(div);
+}
+
+// REAL NAVIGATION FUNCTION
+function nav(page, btn) {
+    document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+    document.getElementById('page-'+page).style.display = (page==='terminal') ? 'flex' : 'block';
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
 }
 
 setInterval(syncData, 2000);
