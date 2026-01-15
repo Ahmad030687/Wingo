@@ -3,83 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OMNI-X V.30 SHADOW FIXER</title>
+    <title>OMNI-X V.31 GOD-MODE</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --mickey-green: #39ff14;
-            --mickey-purple: #bc13fe;
-            --dark: #000000;
-            --red: #ff0033;
-            --gold: #ffd700;
-        }
-
+        :root { --green: #39ff14; --purple: #bc13fe; --dark: #000; --red: #ff0033; --gold: #ffd700; }
         * { margin:0; padding:0; box-sizing:border-box; font-family: 'Rajdhani', sans-serif; user-select:none; }
-        body { background: var(--dark); color: #fff; min-height: 100vh; overflow-x: hidden; padding-bottom: 80px; }
-
-        .header { width:100%; padding:15px; border-bottom:2px solid var(--mickey-purple); background:#000; display:flex; justify-content:space-between; align-items:center; position: sticky; top:0; z-index:1000; }
-        .ping-box { font-size: 10px; color: var(--mickey-green); border: 1px solid var(--mickey-green); padding: 3px 8px; border-radius: 4px; font-family: 'Orbitron'; background: rgba(57, 255, 20, 0.1); }
-
-        .mickey-hud { width:95%; margin:15px auto; display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
-        .meter-card { background:#0a0a0a; border:1px solid #222; padding:12px; border-radius:6px; border-left: 3px solid var(--mickey-purple); }
-        .meter-label { font-size:9px; color:#aaa; text-transform:uppercase; letter-spacing: 1px; }
-        .meter-val { font-size:14px; color:#fff; font-weight:bold; font-family: 'Orbitron'; margin-top: 4px; }
-
-        .card { width:95%; margin:10px auto; border:2px solid var(--mickey-green); padding:25px; text-align:center; background: #050505; box-shadow:0 0 30px rgba(57, 255, 20, 0.2); border-radius:12px; }
-        
-        .period-info { display:flex; justify-content:space-between; font-size:13px; font-family:'Orbitron'; color:var(--mickey-purple); border-bottom:1px solid #111; padding-bottom:12px; }
-        .timer-display { font-size: 32px; color: #fff; font-weight: 900; margin-top: 15px; font-family: 'Orbitron'; letter-spacing: 2px; }
-        .prediction { font-size:65px; font-weight:900; margin:10px 0; font-family:'Orbitron'; letter-spacing:-2px; text-transform: uppercase; color: var(--mickey-green); }
-        
-        .jackpot-box { display:flex; justify-content:center; gap:15px; margin: 15px 0; }
-        .j-num { width:45px; height:45px; background:#000; border:1px solid var(--mickey-green); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:bold; color:var(--mickey-green); box-shadow: 0 0 10px rgba(57, 255, 20, 0.3); }
-
-        .stats-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; width:95%; margin:15px auto; }
-        .s-box { background:#0a0a0a; border:1px solid #222; padding:12px 2px; text-align:center; border-radius:8px; }
-        .s-val { font-size:18px; font-weight:bold; font-family: 'Orbitron'; color: var(--mickey-green); }
-        .s-lbl { font-size:8px; color: #555; margin-top: 3px; }
-
-        .page { display:none; width:100%; flex-direction:column; padding-bottom: 20px; }
-        #page-terminal { display: flex; }
-
+        body { background: var(--dark); color: #fff; overflow-x: hidden; padding-bottom: 80px; }
+        .header { width:100%; padding:15px; border-bottom:2px solid var(--purple); background:#000; display:flex; justify-content:space-between; align-items:center; position: sticky; top:0; z-index:1000; }
+        .ping-box { font-size: 10px; color: var(--green); border: 1px solid var(--green); padding: 3px 8px; border-radius: 4px; font-family: 'Orbitron'; background: rgba(57, 255, 20, 0.1); }
+        .card { width:95%; margin:15px auto; border:2px solid var(--green); padding:20px; text-align:center; background: #050505; border-radius:12px; box-shadow: 0 0 20px rgba(57, 255, 20, 0.2); }
+        .timer-display { font-size: 35px; font-weight: 900; font-family: 'Orbitron'; color: #fff; margin: 10px 0; }
+        .prediction { font-size: 70px; font-weight: 900; font-family: 'Orbitron'; color: var(--green); text-shadow: 0 0 15px var(--green); }
+        .algo-badge { display:inline-block; padding: 4px 12px; background: var(--purple); border-radius: 20px; font-size: 10px; font-family: 'Orbitron'; margin-bottom: 10px; }
+        .jackpot-box { display:flex; justify-content:center; gap:15px; margin: 10px 0; }
+        .j-num { width:45px; height:45px; border:2px solid var(--green); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:bold; color:var(--green); background: #000; }
+        .stats-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; width:95%; margin:10px auto; }
+        .s-box { background:#0a0a0a; border:1px solid #222; padding:10px 2px; text-align:center; border-radius:8px; }
+        .s-val { font-size:18px; font-weight:bold; font-family: 'Orbitron'; color: var(--green); }
+        .s-lbl { font-size:8px; color: #555; }
         .nav { position:fixed; bottom:0; left:0; width:100%; background:rgba(0,0,0,0.95); border-top:1px solid #111; padding:12px 0; display:flex; justify-content:space-around; z-index:1000; }
-        .nav-btn { background:none; border:none; color:#444; font-size:10px; font-weight:bold; cursor:pointer; display:flex; flex-direction:column; align-items:center; transition:0.3s; }
-        .nav-btn.active { color:var(--mickey-green); transform: scale(1.1); }
-
-        #logContainer { font-size:12px; font-family:monospace; max-height:450px; overflow-y:auto; padding: 10px; }
-        .log-row { display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid #111; margin-bottom: 2px; border-radius: 4px; }
+        .nav-btn { background:none; border:none; color:#444; font-size:10px; font-weight:bold; cursor:pointer; display:flex; flex-direction:column; align-items:center; }
+        .nav-btn.active { color:var(--green); }
+        #logContainer { font-size:12px; font-family:monospace; max-height:400px; overflow-y:auto; padding: 10px; }
+        .log-row { display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid #111; }
     </style>
 </head>
 <body>
 
 <div class="header">
-    <div style="line-height:1.2">
-        <div style="font-size:18px; font-weight:900; font-family:'Orbitron'; color:#fff;">OMNI-X</div>
-        <div style="font-size:9px; color:var(--mickey-green); font-weight: bold;">L1 SHADOW FIXER V.30</div>
-    </div>
-    <div class="ping-box">STRICT L1</div>
+    <div><div style="font-size:18px; font-weight:900; font-family:'Orbitron';">GOD-MODE</div><div style="font-size:9px; color:var(--green);">AUTO-SWITCH ENGINE</div></div>
+    <div class="ping-box">L1 FIXER</div>
 </div>
 
-<div id="page-terminal" class="page">
-    <div class="mickey-hud">
-        <div class="meter-card"><div class="meter-label">ALGO STATUS</div><div class="meter-val" id="algoStatus">L1 ACTIVE</div></div>
-        <div class="meter-card"><div class="meter-label">STREAK</div><div class="meter-val" id="streakVal">0</div></div>
-    </div>
-
+<div id="page-terminal" class="page" style="display:flex;">
     <div class="card">
-        <div class="period-info">
-            <span>PERIOD: <b id="period">....</b></span>
-            <span style="color:var(--mickey-green)">L1 SNIPER</span>
-        </div>
+        <div class="algo-badge" id="activeAlgo">SCANNING MARKET...</div>
+        <div style="font-size:12px; color:#888;">PERIOD: <span id="period" style="color:var(--purple)">....</span></div>
         <div class="timer-display" id="timer">00:00</div>
         <div class="prediction" id="predDisplay">...</div>
-        <div class="jackpot-box" id="jackpotBox">
-            <div class="j-num">-</div>
-            <div class="j-num">-</div>
-        </div>
+        <div class="jackpot-box" id="jackpotBox"><div class="j-num">-</div><div class="j-num">-</div></div>
+        <div style="font-size:10px; color:var(--green); font-family:monospace;" id="thought">ENGINE: INITIALIZING ALL ALGORITHMS...</div>
     </div>
-
     <div class="stats-grid">
         <div class="s-box"><div class="s-val" id="totalWin">0</div><div class="s-lbl">WIN</div></div>
         <div class="s-box"><div class="s-val" id="totalLoss" style="color:var(--red)">0</div><div class="s-lbl">LOSS</div></div>
@@ -88,11 +53,8 @@
     </div>
 </div>
 
-<div id="page-logs" class="page">
-    <div style="width:95%; margin:10px auto; background:#050505; border:1px solid #111; border-radius:10px;">
-        <h4 style="font-size:11px; color:var(--mickey-green); padding: 15px; font-family:'Orbitron'; text-align:center; border-bottom: 1px solid #111;">REAL-TIME HISTORY</h4>
-        <div id="logContainer"></div>
-    </div>
+<div id="page-logs" class="page" style="display:none;">
+    <div style="width:95%; margin:10px auto; background:#050505; border-radius:10px;"><div id="logContainer"></div></div>
 </div>
 
 <div class="nav">
@@ -102,93 +64,82 @@
 
 <script>
 const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?ts=";
-let wins = 0, losses = 0, jackpots = 0;
-let activeBet = null;
-let lastIssueId = null;
+let wins=0, losses=0, jackpots=0, lastId=null, activeBet=null;
 
 async function syncData() {
     try {
-        const response = await fetch(API + Date.now());
-        const data = await response.json();
+        const res = await fetch(API + Date.now());
+        const data = await res.json();
         const history = data.data.list;
         const latest = history[0];
 
-        // Ensure we only process new results
-        if (latest.issueNumber !== lastIssueId) {
-            if (activeBet && activeBet.issue === latest.issueNumber) {
-                checkWin(latest);
-            }
-            lastIssueId = latest.issueNumber;
-            
-            // Prepare for NEXT period
+        if (latest.issueNumber !== lastId) {
+            if (activeBet && activeBet.issue === latest.issueNumber) checkWin(latest);
+            lastId = latest.issueNumber;
             let nextIssue = (BigInt(latest.issueNumber) + 1n).toString();
             document.getElementById('period').innerText = nextIssue.slice(-4);
-            predictNext(history, nextIssue);
+            godModeEngine(history, nextIssue);
         }
     } catch(e) {}
 }
 
-function predictNext(history, nextIssue) {
-    const last = history[0];
-    const n = parseInt(last.number);
-    const lastSize = n >= 5 ? "BIG" : "SMALL";
+function godModeEngine(history, nextIssue) {
+    const lastNum = parseInt(history[0].number);
+    const lastSize = lastNum >= 5 ? "BIG" : "SMALL";
     
-    // MICKEY SHADOW LOGIC: If a side repeats twice, shadow it.
-    let pick = lastSize; 
-    let topNums = (pick === "BIG") ? [7, 9] : [2, 4];
-
-    // Visual Update
-    document.getElementById('predDisplay').innerText = pick;
-    document.getElementById('predDisplay').style.color = (pick === "BIG" ? "var(--gold)" : "var(--mickey-green)");
-    document.getElementById('jackpotBox').innerHTML = `<div class="j-num">${topNums[0]}</div><div class="j-num">${topNums[1]}</div>`;
+    // 1. STRATEGY SCANNING
+    let shadowPick = lastSize; 
+    let trapPick = (lastSize === "BIG" ? "SMALL" : "BIG");
     
-    // Streak calculation for UI
-    let streak = 0;
-    for(let h of history) {
-        let size = parseInt(h.number) >= 5 ? "BIG" : "SMALL";
-        if(size === lastSize) streak++; else break;
+    // 2. AUTO-SELECTION LOGIC (Simulating Multi-Algo Analysis)
+    let counts = { BIG: 0, SMALL: 0 };
+    history.slice(0, 10).forEach(h => { if(parseInt(h.number) >= 5) counts.BIG++; else counts.SMALL++; });
+    
+    let pick = "";
+    let algoName = "";
+    
+    if (counts.BIG >= 7 || counts.SMALL >= 7) {
+        pick = lastSize; algoName = "SHADOW ENGINE (STREAK)";
+    } else {
+        pick = trapPick; algoName = "TRAP BREAKER (V.20)";
     }
-    document.getElementById('streakVal').innerText = streak;
+
+    // 3. UI UPDATE
+    const predEl = document.getElementById('predDisplay');
+    predEl.innerText = pick;
+    predEl.style.color = (pick === "BIG" ? "var(--gold)" : "var(--green)");
+    document.getElementById('activeAlgo').innerText = algoName;
+    
+    let topNums = (pick === "BIG") ? [6, 8] : [1, 3];
+    document.getElementById('jackpotBox').innerHTML = `<div class="j-num">${topNums[0]}</div><div class="j-num">${topNums[1]}</div>`;
+    document.getElementById('thought').innerText = `GOD-MODE: AUTO-SWITCHED TO ${algoName}`;
 
     activeBet = { issue: nextIssue, pick: pick, nums: topNums };
 }
 
-function checkWin(result) {
-    const n = parseInt(result.number);
-    const actualSize = n >= 5 ? "BIG" : "SMALL";
-    const win = (activeBet.pick === actualSize);
-    const jpHit = activeBet.nums.includes(n);
+function checkWin(res) {
+    const n = parseInt(res.number);
+    const actual = n >= 5 ? "BIG" : "SMALL";
+    const win = (activeBet.pick === actual);
+    win ? wins++ : losses++;
+    if(win && activeBet.nums.includes(n)) { jackpots++; confetti({particleCount:150}); }
 
-    if(win) {
-        wins++;
-        if(jpHit) { jackpots++; confetti({particleCount: 150, spread: 70}); }
-        else { confetti({particleCount: 50}); }
-    } else {
-        losses++;
-    }
-
-    // UI Stats Update
     document.getElementById('totalWin').innerText = wins;
     document.getElementById('totalLoss').innerText = losses;
     document.getElementById('jackpotHit').innerText = jackpots;
-    let acc = Math.round((wins / (wins + losses)) * 100);
-    document.getElementById('statAcc').innerText = acc + "%";
+    document.getElementById('statAcc').innerText = Math.round((wins/(wins+losses))*100) + "%";
 
-    // Logging
-    const log = document.getElementById('logContainer');
     const row = document.createElement('div');
-    row.className = 'log-row';
-    row.style.background = win ? "rgba(57,255,20,0.05)" : "rgba(255,0,51,0.05)";
-    row.style.color = win ? "var(--mickey-green)" : "var(--red)";
-    row.innerHTML = `<span>#${result.issueNumber.slice(-4)}</span> <span>${actualSize}</span> <span>${win ? "WIN" : "LOSS"}</span>`;
-    log.prepend(row);
+    row.className = 'log-row'; row.style.color = win ? "var(--green)" : "var(--red)";
+    row.innerHTML = `<span>#${res.issueNumber.slice(-4)}</span> <span>${actual}</span> <span>${win ? "WIN" : "LOSS"}</span>`;
+    document.getElementById('logContainer').prepend(row);
 }
 
-function nav(page, btn) {
-    document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
-    document.getElementById('page-'+page).style.display = (page==='terminal') ? 'flex' : 'block';
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+function nav(p, b) {
+    document.querySelectorAll('.page').forEach(x => x.style.display = 'none');
+    document.getElementById('page-'+p).style.display = p==='terminal' ? 'flex' : 'block';
+    document.querySelectorAll('.nav-btn').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
 }
 
 setInterval(syncData, 2000);
