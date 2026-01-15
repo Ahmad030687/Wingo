@@ -3,82 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DARKNET AURA V.60 SNIPER CORE</title>
+    <title>DARKNET AURA V.60 NEURAL OVERRIDE</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --neon: #39ff14; --danger: #ff0033; --bg: #000; --panel: #0a0a0a; --gold: #ffd700; }
-        body.t-red { --neon: #ff0033; } body.t-blue { --neon: #00d4ff; }
-        body.t-gold { --neon: #ffd700; }
+        :root { --neon: #39ff14; --danger: #ff0033; --bg: #000; --panel: #0a0a0a; }
         * { margin:0; padding:0; box-sizing:border-box; font-family: 'Rajdhani', sans-serif; user-select:none; }
         body { background: var(--bg); color: #fff; overflow-x: hidden; padding-bottom: 100px; }
         .header { padding:20px; border-bottom:1px solid #1a1a1a; display:flex; justify-content:space-between; align-items:center; background:#000; position:sticky; top:0; z-index:1000; }
         .aura-brand { font-family:'Orbitron'; font-size:20px; color:var(--neon); text-shadow: 0 0 10px var(--neon); font-weight:900; }
-        .draw-timer { background: rgba(57, 255, 20, 0.1); border: 1px solid var(--neon); padding: 5px 12px; border-radius: 4px; font-family: 'Orbitron'; font-size: 14px; color: var(--neon); }
+        .draw-timer { border: 1px solid var(--neon); padding: 5px 12px; border-radius: 4px; font-family: 'Orbitron'; color: var(--neon); }
         .page { display:none; padding:15px; flex-direction:column; }
         #page-terminal { display: flex; }
         .mission-panel { background: var(--panel); border: 1px solid #1a1a1a; border-radius: 15px; padding: 25px; margin-top: 10px; border-top: 4px solid var(--neon); position: relative; }
-        .target-box { position: absolute; right: 15px; top: 15px; background: #111; border: 1px solid #333; padding: 5px 12px; border-radius: 6px; text-align: center; min-width: 90px; }
+        .target-box { position: absolute; right: 15px; top: 15px; background: #000; border: 1px solid #333; padding: 5px 12px; border-radius: 6px; text-align: center; }
         .target-val { font-size: 16px; font-family: 'Orbitron'; font-weight: 900; color: #fff; }
-        .prediction-text { font-size: 75px; font-weight: 900; font-family: 'Orbitron'; color: var(--neon); margin: 15px 0; text-shadow: 0 0 20px rgba(57, 255, 20, 0.4); text-align: center; letter-spacing: 5px; }
-        .strength-indicator { font-size: 12px; color: var(--neon); font-family: 'Orbitron'; margin-bottom: 20px; text-align: center; font-weight: bold; }
-        .seeds-container { display: flex; justify-content: center; gap: 15px; margin: 20px 0; border-top: 1px solid #1a1a1a; padding-top: 20px; }
-        .seed-ball { width: 55px; height: 55px; background: radial-gradient(circle at 30% 30%, #444, #000); border: 2.5px solid var(--neon); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Orbitron'; font-size: 22px; font-weight: 900; color: var(--neon); box-shadow: 0 5px 15px rgba(0,0,0,0.8), inset 0 0 10px var(--neon); }
+        .prediction-text { font-size: 70px; font-weight: 900; font-family: 'Orbitron'; color: var(--neon); margin: 15px 0; text-align: center; }
         .council-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
-        .node { background: #080808; border: 1px solid #1a1a1a; padding: 12px; border-radius: 8px; text-align: center; transition: 0.3s; }
+        .node { background: #080808; border: 1px solid #1a1a1a; padding: 12px; border-radius: 8px; text-align: center; font-size: 18px; }
         .node.active { border-color: var(--neon); box-shadow: 0 0 15px var(--neon); transform: scale(1.05); }
-        .archive-card { background: #080808; border: 1px solid #1a1a1a; padding: 18px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-left: 5px solid #222; }
+        .archive-card { background: #080808; border: 1px solid #1a1a1a; padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid #222; margin-bottom: 12px; }
         .card-win { border-left-color: var(--neon) !important; }
-        .card-loss { border-left-color: var(--danger) !important; }
-        .res-icon { font-size: 24px; min-width: 45px; text-align: center; }
-        .nav-bar { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 1px solid #1a1a1a; display: flex; justify-content: space-around; padding: 12px 0; z-index: 2000; }
+        .nav-bar { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 1px solid #1a1a1a; display: flex; justify-content: space-around; padding: 15px 0; }
         .nav-item { background: none; border: none; color: #444; display: flex; flex-direction: column; align-items: center; cursor: pointer; }
         .nav-item.active { color: var(--neon); }
     </style>
 </head>
 <body class="t-green">
-
-<div class="header">
-    <div class="aura-brand">DARKNET AURA V.60</div>
-    <div class="draw-timer" id="timer">00</div>
-</div>
-
+<div class="header"><div class="aura-brand">DARKNET AURA V.60</div><div class="draw-timer" id="timer">00</div></div>
 <div id="page-terminal" class="page">
     <div class="mission-panel">
-        <div class="target-box"><div class="target-val" id="period">----</div></div>
-        <div style="font-size: 9px; color: #444; font-family: 'Orbitron'; letter-spacing: 2px;">RECURSION SNIPER CORE</div>
+        <div class="target-box"><div class="target-val" id="period">0000</div></div>
+        <div style="font-size: 10px; color: #666; font-family: 'Orbitron';">NEURAL_OVERRIDE L1/L2</div>
         <div class="prediction-text" id="prediction">SYNC</div>
-        <div class="strength-indicator" id="strength">SENSING 50P RECURSION...</div>
-        <div class="seeds-container" id="jackpotSeeds"><div class="seed-ball">?</div><div class="seed-ball">?</div></div>
+        <div id="strength" style="text-align:center; font-size:11px; color:var(--neon); font-family:'Orbitron';">SENSING...</div>
+        <div style="display: flex; justify-content: center; gap: 15px; margin-top: 20px;">
+            <div id="s1" style="width:50px; height:50px; border:2px solid var(--neon); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; color:var(--neon);">?</div>
+            <div id="s2" style="width:50px; height:50px; border:2px solid var(--neon); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; color:var(--neon);">?</div>
+        </div>
     </div>
     <div class="council-grid">
         <div class="node" id="n1">💠</div><div class="node" id="n2">⚛️</div><div class="node" id="n3">🛡️</div>
         <div class="node" id="n4">⚡</div><div class="node" id="n5">🛰️</div><div class="node" id="n6">👻</div>
     </div>
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-        <div class="node" style="border-left:3px solid var(--neon); color:var(--neon); font-size:24px; font-family:'Orbitron';" id="wins">0</div>
-        <div class="node" style="border-left:3px solid var(--danger); color:var(--danger); font-size:24px; font-family:'Orbitron';" id="losses">0</div>
-    </div>
 </div>
-
 <div id="page-archive" class="page"><div id="archive-list"></div></div>
-<div id="page-themes" class="page">
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-        <button onclick="setT('green')" style="padding:15px; border:1px solid #39ff14; background:#000; color:#fff;">GREEN</button>
-        <button onclick="setT('red')" style="padding:15px; border:1px solid #ff0033; background:#000; color:#fff;">RED</button>
-        <button onclick="setT('blue')" style="padding:15px; border:1px solid #00d4ff; background:#000; color:#fff;">BLUE</button>
-    </div>
-</div>
-
 <div class="nav-bar">
-    <button class="nav-item active" onclick="p('terminal', this)">🎮<span>TERMINAL</span></button>
-    <button class="nav-item" onclick="p('archive', this)">📂<span>ARCHIVE</span></button>
-    <button class="nav-item" onclick="p('themes', this)">🎨<span>THEMES</span></button>
+    <button class="nav-item active" onclick="p('terminal', this)"><span>🎮 TERMINAL</span></button>
+    <button class="nav-item" onclick="p('archive', this)"><span>📂 ARCHIVE</span></button>
 </div>
 
 <script>
 const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=50&ts=";
-let wins=0, losses=0, lastId=null, currentBet=null, level=1;
+let lastId=null, currentBet=null, level=1, lossCount=0;
 
 async function sync() {
     try {
@@ -88,45 +65,35 @@ async function sync() {
         if (history[0].issueNumber !== lastId) {
             if (currentBet && currentBet.period === history[0].issueNumber) verify(history[0]);
             lastId = history[0].issueNumber;
-            let next = (BigInt(history[0].issueNumber) + 1n).toString();
-            sniperEngine(history, next);
+            updateEngine(history, (BigInt(history[0].issueNumber) + 1n).toString());
         }
     } catch(e) {}
 }
 
-function sniperEngine(history, next) {
+function updateEngine(history, next) {
     let lastSize = parseInt(history[0].number) >= 5 ? "BIG" : "SMALL";
     let pred = "";
 
-    // 50-PERIOD NEURAL RECURSION
-    let bigWeight = 0, smallWeight = 0;
-    history.forEach((h, i) => {
-        let val = (50 - i);
-        if(parseInt(h.number) >= 5) bigWeight += val;
-        else smallWeight += val;
-    });
-
-    if (level === 2) {
-        // L2 - REVERSE PATTERN SNIPER
+    // NEURAL OVERRIDE LOGIC
+    if (lossCount >= 2) {
+        // Force Flip to break the casino loop
         pred = (lastSize === "BIG") ? "SMALL" : "BIG";
+    } else if (level === 2) {
+        pred = lastSize; // Shadow Trend for L2
     } else {
-        // L1 - NEURAL BIAS
-        pred = (bigWeight > smallWeight) ? "BIG" : "SMALL";
-        // Correction for extreme zigzag
-        if (history[0].number >= 5 && history[1].number < 5 && history[2].number >= 5) pred = "SMALL";
-        if (history[0].number < 5 && history[1].number >= 5 && history[2].number < 5) pred = "BIG";
+        // Consensus for L1
+        let bigWeight = 0;
+        history.slice(0, 10).forEach(h => { if(parseInt(h.number) >= 5) bigWeight++; });
+        pred = (bigWeight >= 5) ? "BIG" : "SMALL";
     }
 
     document.getElementById('period').innerText = next.slice(-4);
     document.getElementById('prediction').innerText = pred;
     document.getElementById('prediction').style.color = pred === "BIG" ? "var(--danger)" : "var(--neon)";
-    document.getElementById('strength').innerText = `RECURSION_L${level} : 99.8%`;
     
-    // JACKPOT NUMBER SENSING
-    let numFreq = {};
-    history.slice(0, 20).forEach(h => { numFreq[h.number] = (numFreq[h.number] || 0) + 1; });
-    let sorted = Object.keys(numFreq).sort((a,b) => numFreq[b] - numFreq[a]);
-    document.getElementById('jackpotSeeds').innerHTML = `<div class="seed-ball">${sorted[0] || 7}</div><div class="seed-ball">${sorted[1] || 2}</div>`;
+    let seeds = pred === "BIG" ? [7, 9] : [1, 2];
+    document.getElementById('s1').innerText = seeds[0];
+    document.getElementById('s2').innerText = seeds[1];
 
     const nodes = ['n1', 'n2', 'n3', 'n4', 'n5', 'n6'];
     nodes.forEach(n => document.getElementById(n).classList.remove('active'));
@@ -137,25 +104,23 @@ function sniperEngine(history, next) {
 }
 
 function verify(res) {
-    const num = parseInt(res.number);
-    const act = num >= 5 ? "BIG" : "SMALL";
+    const act = parseInt(res.number) >= 5 ? "BIG" : "SMALL";
     const win = currentBet.pred === act;
-    win ? (wins++, level=1) : (losses++, level=level===1?2:1);
-    document.getElementById('wins').innerText = wins;
-    document.getElementById('losses').innerText = losses;
-    if(win) confetti({particleCount: 150});
+    if(win) { level = 1; lossCount = 0; confetti({particleCount: 150}); } 
+    else { level = (level === 1) ? 2 : 1; lossCount++; }
+
     const card = document.getElementById(`arc-${currentBet.period.slice(-4)}`);
     if(card) {
         card.classList.add(win ? 'card-win' : 'card-loss');
-        card.querySelector('.st').innerHTML = win ? `<span style="color:var(--neon)">WIN! RESULT: ${num}</span>` : `<span style="color:var(--danger)">FAIL [${num}]</span>`;
-        card.querySelector('.res-icon').innerHTML = win ? '🏆' : '❌';
+        card.querySelector('.st').innerHTML = win ? `WIN [${res.number}]` : `FAIL [${res.number}]`;
+        card.innerHTML += `<div style="font-size:20px;">${win ? '🏆' : '❌'}</div>`;
     }
 }
 
 function createArc(p, pr, l) {
     const div = document.createElement('div');
     div.id = `arc-${p}`; div.className = 'archive-card';
-    div.innerHTML = `<div><p style="font-size:10px">#${p} (L${l})</p><h4 style="color:${pr==='BIG'?'var(--danger)':'var(--neon)'}">${pr}</h4><div class="st">WAITING...</div></div><div class="res-icon">⏳</div>`;
+    div.innerHTML = `<div><p style="font-size:10px">#${p} · L${l}</p><h4>${pr}</h4><div class="st">WAITING...</div></div><div style="font-size:20px;">⏳</div>`;
     document.getElementById('archive-list').prepend(div);
 }
 
@@ -165,9 +130,11 @@ function p(id, b) {
     document.querySelectorAll('.nav-item').forEach(x => x.classList.remove('active'));
     b.classList.add('active');
 }
-function setT(c) { document.body.className = `t-${c}`; }
+
 setInterval(sync, 2000);
-setInterval(() => { document.getElementById('timer').innerText = (60 - new Date().getSeconds()).toString().padStart(2, '0'); }, 1000);
+setInterval(() => { 
+    document.getElementById('timer').innerText = (60 - new Date().getSeconds()).toString().padStart(2, '0');
+}, 1000);
 sync();
 </script>
 </body>
