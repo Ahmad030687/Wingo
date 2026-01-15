@@ -3,60 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OMNI-X CHAMELEON v17</title>
+    <title>OMNI-X V.18 CONTRARIAN</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --neon-green: #00ff41;
-            --neon-red: #ff0033;
-            --neon-blue: #00f3ff;
-            --gold: #ffd700;
+            --neon-orange: #ff5e00;
+            --neon-red: #ff0000;
             --dark-bg: #050505;
-            --card-bg: #0a0a0a;
+            --green: #00ff41;
+            --white: #ffffff;
+            --blue: #00d4ff;
         }
 
         * { margin:0; padding:0; box-sizing:border-box; font-family: 'Rajdhani', sans-serif; user-select:none; }
         body { background: var(--dark-bg); color: #fff; min-height: 100vh; overflow-x: hidden; padding-bottom: 80px; }
 
-        .header { width:100%; padding:15px; border-bottom:2px solid #333; background:#000; display:flex; justify-content:space-between; align-items:center; position: sticky; top:0; z-index:1000; }
-        .ping-box { font-size: 10px; border: 1px solid #555; padding: 3px 8px; border-radius: 4px; font-family: 'Orbitron'; }
+        .header { width:100%; padding:15px; border-bottom:2px solid var(--neon-orange); background:#000; display:flex; justify-content:space-between; align-items:center; position: sticky; top:0; z-index:1000; }
+        .ping-box { font-size: 10px; color: var(--green); border: 1px solid var(--green); padding: 3px 8px; border-radius: 4px; font-family: 'Orbitron'; }
 
         /* HUD */
         .mickey-hud { width:95%; margin:15px auto; display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
-        .meter-card { background:rgba(20,20,20,0.95); border:1px solid #333; padding:12px; border-radius:8px; }
+        .meter-card { background:rgba(20,10,0,0.95); border:1px solid #333; padding:12px; border-radius:8px; border-left: 3px solid var(--neon-orange); }
         .meter-label { font-size:9px; color:#aaa; text-transform:uppercase; letter-spacing: 1px; }
-        .meter-val { font-size:14px; color:#fff; font-weight:bold; font-family: 'Orbitron'; margin-top: 4px; }
+        .meter-val { font-size:15px; color:#fff; font-weight:bold; font-family: 'Orbitron'; margin-top: 4px; }
 
-        /* MAIN PREDICTION CARD */
-        .card { width:95%; margin:10px auto; border:2px solid #333; padding:25px; text-align:center; position:relative; background: var(--card-bg); box-shadow:0 0 30px rgba(0,0,0,0.5); border-radius:16px; transition: 0.5s all; }
+        /* MAIN CARD */
+        .card { width:95%; margin:10px auto; border:2px solid var(--neon-orange); padding:25px; text-align:center; position:relative; background: linear-gradient(180deg, #1f0a00 0%, #000000 100%); box-shadow:0 0 50px rgba(255, 94, 0, 0.2); border-radius:16px; }
+        .period-info { display:flex; justify-content:space-between; font-size:13px; font-family:'Orbitron'; color:var(--white); border-bottom:1px solid #333; padding-bottom:12px; }
+        .timer-display { font-size: 28px; color: #fff; font-weight: 900; margin-top: 10px; font-family: 'Orbitron'; letter-spacing: 2px; }
+        .prediction { font-size:90px; font-weight:900; margin:15px 0; font-family:'Orbitron'; letter-spacing:-4px; text-shadow: 0 0 30px var(--neon-orange); }
+        .real-thought { font-size:11px; color:var(--neon-orange); border:1px dashed #555; padding:10px; display:block; margin-top:15px; background:rgba(255, 94, 0, 0.05); }
+
+        /* BAR CHART FOR MINORITY */
+        .pressure-bar { width:100%; height:8px; background:#222; margin-top:15px; border-radius:4px; overflow:hidden; position:relative; }
+        .pressure-fill { height:100%; background:var(--neon-orange); width:50%; transition: width 0.5s; }
         
-        .mode-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #333; padding: 5px 15px; border-radius: 20px; font-size: 10px; font-weight: bold; border: 1px solid #555; box-shadow: 0 5px 15px #000; }
-
-        .period-info { display:flex; justify-content:space-between; font-size:13px; font-family:'Orbitron'; color:var(--gold); border-bottom:1px solid #333; padding-bottom:12px; }
-        .timer-display { font-size: 28px; color: #fff; font-weight: 900; margin-top: 15px; font-family: 'Orbitron'; letter-spacing: 2px; }
-        
-        .prediction { font-size:60px; font-weight:900; margin:10px 0; font-family:'Orbitron'; letter-spacing:-2px; text-transform: uppercase; }
-        
-        .accuracy-bars { margin-top: 15px; }
-        .bar-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; font-size: 10px; }
-        .bar-track { width: 70%; height: 6px; background: #222; border-radius: 3px; overflow: hidden; }
-        .bar-fill { height: 100%; width: 0%; transition: 1s width; }
-
-        /* COLORS FOR DYNAMIC UI */
-        .glow-red { border-color: var(--neon-red); box-shadow: 0 0 30px rgba(255, 0, 51, 0.2); }
-        .glow-green { border-color: var(--neon-green); box-shadow: 0 0 30px rgba(0, 255, 65, 0.2); }
-        .glow-blue { border-color: var(--neon-blue); box-shadow: 0 0 30px rgba(0, 243, 255, 0.2); }
-        .glow-gold { border-color: var(--gold); box-shadow: 0 0 30px rgba(255, 215, 0, 0.2); }
-
         .stats-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; width:95%; margin:15px auto; }
-        .s-box { background:#0a0a0a; border:1px solid #333; padding:12px 5px; text-align:center; border-radius:8px; }
+        .s-box { background:#0a0a0a; border:1px solid #333; padding:12px 5px; text-align:center; border-radius:8px; border-bottom: 2px solid var(--neon-orange); }
         .s-val { font-size:16px; font-weight:bold; font-family: 'Orbitron'; }
         .s-lbl { font-size:8px; color: #888; }
 
-        .nav { position:fixed; bottom:0; left:0; width:100%; background:rgba(0,0,0,0.95); border-top:1px solid #333; padding:12px 0; display:flex; justify-content:space-around; z-index:1000; }
+        .nav { position:fixed; bottom:0; left:0; width:100%; background:rgba(0,0,0,0.95); border-top:2px solid var(--neon-orange); padding:12px 0; display:flex; justify-content:space-around; z-index:1000; }
         .nav-btn { background:none; border:none; color:#555; font-size:10px; font-weight:bold; cursor:pointer; display:flex; flex-direction:column; align-items:center; }
-        .nav-btn.active { color:#fff; transform: scale(1.1); }
+        .nav-btn.active { color:var(--neon-orange); transform: scale(1.1); }
 
         .page { display:none; width:100%; flex-direction:column; }
         #page-terminal { display: flex; }
@@ -67,48 +57,41 @@
 <div class="header">
     <div style="line-height:1.2">
         <div style="font-size:18px; font-weight:900; font-family:'Orbitron'; color:#fff;">OMNI-X</div>
-        <div style="font-size:9px; color:#aaa; font-weight: bold;">CHAMELEON V.17</div>
+        <div style="font-size:9px; color:var(--neon-orange); font-weight: bold;">CONTRARIAN V.18</div>
     </div>
-    <div class="ping-box">AUTO-SWITCH</div>
+    <div class="ping-box">API: 10</div>
 </div>
 
 <div class="mickey-hud">
-    <div class="meter-card"><div class="meter-label">ACTIVE MODE</div><div class="meter-val" id="activeMode">SCANNING</div></div>
-    <div class="meter-card"><div class="meter-label">MODE ACCURACY</div><div class="meter-val" id="modeAcc">0%</div></div>
-    <div class="meter-card"><div class="meter-label">COLOR TREND</div><div class="meter-val" id="colTrend">...</div></div>
-    <div class="meter-card"><div class="meter-label">SIZE TREND</div><div class="meter-val" id="sizeTrend">...</div></div>
+    <div class="meter-card"><div class="meter-label">MARKET LOAD</div><div class="meter-val" id="marketLoad">BALANCED</div></div>
+    <div class="meter-card"><div class="meter-label">REVERSAL CHANCE</div><div class="meter-val" id="revChance">0%</div></div>
+    <div class="meter-card"><div class="meter-label">STRATEGY</div><div class="meter-val" id="stratName" style="color:var(--blue)">MINORITY</div></div>
+    <div class="meter-card"><div class="meter-label">NEXT MOVE</div><div class="meter-val" id="nextMove">WAITING</div></div>
 </div>
 
 <div id="page-terminal" class="page">
-    <div class="card" id="mainCard">
-        <div class="mode-badge" id="badgeText">ANALYZING ACCURACY</div>
-
+    <div class="card">
         <div class="period-info">
             <span>PERIOD: <b id="period">....</b></span>
-            <span id="lvlDisplay">L1 SNIPER</span>
+            <span id="lvlDisplay" style="color:var(--neon-orange)">TRAP SCANNER</span>
         </div>
         
+        <div class="pressure-bar">
+            <div class="pressure-fill" id="pBar"></div>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-size:9px; color:#aaa; margin-top:3px;">
+            <span>BIG LOAD</span>
+            <span>SMALL LOAD</span>
+        </div>
+
         <div class="timer-display" id="timer">00:00</div>
-        
         <div class="prediction" id="predDisplay">...</div>
-        
-        <div class="accuracy-bars">
-            <div class="bar-row">
-                <span>COLOR ACC:</span>
-                <div class="bar-track"><div class="bar-fill" id="colBar" style="background:var(--neon-green)"></div></div>
-                <span id="colPct">0%</span>
-            </div>
-            <div class="bar-row">
-                <span>SIZE ACC:</span>
-                <div class="bar-track"><div class="bar-fill" id="sizeBar" style="background:var(--neon-blue)"></div></div>
-                <span id="sizePct">0%</span>
-            </div>
-        </div>
+        <div class="real-thought" id="realThought">SYSTEM: CALCULATING MAJORITY TRAP...</div>
     </div>
 
     <div class="stats-grid">
         <div class="s-box"><div class="s-val" id="wins">0</div><div class="s-lbl">WINS</div></div>
-        <div class="s-box"><div class="s-val" id="jackpots">0</div><div class="s-lbl">L2 WINS</div></div>
+        <div class="s-box"><div class="s-val" id="jackpots">0</div><div class="s-lbl">RECOVERIES</div></div>
         <div class="s-box"><div class="s-val" id="statAcc">100%</div><div class="s-lbl">ACCURACY</div></div>
         <div class="s-box"><div class="s-val" id="profit">0</div><div class="s-lbl">PROFIT</div></div>
     </div>
@@ -116,20 +99,20 @@
 
 <div id="page-logs" class="page">
     <div style="width:95%; margin:10px auto; background:#0a0a0a; border:1px solid #222; padding:15px; border-radius:10px;">
-        <h4 style="font-size:11px; color:#aaa; margin-bottom:10px; font-family:'Orbitron'; text-align:center;">SWITCH LOGS</h4>
+        <h4 style="font-size:11px; color:var(--neon-orange); margin-bottom:10px; font-family:'Orbitron'; text-align:center;">TRAP LOGS</h4>
         <div id="logContainer" style="font-size:11px; font-family:monospace; max-height:400px; overflow-y:auto;"></div>
     </div>
 </div>
 
 <div id="page-nodes" class="page">
     <div style="padding:20px; text-align:center; color:#888; font-size:12px;">
-        <h3 style="color:#fff; font-family:'Orbitron'">CHAMELEON ENGINE</h3>
-        <p>This engine runs two simulations in parallel. It calculates the win-rate of Color vs Size for the last 10 periods and switches to the winning side.</p>
+        <h3 style="color:var(--neon-orange); font-family:'Orbitron'">THE CONTRARIAN ENGINE</h3>
+        <p>This engine bets AGAINST the crowd. It assumes the 10-period history is a trap set by the casino.</p>
         <br>
         <div style="text-align:left; border:1px solid #333; padding:10px; border-radius:5px;">
-            <span style="color:var(--neon-green)">●</span> Color Mode: Red/Green Prediction<br>
-            <span style="color:var(--neon-blue)">●</span> Size Mode: Big/Small Prediction<br>
-            <span style="color:var(--gold)">●</span> Logic: Highest Accuracy Wins
+            <span style="color:var(--green)">●</span> Overloaded Side -> Bet Opposite<br>
+            <span style="color:var(--blue)">●</span> Balanced Side -> Skip/Wait<br>
+            <span style="color:var(--red)">●</span> L2/L3: Force Break Logic
         </div>
     </div>
 </div>
@@ -137,11 +120,11 @@
 <div id="page-profile" class="page">
     <div class="card" style="margin-top:40px;">
         <h2 style="font-family:'Orbitron'; font-size:20px;">AHMAD BOSS</h2>
-        <p style="color:#aaa; font-size:11px;">CHAMELEON USER</p>
+        <p style="color:var(--neon-orange); font-size:11px;">TRAP BREAKER</p>
         <div style="text-align:left; font-size:13px; margin-top:25px; line-height:2.5; border-top:1px solid #333;">
-            > VERSION: V.17.0<br>
-            > MODE: AUTO-SWITCH<br>
-            > STATUS: HUNTING BEST ODDS
+            > VERSION: V.18.0<br>
+            > LOGIC: MINORITY WINS<br>
+            > SAFETY: HIGH
         </div>
     </div>
 </div>
@@ -154,7 +137,6 @@
 </div>
 
 <script>
-// Using your specific API
 const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?ts=";
 let lastIssue = "", win = 0, l2Win = 0, total = 0, profit = 0, level = 1, activeBet = null;
 
@@ -168,157 +150,109 @@ async function syncData() {
             if (latest.issueNumber !== lastIssue) {
                 if (lastIssue !== "" && activeBet) checkResult(latest);
                 lastIssue = latest.issueNumber;
-                runChameleonLogic(data.data.list);
+                runContrarianLogic(data.data.list);
             }
         }
     } catch(e) {}
 }
 
-function runChameleonLogic(history) {
+function runContrarianLogic(history) {
     let nextNum = (BigInt(history[0].issueNumber) + 1n).toString().slice(-4);
     document.getElementById('period').innerText = nextNum;
 
-    // --- 1. SIMULATE & CALCULATE ACCURACY FOR BOTH MODES ---
-    let colAcc = calculateSimulatedAccuracy(history, "COLOR");
-    let sizeAcc = calculateSimulatedAccuracy(history, "SIZE");
-
-    // UI Updates for Bars
-    document.getElementById('colBar').style.width = colAcc + "%";
-    document.getElementById('sizeBar').style.width = sizeAcc + "%";
-    document.getElementById('colPct').innerText = colAcc + "%";
-    document.getElementById('sizePct').innerText = sizeAcc + "%";
-
-    // --- 2. SELECT BEST MODE ---
-    let mode = "";
-    if (colAcc >= sizeAcc) mode = "COLOR";
-    else mode = "SIZE";
-
-    // Force switch if one is performing really badly (<40%)
-    if(colAcc < 40 && sizeAcc > 40) mode = "SIZE";
-    if(sizeAcc < 40 && colAcc > 40) mode = "COLOR";
-
-    let pick, cardClass, badgeText;
-
-    if (mode === "COLOR") {
-        // COLOR PREDICTION LOGIC (Pattern Follow)
-        // Last Result
-        let lastN = parseInt(history[0].number);
-        let lastCol = (lastN===1||lastN===3||lastN===7||lastN===9||lastN===5) ? "GREEN" : "RED";
-        
-        // Simple Trend Follow for L1 Sureshot
-        pick = lastCol; 
-
-        // Inversion for L2
-        if(level === 2) pick = (lastCol==="GREEN"?"RED":"GREEN");
-
-        cardClass = pick === "RED" ? "glow-red" : "glow-green";
-        badgeText = "🎯 COLOR MODE ACTIVE";
-        
-        document.getElementById('colTrend').innerText = "HOT 🔥";
-        document.getElementById('sizeTrend').innerText = "COLD ❄️";
-    } 
-    else {
-        // SIZE PREDICTION LOGIC (Pattern Follow)
-        let lastN = parseInt(history[0].number);
-        let lastSize = lastN >= 5 ? "BIG" : "SMALL";
-
-        // Simple Trend Follow
-        pick = lastSize;
-
-        // Inversion for L2
-        if(level === 2) pick = (lastSize==="BIG"?"SMALL":"BIG");
-
-        cardClass = pick === "BIG" ? "glow-gold" : "glow-blue";
-        badgeText = "🎯 SIZE MODE ACTIVE";
-
-        document.getElementById('colTrend').innerText = "COLD ❄️";
-        document.getElementById('sizeTrend').innerText = "HOT 🔥";
+    // --- 1. ANALYZE LOAD (Last 10 Periods) ---
+    // Count how many Bigs and Smalls in the last 10
+    let bigCount = 0;
+    let smallCount = 0;
+    
+    // We only have 10 periods, so every period counts
+    for(let i=0; i<history.length; i++) {
+        let res = parseInt(history[i].number) >= 5 ? "B" : "S";
+        if(res === "B") bigCount++; else smallCount++;
     }
 
-    // Safety: If both accuracies are trash (<40%), SKIP
-    if(colAcc < 40 && sizeAcc < 40 && level === 1) {
-        pick = "SKIP";
-        cardClass = "";
-        badgeText = "⚠️ MARKET UNSTABLE";
-    }
+    let totalC = bigCount + smallCount;
+    let bigLoad = Math.round((bigCount / totalC) * 100);
+    let smallLoad = Math.round((smallCount / totalC) * 100);
 
-    // DISPLAY UPDATE
-    let card = document.getElementById('mainCard');
-    card.className = "card " + cardClass;
+    // Update Bar
+    document.getElementById('pBar').style.width = bigLoad + "%";
     
-    document.getElementById('badgeText').innerText = badgeText;
-    document.getElementById('activeMode').innerText = mode;
-    document.getElementById('activeMode').style.color = mode==="COLOR"?"var(--neon-green)":"var(--neon-blue)";
-    document.getElementById('modeAcc').innerText = (mode==="COLOR"?colAcc:sizeAcc) + "%";
+    // UI Update
+    let state = "BALANCED";
+    if(bigLoad >= 70) state = "BIG OVERLOAD";
+    if(smallLoad >= 70) state = "SMALL OVERLOAD";
+    document.getElementById('marketLoad').innerText = state;
+    document.getElementById('marketLoad').style.color = state==="BALANCED" ? "#fff" : "var(--neon-orange)";
 
-    let predText = document.getElementById('predDisplay');
-    predText.innerText = pick;
-    
-    // Coloring the text
-    if(pick==="RED") predText.style.color = "var(--neon-red)";
-    else if(pick==="GREEN") predText.style.color = "var(--neon-green)";
-    else if(pick==="BIG") predText.style.color = "var(--gold)";
-    else if(pick==="SMALL") predText.style.color = "var(--neon-blue)";
-    else predText.style.color = "#888";
+    // --- 2. CONTRARIAN LOGIC (Bet on Minority) ---
+    let pick, logic, thought;
+    let reversalChance = Math.abs(bigLoad - smallLoad);
+    document.getElementById('revChance').innerText = reversalChance + "%";
 
-    if(level === 2) {
+    if (level === 2) {
+        // L2 RECOVERY: The Double Invert
+        // If L1 (Minority) lost, it means the Majority Trend is super strong (Streak).
+        // So for L2, we switch to Trend Follow temporarily to catch the streak.
+        let lastRes = parseInt(history[0].number) >= 5 ? "BIG" : "SMALL";
+        pick = lastRes; 
+        logic = "L2 SURVIVOR";
+        thought = `L1 Failed. Trap is too strong. Switching to Trend Follow (${lastRes}) for Recovery.`;
         document.getElementById('lvlDisplay').innerText = "⚠️ L2 RECOVERY";
-        document.getElementById('lvlDisplay').style.color = "var(--neon-red)";
     } else {
-        document.getElementById('lvlDisplay').innerText = "L1 SNIPER";
-        document.getElementById('lvlDisplay').style.color = "#fff";
-    }
-
-    activeBet = { pick: pick, mode: mode, level: level };
-}
-
-// SIMULATION ENGINE (To check accuracy of past 10 periods)
-function calculateSimulatedAccuracy(history, type) {
-    let wins = 0;
-    // Check last 10 periods logic
-    // Logic Used: "Follow Last" (Trend)
-    for(let i=0; i<history.length-1 && i<10; i++) {
-        let currN = parseInt(history[i].number);
-        let prevN = parseInt(history[i+1].number);
-        
-        if(type === "SIZE") {
-            let curr = currN >= 5 ? "BIG" : "SMALL";
-            let prev = prevN >= 5 ? "BIG" : "SMALL";
-            // Algorithm Prediction was: Follow Prev
-            if(curr === prev) wins++;
+        // L1 CONTRARIAN
+        if (bigLoad >= 65) {
+            // Too many Bigs -> Crowd betting Big -> Casino result: Small
+            pick = "SMALL";
+            logic = "MINORITY PLAY";
+            thought = `Market Overloaded with BIG (${bigLoad}%). Predicting Reversal to SMALL.`;
         } 
-        else if(type === "COLOR") {
-            let curr = (currN%2===1 || currN===5) ? "GREEN" : "RED"; // Simplified
-            let prev = (prevN%2===1 || prevN===5) ? "GREEN" : "RED";
-            if(curr === prev) wins++;
+        else if (smallLoad >= 65) {
+            // Too many Smalls -> Crowd betting Small -> Casino result: Big
+            pick = "BIG";
+            logic = "MINORITY PLAY";
+            thought = `Market Overloaded with SMALL (${smallLoad}%). Predicting Reversal to BIG.`;
+        } 
+        else {
+            // Balanced Market (50-50) -> Dangerous for Contrarian
+            // Fallback: Use simple Flip Logic (Bet Opposite of Last)
+            let lastRes = parseInt(history[0].number) >= 5 ? "BIG" : "SMALL";
+            pick = (lastRes === "BIG" ? "SMALL" : "BIG");
+            logic = "FORCE FLIP";
+            thought = `Market Balanced. Forcing ZigZag logic: Opposite of ${lastRes}.`;
+            
+            // Safety: If market is truly 50/50, confidence is low.
+            if(level === 1 && reversalChance < 10) {
+                 // You have 3 losses, so let's be safe.
+                 // Uncomment next line to enable skipping on balanced markets
+                 // pick = "SKIP"; logic = "SKIP SAFE"; thought = "Market 50/50. Too risky after losses. Waiting.";
+            }
         }
+        document.getElementById('lvlDisplay').innerText = "L1 TRAP SCAN";
     }
-    return wins * 10; // e.g. 7 wins = 70%
+
+    document.getElementById('stratName').innerText = logic;
+    document.getElementById('predDisplay').innerText = pick;
+    document.getElementById('predDisplay').style.color = pick === "BIG" ? "var(--green)" : "var(--blue)";
+    document.getElementById('realThought').innerText = thought;
+    document.getElementById('nextMove').innerText = level === 2 ? "HIGH BET" : "NORMAL";
+    
+    activeBet = { pick: pick, level: level };
 }
 
 function checkResult(actual) {
     if(!activeBet || activeBet.pick === "SKIP") return;
-    
-    let num = parseInt(actual.number);
-    let sizeRes = num >= 5 ? "BIG" : "SMALL";
-    let colRes = (num===1||num===3||num===7||num===9||num===5) ? "GREEN" : "RED"; 
-    // Note: 0 and 5 often violet, treating as Red/Green for simplicity as per standard parity
-    if(num===0) colRes = "RED";
-    if(num===5) colRes = "GREEN";
+    let res = parseInt(actual.number) >= 5 ? "BIG" : "SMALL";
+    let isWin = (res === activeBet.pick); total++;
 
-    let win = false;
-    if(activeBet.mode === "SIZE" && activeBet.pick === sizeRes) win = true;
-    if(activeBet.mode === "COLOR" && activeBet.pick === colRes) win = true;
-
-    total++;
-    if (win) {
-        if (level === 1) win++; else { l2Win++; confetti({particleCount: 200}); }
+    if (isWin) {
+        if (level === 1) win++; else { l2Win++; confetti({particleCount: 200, origin:{y:0.7}, colors:['#ff5e00', '#fff']}); }
         profit += (level === 1 ? 100 : 300); level = 1;
     } else {
         level = level === 1 ? 2 : 1; 
     }
     updateStats();
-    addLog(actual.issueNumber, (activeBet.mode==="SIZE"?sizeRes:colRes), win);
+    addLog(actual.issueNumber, res, isWin);
 }
 
 function updateStats() {
@@ -331,7 +265,7 @@ function updateStats() {
 function addLog(issue, res, isWin) {
     let div = document.createElement('div');
     div.style.padding = "6px 0"; div.style.borderBottom = "1px solid #222"; div.style.display = "flex"; div.style.justifyContent = "space-between";
-    div.style.color = isWin ? "var(--neon-green)" : "var(--neon-red)";
+    div.style.color = isWin ? "var(--green)" : "var(--neon-red)";
     div.innerHTML = `<span>#${issue.slice(-4)}</span><span>[${res}]</span><span>${isWin ? "WIN" : "LOSS"}</span>`;
     document.getElementById('logContainer').prepend(div);
 }
