@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OMNI-X GOD MODE v9.0</title>
+    <title>OMNI-X V.10 UNLOCKED</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
@@ -14,7 +14,7 @@
             --red: #ff0033;
             --gold: #ffd700;
             --blue: #00d4ff;
-            --card-grad: linear-gradient(180deg, #1a0b2e 0%, #000000 100%);
+            --card-grad: linear-gradient(180deg, #10051a 0%, #000000 100%);
         }
 
         * { margin:0; padding:0; box-sizing:border-box; font-family: 'Rajdhani', sans-serif; user-select:none; }
@@ -23,16 +23,14 @@
         .header { width:100%; padding:15px; border-bottom:2px solid var(--neon-purple); background:#000; display:flex; justify-content:space-between; align-items:center; position: sticky; top:0; z-index:1000; box-shadow: 0 5px 20px rgba(188, 19, 254, 0.2); }
         .ping-box { font-size: 10px; color: var(--green); border: 1px solid var(--green); padding: 3px 8px; border-radius: 4px; font-family: 'Orbitron'; background: rgba(0,255,65,0.1); }
 
-        /* MICKEY X METERS (REAL DATA ONLY) */
         .mickey-hud { width:95%; margin:15px auto; display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
-        .meter-card { background:rgba(20,20,20,0.95); border:1px solid #333; padding:12px; border-radius:8px; border-left: 3px solid var(--neon-purple); box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        .meter-card { background:rgba(20,20,20,0.95); border:1px solid #333; padding:12px; border-radius:8px; border-left: 3px solid var(--neon-purple); }
         .meter-label { font-size:9px; color:#888; text-transform:uppercase; letter-spacing: 1px; }
-        .meter-val { font-size:15px; color:#fff; font-weight:bold; font-family: 'Orbitron'; margin-top: 4px; }
+        .meter-val { font-size:14px; color:#fff; font-weight:bold; font-family: 'Orbitron'; margin-top: 4px; }
 
-        /* MAIN CARD */
         .card { width:95%; margin:10px auto; border:2px solid var(--neon-purple); padding:25px; text-align:center; position:relative; background: var(--card-grad); box-shadow:0 0 50px rgba(188, 19, 254, 0.2); border-radius:16px; }
         .period-info { display:flex; justify-content:space-between; font-size:13px; font-family:'Orbitron'; color:var(--gold); border-bottom:1px solid #333; padding-bottom:12px; }
-        .timer-display { font-size: 28px; color: #fff; font-weight: 900; margin-top: 10px; font-family: 'Orbitron'; letter-spacing: 2px; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
+        .timer-display { font-size: 28px; color: #fff; font-weight: 900; margin-top: 10px; font-family: 'Orbitron'; letter-spacing: 2px; }
         .prediction { font-size:90px; font-weight:900; margin:15px 0; font-family:'Orbitron'; letter-spacing:-4px; text-shadow: 0 0 30px var(--neon-purple); }
 
         .real-thought { font-size:11px; color:var(--blue); border:1px dashed rgba(0, 212, 255, 0.3); padding:10px; display:block; margin-top:15px; background:rgba(0,212,255,0.05); min-height: 50px; line-height: 1.5; border-radius: 5px; }
@@ -51,11 +49,6 @@
 
         .page { display:none; width:100%; flex-direction:column; }
         #page-terminal { display: flex; }
-
-        /* HISTORY MATCH VISUALIZER */
-        .match-box { display:flex; gap:2px; justify-content:center; margin-top:5px; opacity:0.7; }
-        .match-dot { width:6px; height:6px; border-radius:50%; background:#333; }
-        .match-dot.active { background:var(--green); box-shadow: 0 0 5px var(--green); }
     </style>
 </head>
 <body>
@@ -63,37 +56,34 @@
 <div class="header">
     <div style="line-height:1.2">
         <div style="font-size:18px; font-weight:900; font-family:'Orbitron'; color:#fff;">OMNI-X</div>
-        <div style="font-size:9px; color:var(--neon-purple); font-weight: bold;">GOD MODE v9.0</div>
+        <div style="font-size:9px; color:var(--neon-purple); font-weight: bold;">UNLOCKED v10.0</div>
     </div>
     <div class="ping-box">PING: <span id="pingVal">--</span>ms</div>
 </div>
 
 <div class="mickey-hud">
-    <div class="meter-card"><div class="meter-label">HISTORICAL MATCH</div><div class="meter-val" id="patternMatch" style="color:var(--green)">SEARCHING</div></div>
+    <div class="meter-card"><div class="meter-label">ACTIVE STRATEGY</div><div class="meter-val" id="stratName" style="color:var(--green)">ADAPTIVE</div></div>
     <div class="meter-card"><div class="meter-label">CONFIDENCE</div><div class="meter-val" id="confReal">0%</div></div>
-    <div class="meter-card"><div class="meter-label">ALGO STATUS</div><div class="meter-val" id="algoState" style="color:var(--blue)">MEMORY SCAN</div></div>
-    <div class="meter-card"><div class="meter-label">NEXT MOVE</div><div class="meter-val" id="nextMove">WAITING</div></div>
+    <div class="meter-card"><div class="meter-label">ANALYSIS MODE</div><div class="meter-val" id="algoState" style="color:var(--blue)">HYBRID</div></div>
+    <div class="meter-card"><div class="meter-label">NEXT MOVE</div><div class="meter-val" id="nextMove">SCANNING</div></div>
 </div>
 
 <div id="page-terminal" class="page">
     <div class="card">
         <div class="wait-layer" id="waitLayer">
             <div class="wait-title">WAIT</div>
-            <div style="color:#fff; font-size:12px; margin-top:10px; font-family:'Orbitron';">PATTERN BREAKER ACTIVE</div>
-            <div style="color:var(--neon-purple); font-size:11px; margin-top:5px;">SKIPPING 1 PERIOD</div>
+            <div style="color:#fff; font-size:12px; margin-top:10px; font-family:'Orbitron';">SNIPER GAP: 1 PERIOD</div>
+            <div style="color:var(--neon-purple); font-size:11px; margin-top:5px;">BREAKING LOSS STREAK</div>
         </div>
 
         <div class="period-info">
             <span>PERIOD: <b id="period">....</b></span>
-            <span id="lvlDisplay" style="color:var(--gold)">SCANNING HISTORY</span>
+            <span id="lvlDisplay" style="color:var(--gold)">L1 SCAN</span>
         </div>
         
-        <div class="match-box" id="matchBox">
-            </div>
-
         <div class="timer-display" id="timer">00:00</div>
         <div class="prediction" id="predDisplay">...</div>
-        <div class="real-thought" id="realThought">GOD MODE: SCANNING 500+ PAST PERIODS FOR MATCHING SEQUENCES...</div>
+        <div class="real-thought" id="realThought">SYSTEM: LOADING HYBRID HISTORY + NEURAL ENGINE...</div>
     </div>
 
     <div class="stats-grid">
@@ -106,20 +96,20 @@
 
 <div id="page-logs" class="page">
     <div style="width:95%; margin:10px auto; background:#0a0a0a; border:1px solid #222; padding:15px; border-radius:10px;">
-        <h4 style="font-size:11px; color:var(--neon-purple); margin-bottom:10px; font-family:'Orbitron'; text-align:center;">GOD MODE LOGS</h4>
+        <h4 style="font-size:11px; color:var(--neon-purple); margin-bottom:10px; font-family:'Orbitron'; text-align:center;">OMNI LOGS</h4>
         <div id="logContainer" style="font-size:11px; font-family:monospace; max-height:400px; overflow-y:auto;"></div>
     </div>
 </div>
 
 <div id="page-nodes" class="page">
     <div style="padding:20px; color:#aaa; font-size:12px; text-align:center;">
-        <h3 style="color:var(--gold); font-family:'Orbitron'">ACTIVE CORE: MEMORY MATCH</h3>
-        <p style="margin-top:10px;">Instead of calculating averages, GOD MODE finds exact sequence matches in history.</p>
+        <h3 style="color:var(--gold); font-family:'Orbitron'">ADAPTIVE ENGINE UNLOCKED</h3>
+        <p style="margin-top:10px;">Automatically switches between History Match and Neural Trend to ensure 0% Skip Rate.</p>
         <br>
         <div style="text-align:left; border:1px solid #333; padding:10px; border-radius:5px;">
-            <span style="color:var(--green)">●</span> Pattern: 5-Step Sequence Match<br>
-            <span style="color:var(--blue)">●</span> Filter: Low Probability Rejection<br>
-            <span style="color:var(--neon-purple)">●</span> L2: Anti-Streak Inverter
+            <span style="color:var(--green)">●</span> Primary: Exact Pattern Match<br>
+            <span style="color:var(--blue)">●</span> Secondary: Neural Trend Analysis<br>
+            <span style="color:var(--neon-purple)">●</span> L2 Recovery: Sniper Inversion
         </div>
     </div>
 </div>
@@ -127,12 +117,12 @@
 <div id="page-profile" class="page">
     <div class="card" style="margin-top:40px;">
         <h2 style="font-family:'Orbitron'; font-size:20px; color:#fff;">AHMAD BOSS</h2>
-        <p style="color:var(--neon-purple); font-size:11px; margin-top:5px; font-weight:bold;">GOD MODE USER</p>
+        <p style="color:var(--neon-purple); font-size:11px; margin-top:5px; font-weight:bold;">UNLOCKED USER</p>
         <div style="text-align:left; font-size:13px; margin-top:25px; line-height:2.5; border-top:1px solid #333; padding-top:20px;">
-            > ENGINE: HISTORY REPEATER V9<br>
-            > LOGIC: EXACT PATTERN MATCH<br>
-            > RECOVERY: 1-PERIOD RESET<br>
-            > STATUS: SYNCED
+            > ENGINE: OMNI-X V10<br>
+            > SKIP RATE: 0% (FORCED)<br>
+            > RECOVERY: 1-PERIOD GAP<br>
+            > STATUS: ACTIVE
         </div>
     </div>
 </div>
@@ -164,7 +154,7 @@ async function syncData() {
             if (latest.issueNumber !== lastIssue) {
                 if (lastIssue !== "" && activeBet) checkResult(latest);
                 lastIssue = latest.issueNumber;
-                runGodMode(data.data.list);
+                runAdaptiveEngine(data.data.list);
             }
         }
     } catch(e) {
@@ -172,81 +162,66 @@ async function syncData() {
     }
 }
 
-// GOD MODE: HISTORY PATTERN MATCHER
-function runGodMode(history) {
+// ADAPTIVE ENGINE: HISTORY -> FALLBACK TO NEURAL
+function runAdaptiveEngine(history) {
     let lastBS = parseInt(history[0].number) >= 5 ? "BIG" : "SMALL";
     let nextNum = (BigInt(history[0].issueNumber) + 1n).toString().slice(-4);
     document.getElementById('period').innerText = nextNum;
 
-    // 1. EXTRACT CURRENT PATTERN (Last 5 outcomes)
-    // E.g., ["B", "S", "B", "B", "S"]
+    // --- STEP 1: TRY PATTERN MATCH ---
     let currentPattern = [];
-    let dotsHtml = "";
     for(let i=0; i<5; i++) {
-        let val = parseInt(history[i].number) >= 5 ? "B" : "S";
-        currentPattern.push(val);
-        dotsHtml += `<div class="match-dot ${i===0?'active':''}"></div>`;
+        currentPattern.push(parseInt(history[i].number) >= 5 ? "B" : "S");
     }
-    document.getElementById('matchBox').innerHTML = dotsHtml;
 
-    // 2. SEARCH HISTORY FOR MATCHES
-    let matchCount = 0;
-    let nextBig = 0;
-    let nextSmall = 0;
-
-    // Scan up to 100 periods back
+    let matchCount = 0, nextBig = 0, nextSmall = 0;
     for(let i=1; i < history.length - 6; i++) {
         let match = true;
-        // Check if history[i...i+4] matches currentPattern
         for(let j=0; j<5; j++) {
-            let histVal = parseInt(history[i+j].number) >= 5 ? "B" : "S";
-            if(histVal !== currentPattern[j]) {
+            if((parseInt(history[i+j].number) >= 5 ? "B" : "S") !== currentPattern[j]) {
                 match = false;
                 break;
             }
         }
-        
         if(match) {
             matchCount++;
-            // What came BEFORE this sequence? (Since array is reversed, 'before' is index i-1)
-            // Actually, for prediction we want what came *after* the pattern in chronological order.
-            // In a reversed array (latest first), the "next" result historically is at i-1.
             let nextVal = parseInt(history[i-1].number) >= 5 ? "B" : "S";
             if(nextVal === "B") nextBig++; else nextSmall++;
         }
     }
 
-    // 3. CALCULATE PROBABILITY
-    let totalMatches = nextBig + nextSmall;
-    let prediction = "";
-    let confidence = 0;
+    let prediction = "", confidence = 0, strategy = "";
 
-    if (totalMatches > 0) {
-        if (nextBig > nextSmall) {
-            prediction = "BIG";
-            confidence = Math.round((nextBig / totalMatches) * 100);
-        } else {
-            prediction = "SMALL";
-            confidence = Math.round((nextSmall / totalMatches) * 100);
-        }
+    // --- DECISION LOGIC ---
+    if (matchCount > 0) {
+        // STRATEGY: HISTORY MATCH
+        strategy = "HISTORY MATCH";
+        if (nextBig > nextSmall) { prediction = "BIG"; confidence = Math.round((nextBig/(nextBig+nextSmall))*100); }
+        else { prediction = "SMALL"; confidence = Math.round((nextSmall/(nextBig+nextSmall))*100); }
     } else {
-        // No history match found -> Fallback to Ahmad Weighted Trend
-        prediction = "SKIP";
-        confidence = 0;
+        // FALLBACK STRATEGY: NEURAL TREND
+        strategy = "NEURAL TREND";
+        let trend = 0, flip = 0;
+        for(let i=0; i<10; i++) {
+            let curr = parseInt(history[i].number) >= 5 ? "B" : "S";
+            let prev = parseInt(history[i+1].number) >= 5 ? "B" : "S";
+            if(curr===prev) trend += (10-i); else flip += (10-i);
+        }
+        if(trend > flip) { prediction = lastBS; confidence = Math.round((trend/(trend+flip))*100); }
+        else { prediction = (lastBS==="BIG"?"SMALL":"BIG"); confidence = Math.round((flip/(trend+flip))*100); }
     }
 
-    // UPDATE UI METERS
-    document.getElementById('patternMatch').innerText = totalMatches + " FOUND";
+    // UPDATE UI
+    document.getElementById('stratName').innerText = strategy;
     document.getElementById('confReal').innerText = confidence + "%";
-    document.getElementById('algoState').innerText = prediction === "SKIP" ? "NO MATCH" : "MATCHED";
-    document.getElementById('algoState').style.color = prediction === "SKIP" ? "var(--red)" : "var(--green)";
+    document.getElementById('algoState').innerText = "ACTIVE";
 
-    // WAIT LOGIC
+    // WAIT LOGIC (ONLY AFTER LOSS)
     if (waitCount > 0) {
         waitCount--; activeBet = { pick: "SKIP" };
         document.getElementById('waitLayer').style.display = 'flex';
         document.getElementById('predDisplay').innerText = "WAIT";
-        document.getElementById('realThought').innerText = "SNIPER BREAK: Breaking the loss streak. Waiting 1 period.";
+        document.getElementById('realThought').innerText = "SNIPER GAP: Stabilizing market after loss.";
         return;
     }
     document.getElementById('waitLayer').style.display = 'none';
@@ -254,37 +229,27 @@ function runGodMode(history) {
     let pick, logic, thought;
 
     if (level === 2) {
-        // L2: ANTI-PATTERN SNIPER (If history failed, invert immediately)
-        // If L1 was BIG and lost, it means SMALL came. 
-        // L2 Logic: If history is failing, assume trend reversal.
+        // L2: INVERSION SNIPER
         pick = (lastL1Logic === "BIG") ? "SMALL" : "BIG"; 
-        if(lastL1Logic === "") pick = prediction === "SKIP" ? "BIG" : prediction; // Fallback
-        
-        logic = "L2 GOD SNIPER";
-        thought = `HISTORY FAILED. Executing Inversion Strategy on ${pick}.`;
+        if(!lastL1Logic) pick = prediction;
+        logic = "L2 SNIPER";
+        thought = `L1 FAILED. Executing Inversion Strategy on ${pick} for Recovery.`;
         document.getElementById('lvlDisplay').innerText = "⚠️ L2 JACKPOT";
         document.getElementById('lvlDisplay').style.color = "var(--red)";
         document.getElementById('nextMove').innerText = "RECOVER";
     } else {
-        // L1: HISTORY MATCH
-        if (prediction === "SKIP" || confidence < 60) {
-            pick = "SKIP";
-            logic = "NO MATCH";
-            thought = "GOD MODE: No matching historical pattern found. Skipping to save money.";
-            document.getElementById('nextMove').innerText = "HOLD";
-        } else {
-            pick = prediction;
-            logic = "HISTORY MATCH";
-            thought = `GOD MODE: Found ${totalMatches} similar patterns in history. ${confidence}% time result was ${pick}.`;
-            document.getElementById('nextMove').innerText = "BET L1";
-        }
-        lastL1Logic = pick;
-        document.getElementById('lvlDisplay').innerText = "L1 PATTERN";
+        // L1: ADAPTIVE PREDICTION
+        pick = prediction;
+        logic = strategy;
+        thought = `OMNI-X: Using ${strategy}. Prediction: ${pick} (${confidence}%).`;
+        document.getElementById('lvlDisplay').innerText = "L1 PREDICT";
         document.getElementById('lvlDisplay').style.color = "var(--gold)";
+        document.getElementById('nextMove').innerText = "BET L1";
     }
 
+    lastL1Logic = pick;
     document.getElementById('predDisplay').innerText = pick;
-    document.getElementById('predDisplay').style.color = pick === "BIG" ? "var(--green)" : (pick === "SMALL" ? "var(--gold)" : "#666");
+    document.getElementById('predDisplay').style.color = pick === "BIG" ? "var(--green)" : "var(--gold)";
     document.getElementById('realThought').innerText = thought;
     activeBet = { pick: pick, level: level };
 }
