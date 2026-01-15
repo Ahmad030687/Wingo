@@ -3,88 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OMNI-X V.25 MICKEY-X EDITION</title>
+    <title>OMNI-X V.27 INSTANT</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* MICKEY X THEME COLORS */
-            --mickey-green: #39ff14;
-            --mickey-purple: #bc13fe;
-            --mickey-dark: #050505;
-            --card-bg: #111;
-            --glass: rgba(255, 255, 255, 0.05);
+            --green: #39ff14;
+            --purple: #bc13fe;
+            --dark: #050505;
+            --card: #111;
             --red: #ff0033;
             --gold: #ffd700;
         }
 
         * { margin:0; padding:0; box-sizing:border-box; font-family: 'Rajdhani', sans-serif; user-select:none; }
-        body { background: var(--mickey-dark); color: #fff; min-height: 100vh; overflow-x: hidden; padding-bottom: 80px; }
+        body { background: var(--dark); color: #fff; min-height: 100vh; overflow-x: hidden; padding-bottom: 80px; }
 
         /* HEADER */
-        .header { width:100%; padding:15px; border-bottom:2px solid var(--mickey-purple); background:#000; display:flex; justify-content:space-between; align-items:center; position: sticky; top:0; z-index:1000; box-shadow: 0 0 20px rgba(188, 19, 254, 0.3); }
-        .ping-box { font-size: 10px; color: var(--mickey-green); border: 1px solid var(--mickey-green); padding: 3px 8px; border-radius: 4px; font-family: 'Orbitron'; background: rgba(57, 255, 20, 0.1); }
+        .header { width:100%; padding:15px; border-bottom:2px solid var(--green); background:#000; display:flex; justify-content:space-between; align-items:center; position: sticky; top:0; z-index:1000; box-shadow: 0 0 15px rgba(57, 255, 20, 0.2); }
+        .ping-box { font-size: 10px; color: var(--green); border: 1px solid var(--green); padding: 3px 8px; border-radius: 4px; font-family: 'Orbitron'; cursor: pointer; background: rgba(57, 255, 20, 0.1); }
 
         /* HUD */
         .mickey-hud { width:95%; margin:15px auto; display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
-        .meter-card { background:var(--card-bg); border:1px solid #333; padding:12px; border-radius:6px; border-left: 3px solid var(--mickey-purple); box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        .meter-card { background:var(--card); border:1px solid #333; padding:12px; border-radius:6px; border-left: 3px solid var(--green); }
         .meter-label { font-size:9px; color:#aaa; text-transform:uppercase; letter-spacing: 1px; }
-        .meter-val { font-size:14px; color:#fff; font-weight:bold; font-family: 'Orbitron'; margin-top: 4px; text-shadow: 0 0 5px var(--mickey-purple); }
+        .meter-val { font-size:14px; color:#fff; font-weight:bold; font-family: 'Orbitron'; margin-top: 4px; }
 
         /* MAIN CARD */
-        .card { width:95%; margin:10px auto; border:2px solid var(--mickey-green); padding:25px; text-align:center; position:relative; background: radial-gradient(circle, #1a1a1a 0%, #000 100%); box-shadow:0 0 40px rgba(57, 255, 20, 0.15); border-radius:12px; transition:0.3s; }
+        .card { width:95%; margin:10px auto; border:2px solid var(--purple); padding:25px; text-align:center; position:relative; background: radial-gradient(circle, #1a1a1a 0%, #000 100%); box-shadow:0 0 30px rgba(188, 19, 254, 0.15); border-radius:12px; transition:0.3s; }
         
-        /* CARD GLOWS */
-        .glow-active { border-color: var(--mickey-green); box-shadow: 0 0 50px rgba(57, 255, 20, 0.3); }
-        .glow-danger { border-color: var(--red); box-shadow: 0 0 50px rgba(255, 0, 51, 0.3); }
+        .glow-active { border-color: var(--green); box-shadow: 0 0 50px rgba(57, 255, 20, 0.3); animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% {box-shadow: 0 0 20px rgba(57,255,20,0.2);} 50% {box-shadow: 0 0 40px rgba(57,255,20,0.5);} 100% {box-shadow: 0 0 20px rgba(57,255,20,0.2);} }
 
-        .period-info { display:flex; justify-content:space-between; font-size:13px; font-family:'Orbitron'; color:var(--mickey-purple); border-bottom:1px solid #333; padding-bottom:12px; }
+        .period-info { display:flex; justify-content:space-between; font-size:13px; font-family:'Orbitron'; color:var(--green); border-bottom:1px solid #333; padding-bottom:12px; }
         .timer-display { font-size: 32px; color: #fff; font-weight: 900; margin-top: 15px; font-family: 'Orbitron'; letter-spacing: 2px; }
         
-        .prediction { font-size:60px; font-weight:900; margin:10px 0; font-family:'Orbitron'; letter-spacing:-2px; text-transform: uppercase; text-shadow: 0 0 20px rgba(255,255,255,0.1); }
+        .prediction { font-size:60px; font-weight:900; margin:10px 0; font-family:'Orbitron'; letter-spacing:-2px; text-transform: uppercase; text-shadow: 0 0 15px rgba(255,255,255,0.1); }
         
-        /* JACKPOT NUMBERS */
-        .jackpot-box { display:flex; justify-content:center; gap:15px; margin-top:10px; margin-bottom:15px; }
-        .j-num { width:45px; height:45px; background:linear-gradient(145deg, #222, #000); border:1px solid var(--mickey-green); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:bold; color:var(--mickey-green); box-shadow: 0 0 10px rgba(57, 255, 20, 0.2); }
-
-        .real-thought { font-size:10px; color:var(--mickey-green); border:1px dashed var(--mickey-green); padding:10px; display:block; margin-top:15px; background:rgba(57, 255, 20, 0.05); font-family: monospace; }
-
-        /* REAL PRESSURE BAR */
+        /* PRESSURE BAR */
         .pressure-container { width: 100%; margin-top: 10px; }
         .p-label { display:flex; justify-content:space-between; font-size: 9px; color: #888; margin-bottom: 5px; }
         .p-track { width: 100%; height: 8px; background: #222; border-radius: 4px; overflow: hidden; position: relative; }
-        .p-fill { height: 100%; width: 50%; background: linear-gradient(90deg, var(--mickey-purple), var(--mickey-green)); transition: width 0.5s ease-in-out; }
-        .p-center-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: #fff; z-index: 10; }
+        .p-fill { height: 100%; width: 50%; background: linear-gradient(90deg, var(--purple), var(--green)); transition: width 0.5s ease-in-out; }
+        
+        /* JACKPOT NUMBERS */
+        .jackpot-box { display:flex; justify-content:center; gap:15px; margin-top:10px; margin-bottom:15px; }
+        .j-num { width:45px; height:45px; background:#111; border:1px solid var(--green); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:bold; color:var(--green); box-shadow: 0 0 10px rgba(57, 255, 20, 0.2); }
+
+        .real-thought { font-size:10px; color:var(--green); border:1px dashed #333; padding:10px; display:block; margin-top:15px; background:rgba(57, 255, 20, 0.05); font-family: monospace; }
 
         /* STATS GRID */
         .stats-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; width:95%; margin:15px auto; }
-        .s-box { background:#111; border:1px solid #333; padding:12px 2px; text-align:center; border-radius:8px; border-bottom: 2px solid var(--mickey-purple); }
+        .s-box { background:#111; border:1px solid #333; padding:12px 2px; text-align:center; border-radius:8px; border-bottom: 2px solid var(--green); }
         .s-val { font-size:16px; font-weight:bold; font-family: 'Orbitron'; }
         .s-lbl { font-size:8px; color: #888; margin-top: 3px; }
 
-        /* COLORS */
-        .c-win { color: var(--mickey-green); }
+        .c-win { color: var(--green); }
         .c-loss { color: var(--red); }
         .c-jack { color: var(--gold); }
         .c-acc { color: #fff; }
 
-        /* NODES */
+        /* NODES PAGE */
         .node-item { width:95%; margin:10px auto; background:#111; padding:15px; border-radius:8px; border:1px solid #333; display:flex; justify-content:space-between; align-items:center; transition:0.3s; opacity: 0.5; }
-        .node-active { border:1px solid var(--mickey-green); box-shadow: 0 0 15px rgba(57, 255, 20, 0.1); opacity: 1; transform: scale(1.02); }
+        .node-active { border:1px solid var(--green); box-shadow: 0 0 15px rgba(57, 255, 20, 0.1); opacity: 1; transform: scale(1.02); }
         .node-info { text-align:left; }
         .node-name { font-family:'Orbitron'; font-size:12px; color:#fff; margin-bottom:4px; }
         .node-desc { font-size:9px; color:#888; }
         .node-status { font-size:10px; font-weight:bold; font-family:'Orbitron'; padding:4px 8px; border-radius:4px; background:#000; }
-        .status-on { color:var(--mickey-green); border:1px solid var(--mickey-green); }
+        .status-on { color:var(--green); border:1px solid var(--green); }
         .status-off { color:#555; border:1px solid #333; }
 
+        /* NAVIGATION */
         .page { display:none; width:100%; flex-direction:column; padding-bottom: 20px; }
         #page-terminal { display: flex; }
 
-        /* NAV */
-        .nav { position:fixed; bottom:0; left:0; width:100%; background:rgba(0,0,0,0.95); border-top:1px solid var(--mickey-purple); padding:12px 0; display:flex; justify-content:space-around; z-index:1000; backdrop-filter:blur(10px); }
+        .nav { position:fixed; bottom:0; left:0; width:100%; background:rgba(0,0,0,0.95); border-top:1px solid var(--green); padding:12px 0; display:flex; justify-content:space-around; z-index:1000; backdrop-filter:blur(10px); }
         .nav-btn { background:none; border:none; color:#666; font-size:10px; font-weight:bold; cursor:pointer; display:flex; flex-direction:column; align-items:center; transition:0.3s; }
-        .nav-btn.active { color:var(--mickey-green); transform: translateY(-3px); text-shadow: 0 0 8px var(--mickey-green); }
+        .nav-btn.active { color:var(--green); transform: translateY(-3px); text-shadow: 0 0 8px var(--green); }
     </style>
 </head>
 <body>
@@ -92,16 +87,16 @@
 <div class="header">
     <div style="line-height:1.2">
         <div style="font-size:18px; font-weight:900; font-family:'Orbitron'; color:#fff;">OMNI-X</div>
-        <div style="font-size:9px; color:var(--mickey-green); font-weight: bold;">MICKEY-X V.25</div>
+        <div style="font-size:9px; color:var(--green); font-weight: bold;">INSTANT V.27</div>
     </div>
-    <div class="ping-box">L1 FIXER</div>
+    <div class="ping-box" onclick="forceReload()">RELOAD</div>
 </div>
 
 <div id="page-terminal" class="page">
     <div class="mickey-hud">
-        <div class="meter-card"><div class="meter-label">BEST SIGNAL</div><div class="meter-val" id="bestMode" style="color:var(--mickey-purple)">CALCULATING</div></div>
-        <div class="meter-card"><div class="meter-label">VOLATILITY</div><div class="meter-val" id="trapPressure">0%</div></div>
-        <div class="meter-card"><div class="meter-label">ALGORITHM</div><div class="meter-val" id="stratName" style="color:var(--mickey-green)">AUTO</div></div>
+        <div class="meter-card"><div class="meter-label">BEST SIGNAL</div><div class="meter-val" id="bestMode" style="color:var(--purple)">READY</div></div>
+        <div class="meter-card"><div class="meter-label">PRESSURE</div><div class="meter-val" id="trapPressure">0%</div></div>
+        <div class="meter-card"><div class="meter-label">ALGORITHM</div><div class="meter-val" id="stratName" style="color:var(--green)">AUTO</div></div>
         <div class="meter-card"><div class="meter-label">NEXT MOVE</div><div class="meter-val" id="nextMove">WAITING</div></div>
     </div>
 
@@ -116,11 +111,10 @@
         
         <div class="pressure-container">
             <div class="p-label">
-                <span>TREND FOLLOW</span>
+                <span>TREND</span>
                 <span>TRAP BREAK</span>
             </div>
             <div class="p-track">
-                <div class="p-center-line"></div>
                 <div class="p-fill" id="pressureFill"></div>
             </div>
         </div>
@@ -131,7 +125,7 @@
             <div class="j-num">-</div>
         </div>
 
-        <div class="real-thought" id="realThought">MICKEY-X: SCANNING MARKET VOLATILITY...</div>
+        <div class="real-thought" id="realThought">SYSTEM: INITIALIZING INSTANT SCAN...</div>
     </div>
 
     <div class="stats-grid">
@@ -144,35 +138,23 @@
 
 <div id="page-nodes" class="page">
     <div style="padding:15px; color:#aaa; font-size:12px; font-family:'Orbitron';">LIVE ENGINE STATUS</div>
-    
     <div class="node-item" id="node-size">
-        <div class="node-info">
-            <div class="node-name">SIZE VOLATILITY ENGINE</div>
-            <div class="node-desc">Analyze Big/Small Streaks & Load.</div>
-        </div>
+        <div class="node-info"><div class="node-name">SIZE TRAP</div><div class="node-desc">Targeting Big/Small Overload.</div></div>
         <div class="node-status status-off" id="status-size">STANDBY</div>
     </div>
-
     <div class="node-item" id="node-color">
-        <div class="node-info">
-            <div class="node-name">COLOR VOLATILITY ENGINE</div>
-            <div class="node-desc">Analyze Red/Green Streaks & Load.</div>
-        </div>
+        <div class="node-info"><div class="node-name">COLOR TRAP</div><div class="node-desc">Targeting Red/Green Overload.</div></div>
         <div class="node-status status-off" id="status-color">STANDBY</div>
     </div>
-
     <div class="node-item" id="node-l2">
-        <div class="node-info">
-            <div class="node-name">L2 SURESHOT RECOVERY</div>
-            <div class="node-desc">Activates on Pattern Break.</div>
-        </div>
+        <div class="node-info"><div class="node-name">L2 RECOVERY</div><div class="node-desc">Activates on Trend Confirmation.</div></div>
         <div class="node-status status-off" id="status-l2">STANDBY</div>
     </div>
 </div>
 
 <div id="page-logs" class="page">
     <div style="width:95%; margin:10px auto; background:#111; border:1px solid #333; padding:15px; border-radius:10px;">
-        <h4 style="font-size:11px; color:var(--mickey-green); margin-bottom:10px; font-family:'Orbitron'; text-align:center;">MICKEY-X LOGS</h4>
+        <h4 style="font-size:11px; color:var(--green); margin-bottom:10px; font-family:'Orbitron'; text-align:center;">MICKEY-X LOGS</h4>
         <div id="logContainer" style="font-size:11px; font-family:monospace; max-height:400px; overflow-y:auto;"></div>
     </div>
 </div>
@@ -180,11 +162,11 @@
 <div id="page-profile" class="page">
     <div class="card" style="margin-top:40px;">
         <h2 style="font-family:'Orbitron'; font-size:20px;">AHMAD BOSS</h2>
-        <p style="color:#aaa; font-size:11px;">MICKEY-X USER</p>
+        <p style="color:#aaa; font-size:11px;">INSTANT USER</p>
         <div style="text-align:left; font-size:13px; margin-top:25px; line-height:2.5; border-top:1px solid #333;">
-            > VERSION: V.25.0<br>
-            > THEME: MICKEY-X NEON<br>
-            > LOGIC: VOLATILITY FIXER<br>
+            > VERSION: V.27.0<br>
+            > FIX: INSTANT LOAD<br>
+            > UI: MICKEY-X<br>
             > STATUS: GOD MODE
         </div>
     </div>
@@ -198,37 +180,58 @@
 </div>
 
 <script>
+function nav(page, btn) {
+    document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+    document.getElementById('page-'+page).style.display = (page==='terminal') ? 'flex' : 'block';
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+}
+
+function forceReload() {
+    window.location.reload();
+}
+
 const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?ts=";
-let currentBet = null; 
+let currentBet = null;
 let wins = 0, losses = 0, jackpots = 0, l2Wins = 0;
 let level = 1;
+let lastIssue = "";
+let firstLoad = true; // NEW FLAG
 
 async function syncData() {
     try {
         const response = await fetch(API + Date.now());
         const data = await response.json();
         
-        if (data?.data?.list?.length > 0) {
+        if (data && data.data && data.data.list.length > 0) {
             let history = data.data.list;
             let latestResult = history[0];
             
+            // Check Result
             if (currentBet && currentBet.issue === latestResult.issueNumber) {
                 checkResult(latestResult);
                 currentBet = null; 
             }
 
             let nextIssue = (BigInt(latestResult.issueNumber) + 1n).toString();
-            if (!currentBet || currentBet.issue !== nextIssue) {
+            
+            // KEY FIX: FORCE PREDICTION ON FIRST LOAD OR NEW ISSUE
+            if (firstLoad || !currentBet || currentBet.issue !== nextIssue) {
+                firstLoad = false; // Disable flag after first run
                 makePrediction(history, nextIssue);
             }
         }
-    } catch(e) {}
+    } catch(e) {
+        if(firstLoad) {
+             document.getElementById('realThought').innerText = "CONNECTING...";
+        }
+    }
 }
 
 function makePrediction(history, targetIssue) {
     document.getElementById('period').innerText = targetIssue.slice(-4);
     
-    // --- MICKEY-X VOLATILITY LOGIC ---
+    // 1. DATA PROCESSING
     let bigC=0, smallC=0, redC=0, greenC=0;
     let counts = {};
 
@@ -240,24 +243,18 @@ function makePrediction(history, targetIssue) {
         counts[n] = (counts[n] || 0) + 1;
     });
 
-    // 1. Calculate Load
     let bigLoad = (bigC/history.length)*100;
     let redLoad = (redC/history.length)*100;
 
-    // 2. Calculate Streak Pressure (Real Pressure)
-    // How many times did the last result repeat?
+    // 2. PRESSURE
     let streak = 1;
     let lastRes = parseInt(history[0].number) >= 5 ? "BIG" : "SMALL";
     for(let i=1; i<history.length; i++) {
         let curr = parseInt(history[i].number) >= 5 ? "BIG" : "SMALL";
         if(curr === lastRes) streak++; else break;
     }
+    let sizePressure = Math.abs(bigLoad - 50) + (streak * 10);
     
-    // Pressure Score (0-100)
-    // High Load + High Streak = High Pressure (Trap Break imminent)
-    let sizePressure = Math.abs(bigLoad - 50) + (streak * 5);
-    
-    // Same for Color
     let streakCol = 1;
     let lastCol = (parseInt(history[0].number)%2===1 || parseInt(history[0].number)===5) ? "GREEN" : "RED";
     for(let i=1; i<history.length; i++) {
@@ -265,95 +262,72 @@ function makePrediction(history, targetIssue) {
         let curr = (n%2===1 || n===5) ? "GREEN" : "RED";
         if(curr === lastCol) streakCol++; else break;
     }
-    let colPressure = Math.abs(redLoad - 50) + (streakCol * 5);
+    let colPressure = Math.abs(redLoad - 50) + (streakCol * 10);
 
+    // 3. LOGIC
     let mode = "", pick = "", logic = "", thought = "";
     let activeNodeID = "";
     let finalPressure = 0;
 
     if (level === 2) {
-        // L2: AGGRESSIVE TREND FOLLOW
-        if (sizePressure >= colPressure) {
-            mode = "SIZE"; pick = lastRes;
-        } else {
-            mode = "COLOR"; pick = lastCol;
-        }
-        logic = "L2 SURESHOT";
-        thought = `L1 Failed. Trap was false. Following the Streak (Trend) on ${mode} (${pick}).`;
+        if (sizePressure >= colPressure) { mode = "SIZE"; pick = lastRes; }
+        else { mode = "COLOR"; pick = lastCol; }
+        logic = "L2 RECOVERY";
+        thought = `L1 Missed. Following Trend on ${mode}.`;
         activeNodeID = "node-l2";
-        finalPressure = 0; // Reset bar for Trend
-        
         document.getElementById('lvlDisplay').innerText = "⚠️ L2 ACTIVE";
         document.getElementById('lvlDisplay').style.color = "var(--red)";
     } 
     else {
-        // L1: FIXER (Threshold Logic)
+        // L1 FIXER
         if (sizePressure >= colPressure) {
             mode = "SIZE"; activeNodeID = "node-size";
-            finalPressure = Math.min(sizePressure * 2, 100);
-            
-            // If Pressure > 50 -> Trap Break (Bet Opposite)
-            // If Pressure < 50 -> Trend Follow (Bet Same)
+            finalPressure = Math.min(sizePressure, 100);
             if(finalPressure > 50) {
-                pick = bigLoad > 50 ? "SMALL" : "BIG";
-                logic = "TRAP BREAK";
-                thought = `Size Pressure High (${finalPressure}%). Predicting Reversal to ${pick}.`;
+                pick = bigLoad > 50 ? "SMALL" : "BIG"; logic = "TRAP BREAK";
             } else {
-                pick = lastRes;
-                logic = "TREND RIDE";
-                thought = `Size Pressure Low. Riding the Trend with ${pick}.`;
+                pick = lastRes; logic = "TREND RIDE";
             }
-
         } else {
             mode = "COLOR"; activeNodeID = "node-color";
-            finalPressure = Math.min(colPressure * 2, 100);
-
+            finalPressure = Math.min(colPressure, 100);
             if(finalPressure > 50) {
-                pick = redLoad > 50 ? "GREEN" : "RED";
-                logic = "TRAP BREAK";
-                thought = `Color Pressure High (${finalPressure}%). Predicting Reversal to ${pick}.`;
+                pick = redLoad > 50 ? "GREEN" : "RED"; logic = "TRAP BREAK";
             } else {
-                pick = lastCol;
-                logic = "TREND RIDE";
-                thought = `Color Pressure Low. Riding the Trend with ${pick}.`;
+                pick = lastCol; logic = "TREND RIDE";
             }
         }
-        
+        thought = `${mode} Pressure ${finalPressure}%. Action: ${logic}.`;
         document.getElementById('lvlDisplay').innerText = "L1 FIXER";
-        document.getElementById('lvlDisplay').style.color = "var(--mickey-green)";
+        document.getElementById('lvlDisplay').style.color = "var(--green)";
     }
 
-    // --- NUMBERS ---
-    let possibleNums = [];
-    if(pick === "BIG") possibleNums = [5,6,7,8,9];
-    else if(pick === "SMALL") possibleNums = [0,1,2,3,4];
-    else if(pick === "GREEN") possibleNums = [1,3,7,9,5];
-    else if(pick === "RED") possibleNums = [2,4,6,8,0];
-
-    let topNums = possibleNums.sort((a,b) => (counts[b]||0) - (counts[a]||0)).slice(0, 2);
-    if(!topNums[0]) topNums = [possibleNums[0], possibleNums[1]];
-
-    // --- UI UPDATE ---
+    // 4. UI
     let card = document.getElementById('mainCard');
     card.className = "card glow-active";
-
     document.getElementById('bestMode').innerText = mode;
-    // Pressure Bar Logic: Left (Trend) vs Right (Trap)
-    // If logic is Trap Break -> Fill goes Right. If Trend -> Fill goes Left/Middle.
+    
     let barWidth = logic === "TRAP BREAK" ? (50 + (finalPressure/2)) : (50 - (finalPressure/2));
     document.getElementById('pressureFill').style.width = barWidth + "%";
     document.getElementById('trapPressure').innerText = finalPressure + "%";
     
     document.getElementById('stratName').innerText = logic;
     document.getElementById('predDisplay').innerText = pick;
-    document.getElementById('predDisplay').style.color = pick==="BIG"||pick==="RED" ? "var(--red)" : "var(--mickey-green)";
-    if(pick==="BIG"||pick==="SMALL") document.getElementById('predDisplay').style.color = pick==="BIG"?"var(--gold)":"var(--mickey-green)";
+    document.getElementById('predDisplay').style.color = (pick==="BIG"||pick==="RED") ? "var(--red)" : "var(--green)";
+    if(pick==="BIG"||pick==="SMALL") document.getElementById('predDisplay').style.color = pick==="BIG"?"var(--gold)":"var(--green)";
 
     document.getElementById('realThought').innerText = thought;
     document.getElementById('nextMove').innerText = level === 2 ? "HIGH BET" : "NORMAL";
 
-    let jBox = document.getElementById('jackpotBox');
-    jBox.innerHTML = `<div class="j-num">${topNums[0]}</div><div class="j-num">${topNums[1]}</div>`;
+    let possibleNums = [];
+    if(pick === "BIG") possibleNums = [5,6,7,8,9];
+    else if(pick === "SMALL") possibleNums = [0,1,2,3,4];
+    else if(pick === "GREEN") possibleNums = [1,3,7,9,5];
+    else if(pick === "RED") possibleNums = [2,4,6,8,0];
+    let topNums = possibleNums.sort((a,b) => (counts[b]||0) - (counts[a]||0)).slice(0, 2);
+    if(!topNums[0]) topNums = [possibleNums[0], possibleNums[1]];
+
+    document.getElementById('jackpotBox').innerHTML = `<div class="j-num">${topNums[0]}</div><div class="j-num">${topNums[1]}</div>`;
 
     updateActiveNode(activeNodeID);
     currentBet = { issue: targetIssue, pick: pick, mode: mode, nums: topNums };
@@ -385,11 +359,23 @@ function checkResult(result) {
     addLog(result.issueNumber, (currentBet.mode==="SIZE"?sRes:cRes), win);
 }
 
+function updateStats() {
+    document.getElementById('totalWin').innerText = wins;
+    document.getElementById('totalLoss').innerText = losses;
+    document.getElementById('jackpotHit').innerText = jackpots;
+    let totalBets = wins + losses + l2Wins;
+    let acc = totalBets > 0 ? Math.round(((wins+l2Wins)/totalBets)*100) : 100;
+    document.getElementById('statAcc').innerText = acc + "%";
+}
+
 function updateActiveNode(activeId) {
     ['node-size', 'node-color', 'node-l2'].forEach(id => {
-        document.getElementById(id).className = "node-item";
-        document.getElementById('status-'+id.split('-')[1]).className = "node-status status-off";
-        document.getElementById('status-'+id.split('-')[1]).innerText = "STANDBY";
+        let el = document.getElementById(id);
+        if(el) {
+            el.className = "node-item";
+            document.getElementById('status-'+id.split('-')[1]).className = "node-status status-off";
+            document.getElementById('status-'+id.split('-')[1]).innerText = "STANDBY";
+        }
     });
     let el = document.getElementById(activeId);
     if(el) {
@@ -399,10 +385,20 @@ function updateActiveNode(activeId) {
     }
 }
 
-function updateStats() {
-    document.getElementById('totalWin').innerText = wins;
-    document.getElementById('totalLoss').innerText = losses;
-    document.getElementById('jackpotHit').innerText = jackpots;
-    let totalBets = wins + losses + l2Wins;
-    let acc = totalBets > 0 ? Math.round(((wins+l2Wins)/totalBets)*100) : 100;
-    document.getEleme
+function addLog(issue, res, isWin) {
+    let div = document.createElement('div');
+    div.style.padding = "6px 0"; div.style.borderBottom = "1px solid #222"; div.style.display = "flex"; div.style.justifyContent = "space-between";
+    div.style.color = isWin ? "var(--green)" : "var(--red)";
+    div.innerHTML = `<span>#${issue.slice(-4)}</span><span>[${res}]</span><span>${isWin ? "WIN" : "LOSS"}</span>`;
+    document.getElementById('logContainer').prepend(div);
+}
+
+setInterval(syncData, 1000); // FASTER SYNC
+setInterval(() => {
+    let rem = 60 - new Date().getSeconds();
+    document.getElementById('timer').innerText = "00:" + (rem < 10 ? "0" + rem : rem);
+}, 1000);
+syncData();
+</script>
+</body>
+</html>
