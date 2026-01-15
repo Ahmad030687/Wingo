@@ -3,49 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OMNI-X V.16 PURE SNIPER</title>
+    <title>OMNI-X CHAMELEON v17</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --neon-red: #ff0033; /* V.13.5 Aggressive Theme */
-            --neon-white: #ffffff;
-            --dark-bg: #000000;
-            --green: #00ff41;
+            --neon-green: #00ff41;
+            --neon-red: #ff0033;
+            --neon-blue: #00f3ff;
             --gold: #ffd700;
+            --dark-bg: #050505;
+            --card-bg: #0a0a0a;
         }
 
         * { margin:0; padding:0; box-sizing:border-box; font-family: 'Rajdhani', sans-serif; user-select:none; }
         body { background: var(--dark-bg); color: #fff; min-height: 100vh; overflow-x: hidden; padding-bottom: 80px; }
 
-        .header { width:100%; padding:15px; border-bottom:2px solid var(--neon-red); background:#000; display:flex; justify-content:space-between; align-items:center; position: sticky; top:0; z-index:1000; }
-        .ping-box { font-size: 10px; color: var(--green); border: 1px solid var(--green); padding: 3px 8px; border-radius: 4px; font-family: 'Orbitron'; }
+        .header { width:100%; padding:15px; border-bottom:2px solid #333; background:#000; display:flex; justify-content:space-between; align-items:center; position: sticky; top:0; z-index:1000; }
+        .ping-box { font-size: 10px; border: 1px solid #555; padding: 3px 8px; border-radius: 4px; font-family: 'Orbitron'; }
 
         /* HUD */
         .mickey-hud { width:95%; margin:15px auto; display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
-        .meter-card { background:rgba(20,0,0,0.95); border:1px solid #333; padding:12px; border-radius:8px; border-left: 3px solid var(--neon-red); }
+        .meter-card { background:rgba(20,20,20,0.95); border:1px solid #333; padding:12px; border-radius:8px; }
         .meter-label { font-size:9px; color:#aaa; text-transform:uppercase; letter-spacing: 1px; }
-        .meter-val { font-size:15px; color:#fff; font-weight:bold; font-family: 'Orbitron'; margin-top: 4px; }
+        .meter-val { font-size:14px; color:#fff; font-weight:bold; font-family: 'Orbitron'; margin-top: 4px; }
 
-        /* MAIN CARD */
-        .card { width:95%; margin:10px auto; border:2px solid var(--neon-red); padding:25px; text-align:center; position:relative; background: linear-gradient(180deg, #1a0005 0%, #000000 100%); box-shadow:0 0 50px rgba(255, 0, 51, 0.3); border-radius:16px; }
+        /* MAIN PREDICTION CARD */
+        .card { width:95%; margin:10px auto; border:2px solid #333; padding:25px; text-align:center; position:relative; background: var(--card-bg); box-shadow:0 0 30px rgba(0,0,0,0.5); border-radius:16px; transition: 0.5s all; }
+        
+        .mode-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #333; padding: 5px 15px; border-radius: 20px; font-size: 10px; font-weight: bold; border: 1px solid #555; box-shadow: 0 5px 15px #000; }
+
         .period-info { display:flex; justify-content:space-between; font-size:13px; font-family:'Orbitron'; color:var(--gold); border-bottom:1px solid #333; padding-bottom:12px; }
-        .timer-display { font-size: 28px; color: #fff; font-weight: 900; margin-top: 10px; font-family: 'Orbitron'; letter-spacing: 2px; }
-        .prediction { font-size:90px; font-weight:900; margin:15px 0; font-family:'Orbitron'; letter-spacing:-4px; text-shadow: 0 0 30px var(--neon-red); }
-        .real-thought { font-size:11px; color:var(--neon-white); border:1px dashed #555; padding:10px; display:block; margin-top:15px; background:rgba(255,255,255,0.05); }
+        .timer-display { font-size: 28px; color: #fff; font-weight: 900; margin-top: 15px; font-family: 'Orbitron'; letter-spacing: 2px; }
+        
+        .prediction { font-size:60px; font-weight:900; margin:10px 0; font-family:'Orbitron'; letter-spacing:-2px; text-transform: uppercase; }
+        
+        .accuracy-bars { margin-top: 15px; }
+        .bar-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; font-size: 10px; }
+        .bar-track { width: 70%; height: 6px; background: #222; border-radius: 3px; overflow: hidden; }
+        .bar-fill { height: 100%; width: 0%; transition: 1s width; }
 
-        /* VISUALIZER */
-        .pattern-vis { display:flex; justify-content:center; gap:5px; margin-top:10px; font-family:'Orbitron'; font-size:12px; }
-        .p-box { padding:2px 8px; border-radius:3px; background:#222; border:1px solid #444; }
+        /* COLORS FOR DYNAMIC UI */
+        .glow-red { border-color: var(--neon-red); box-shadow: 0 0 30px rgba(255, 0, 51, 0.2); }
+        .glow-green { border-color: var(--neon-green); box-shadow: 0 0 30px rgba(0, 255, 65, 0.2); }
+        .glow-blue { border-color: var(--neon-blue); box-shadow: 0 0 30px rgba(0, 243, 255, 0.2); }
+        .glow-gold { border-color: var(--gold); box-shadow: 0 0 30px rgba(255, 215, 0, 0.2); }
 
         .stats-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; width:95%; margin:15px auto; }
-        .s-box { background:#0a0a0a; border:1px solid #333; padding:12px 5px; text-align:center; border-radius:8px; border-bottom: 2px solid var(--neon-red); }
+        .s-box { background:#0a0a0a; border:1px solid #333; padding:12px 5px; text-align:center; border-radius:8px; }
         .s-val { font-size:16px; font-weight:bold; font-family: 'Orbitron'; }
-        .s-lbl { font-size:8px; color: var(--gold); }
+        .s-lbl { font-size:8px; color: #888; }
 
-        .nav { position:fixed; bottom:0; left:0; width:100%; background:rgba(0,0,0,0.95); border-top:2px solid var(--neon-red); padding:12px 0; display:flex; justify-content:space-around; z-index:1000; }
+        .nav { position:fixed; bottom:0; left:0; width:100%; background:rgba(0,0,0,0.95); border-top:1px solid #333; padding:12px 0; display:flex; justify-content:space-around; z-index:1000; }
         .nav-btn { background:none; border:none; color:#555; font-size:10px; font-weight:bold; cursor:pointer; display:flex; flex-direction:column; align-items:center; }
-        .nav-btn.active { color:var(--neon-red); transform: scale(1.1); }
+        .nav-btn.active { color:#fff; transform: scale(1.1); }
 
         .page { display:none; width:100%; flex-direction:column; }
         #page-terminal { display: flex; }
@@ -56,30 +67,43 @@
 <div class="header">
     <div style="line-height:1.2">
         <div style="font-size:18px; font-weight:900; font-family:'Orbitron'; color:#fff;">OMNI-X</div>
-        <div style="font-size:9px; color:var(--neon-red); font-weight: bold;">PURE SNIPER V.16</div>
+        <div style="font-size:9px; color:#aaa; font-weight: bold;">CHAMELEON V.17</div>
     </div>
-    <div class="ping-box">API LIMIT: 10</div>
+    <div class="ping-box">AUTO-SWITCH</div>
 </div>
 
 <div class="mickey-hud">
-    <div class="meter-card"><div class="meter-label">DETECTED PATTERN</div><div class="meter-val" id="patternType" style="color:var(--gold)">SCANNING</div></div>
-    <div class="meter-card"><div class="meter-label">ALGO LOGIC</div><div class="meter-val" id="stratName" style="color:var(--neon-red)">PURE V.13.5</div></div>
-    <div class="meter-card"><div class="meter-label">L2 STATUS</div><div class="meter-val" id="l2Status" style="color:var(--green)">TREND FOLLOW</div></div>
-    <div class="meter-card"><div class="meter-label">NEXT MOVE</div><div class="meter-val" id="nextMove">WAITING</div></div>
+    <div class="meter-card"><div class="meter-label">ACTIVE MODE</div><div class="meter-val" id="activeMode">SCANNING</div></div>
+    <div class="meter-card"><div class="meter-label">MODE ACCURACY</div><div class="meter-val" id="modeAcc">0%</div></div>
+    <div class="meter-card"><div class="meter-label">COLOR TREND</div><div class="meter-val" id="colTrend">...</div></div>
+    <div class="meter-card"><div class="meter-label">SIZE TREND</div><div class="meter-val" id="sizeTrend">...</div></div>
 </div>
 
 <div id="page-terminal" class="page">
-    <div class="card">
+    <div class="card" id="mainCard">
+        <div class="mode-badge" id="badgeText">ANALYZING ACCURACY</div>
+
         <div class="period-info">
             <span>PERIOD: <b id="period">....</b></span>
-            <span id="lvlDisplay" style="color:var(--gold)">L1 ACTIVE</span>
+            <span id="lvlDisplay">L1 SNIPER</span>
         </div>
         
-        <div class="pattern-vis" id="visBox"></div>
-
         <div class="timer-display" id="timer">00:00</div>
+        
         <div class="prediction" id="predDisplay">...</div>
-        <div class="real-thought" id="realThought">SYSTEM: RESTORING V.13.5 PATTERN LOGIC...</div>
+        
+        <div class="accuracy-bars">
+            <div class="bar-row">
+                <span>COLOR ACC:</span>
+                <div class="bar-track"><div class="bar-fill" id="colBar" style="background:var(--neon-green)"></div></div>
+                <span id="colPct">0%</span>
+            </div>
+            <div class="bar-row">
+                <span>SIZE ACC:</span>
+                <div class="bar-track"><div class="bar-fill" id="sizeBar" style="background:var(--neon-blue)"></div></div>
+                <span id="sizePct">0%</span>
+            </div>
+        </div>
     </div>
 
     <div class="stats-grid">
@@ -92,20 +116,20 @@
 
 <div id="page-logs" class="page">
     <div style="width:95%; margin:10px auto; background:#0a0a0a; border:1px solid #222; padding:15px; border-radius:10px;">
-        <h4 style="font-size:11px; color:var(--neon-red); margin-bottom:10px; font-family:'Orbitron'; text-align:center;">SNIPER LOGS</h4>
+        <h4 style="font-size:11px; color:#aaa; margin-bottom:10px; font-family:'Orbitron'; text-align:center;">SWITCH LOGS</h4>
         <div id="logContainer" style="font-size:11px; font-family:monospace; max-height:400px; overflow-y:auto;"></div>
     </div>
 </div>
 
 <div id="page-nodes" class="page">
     <div style="padding:20px; text-align:center; color:#888; font-size:12px;">
-        <h3 style="color:var(--neon-red); font-family:'Orbitron'">PURE PATTERN ENGINE (V.16)</h3>
-        <p>Restored the exact V.13.5 logic but optimized to work on 10 data points without using weighted averages.</p>
+        <h3 style="color:#fff; font-family:'Orbitron'">CHAMELEON ENGINE</h3>
+        <p>This engine runs two simulations in parallel. It calculates the win-rate of Color vs Size for the last 10 periods and switches to the winning side.</p>
         <br>
         <div style="text-align:left; border:1px solid #333; padding:10px; border-radius:5px;">
-            <span style="color:var(--green)">●</span> 3-Period Pattern Match<br>
-            <span style="color:var(--gold)">●</span> 1-2 & 2-1 Logic Active<br>
-            <span style="color:var(--red)">●</span> L2: Trend Follow Sureshot
+            <span style="color:var(--neon-green)">●</span> Color Mode: Red/Green Prediction<br>
+            <span style="color:var(--neon-blue)">●</span> Size Mode: Big/Small Prediction<br>
+            <span style="color:var(--gold)">●</span> Logic: Highest Accuracy Wins
         </div>
     </div>
 </div>
@@ -113,11 +137,11 @@
 <div id="page-profile" class="page">
     <div class="card" style="margin-top:40px;">
         <h2 style="font-family:'Orbitron'; font-size:20px;">AHMAD BOSS</h2>
-        <p style="color:var(--neon-red); font-size:11px;">PURE SNIPER</p>
+        <p style="color:#aaa; font-size:11px;">CHAMELEON USER</p>
         <div style="text-align:left; font-size:13px; margin-top:25px; line-height:2.5; border-top:1px solid #333;">
-            > VERSION: V.16.0<br>
-            > LOGIC: PURE V.13.5<br>
-            > API: 10 PERIOD OPTIMIZED
+            > VERSION: V.17.0<br>
+            > MODE: AUTO-SWITCH<br>
+            > STATUS: HUNTING BEST ODDS
         </div>
     </div>
 </div>
@@ -130,6 +154,7 @@
 </div>
 
 <script>
+// Using your specific API
 const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?ts=";
 let lastIssue = "", win = 0, l2Win = 0, total = 0, profit = 0, level = 1, activeBet = null;
 
@@ -143,104 +168,157 @@ async function syncData() {
             if (latest.issueNumber !== lastIssue) {
                 if (lastIssue !== "" && activeBet) checkResult(latest);
                 lastIssue = latest.issueNumber;
-                runPurePatternLogic(data.data.list);
+                runChameleonLogic(data.data.list);
             }
         }
     } catch(e) {}
 }
 
-function runPurePatternLogic(history) {
+function runChameleonLogic(history) {
     let nextNum = (BigInt(history[0].issueNumber) + 1n).toString().slice(-4);
     document.getElementById('period').innerText = nextNum;
 
-    // --- PURE V.13.5 LOGIC (No Weights) ---
-    // Combo: [h2, h1, h0] (Latest is h0)
-    let h0 = parseInt(history[0].number) >= 5 ? "B" : "S";
-    let h1 = parseInt(history[1].number) >= 5 ? "B" : "S";
-    let h2 = parseInt(history[2].number) >= 5 ? "B" : "S";
-    let h3 = parseInt(history[3].number) >= 5 ? "B" : "S";
+    // --- 1. SIMULATE & CALCULATE ACCURACY FOR BOTH MODES ---
+    let colAcc = calculateSimulatedAccuracy(history, "COLOR");
+    let sizeAcc = calculateSimulatedAccuracy(history, "SIZE");
 
-    // VISUALIZE
-    let visHTML = `<div class="p-box" style="color:${h2=='B'?'#0f0':'#f00'}">${h2}</div>` +
-                  `<div class="p-box" style="color:${h1=='B'?'#0f0':'#f00'}">${h1}</div>` +
-                  `<div class="p-box" style="color:${h0=='B'?'#0f0':'#f00'}">${h0}</div>` +
-                  `<span>➜ ?</span>`;
-    document.getElementById('visBox').innerHTML = visHTML;
+    // UI Updates for Bars
+    document.getElementById('colBar').style.width = colAcc + "%";
+    document.getElementById('sizeBar').style.width = sizeAcc + "%";
+    document.getElementById('colPct').innerText = colAcc + "%";
+    document.getElementById('sizePct').innerText = sizeAcc + "%";
 
-    // DETECT PATTERN (Visual Name)
-    let pName = "RANDOM";
-    if(h0===h1 && h1===h2) pName = "DRAGON 🐉";
-    else if(h0!==h1 && h1!==h2 && h2!==h3) pName = "ZIGZAG ⚡";
-    else if(h1===h0 && h2!==h1) pName = "1-2 CUT ✂️"; // S-B-B
-    else if(h1!==h0 && h2===h1) pName = "2-1 CUT ✂️"; // B-B-S
+    // --- 2. SELECT BEST MODE ---
+    let mode = "";
+    if (colAcc >= sizeAcc) mode = "COLOR";
+    else mode = "SIZE";
 
-    document.getElementById('patternType').innerText = pName;
+    // Force switch if one is performing really badly (<40%)
+    if(colAcc < 40 && sizeAcc > 40) mode = "SIZE";
+    if(sizeAcc < 40 && colAcc > 40) mode = "COLOR";
 
-    let pick, logic, thought;
+    let pick, cardClass, badgeText;
 
-    if (level === 2) {
-        // L2: TREND FOLLOW (Your favorite logic)
-        // Strictly follow the last result to catch the streak/breakout.
-        pick = h0;
-        logic = "L2 FOLLOW";
-        thought = `L2 SURESHOT: Market is breaking. Following the last result (${h0}) to capture the trend.`;
-        document.getElementById('lvlDisplay').innerText = "⚠️ L2 ACTIVE";
-        document.getElementById('lvlDisplay').style.color = "var(--neon-red)";
-    } else {
-        // L1: SHORT-RANGE PATTERN MATCH (V.13.5 Logic)
-        // Scan the available 10 periods for this specific 3-combo
-        let bCount = 0, sCount = 0;
+    if (mode === "COLOR") {
+        // COLOR PREDICTION LOGIC (Pattern Follow)
+        // Last Result
+        let lastN = parseInt(history[0].number);
+        let lastCol = (lastN===1||lastN===3||lastN===7||lastN===9||lastN===5) ? "GREEN" : "RED";
         
-        // Scan limited history
-        for(let i=1; i < history.length - 3; i++) {
-            let p0 = parseInt(history[i].number) >= 5 ? "B" : "S";
-            let p1 = parseInt(history[i+1].number) >= 5 ? "B" : "S";
-            let p2 = parseInt(history[i+2].number) >= 5 ? "B" : "S";
-            
-            // If pattern matches [p2, p1, p0] == [h2, h1, h0]
-            if(p0 === h0 && p1 === h1 && p2 === h2) {
-                let nextVal = parseInt(history[i-1].number) >= 5 ? "B" : "S";
-                if(nextVal === "B") bCount++; else sCount++;
-            }
-        }
+        // Simple Trend Follow for L1 Sureshot
+        pick = lastCol; 
+
+        // Inversion for L2
+        if(level === 2) pick = (lastCol==="GREEN"?"RED":"GREEN");
+
+        cardClass = pick === "RED" ? "glow-red" : "glow-green";
+        badgeText = "🎯 COLOR MODE ACTIVE";
         
-        // DECISION
-        if (bCount > sCount) { pick = "BIG"; logic = "PATTERN MATCH"; }
-        else if (sCount > bCount) { pick = "SMALL"; logic = "PATTERN MATCH"; }
-        else {
-            // If no match found in short history, default to Simple Trend (Last Result)
-            pick = h0; 
-            logic = "TREND FOLLOW";
-        }
-        
-        thought = `Pattern: ${pName}. Historical Match: ${Math.max(bCount, sCount)} counts. Prediction: ${pick}.`;
-        
-        document.getElementById('lvlDisplay').innerText = "L1 SNIPER";
-        document.getElementById('lvlDisplay').style.color = "var(--gold)";
+        document.getElementById('colTrend').innerText = "HOT 🔥";
+        document.getElementById('sizeTrend').innerText = "COLD ❄️";
+    } 
+    else {
+        // SIZE PREDICTION LOGIC (Pattern Follow)
+        let lastN = parseInt(history[0].number);
+        let lastSize = lastN >= 5 ? "BIG" : "SMALL";
+
+        // Simple Trend Follow
+        pick = lastSize;
+
+        // Inversion for L2
+        if(level === 2) pick = (lastSize==="BIG"?"SMALL":"BIG");
+
+        cardClass = pick === "BIG" ? "glow-gold" : "glow-blue";
+        badgeText = "🎯 SIZE MODE ACTIVE";
+
+        document.getElementById('colTrend').innerText = "COLD ❄️";
+        document.getElementById('sizeTrend').innerText = "HOT 🔥";
     }
 
-    document.getElementById('stratName').innerText = logic;
-    document.getElementById('predDisplay').innerText = pick;
-    document.getElementById('predDisplay').style.color = pick === "BIG" ? "var(--green)" : "var(--neon-red)";
-    document.getElementById('realThought').innerText = thought;
-    document.getElementById('nextMove').innerText = level === 2 ? "HIGH BET" : "NORMAL";
+    // Safety: If both accuracies are trash (<40%), SKIP
+    if(colAcc < 40 && sizeAcc < 40 && level === 1) {
+        pick = "SKIP";
+        cardClass = "";
+        badgeText = "⚠️ MARKET UNSTABLE";
+    }
+
+    // DISPLAY UPDATE
+    let card = document.getElementById('mainCard');
+    card.className = "card " + cardClass;
     
-    activeBet = { pick: pick, level: level };
+    document.getElementById('badgeText').innerText = badgeText;
+    document.getElementById('activeMode').innerText = mode;
+    document.getElementById('activeMode').style.color = mode==="COLOR"?"var(--neon-green)":"var(--neon-blue)";
+    document.getElementById('modeAcc').innerText = (mode==="COLOR"?colAcc:sizeAcc) + "%";
+
+    let predText = document.getElementById('predDisplay');
+    predText.innerText = pick;
+    
+    // Coloring the text
+    if(pick==="RED") predText.style.color = "var(--neon-red)";
+    else if(pick==="GREEN") predText.style.color = "var(--neon-green)";
+    else if(pick==="BIG") predText.style.color = "var(--gold)";
+    else if(pick==="SMALL") predText.style.color = "var(--neon-blue)";
+    else predText.style.color = "#888";
+
+    if(level === 2) {
+        document.getElementById('lvlDisplay').innerText = "⚠️ L2 RECOVERY";
+        document.getElementById('lvlDisplay').style.color = "var(--neon-red)";
+    } else {
+        document.getElementById('lvlDisplay').innerText = "L1 SNIPER";
+        document.getElementById('lvlDisplay').style.color = "#fff";
+    }
+
+    activeBet = { pick: pick, mode: mode, level: level };
+}
+
+// SIMULATION ENGINE (To check accuracy of past 10 periods)
+function calculateSimulatedAccuracy(history, type) {
+    let wins = 0;
+    // Check last 10 periods logic
+    // Logic Used: "Follow Last" (Trend)
+    for(let i=0; i<history.length-1 && i<10; i++) {
+        let currN = parseInt(history[i].number);
+        let prevN = parseInt(history[i+1].number);
+        
+        if(type === "SIZE") {
+            let curr = currN >= 5 ? "BIG" : "SMALL";
+            let prev = prevN >= 5 ? "BIG" : "SMALL";
+            // Algorithm Prediction was: Follow Prev
+            if(curr === prev) wins++;
+        } 
+        else if(type === "COLOR") {
+            let curr = (currN%2===1 || currN===5) ? "GREEN" : "RED"; // Simplified
+            let prev = (prevN%2===1 || prevN===5) ? "GREEN" : "RED";
+            if(curr === prev) wins++;
+        }
+    }
+    return wins * 10; // e.g. 7 wins = 70%
 }
 
 function checkResult(actual) {
-    if(!activeBet) return;
-    let res = parseInt(actual.number) >= 5 ? "BIG" : "SMALL";
-    let isWin = (res === activeBet.pick); total++;
+    if(!activeBet || activeBet.pick === "SKIP") return;
+    
+    let num = parseInt(actual.number);
+    let sizeRes = num >= 5 ? "BIG" : "SMALL";
+    let colRes = (num===1||num===3||num===7||num===9||num===5) ? "GREEN" : "RED"; 
+    // Note: 0 and 5 often violet, treating as Red/Green for simplicity as per standard parity
+    if(num===0) colRes = "RED";
+    if(num===5) colRes = "GREEN";
 
-    if (isWin) {
-        if (level === 1) win++; else { l2Win++; confetti({particleCount: 200, origin:{y:0.7}, colors:['#ff0033', '#ffd700']}); }
+    let win = false;
+    if(activeBet.mode === "SIZE" && activeBet.pick === sizeRes) win = true;
+    if(activeBet.mode === "COLOR" && activeBet.pick === colRes) win = true;
+
+    total++;
+    if (win) {
+        if (level === 1) win++; else { l2Win++; confetti({particleCount: 200}); }
         profit += (level === 1 ? 100 : 300); level = 1;
     } else {
         level = level === 1 ? 2 : 1; 
     }
     updateStats();
-    addLog(actual.issueNumber, res, isWin);
+    addLog(actual.issueNumber, (activeBet.mode==="SIZE"?sizeRes:colRes), win);
 }
 
 function updateStats() {
@@ -253,7 +331,7 @@ function updateStats() {
 function addLog(issue, res, isWin) {
     let div = document.createElement('div');
     div.style.padding = "6px 0"; div.style.borderBottom = "1px solid #222"; div.style.display = "flex"; div.style.justifyContent = "space-between";
-    div.style.color = isWin ? "var(--green)" : "var(--neon-red)";
+    div.style.color = isWin ? "var(--neon-green)" : "var(--neon-red)";
     div.innerHTML = `<span>#${issue.slice(-4)}</span><span>[${res}]</span><span>${isWin ? "WIN" : "LOSS"}</span>`;
     document.getElementById('logContainer').prepend(div);
 }
@@ -269,8 +347,6 @@ setInterval(syncData, 2000);
 setInterval(() => {
     let rem = 60 - new Date().getSeconds();
     document.getElementById('timer').innerText = "00:" + (rem < 10 ? "0" + rem : rem);
-    if(rem <= 5) document.getElementById('timer').style.color = "var(--neon-red)";
-    else document.getElementById('timer').style.color = "#fff";
 }, 1000);
 syncData();
 </script>
