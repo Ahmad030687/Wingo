@@ -3,54 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OMNI-X V.23 ULTIMATE FIXER</title>
+    <title>OMNI-X V.24 REAL FIXER</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --neon-green: #00ff00;
             --neon-red: #ff0000;
-            --neon-blue: #00f3ff;
+            --neon-cyan: #00f3ff;
             --gold: #ffd700;
-            --dark-bg: #050505;
-            --panel-bg: #0a0a0a;
+            --dark-bg: #000000;
+            --panel-bg: #080808;
         }
 
         * { margin:0; padding:0; box-sizing:border-box; font-family: 'Rajdhani', sans-serif; user-select:none; }
         body { background: var(--dark-bg); color: #fff; min-height: 100vh; overflow-x: hidden; padding-bottom: 80px; }
 
         /* HEADER */
-        .header { width:100%; padding:15px; border-bottom:2px solid var(--neon-green); background:#000; display:flex; justify-content:space-between; align-items:center; position: sticky; top:0; z-index:1000; }
+        .header { width:100%; padding:15px; border-bottom:1px solid var(--neon-green); background:#000; display:flex; justify-content:space-between; align-items:center; position: sticky; top:0; z-index:1000; box-shadow: 0 5px 15px rgba(0,255,0,0.1); }
         .ping-box { font-size: 10px; color: var(--neon-green); border: 1px solid var(--neon-green); padding: 3px 8px; border-radius: 4px; font-family: 'Orbitron'; }
 
         /* HUD */
         .mickey-hud { width:95%; margin:15px auto; display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
-        .meter-card { background:rgba(20,20,20,0.95); border:1px solid #333; padding:12px; border-radius:8px; border-left: 3px solid var(--neon-green); }
+        .meter-card { background:#111; border:1px solid #333; padding:12px; border-radius:8px; border-left: 3px solid var(--neon-green); }
         .meter-label { font-size:9px; color:#aaa; text-transform:uppercase; letter-spacing: 1px; }
         .meter-val { font-size:14px; color:#fff; font-weight:bold; font-family: 'Orbitron'; margin-top: 4px; }
 
-        /* TERMINAL CARD */
-        .card { width:95%; margin:10px auto; border:2px solid #333; padding:25px; text-align:center; position:relative; background: var(--panel-bg); box-shadow:0 0 40px rgba(0,255,0,0.1); border-radius:16px; transition:0.3s; }
-        .glow-green { border-color: var(--neon-green); box-shadow: 0 0 30px rgba(0, 255, 0, 0.2); }
-        .glow-red { border-color: var(--neon-red); box-shadow: 0 0 30px rgba(255, 0, 0, 0.2); }
+        /* MAIN CARD */
+        .card { width:95%; margin:10px auto; border:2px solid #333; padding:25px; text-align:center; position:relative; background: var(--panel-bg); box-shadow:0 0 30px rgba(0,0,0,0.5); border-radius:16px; transition:0.3s; }
+        .glow-green { border-color: var(--neon-green); box-shadow: 0 0 40px rgba(0, 255, 0, 0.2); }
+        .glow-red { border-color: var(--neon-red); box-shadow: 0 0 40px rgba(255, 0, 0, 0.2); }
 
-        .period-info { display:flex; justify-content:space-between; font-size:13px; font-family:'Orbitron'; color:var(--neon-green); border-bottom:1px solid #333; padding-bottom:12px; }
+        .period-info { display:flex; justify-content:space-between; font-size:13px; font-family:'Orbitron'; color:var(--neon-cyan); border-bottom:1px solid #333; padding-bottom:12px; }
         .timer-display { font-size: 28px; color: #fff; font-weight: 900; margin-top: 15px; font-family: 'Orbitron'; letter-spacing: 2px; }
         .prediction { font-size:60px; font-weight:900; margin:10px 0; font-family:'Orbitron'; letter-spacing:-2px; text-transform: uppercase; }
         
-        /* JACKPOT NUMBERS STYLE (FIXED) */
-        .jackpot-container { margin: 15px 0; padding: 10px; background: rgba(0,255,0,0.05); border-radius: 8px; border: 1px dashed #333; }
-        .jackpot-title { font-size: 9px; color: #888; letter-spacing: 2px; margin-bottom: 8px; }
+        /* JACKPOT NUMBERS */
+        .jackpot-container { margin: 15px 0; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px; border: 1px dashed #333; }
+        .jackpot-title { font-size: 9px; color: #666; letter-spacing: 2px; margin-bottom: 8px; }
         .jackpot-box { display:flex; justify-content:center; gap:15px; }
-        .j-num { width:45px; height:45px; background:#000; border:2px solid var(--neon-green); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:bold; color:var(--neon-green); box-shadow: 0 0 15px rgba(0,255,0,0.2); animation: popIn 0.5s ease; }
-        
-        @keyframes popIn { 0%{transform:scale(0)} 80%{transform:scale(1.2)} 100%{transform:scale(1)} }
+        .j-num { width:45px; height:45px; background:#000; border:2px solid var(--neon-green); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:bold; color:var(--neon-green); box-shadow: 0 0 15px rgba(0,255,0,0.2); }
 
-        .real-thought { font-size:11px; color:#fff; border:1px dashed #444; padding:10px; display:block; margin-top:15px; background:rgba(255,255,255,0.05); }
+        .real-thought { font-size:11px; color:#fff; border-top:1px solid #333; padding-top:10px; margin-top:15px; font-family: monospace; color: var(--neon-green); }
 
-        /* STATS GRID (FIXED FOR WIN/LOSS/JACKPOT) */
+        /* STATS GRID */
         .stats-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; width:95%; margin:15px auto; }
-        .s-box { background:#0a0a0a; border:1px solid #333; padding:12px 2px; text-align:center; border-radius:8px; }
+        .s-box { background:#111; border:1px solid #333; padding:12px 2px; text-align:center; border-radius:8px; }
         .s-val { font-size:16px; font-weight:bold; font-family: 'Orbitron'; }
         .s-lbl { font-size:8px; color: #888; margin-top: 3px; }
         
@@ -83,14 +81,14 @@
 <div class="header">
     <div style="line-height:1.2">
         <div style="font-size:18px; font-weight:900; font-family:'Orbitron'; color:#fff;">OMNI-X</div>
-        <div style="font-size:9px; color:var(--neon-green); font-weight: bold;">ULTIMATE FIXER V.23</div>
+        <div style="font-size:9px; color:var(--neon-green); font-weight: bold;">REAL FIXER V.24</div>
     </div>
-    <div class="ping-box">L1 GOD MODE</div>
+    <div class="ping-box">L1 STABLE</div>
 </div>
 
 <div id="page-terminal" class="page">
     <div class="mickey-hud">
-        <div class="meter-card"><div class="meter-label">BEST SIGNAL</div><div class="meter-val" id="bestMode" style="color:var(--neon-blue)">SCANNING</div></div>
+        <div class="meter-card"><div class="meter-label">BEST SIGNAL</div><div class="meter-val" id="bestMode" style="color:var(--neon-cyan)">SCANNING</div></div>
         <div class="meter-card"><div class="meter-label">TRAP PRESSURE</div><div class="meter-val" id="trapPressure">0%</div></div>
         <div class="meter-card"><div class="meter-label">ACTIVE NODE</div><div class="meter-val" id="stratName" style="color:var(--gold)">AUTO</div></div>
         <div class="meter-card"><div class="meter-label">NEXT MOVE</div><div class="meter-val" id="nextMove">WAITING</div></div>
@@ -113,7 +111,7 @@
             </div>
         </div>
 
-        <div class="real-thought" id="realThought">SYSTEM: ANALYZING PRESSURE & FREQUENCY...</div>
+        <div class="real-thought" id="realThought">SYSTEM: WAITING FOR API...</div>
     </div>
 
     <div class="stats-grid">
@@ -174,12 +172,12 @@
 <div id="page-profile" class="page">
     <div class="card" style="margin-top:40px;">
         <h2 style="font-family:'Orbitron'; font-size:20px;">AHMAD BOSS</h2>
-        <p style="color:#aaa; font-size:11px;">ULTIMATE USER</p>
+        <p style="color:#aaa; font-size:11px;">REAL FIXER USER</p>
         <div style="text-align:left; font-size:13px; margin-top:25px; line-height:2.5; border-top:1px solid #333;">
-            > VERSION: V.23.0<br>
-            > STATS: W/L/J/ACC<br>
-            > LOGIC: L1 FIXER<br>
-            > STATUS: GOD MODE
+            > VERSION: V.24.0<br>
+            > BUG FIX: LOSS LOOP REMOVED<br>
+            > LOGIC: STRICT L1 FIXER<br>
+            > STATUS: STABLE
         </div>
     </div>
 </div>
@@ -193,7 +191,9 @@
 
 <script>
 const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?ts=";
-let lastIssue = "", wins = 0, losses = 0, jackpots = 0, total = 0, level = 1, activeBet = null;
+let currentBet = null; // Stores { issue: "123", pick: "BIG", ... }
+let wins = 0, losses = 0, jackpots = 0, l2Wins = 0;
+let level = 1;
 
 async function syncData() {
     try {
@@ -201,45 +201,51 @@ async function syncData() {
         const data = await response.json();
         
         if (data?.data?.list?.length > 0) {
-            const latest = data.data.list[0];
-            if (latest.issueNumber !== lastIssue) {
-                if (lastIssue !== "" && activeBet) checkResult(latest);
-                lastIssue = latest.issueNumber;
-                runUniversalLogic(data.data.list);
+            let history = data.data.list;
+            let latestResult = history[0];
+            
+            // 1. CHECK IF WE HAVE A PENDING BET FOR THIS RESULT
+            if (currentBet && currentBet.issue === latestResult.issueNumber) {
+                checkResult(latestResult);
+                currentBet = null; // Clear bet after checking
+            }
+
+            // 2. MAKE NEW BET IF NO ACTIVE BET
+            // We bet on the NEXT period (Latest + 1)
+            let nextIssue = (BigInt(latestResult.issueNumber) + 1n).toString();
+            
+            // Avoid making duplicate bets for same issue
+            if (!currentBet || currentBet.issue !== nextIssue) {
+                makePrediction(history, nextIssue);
             }
         }
     } catch(e) {}
 }
 
-function runUniversalLogic(history) {
-    let nextNum = (BigInt(history[0].issueNumber) + 1n).toString().slice(-4);
-    document.getElementById('period').innerText = nextNum;
-
-    // --- 1. ANALYZE LOAD & FREQUENCY ---
+function makePrediction(history, targetIssue) {
+    document.getElementById('period').innerText = targetIssue.slice(-4);
+    
+    // --- L1 FIXER LOGIC (UNIVERSAL TRAP) ---
     let bigC=0, smallC=0, redC=0, greenC=0;
     let counts = {};
 
     history.forEach(h => {
         let n = parseInt(h.number);
-        // Size
         if(n>=5) bigC++; else smallC++;
-        // Color
         if(n%2===1||n===5) greenC++; else redC++;
         if(n===0) redC++; if(n===5) greenC++;
-        // Count for Jackpot
         counts[n] = (counts[n] || 0) + 1;
     });
 
     let bigLoad = (bigC/history.length)*100;
     let redLoad = (redC/history.length)*100;
-
     let sizePressure = Math.abs(bigLoad - 50);
     let colPressure = Math.abs(redLoad - 50);
 
     let mode = "", pick = "", logic = "", thought = "";
     let activeNodeID = "";
 
-    // --- 2. PREDICTION LOGIC ---
+    // -- DECISION TREE --
     if (level === 2) {
         // L2: TREND FOLLOW
         let lastN = parseInt(history[0].number);
@@ -252,60 +258,54 @@ function runUniversalLogic(history) {
             if(lastN===0) pick="RED";
         }
         logic = "L2 RECOVERY";
-        thought = `L1 Failed. Trap logic broke. Switching to Trend Follow on ${mode} (${pick}).`;
+        thought = `L1 Failed. Recovery Mode: Trend Follow on ${mode} (${pick}).`;
         activeNodeID = "node-l2";
-        
         document.getElementById('lvlDisplay').innerText = "⚠️ L2 RECOVERY";
         document.getElementById('lvlDisplay').style.color = "var(--neon-red)";
     } 
     else {
-        // L1: TRAP FIXER
-        // Choose mode with highest pressure
+        // L1: TRAP FIXER (STRICT)
         if (sizePressure >= colPressure) {
             mode = "SIZE";
             activeNodeID = "node-size";
-            // If Big is Overloaded (>50%), Bet SMALL. Else BIG.
-            pick = bigLoad > 50 ? "SMALL" : "BIG";
+            pick = bigLoad > 50 ? "SMALL" : "BIG"; // Trap Break
             logic = "SIZE TRAP";
-            thought = `Size Market Overloaded (${bigLoad > 50 ? 'BIG' : 'SMALL'}). Reversal Target: ${pick}.`;
+            thought = `Size Overload (${bigLoad > 50 ? 'BIG' : 'SMALL'}). Reversal Target: ${pick}.`;
         } else {
             mode = "COLOR";
             activeNodeID = "node-color";
-            // If Red is Overloaded (>50%), Bet GREEN. Else RED.
-            pick = redLoad > 50 ? "GREEN" : "RED";
+            pick = redLoad > 50 ? "GREEN" : "RED"; // Trap Break
             logic = "COLOR TRAP";
-            thought = `Color Market Overloaded (${redLoad > 50 ? 'RED' : 'GREEN'}). Reversal Target: ${pick}.`;
+            thought = `Color Overload (${redLoad > 50 ? 'RED' : 'GREEN'}). Reversal Target: ${pick}.`;
         }
         
-        // Safety Auto-Flip if market is too balanced
+        // Safety: If pressure is very low (<10%), force ZigZag on Size
         if(Math.max(sizePressure, colPressure) < 10) {
-           mode = "SIZE"; activeNodeID = "node-size";
-           let lastS = parseInt(history[0].number) >= 5 ? "BIG" : "SMALL";
-           pick = lastS==="BIG"?"SMALL":"BIG";
-           logic = "FORCE FLIP";
+            mode = "SIZE"; activeNodeID = "node-size";
+            let lastS = parseInt(history[0].number) >= 5 ? "BIG" : "SMALL";
+            pick = lastS==="BIG"?"SMALL":"BIG";
+            logic = "FORCE FLIP";
         }
 
         document.getElementById('lvlDisplay').innerText = "L1 FIXER";
         document.getElementById('lvlDisplay').style.color = "var(--neon-green)";
     }
 
-    // --- 3. JACKPOT NUMBER GENERATION ---
+    // --- NUMBERS ---
     let possibleNums = [];
     if(pick === "BIG") possibleNums = [5,6,7,8,9];
     else if(pick === "SMALL") possibleNums = [0,1,2,3,4];
     else if(pick === "GREEN") possibleNums = [1,3,7,9,5];
     else if(pick === "RED") possibleNums = [2,4,6,8,0];
 
-    // Get top 2 frequent numbers matching the prediction
     let topNums = possibleNums.sort((a,b) => (counts[b]||0) - (counts[a]||0)).slice(0, 2);
-    // If no data, fallback to defaults
-    if(!topNums[0]) topNums = [possibleNums[0], possibleNums[1]];
+    if(!topNums[0]) topNums = [possibleNums[0], possibleNums[1]]; // Fallback
 
-    // --- 4. UI UPDATE ---
+    // --- UI UPDATE ---
     let card = document.getElementById('mainCard');
     if(mode === "SIZE") {
         card.className = "card glow-green";
-        document.getElementById('predDisplay').style.color = pick==="BIG" ? "var(--gold)" : "var(--neon-blue)";
+        document.getElementById('predDisplay').style.color = pick==="BIG" ? "var(--gold)" : "var(--neon-cyan)";
     } else {
         card.className = "card glow-red";
         document.getElementById('predDisplay').style.color = pick==="RED" ? "var(--neon-red)" : "var(--neon-green)";
@@ -318,74 +318,64 @@ function runUniversalLogic(history) {
     document.getElementById('realThought').innerText = thought;
     document.getElementById('nextMove').innerText = level === 2 ? "HIGH BET" : "NORMAL";
 
-    // Update Jackpot UI
     let jBox = document.getElementById('jackpotBox');
-    jBox.innerHTML = `
-        <div class="j-num">${topNums[0]}</div>
-        <div class="j-num">${topNums[1]}</div>
-    `;
+    jBox.innerHTML = `<div class="j-num">${topNums[0]}</div><div class="j-num">${topNums[1]}</div>`;
 
     updateActiveNode(activeNodeID);
 
-    activeBet = { pick: pick, mode: mode, level: level, nums: topNums };
+    // STORE BET
+    currentBet = { issue: targetIssue, pick: pick, mode: mode, nums: topNums };
 }
 
-function updateActiveNode(activeId) {
-    const nodes = ['node-size', 'node-color', 'node-l2'];
-    nodes.forEach(id => {
-        let el = document.getElementById(id);
-        let status = document.getElementById('status-' + id.split('-')[1]);
-        el.className = "node-item";
-        status.className = "node-status status-off";
-        status.innerText = "STANDBY";
-    });
-    let activeEl = document.getElementById(activeId);
-    let activeStatus = document.getElementById('status-' + activeId.split('-')[1]);
-    if(activeEl) {
-        activeEl.className = "node-item node-active";
-        activeStatus.className = "node-status status-on";
-        activeStatus.innerText = "🟢 ACTIVE";
-    }
-}
-
-function checkResult(actual) {
-    if(!activeBet) return;
+function checkResult(result) {
+    if(!currentBet) return;
     
-    let n = parseInt(actual.number);
+    let n = parseInt(result.number);
     let sRes = n >= 5 ? "BIG" : "SMALL";
     let cRes = (n%2===1||n===5) ? "GREEN" : "RED";
     if(n===0) cRes="RED"; if(n===5) cRes="GREEN";
 
     let win = false;
-    if(activeBet.mode === "SIZE" && activeBet.pick === sRes) win = true;
-    if(activeBet.mode === "COLOR" && activeBet.pick === cRes) win = true;
+    if(currentBet.mode === "SIZE" && currentBet.pick === sRes) win = true;
+    if(currentBet.mode === "COLOR" && currentBet.pick === cRes) win = true;
 
-    // Jackpot Check
-    let jackpotWin = activeBet.nums.includes(n);
+    // Jackpot
+    let jWin = currentBet.nums.includes(n);
 
     if (win) {
-        if (level === 1) wins++; else { l2Win++; confetti({particleCount: 200}); }
-        if(jackpotWin) {
-            jackpots++;
-            confetti({particleCount: 500, spread: 150});
-        }
+        if(level===1) wins++; else l2Wins++;
+        if(jWin) { jackpots++; confetti({particleCount: 500, spread: 150}); }
+        else { confetti({particleCount: 200}); }
         level = 1;
     } else {
         losses++;
         level = level === 1 ? 2 : 1; 
     }
-    total++;
+    
     updateStats();
-    addLog(actual.issueNumber, (activeBet.mode==="SIZE"?sRes:cRes), win);
+    addLog(result.issueNumber, (currentBet.mode==="SIZE"?sRes:cRes), win);
+}
+
+function updateActiveNode(activeId) {
+    ['node-size', 'node-color', 'node-l2'].forEach(id => {
+        document.getElementById(id).className = "node-item";
+        document.getElementById('status-'+id.split('-')[1]).className = "node-status status-off";
+        document.getElementById('status-'+id.split('-')[1]).innerText = "STANDBY";
+    });
+    let el = document.getElementById(activeId);
+    if(el) {
+        el.className = "node-item node-active";
+        document.getElementById('status-'+activeId.split('-')[1]).className = "node-status status-on";
+        document.getElementById('status-'+activeId.split('-')[1]).innerText = "🟢 ACTIVE";
+    }
 }
 
 function updateStats() {
     document.getElementById('totalWin').innerText = wins;
     document.getElementById('totalLoss').innerText = losses;
     document.getElementById('jackpotHit').innerText = jackpots;
-    
-    let totalBets = wins + losses + l2Win; // Simple total
-    let acc = totalBets > 0 ? Math.round(((wins+l2Win)/totalBets)*100) : 100;
+    let total = wins + losses + l2Wins;
+    let acc = total > 0 ? Math.round(((wins+l2Wins)/total)*100) : 100;
     document.getElementById('statAcc').innerText = acc + "%";
 }
 
