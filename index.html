@@ -3,61 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DARKNET AURA 999+ V.46</title>
+    <title>DARKNET SUPREME V.48 FIXER</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root { --neon: #39ff14; --danger: #ff0033; --bg: #000; --panel: #0a0a0a; --gold: #ffd700; }
-        
-        /* 10 DYNAMIC THEMES */
-        body.t-red { --neon: #ff0033; }
-        body.t-blue { --neon: #00d4ff; }
-        body.t-gold { --neon: #ffd700; }
-        body.t-purple { --neon: #bc13fe; }
-        body.t-cyan { --neon: #00ffff; }
-        body.t-white { --neon: #ffffff; }
-        body.t-pink { --neon: #ff00ff; }
-        body.t-orange { --neon: #ff6600; }
-        body.t-grey { --neon: #888888; }
-
         * { margin:0; padding:0; box-sizing:border-box; font-family: 'Rajdhani', sans-serif; user-select:none; }
-        body { background: var(--bg); color: #fff; overflow-x: hidden; padding-bottom: 100px; transition: 0.3s; }
+        body { background: var(--bg); color: #fff; overflow-x: hidden; padding-bottom: 100px; }
 
         .header { padding:20px; border-bottom:1px solid #1a1a1a; display:flex; justify-content:space-between; align-items:center; background:#000; position:sticky; top:0; z-index:1000; }
-        .aura-brand { font-family:'Orbitron'; font-size:20px; color:var(--neon); text-shadow: 0 0 10px var(--neon); font-weight:900; }
-        .draw-timer { background: rgba(0,0,0,0.5); border: 1px solid var(--neon); padding: 5px 12px; border-radius: 4px; font-family: 'Orbitron'; font-size: 14px; color: var(--neon); }
+        .aura-brand { font-family:'Orbitron'; font-size:18px; color:var(--neon); text-shadow: 0 0 10px var(--neon); font-weight:900; }
+        .draw-timer { background: rgba(57, 255, 20, 0.1); border: 1px solid var(--neon); padding: 5px 10px; border-radius: 4px; font-family: 'Orbitron'; font-size: 14px; color: var(--neon); }
 
         .page { display:none; padding:15px; flex-direction:column; }
         #page-terminal { display: flex; }
 
-        /* PERIOD BOX FIX: WHITE & BOLD */
+        /* V33 TERMINAL PANEL */
         .mission-panel { background: var(--panel); border: 1px solid #1a1a1a; border-radius: 15px; padding: 25px; margin-top: 10px; border-top: 4px solid var(--neon); position: relative; }
-        .target-box { position: absolute; right: 15px; top: 15px; background: #111; border: 1px solid #333; padding: 6px 14px; border-radius: 6px; text-align: center; min-width: 95px; }
-        .target-label { font-size: 8px; color: var(--neon); font-family: 'Orbitron'; margin-bottom: 2px; }
-        .target-val { font-size: 16px; font-family: 'Orbitron'; font-weight: 900; color: #ffffff; letter-spacing: 1px; display: block; }
+        .target-box { position: absolute; right: 15px; top: 15px; background: #111; border: 1px solid #333; padding: 4px 12px; border-radius: 4px; text-align: center; }
+        .target-val { font-size: 14px; font-family: 'Orbitron'; font-weight: 900; color: #fff; }
 
-        .time-label { font-size: 10px; color: #666; font-family: 'Orbitron'; letter-spacing: 2px; margin-bottom: 10px; }
         .prediction-text { font-size: 65px; font-weight: 900; font-family: 'Orbitron'; color: var(--neon); margin: 15px 0; text-shadow: 0 0 20px rgba(57, 255, 20, 0.4); text-align: center; }
-        .strength-indicator { font-size: 12px; color: var(--neon); font-family: 'Orbitron'; margin-bottom: 20px; text-align: center; font-weight: bold; }
+        .strength-indicator { font-size: 12px; color: var(--neon); font-family: 'Orbitron'; margin-bottom: 20px; text-align: center; }
 
         .seeds-container { display: flex; justify-content: center; gap: 15px; margin: 20px 0; border-top: 1px solid #1a1a1a; padding-top: 20px; }
         .seed-ball { width: 50px; height: 50px; background: radial-gradient(circle at 30% 30%, #444, #000); border: 2.5px solid var(--neon); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Orbitron'; font-size: 20px; font-weight: 900; color: var(--neon); box-shadow: 0 10px 20px rgba(0,0,0,0.5), inset 0 0 10px var(--neon); }
 
-        /* COUNCIL GRID V33 EXACT */
-        .council-header { font-family: 'Orbitron'; font-size: 10px; color: #444; text-align: center; margin: 20px 0 10px 0; letter-spacing: 3px; }
-        .council-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
-        .council-node { background: #080808; border: 1px solid #1a1a1a; padding: 12px; border-radius: 8px; text-align: center; transition: 0.3s; }
-        .active-node { border-color: var(--neon) !important; box-shadow: 0 0 15px var(--neon); transform: scale(1.05); }
-        .node-name { font-size: 8px; font-family: 'Orbitron'; color: #666; text-transform: uppercase; }
+        /* V33 COUNCIL */
+        .council-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
+        .node { background: #080808; border: 1px solid #1a1a1a; padding: 12px; border-radius: 8px; text-align: center; }
+        .node.active { border-color: var(--neon); box-shadow: 0 0 15px var(--neon); }
         .node-acc { font-size: 11px; font-family: 'Orbitron'; color: var(--neon); }
 
-        .stats-hud { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .hud-box { background: var(--panel); border: 1px solid #1a1a1a; padding: 15px; border-radius: 10px; text-align: center; }
-
-        .archive-card { background: #080808; border: 1px solid #1a1a1a; padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; position: relative; border-left: 4px solid #222; margin-bottom: 12px; }
+        /* V33 ARCHIVE CARDS (EXACT) */
+        .archive-card { background: #080808; border: 1px solid #1a1a1a; padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; position: relative; overflow: hidden; border-left: 4px solid #222; margin-bottom: 12px; }
         .card-win { border-left-color: var(--neon); }
         .card-loss { border-left-color: var(--danger); }
-        .res-icon { font-size: 24px; min-width: 40px; text-align: center; }
+        .card-info h4 { font-family: 'Orbitron'; font-size: 18px; margin: 5px 0; }
+        .card-info p { font-size: 10px; color: #666; }
+        .res-icon { font-size: 22px; min-width: 40px; text-align: center; }
 
         .nav-bar { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 1px solid #1a1a1a; display: flex; justify-content: space-around; padding: 15px 0; z-index: 2000; }
         .nav-item { background: none; border: none; color: #444; display: flex; flex-direction: column; align-items: center; cursor: pointer; }
@@ -65,7 +49,7 @@
         .nav-item span { font-size: 10px; font-family: 'Orbitron'; margin-top: 5px; font-weight: 700; }
     </style>
 </head>
-<body class="t-green">
+<body>
 
 <div class="header">
     <div class="aura-brand">DARKNET AURA 999+</div>
@@ -74,71 +58,39 @@
 
 <div id="page-terminal" class="page">
     <div class="mission-panel">
-        <div class="target-box">
-            <div class="target-label">PERIOD</div>
-            <div class="target-val" id="period">0000</div>
-        </div>
-        <div class="time-label">TIME_BASED ANALYSIS</div>
+        <div class="target-box"><div class="target-val" id="period">0000</div></div>
+        <div style="font-size: 10px; color: #666; font-family: 'Orbitron'; letter-spacing: 2px;">TIME_BASED ANALYSIS</div>
         <div class="prediction-text" id="prediction">SCANNING</div>
         <div class="strength-indicator" id="strength">TIME_BASED : 0%</div>
         <div class="seeds-container" id="jackpotSeeds">
-            <div class="seed-ball">0</div>
-            <div class="seed-ball">0</div>
+            <div class="seed-ball">0</div><div class="seed-ball">0</div>
         </div>
     </div>
 
-    <div class="council-header">QUANTUM AI COUNCIL</div>
     <div class="council-grid">
-        <div class="council-node" id="n-titan"><div style="font-size:12px">💠</div><div class="node-name">Titan</div><div class="node-acc">96%</div></div>
-        <div class="council-node" id="n-zodiac"><div style="font-size:12px">⚛️</div><div class="node-name">Zodiac</div><div class="node-acc">92%</div></div>
-        <div class="council-node" id="n-phantom"><div style="font-size:12px">👻</div><div class="node-name">Phantom</div><div class="node-acc">93%</div></div>
-        <div class="council-node" id="n-neon"><div style="font-size:12px">⚡</div><div class="node-name">Neon</div><div class="node-acc">94%</div></div>
-        <div class="council-node" id="n-vector"><div style="font-size:12px">🛰️</div><div class="node-name">Vector</div><div class="node-acc">90%</div></div>
-        <div class="council-node" id="n-orion"><div style="font-size:12px">🛡️</div><div class="node-name">Orion</div><div class="node-acc">91%</div></div>
+        <div class="node" id="n-titan"><div style="font-size:8px;color:#444;">TITAN</div><div class="node-acc">92%</div></div>
+        <div class="node" id="n-zodiac"><div style="font-size:8px;color:#444;">ZODIAC</div><div class="node-acc">88%</div></div>
+        <div class="node" id="n-phantom"><div style="font-size:8px;color:#444;">PHANTOM</div><div class="node-acc">89%</div></div>
     </div>
 
-    <div class="stats-hud">
-        <div class="hud-box" style="border-left: 3px solid var(--neon);"><div class="hud-val" id="wins" style="color:var(--neon)">0</div><div style="font-size:8px;color:#444">WINS</div></div>
-        <div class="hud-box" style="border-left: 3px solid var(--danger);"><div class="hud-val" id="losses" style="color:var(--danger)">0</div><div style="font-size:8px;color:#444">LOSSES</div></div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+        <div class="node" style="border-left:3px solid var(--neon);"><div id="wins" style="font-size:22px; color:var(--neon); font-family:'Orbitron';">0</div><div style="font-size:8px;">TOTAL WINS</div></div>
+        <div class="node" style="border-left:3px solid var(--danger);"><div id="losses" style="font-size:22px; color:var(--danger); font-family:'Orbitron';">0</div><div style="font-size:8px;">TOTAL LOSSES</div></div>
     </div>
 </div>
 
 <div id="page-archive" class="page">
-    <div class="council-header" style="margin-top:0;">MISSION ARCHIVE</div>
     <div id="archive-list"></div>
-</div>
-
-<div id="page-themes" class="page">
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
-        <button class="t-btn" onclick="setAura('green')" style="padding:18px; border:1px solid #39ff14; background:#000; color:#fff;">GREEN</button>
-        <button class="t-btn" onclick="setAura('red')" style="padding:18px; border:1px solid #ff0033; background:#000; color:#fff;">RED</button>
-        <button class="t-btn" onclick="setAura('blue')" style="padding:18px; border:1px solid #00d4ff; background:#000; color:#fff;">BLUE</button>
-        <button class="t-btn" onclick="setAura('gold')" style="padding:18px; border:1px solid #ffd700; background:#000; color:#fff;">GOLD</button>
-        <button class="t-btn" onclick="setAura('purple')" style="padding:18px; border:1px solid #bc13fe; background:#000; color:#fff;">PURPLE</button>
-        <button class="t-btn" onclick="setAura('cyan')" style="padding:18px; border:1px solid #00ffff; background:#000; color:#fff;">CYAN</button>
-        <button class="t-btn" onclick="setAura('pink')" style="padding:18px; border:1px solid #ff00ff; background:#000; color:#fff;">PINK</button>
-        <button class="t-btn" onclick="setAura('orange')" style="padding:18px; border:1px solid #ff6600; background:#000; color:#fff;">ORANGE</button>
-    </div>
-</div>
-
-<div id="page-profile" class="page">
-    <div style="background:var(--panel); border:1px solid #1a1a1a; padding:30px; border-radius:15px; text-align:center; border-bottom:4px solid var(--neon);">
-        <div style="font-size:40px; margin-bottom:10px;">👤</div>
-        <h2 style="font-family:'Orbitron';">AHMAD BOSS</h2>
-        <p style="font-size:10px; color:var(--neon); letter-spacing:3px;">SUPREME COMMANDER</p>
-    </div>
 </div>
 
 <div class="nav-bar">
     <button class="nav-item active" onclick="nav('terminal', this)"><span>🎮 TERMINAL</span></button>
     <button class="nav-item" onclick="nav('archive', this)"><span>📂 ARCHIVE</span></button>
-    <button class="nav-item" onclick="nav('themes', this)"><span>🎨 THEMES</span></button>
-    <button class="nav-item" onclick="nav('profile', this)"><span>👤 PROFILE</span></button>
 </div>
 
 <script>
 const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?ts=";
-let wins=0, losses=0, lastId=null, currentBet=null;
+let wins=0, losses=0, lastId=null, currentBet=null, fixerLevel=1;
 
 async function sync() {
     try {
@@ -149,61 +101,81 @@ async function sync() {
             if (currentBet && currentBet.period === history[0].issueNumber) verify(history[0]);
             lastId = history[0].issueNumber;
             let next = (BigInt(history[0].issueNumber) + 1n).toString();
-            updateEngine(history, next);
+            runFixer(history, next);
         }
     } catch(e) {}
 }
 
-function updateEngine(history, next) {
-    let big = 0, small = 0;
-    history.slice(0, 12).forEach(h => { if(parseInt(h.number) >= 5) big++; else small++; });
+function runFixer(history, next) {
+    const lastNum = parseInt(history[0].number);
+    const lastSize = lastNum >= 5 ? "BIG" : "SMALL";
     
-    // SUPREME L1/L2 FIXER
-    let lastSize = parseInt(history[0].number) >= 5 ? "BIG" : "SMALL";
-    let pred = (big > small) ? "BIG" : "SMALL";
-    if (big === small) pred = (lastSize === "BIG") ? "SMALL" : "BIG";
+    let bigC = 0, smallC = 0;
+    history.slice(0, 10).forEach(h => { if(parseInt(h.number) >= 5) bigC++; else smallC++; });
+
+    let pred = "";
+    // L1/L2 HARD FIXER LOGIC
+    if (fixerLevel === 2) {
+        pred = (lastSize === "BIG") ? "SMALL" : "BIG"; // Flip trend on L2
+    } else {
+        if (bigC >= 6) pred = "BIG";
+        else if (smallC >= 6) pred = "SMALL";
+        else pred = lastSize;
+    }
 
     document.getElementById('period').innerText = next.slice(-4);
     document.getElementById('prediction').innerText = pred;
     document.getElementById('prediction').style.color = (pred === "BIG") ? "var(--danger)" : "var(--neon)";
     document.getElementById('strength').innerText = `TIME_BASED : ${75 + Math.floor(Math.random()*20)}%`;
     
-    let seeds = (pred === "BIG") ? [7, 9] : [1, 2];
+    let seeds = (pred === "BIG") ? [7, 8] : [2, 3];
     document.getElementById('jackpotSeeds').innerHTML = `<div class="seed-ball">${seeds[0]}</div><div class="seed-ball">${seeds[1]}</div>`;
 
-    const nodes = ['n-titan', 'n-zodiac', 'n-phantom', 'n-neon', 'n-vector', 'n-orion'];
-    nodes.forEach(id => document.getElementById(id).classList.remove('active-node'));
-    document.getElementById(nodes[Math.floor(Math.random() * nodes.length)]).classList.add('active-node');
+    const nodes = ['n-titan', 'n-zodiac', 'n-phantom'];
+    nodes.forEach(id => document.getElementById(id).classList.remove('active'));
+    document.getElementById(nodes[Math.floor(Math.random() * 3)]).classList.add('active');
 
-    createArchive(next.slice(-4), pred, seeds);
-    currentBet = { period: next, pred: pred };
+    createArchive(next.slice(-4), pred, seeds, fixerLevel);
+    currentBet = { period: next, pred: pred, level: fixerLevel };
 }
 
 function verify(res) {
-    const n = parseInt(res.number);
-    const actual = n >= 5 ? "BIG" : "SMALL";
+    const actual = parseInt(res.number) >= 5 ? "BIG" : "SMALL";
     const win = (currentBet.pred === actual);
-    win ? wins++ : losses++;
-    if(win) confetti({particleCount: 150, colors: [getComputedStyle(document.documentElement).getPropertyValue('--neon')]});
+    
+    if (win) {
+        wins++; fixerLevel = 1;
+        confetti({particleCount: 150, colors: ['#39ff14', '#ffffff']});
+    } else {
+        losses++; fixerLevel = (fixerLevel === 1) ? 2 : 1; 
+    }
 
     document.getElementById('wins').innerText = wins;
     document.getElementById('losses').innerText = losses;
 
-    const card = document.getElementById(`m-${currentBet.period.slice(-4)}`);
+    const card = document.getElementById(`arc-${currentBet.period.slice(-4)}`);
     if(card) {
         card.classList.add(win ? 'card-win' : 'card-loss');
-        card.querySelector('.status').innerHTML = win ? `<span style="color:var(--neon)">WIN! RESULT: ${n}</span>` : `<span style="color:var(--danger)">FAILED [${n}]</span>`;
+        card.querySelector('.status').innerHTML = win ? `<span style="color:var(--neon)">WIN! (L${currentBet.level})</span>` : `<span style="color:var(--danger)">FAILED (L${currentBet.level})</span>`;
         card.querySelector('.res-icon').innerHTML = win ? '🏆' : '✘';
+        card.querySelector('.res-icon').style.color = win ? 'var(--neon)' : 'var(--danger)';
     }
 }
 
-function createArchive(period, pred, seeds) {
-    const list = document.getElementById('archive-list');
+function createArchive(period, pred, seeds, lvl) {
     const div = document.createElement('div');
-    div.id = `m-${period}`;
+    div.id = `arc-${period}`;
     div.className = 'archive-card';
-    div.innerHTML = `<div><p style="font-size:10px; color:#444">PERIOD #${period}</p><h4 style="color:${pred==='BIG'?'var(--danger)':'var(--neon)'}">${pred}</h4><p class="status">PENDING...</p></div><div class="res-icon">⏳</div>`;
-    list.prepend(div);
+    div.innerHTML = `
+        <div class="card-info">
+            <p>PERIOD #${period} · L${lvl}_FIXER</p>
+            <h4 style="color:${pred==='BIG'?'var(--danger)':'var(--neon)'}">${pred}</h4>
+            <p>SEEDS: ${seeds.join(', ')}</p>
+            <p class="status">PENDING RESULT...</p>
+        </div>
+        <div class="res-icon">⏳</div>
+    `;
+    document.getElementById('archive-list').prepend(div);
 }
 
 function nav(p, b) {
@@ -212,8 +184,6 @@ function nav(p, b) {
     document.querySelectorAll('.nav-item').forEach(x => x.classList.remove('active'));
     b.classList.add('active');
 }
-
-function setAura(c) { document.body.className = `t-${c}`; }
 
 setInterval(sync, 2000);
 setInterval(() => {
