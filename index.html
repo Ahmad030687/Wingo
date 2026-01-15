@@ -3,13 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DARKNET SUPREME COMMANDER V.40</title>
+    <title>DARKNET SUPREME COMMANDER V.41</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root { --neon: #39ff14; --danger: #ff0033; --bg: #000; --panel: #0a0a0a; --gold: #ffd700; }
+        
+        /* THEME OVERRIDES */
+        body.t-red { --neon: #ff0033; }
+        body.t-blue { --neon: #00d4ff; }
+        body.t-gold { --neon: #ffd700; }
+        body.t-purple { --neon: #bc13fe; }
+        body.t-cyan { --neon: #00ffff; }
+        body.t-white { --neon: #ffffff; }
+
         * { margin:0; padding:0; box-sizing:border-box; font-family: 'Rajdhani', sans-serif; user-select:none; }
-        body { background: var(--bg); color: #fff; overflow-x: hidden; padding-bottom: 100px; }
+        body { background: var(--bg); color: #fff; overflow-x: hidden; padding-bottom: 100px; transition: 0.3s; }
 
         /* HEADER */
         .header { padding:20px; border-bottom:1px solid #1a1a1a; display:flex; justify-content:space-between; align-items:center; background:#000; position:sticky; top:0; z-index:1000; }
@@ -45,7 +54,15 @@
         .hud-val { font-size: 24px; font-family: 'Orbitron'; font-weight: 900; }
         .hud-lbl { font-size: 8px; color: #444; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* ARCHIVE MISSION CARDS */
+        /* THEMES TAB */
+        .theme-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .t-btn { padding: 20px; background: #080808; border: 1px solid #222; border-radius: 10px; color: #fff; font-family: 'Orbitron'; font-size: 10px; cursor: pointer; }
+
+        /* PROFILE TAB */
+        .profile-card { background: var(--panel); border: 1px solid #1a1a1a; padding: 30px; border-radius: 15px; text-align: center; border-bottom: 4px solid var(--neon); }
+        .avatar { width: 80px; height: 80px; border: 2px solid var(--neon); border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; font-size: 40px; }
+
+        /* ARCHIVE */
         #archive-list { display: flex; flex-direction: column; gap: 12px; }
         .archive-card { background: #080808; border: 1px solid #1a1a1a; padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; position: relative; overflow: hidden; }
         .archive-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: #222; }
@@ -63,7 +80,7 @@
         .nav-icon { font-size: 22px; }
     </style>
 </head>
-<body>
+<body class="t-green">
 
 <div class="header">
     <div class="aura-brand">DARKNET AURA 999+</div>
@@ -97,13 +114,36 @@
     <div class="stats-hud">
         <div class="hud-box" style="border-left: 3px solid var(--neon);"><div class="hud-val" id="wins" style="color:var(--neon)">0</div><div class="hud-lbl">Total Wins</div></div>
         <div class="hud-box" style="border-left: 3px solid var(--danger);"><div class="hud-val" id="losses" style="color:var(--danger)">0</div><div class="hud-lbl">Total Losses</div></div>
-        <div class="hud-box" style="grid-column: span 2;"><div class="hud-val" id="accuracy">100%</div><div class="hud-lbl">Council Accuracy</div></div>
     </div>
 </div>
 
 <div id="page-archive" class="page">
     <div class="council-header" style="margin-top:0;">MISSION ARCHIVE</div>
     <div id="archive-list"></div>
+</div>
+
+<div id="page-themes" class="page">
+    <div class="council-header" style="margin-top:0;">SELECT CYBER AURA</div>
+    <div class="theme-grid">
+        <button class="t-btn" onclick="applyTheme('red')" style="border-color:#ff0033;">BLOOD RED</button>
+        <button class="t-btn" onclick="applyTheme('blue')" style="border-color:#00d4ff;">COBALT BLUE</button>
+        <button class="t-btn" onclick="applyTheme('gold')" style="border-color:#ffd700;">PURE GOLD</button>
+        <button class="t-btn" onclick="applyTheme('purple')" style="border-color:#bc13fe;">CYBER PURPLE</button>
+        <button class="t-btn" onclick="applyTheme('green')" style="border-color:#39ff14;">NEON GREEN</button>
+        <button class="t-btn" onclick="applyTheme('white')" style="border-color:#fff;">GHOST WHITE</button>
+    </div>
+</div>
+
+<div id="page-profile" class="page">
+    <div class="profile-card">
+        <div class="avatar">👤</div>
+        <h2 style="font-family:'Orbitron';">AHMAD BOSS</h2>
+        <p style="font-size:10px; color:var(--neon); letter-spacing:3px; margin-top:5px;">SUPREME COMMANDER</p>
+        <div style="margin-top:20px; text-align:left; border-top:1px solid #111; padding-top:15px; font-size:12px;">
+            <p style="margin-bottom:5px;">STATUS: <span style="color:var(--neon)">ENCRYPTED</span></p>
+            <p>RANK: <span style="color:var(--gold)">GOD MODE</span></p>
+        </div>
+    </div>
 </div>
 
 <div class="nav-bar">
@@ -113,10 +153,10 @@
     <button class="nav-item" onclick="switchPage('archive', this)">
         <div class="nav-icon">📂</div><span>ARCHIVE</span>
     </button>
-    <button class="nav-item">
+    <button class="nav-item" onclick="switchPage('themes', this)">
         <div class="nav-icon">🎨</div><span>THEMES</span>
     </button>
-    <button class="nav-item">
+    <button class="nav-item" onclick="switchPage('profile', this)">
         <div class="nav-icon">🕵️</div><span>PROFILE</span>
     </button>
 </div>
@@ -136,16 +176,15 @@ async function fetchData() {
             if (currentBet && currentBet.period === latest.issueNumber) verifyMission(latest);
             lastId = latest.issueNumber;
             let nextPeriod = (BigInt(latest.issueNumber) + 1n).toString();
-            runSensingEngine(history, nextPeriod);
+            runSupremeEngine(history, nextPeriod);
         }
     } catch(e) {}
 }
 
-function runSensingEngine(history, nextPeriod) {
-    // RECURSIVE SENSING LOGIC
+function runSupremeEngine(history, nextPeriod) {
+    // SENSEI ADAPTIVE LOGIC
     const lastNum = parseInt(history[0].number);
     const secondLastNum = parseInt(history[1].number);
-    
     const lastSize = lastNum >= 5 ? "BIG" : "SMALL";
     const secondLastSize = secondLastNum >= 5 ? "BIG" : "SMALL";
 
@@ -153,31 +192,20 @@ function runSensingEngine(history, nextPeriod) {
     history.slice(0, 10).forEach(h => { if(parseInt(h.number) >= 5) bigC++; else smallC++; });
 
     let pred = "";
+    if (lastSize !== secondLastSize) pred = lastSize === "BIG" ? "SMALL" : "BIG"; // Choppy
+    else if (bigC >= 7 || smallC >= 7) pred = lastSize; // Dragon
+    else pred = bigC > smallC ? "BIG" : "SMALL"; // Trend
+
+    let seeds = (pred === "BIG") ? [6, 9] : [1, 4];
     let strength = 75 + Math.floor(Math.random() * 20);
 
-    // 1. Choppy Market Sensing (1-1 Pattern)
-    if (lastSize !== secondLastSize) {
-        pred = lastSize === "BIG" ? "SMALL" : "BIG";
-    } 
-    // 2. Dragon Market Sensing (Streak)
-    else if (bigC >= 7 || smallC >= 7) {
-        pred = lastSize; 
-    }
-    // 3. Chaos Sensing (Consensus)
-    else {
-        pred = bigC > smallC ? "BIG" : "SMALL";
-    }
-
-    let seeds = (pred === "BIG") ? [6, 8] : [1, 3];
-
-    // UI UPDATES
     document.getElementById('period').innerText = `TARGET PERIOD: ${nextPeriod.slice(-4)}`;
     document.getElementById('prediction').innerText = pred;
     document.getElementById('prediction').style.color = (pred === "BIG") ? "var(--danger)" : "var(--neon)";
     document.getElementById('strength').innerText = `TIME_BASED : ${strength}%`;
     document.getElementById('jackpotSeeds').innerHTML = `<div class="seed-ball">${seeds[0]}</div><div class="seed-ball">${seeds[1]}</div>`;
 
-    // Council Glow Effect
+    // Council Glow
     const nodes = ['node-titan', 'node-zodiac', 'node-orion', 'node-neon', 'node-vector', 'node-phantom'];
     nodes.forEach(id => document.getElementById(id).classList.remove('active-node'));
     document.getElementById(nodes[Math.floor(Math.random() * nodes.length)]).classList.add('active-node');
@@ -192,16 +220,15 @@ function verifyMission(result) {
     const win = (currentBet.pred === actual);
     
     win ? wins++ : losses++;
-    if(win) confetti({particleCount: 200, spread: 90, colors: ['#39ff14', '#ffffff']});
+    if(win) confetti({particleCount: 200, spread: 90, colors: [getComputedStyle(document.documentElement).getPropertyValue('--neon')]});
 
     document.getElementById('wins').innerText = wins;
     document.getElementById('losses').innerText = losses;
-    document.getElementById('accuracy').innerText = Math.round((wins / (wins + losses)) * 100) + "%";
 
     const card = document.getElementById(`mission-${currentBet.period.slice(-4)}`);
     if(card) {
         card.classList.add(win ? 'card-win' : 'card-loss');
-        card.querySelector('.status').innerHTML = win ? `<span style="color:var(--neon)">WIN! RESULT: ${n} (${actual})</span>` : `<span style="color:var(--danger)">FAILED. RESULT: ${n} (${actual})</span>`;
+        card.querySelector('.status').innerHTML = win ? `<span style="color:var(--neon)">WIN! [${n}]</span>` : `<span style="color:var(--danger)">FAILED [${n}]</span>`;
         card.querySelector('.icon').innerHTML = win ? '🏆' : '✘';
         card.querySelector('.icon').style.color = win ? 'var(--neon)' : 'var(--danger)';
     }
@@ -212,15 +239,7 @@ function createArchiveCard(period, pred, seeds) {
     const div = document.createElement('div');
     div.id = `mission-${period}`;
     div.className = 'archive-card';
-    div.innerHTML = `
-        <div class="card-info">
-            <p>PERIOD #${period} · TIME_BASED</p>
-            <h4 style="color:${pred==='BIG'?'var(--danger)':'var(--neon)'}">${pred}</h4>
-            <p>SEEDS: ${seeds.join(', ')}</p>
-            <p class="status">PENDING RESULT...</p>
-        </div>
-        <div class="icon trophy-icon">⏳</div>
-    `;
+    div.innerHTML = `<div class="card-info"><p>PERIOD #${period}</p><h4 style="color:${pred==='BIG'?'var(--danger)':'var(--neon)'}">${pred}</h4><p class="status">PENDING...</p></div><div class="icon trophy-icon">⏳</div>`;
     list.prepend(div);
 }
 
@@ -231,10 +250,14 @@ function switchPage(pageId, btn) {
     btn.classList.add('active');
 }
 
+function applyTheme(color) {
+    document.body.className = `t-${color}`;
+}
+
 setInterval(fetchData, 2000);
 setInterval(() => {
-    let rem = 60 - new Date().getSeconds();
-    document.getElementById('timer').innerText = (rem < 10 ? "0" + rem : rem);
+    let s = 60 - new Date().getSeconds();
+    document.getElementById('timer').innerText = (s < 10 ? "0" + s : s);
 }, 1000);
 fetchData();
 </script>
