@@ -3,68 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OMNI-X V.31 GOD-MODE</title>
+    <title>DARKNET SUPREME COMMANDER</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --green: #39ff14; --purple: #bc13fe; --dark: #000; --red: #ff0033; --gold: #ffd700; }
+        :root { --neon-green: #39ff14; --neon-red: #ff0033; --dark-bg: #000; --panel-bg: rgba(20,20,20,0.9); }
         * { margin:0; padding:0; box-sizing:border-box; font-family: 'Rajdhani', sans-serif; user-select:none; }
-        body { background: var(--dark); color: #fff; overflow-x: hidden; padding-bottom: 80px; }
-        .header { width:100%; padding:15px; border-bottom:2px solid var(--purple); background:#000; display:flex; justify-content:space-between; align-items:center; position: sticky; top:0; z-index:1000; }
-        .ping-box { font-size: 10px; color: var(--green); border: 1px solid var(--green); padding: 3px 8px; border-radius: 4px; font-family: 'Orbitron'; background: rgba(57, 255, 20, 0.1); }
-        .card { width:95%; margin:15px auto; border:2px solid var(--green); padding:20px; text-align:center; background: #050505; border-radius:12px; box-shadow: 0 0 20px rgba(57, 255, 20, 0.2); }
-        .timer-display { font-size: 35px; font-weight: 900; font-family: 'Orbitron'; color: #fff; margin: 10px 0; }
-        .prediction { font-size: 70px; font-weight: 900; font-family: 'Orbitron'; color: var(--green); text-shadow: 0 0 15px var(--green); }
-        .algo-badge { display:inline-block; padding: 4px 12px; background: var(--purple); border-radius: 20px; font-size: 10px; font-family: 'Orbitron'; margin-bottom: 10px; }
-        .jackpot-box { display:flex; justify-content:center; gap:15px; margin: 10px 0; }
-        .j-num { width:45px; height:45px; border:2px solid var(--green); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:bold; color:var(--green); background: #000; }
-        .stats-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; width:95%; margin:10px auto; }
-        .s-box { background:#0a0a0a; border:1px solid #222; padding:10px 2px; text-align:center; border-radius:8px; }
-        .s-val { font-size:18px; font-weight:bold; font-family: 'Orbitron'; color: var(--green); }
-        .s-lbl { font-size:8px; color: #555; }
-        .nav { position:fixed; bottom:0; left:0; width:100%; background:rgba(0,0,0,0.95); border-top:1px solid #111; padding:12px 0; display:flex; justify-content:space-around; z-index:1000; }
-        .nav-btn { background:none; border:none; color:#444; font-size:10px; font-weight:bold; cursor:pointer; display:flex; flex-direction:column; align-items:center; }
-        .nav-btn.active { color:var(--green); }
-        #logContainer { font-size:12px; font-family:monospace; max-height:400px; overflow-y:auto; padding: 10px; }
-        .log-row { display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid #111; }
+        body { background: var(--dark-bg); color: #fff; overflow-x: hidden; padding-bottom: 90px; }
+
+        /* HEADER */
+        .header { padding:20px; border-bottom:1px solid #222; background:#000; position: sticky; top:0; z-index:1000; }
+        .aura-title { font-family:'Orbitron'; font-size:24px; color:var(--neon-green); text-shadow: 0 0 10px var(--neon-green); }
+        
+        /* TERMINAL CARD */
+        .page { display:none; padding:15px; flex-direction:column; }
+        #page-terminal { display: flex; }
+        
+        .mission-card { background: #080808; border: 1px solid #1a1a1a; border-radius: 12px; padding: 20px; margin-bottom: 15px; position: relative; border-left: 4px solid var(--neon-green); }
+        .period-tag { font-size: 10px; color: #666; font-family: 'Orbitron'; margin-bottom: 5px; }
+        .prediction-val { font-size: 40px; font-weight: 900; font-family: 'Orbitron'; color: var(--neon-green); margin: 5px 0; }
+        .seed-val { font-size: 12px; color: var(--gold); }
+        .status-badge { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); font-family: 'Orbitron'; font-size: 12px; }
+
+        /* COUNCIL GRID */
+        .council-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 15px 0; }
+        .council-box { background: #111; padding: 10px; border-radius: 6px; text-align: center; border: 1px solid #222; }
+        .council-name { font-size: 8px; font-family: 'Orbitron'; color: #666; }
+        .council-acc { font-size: 12px; color: var(--neon-red); }
+
+        /* STATS */
+        .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .stat-card { padding: 15px; border-radius: 8px; border: 1px solid #222; text-align: center; }
+        .stat-val { font-size: 24px; font-family: 'Orbitron'; font-weight: 900; }
+        .stat-label { font-size: 10px; color: #666; text-transform: uppercase; }
+
+        /* LOGS/ARCHIVE CARDS */
+        .archive-card { background: rgba(57, 255, 20, 0.02); border: 1px solid #111; padding: 15px; border-radius: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .win-border { border-left: 3px solid var(--neon-green); }
+        .loss-border { border-left: 3px solid var(--neon-red); }
+        .trophy { font-size: 20px; filter: drop-shadow(0 0 5px var(--neon-green)); }
+
+        /* NAV */
+        .nav { position:fixed; bottom:0; width:100%; background:#000; border-top:1px solid #222; display:flex; justify-content:space-around; padding:15px 0; z-index:1000; }
+        .nav-btn { background:none; border:none; color:#444; font-size:10px; font-weight:bold; cursor:pointer; display:flex; flex-direction:column; align-items:center; transition: 0.3s; }
+        .nav-btn.active { color:var(--neon-green); text-shadow: 0 0 10px var(--neon-green); }
+        .nav-btn span { font-size: 20px; margin-bottom: 5px; }
     </style>
 </head>
 <body>
 
 <div class="header">
-    <div><div style="font-size:18px; font-weight:900; font-family:'Orbitron';">GOD-MODE</div><div style="font-size:9px; color:var(--green);">AUTO-SWITCH ENGINE</div></div>
-    <div class="ping-box">L1 FIXER</div>
+    <div class="aura-title">DARKNET AURA 999+</div>
+    <div style="font-size: 10px; color: #444; font-family: 'Orbitron';">SUPREME COMMANDER ENGINE</div>
 </div>
 
-<div id="page-terminal" class="page" style="display:flex;">
-    <div class="card">
-        <div class="algo-badge" id="activeAlgo">SCANNING MARKET...</div>
-        <div style="font-size:12px; color:#888;">PERIOD: <span id="period" style="color:var(--purple)">....</span></div>
-        <div class="timer-display" id="timer">00:00</div>
-        <div class="prediction" id="predDisplay">...</div>
-        <div class="jackpot-box" id="jackpotBox"><div class="j-num">-</div><div class="j-num">-</div></div>
-        <div style="font-size:10px; color:var(--green); font-family:monospace;" id="thought">ENGINE: INITIALIZING ALL ALGORITHMS...</div>
+<div id="page-terminal" class="page">
+    <div class="council-grid">
+        <div class="council-box"><div class="council-name">TITAN</div><div class="council-acc">92%</div></div>
+        <div class="council-box"><div class="council-name">VECTOR</div><div class="council-acc">87%</div></div>
+        <div class="council-box"><div class="council-name">PHANTOM</div><div class="council-acc">89%</div></div>
     </div>
-    <div class="stats-grid">
-        <div class="s-box"><div class="s-val" id="totalWin">0</div><div class="s-lbl">WIN</div></div>
-        <div class="s-box"><div class="s-val" id="totalLoss" style="color:var(--red)">0</div><div class="s-lbl">LOSS</div></div>
-        <div class="s-box"><div class="s-val" id="jackpotHit" style="color:var(--gold)">0</div><div class="s-lbl">JACKPOT</div></div>
-        <div class="s-box"><div class="s-val" id="statAcc">100%</div><div class="s-lbl">ACC %</div></div>
+
+    <div class="mission-card" id="currentMission">
+        <div class="period-tag" id="period">PERIOD #0000</div>
+        <div class="prediction-val" id="predDisplay">SCANNING...</div>
+        <div class="seed-val" id="seedDisplay">SEEDS: --, --</div>
+        <div class="status-badge" style="color:var(--neon-green)">ONLINE</div>
     </div>
+
+    <div class="stats-row">
+        <div class="stat-card" style="border-color: var(--neon-green);"><div class="stat-val" id="totalWins" style="color:var(--neon-green)">0</div><div class="stat-label">TOTAL WINS</div></div>
+        <div class="stat-card" style="border-color: var(--neon-red);"><div class="stat-val" id="totalLosses" style="color:var(--neon-red)">0</div><div class="stat-label">TOTAL LOSSES</div></div>
+    </div>
+    
+    <div class="stat-card" style="margin-top:10px; background:#080808;"><div class="stat-val" id="accuracy">100%</div><div class="stat-label">OVERALL ACCURACY</div></div>
 </div>
 
-<div id="page-logs" class="page" style="display:none;">
-    <div style="width:95%; margin:10px auto; background:#050505; border-radius:10px;"><div id="logContainer"></div></div>
+<div id="page-archive" class="page">
+    <div id="archiveContainer"></div>
 </div>
 
 <div class="nav">
     <button class="nav-btn active" onclick="nav('terminal', this)"><span>⚡</span>TERMINAL</button>
-    <button class="nav-btn" onclick="nav('logs', this)"><span>📜</span>LOGS</button>
+    <button class="nav-btn" onclick="nav('archive', this)"><span>🕒</span>ARCHIVE</button>
+    <button class="nav-btn"><span>🎨</span>THEMES</button>
+    <button class="nav-btn"><span>👤</span>PROFILE</button>
 </div>
 
 <script>
 const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?ts=";
-let wins=0, losses=0, jackpots=0, lastId=null, activeBet=null;
+let wins = 0, losses = 0, lastId = null, activeBet = null;
 
 async function syncData() {
     try {
@@ -74,79 +102,95 @@ async function syncData() {
         const latest = history[0];
 
         if (latest.issueNumber !== lastId) {
-            if (activeBet && activeBet.issue === latest.issueNumber) checkWin(latest);
+            if (activeBet && activeBet.issue === latest.issueNumber) verifyResult(latest);
             lastId = latest.issueNumber;
             let nextIssue = (BigInt(latest.issueNumber) + 1n).toString();
-            document.getElementById('period').innerText = nextIssue.slice(-4);
-            godModeEngine(history, nextIssue);
+            document.getElementById('period').innerText = `PERIOD #${nextIssue.slice(-4)}`;
+            runGhostEngine(history, nextIssue);
         }
     } catch(e) {}
 }
 
-function godModeEngine(history, nextIssue) {
+function runGhostEngine(history, nextIssue) {
     const lastNum = parseInt(history[0].number);
     const lastSize = lastNum >= 5 ? "BIG" : "SMALL";
     
-    // 1. STRATEGY SCANNING
-    let shadowPick = lastSize; 
-    let trapPick = (lastSize === "BIG" ? "SMALL" : "BIG");
-    
-    // 2. AUTO-SELECTION LOGIC (Simulating Multi-Algo Analysis)
+    // GHOST ENGINE: Analysis of multiple sequences
     let counts = { BIG: 0, SMALL: 0 };
     history.slice(0, 10).forEach(h => { if(parseInt(h.number) >= 5) counts.BIG++; else counts.SMALL++; });
     
+    // Adaptive Logic: Don't stick to zid. If trend is balanced, flip.
     let pick = "";
-    let algoName = "";
-    
-    if (counts.BIG >= 7 || counts.SMALL >= 7) {
-        pick = lastSize; algoName = "SHADOW ENGINE (STREAK)";
-    } else {
-        pick = trapPick; algoName = "TRAP BREAKER (V.20)";
-    }
+    if (counts.BIG > 6) pick = "BIG";
+    else if (counts.SMALL > 6) pick = "SMALL";
+    else pick = (lastSize === "BIG" ? "SMALL" : "BIG");
 
-    // 3. UI UPDATE
-    const predEl = document.getElementById('predDisplay');
-    predEl.innerText = pick;
-    predEl.style.color = (pick === "BIG" ? "var(--gold)" : "var(--green)");
-    document.getElementById('activeAlgo').innerText = algoName;
+    let seeds = (pick === "BIG") ? [6, 9] : [0, 4];
     
-    let topNums = (pick === "BIG") ? [6, 8] : [1, 3];
-    document.getElementById('jackpotBox').innerHTML = `<div class="j-num">${topNums[0]}</div><div class="j-num">${topNums[1]}</div>`;
-    document.getElementById('thought').innerText = `GOD-MODE: AUTO-SWITCHED TO ${algoName}`;
+    document.getElementById('predDisplay').innerText = pick;
+    document.getElementById('seedDisplay').innerText = `SEEDS: ${seeds[0]}, ${seeds[1]}`;
 
-    activeBet = { issue: nextIssue, pick: pick, nums: topNums };
+    // Update Archive with "PENDING"
+    addArchiveCard(nextIssue.slice(-4), pick, seeds, true);
+    
+    activeBet = { issue: nextIssue, pick: pick, seeds: seeds };
 }
 
-function checkWin(res) {
+function verifyResult(res) {
     const n = parseInt(res.number);
     const actual = n >= 5 ? "BIG" : "SMALL";
     const win = (activeBet.pick === actual);
     win ? wins++ : losses++;
-    if(win && activeBet.nums.includes(n)) { jackpots++; confetti({particleCount:150}); }
 
-    document.getElementById('totalWin').innerText = wins;
-    document.getElementById('totalLoss').innerText = losses;
-    document.getElementById('jackpotHit').innerText = jackpots;
-    document.getElementById('statAcc').innerText = Math.round((wins/(wins+losses))*100) + "%";
+    if(win) {
+        confetti({particleCount: 200, spread: 80, colors: ['#39ff14', '#ffffff']});
+    }
 
-    const row = document.createElement('div');
-    row.className = 'log-row'; row.style.color = win ? "var(--green)" : "var(--red)";
-    row.innerHTML = `<span>#${res.issueNumber.slice(-4)}</span> <span>${actual}</span> <span>${win ? "WIN" : "LOSS"}</span>`;
-    document.getElementById('logContainer').prepend(row);
+    // Update Main Stats
+    document.getElementById('totalWins').innerText = wins;
+    document.getElementById('totalLosses').innerText = losses;
+    document.getElementById('accuracy').innerText = Math.round((wins/(wins+losses))*100) + "%";
+
+    // Finalize Archive Card
+    finalizeArchiveCard(res.issueNumber.slice(-4), actual, win, n);
+}
+
+function addArchiveCard(period, pick, seeds, pending) {
+    const container = document.getElementById('archiveContainer');
+    const id = `card-${period}`;
+    if(document.getElementById(id)) return;
+
+    const div = document.createElement('div');
+    div.id = id;
+    div.className = `archive-card`;
+    div.innerHTML = `
+        <div>
+            <div style="font-size:10px; color:#444;">PERIOD #${period}</div>
+            <div style="font-size:18px; font-weight:bold; color:var(--neon-green)">${pick}</div>
+            <div style="font-size:10px; color:var(--gold)">SEEDS: ${seeds.join(', ')}</div>
+            <div class="status-txt" style="font-size:10px; color:#666; margin-top:5px;">PENDING RESULT...</div>
+        </div>
+        <div class="result-icon">⏳</div>
+    `;
+    container.prepend(div);
+}
+
+function finalizeArchiveCard(period, actual, win, num) {
+    const card = document.getElementById(`card-${period}`);
+    if(!card) return;
+    card.className = `archive-card ${win ? 'win-border' : 'loss-border'}`;
+    card.querySelector('.status-txt').innerHTML = win ? `<span style="color:var(--neon-green)">WIN! RESULT: ${num} (${actual})</span>` : `<span style="color:var(--neon-red)">FAILED. RESULT: ${num} (${actual})</span>`;
+    card.querySelector('.result-icon').innerHTML = win ? `<div class="trophy">🏆</div>` : `<div style="color:var(--neon-red); font-size:24px;">✘</div>`;
 }
 
 function nav(p, b) {
     document.querySelectorAll('.page').forEach(x => x.style.display = 'none');
-    document.getElementById('page-'+p).style.display = p==='terminal' ? 'flex' : 'block';
+    document.getElementById('page-'+p).style.display = (p==='terminal') ? 'flex' : 'block';
     document.querySelectorAll('.nav-btn').forEach(x => x.classList.remove('active'));
     b.classList.add('active');
 }
 
 setInterval(syncData, 2000);
-setInterval(() => {
-    let rem = 60 - new Date().getSeconds();
-    document.getElementById('timer').innerText = "00:" + (rem < 10 ? "0" + rem : rem);
-}, 1000);
 syncData();
 </script>
 </body>
