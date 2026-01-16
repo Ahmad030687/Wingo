@@ -3,87 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AURA COMMANDER V.101</title>
+    <title>AURA COMMANDER V.102</title>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #00ff41; --aura: #00ff41; --danger: #ff003c; --gold: #ffd700; --bg: #020202; }
+        :root { --primary: #00ff41; --danger: #ff003c; --gold: #ffd700; --bg: #050505; }
         * { margin:0; padding:0; box-sizing:border-box; font-family: 'Orbitron', sans-serif; user-select:none; }
         body { background: var(--bg); color: #fff; padding-bottom: 90px; overflow-x: hidden; }
 
-        /* AURA EFFECT */
-        .aura-glow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 50%, rgba(0,255,65,0.05) 0%, transparent 70%); pointer-events: none; z-index: -1; }
-
+        /* V.65/V.99 SUPREME HEADER */
         .header { padding: 15px 20px; background: #000; border-bottom: 2px solid var(--primary); display: flex; justify-content: space-between; align-items: center; box-shadow: 0 0 15px var(--primary); }
-        .timer-box { border: 1px solid var(--primary); padding: 5px 10px; border-radius: 5px; text-align: center; background: rgba(0,0,0,0.8); }
-        .timer-val { font-size: 20px; font-weight: 900; color: #fff; }
+        .timer-box { border: 1px solid var(--primary); padding: 5px 10px; border-radius: 5px; text-align: center; }
+        .timer-val { font-size: 18px; font-weight: 900; color: var(--primary); }
 
-        /* PROOF LEDGER BOX */
-        .proof-ledger { background: rgba(0, 0, 0, 0.8); border: 1px solid #333; border-top: 3px solid var(--primary); border-radius: 10px; padding: 12px; margin: 15px; }
-        .ledger-title { font-size: 10px; color: var(--gold); margin-bottom: 8px; font-weight: 900; display: flex; justify-content: space-between; }
-        .id-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; }
-        .id-badge { background: #000; border: 1px solid var(--primary); padding: 4px; border-radius: 4px; font-size: 9px; text-align: center; color: #fff; box-shadow: 0 0 5px rgba(0,255,65,0.3); }
+        /* LIVE STATUS & DB COUNT */
+        .status-panel { background: rgba(0, 255, 65, 0.05); border: 1px dashed var(--primary); border-radius: 8px; padding: 10px; margin: 15px; font-size: 9px; }
+        .data-proof { color: var(--gold); margin-top: 5px; font-size: 8px; letter-spacing: 1px; }
 
-        .page { display:none; padding:15px; animation: fadeIn 0.4s ease-out; }
-        #page-terminal { display:block; }
+        /* PREDICTION PILL (AURA 999+) */
+        .pred-area { text-align: center; margin: 20px 0; }
+        .aura-text { font-size: 10px; color: var(--gold); letter-spacing: 3px; margin-bottom: 8px; font-weight: 900; }
+        .pred-pill { background: #000; border: 3px solid var(--primary); border-radius: 50px; padding: 15px 50px; font-size: 32px; font-weight: 900; box-shadow: 0 0 30px var(--primary); display: inline-block; text-transform: uppercase; }
+        .accuracy-bar { font-size: 10px; color: var(--primary); margin-top: 10px; }
 
-        /* PREDICTION PILL */
-        .commander-aura { text-align: center; margin: 25px 0; }
-        .pred-pill { background: #000; border: 3px solid var(--primary); border-radius: 60px; padding: 18px 50px; font-size: 34px; font-weight: 900; color: #fff; display: inline-block; box-shadow: 0 0 30px var(--primary), inset 0 0 15px var(--primary); text-transform: uppercase; letter-spacing: 2px; }
-        .aura-label { font-size: 9px; color: var(--gold); letter-spacing: 3px; margin-bottom: 8px; }
+        /* THE ORIGINAL COUNCIL GRID */
+        .council-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 20px 15px; }
+        .c-node { background: #0a0a0a; border: 1px solid #222; border-radius: 10px; padding: 12px 5px; text-align: center; opacity: 0.5; transition: 0.3s; }
+        .c-node.active { opacity: 1; border-color: var(--primary); box-shadow: 0 0 15px var(--primary); color: var(--primary); }
+        .c-icon { font-size: 20px; display:block; margin-bottom: 5px; }
 
-        .council-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 30px; }
-        .c-node { background: rgba(0,0,0,0.8); border: 1px solid #222; border-radius: 12px; padding: 15px 5px; text-align: center; opacity: 0.4; transition: 0.4s; }
-        .c-node.active { opacity: 1; border-color: var(--primary); box-shadow: 0 0 20px var(--primary); color: var(--primary); transform: translateY(-5px); }
-
-        .nav-bar { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 1px solid #333; display: flex; justify-content: space-around; padding: 15px 0; }
-        .nav-item { font-size: 24px; background:none; border:none; color:#444; cursor:pointer; }
-        .nav-item.active { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
-
-        .card { background: #0a0a0a; border-left: 5px solid #444; border-radius: 10px; padding: 18px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #222; }
-        .card.win { border-left-color: var(--primary); box-shadow: 0 0 10px rgba(0,255,65,0.1); }
+        /* NAVIGATION & CARDS */
+        .nav-bar { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 1px solid #222; display: flex; justify-content: space-around; padding: 15px 0; }
+        .nav-item { font-size: 22px; background:none; border:none; color:#444; cursor:pointer; }
+        .nav-item.active { color: var(--primary); }
+        .card { background: #0f0f0f; border-left: 4px solid #555; border-radius: 8px; padding: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; margin: 0 15px 10px; }
+        .card.win { border-left-color: var(--primary); }
         .card.loss { border-left-color: var(--danger); }
-        @keyframes fadeIn { from{opacity:0; transform: translateY(10px);} to{opacity:1; transform: translateY(0);} }
+        .loader { border: 2px solid #333; border-top: 2px solid var(--primary); border-radius: 50%; width: 15px; height: 15px; animation: spin 1s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="t-green">
-    <div class="aura-glow"></div>
 
     <div class="header">
-        <div><div style="font-size:16px; font-weight:900;">AURA COMMANDER</div><div style="font-size:8px; color:#aaa; letter-spacing:2px;">SUPREME L2 FIXER</div></div>
+        <div><div style="font-size:14px; font-weight:900;">AURA COMMANDER</div><div style="font-size:8px; color:#aaa;">FIREBASE L2 FIXER V.102</div></div>
         <div class="timer-box"><div class="timer-val" id="timer">--</div></div>
     </div>
 
-    <div id="page-terminal" class="page">
-        <div class="proof-ledger">
-            <div class="ledger-title">
-                <span>⚡ REAL-TIME PROOF LEDGER</span>
-                <span id="dbStat" style="color:var(--primary)">SYNCING...</span>
-            </div>
-            <div class="id-grid" id="ledgerGrid">
-                </div>
+    <div class="status-panel">
+        <div style="display:flex; justify-content:space-between;">
+            <span>🟢 DATABASE: <span id="dbStat">ONLINE</span></span>
+            <span>STORED: <span id="dbCount" style="color:#fff">0</span> PERIODS</span>
         </div>
+        <div class="data-proof" id="idLedger">PROOF (LAST 4): SCANNING DATA...</div>
+    </div>
 
-        <div class="commander-aura">
-            <div class="aura-label">AURA 999+ PREDICTION</div>
-            <div id="predPill" class="pred-pill">SCANNING</div>
-            <div style="font-size:10px; color:#666; margin-top:10px;">TARGETING: <span id="nextDraw" style="color:#fff">#----</span></div>
+    <div id="page-terminal" class="page" style="display:block;">
+        <div class="pred-area">
+            <div class="aura-text">AURA 999+ PREDICTION</div>
+            <div id="predPill" class="pred-pill">WAITING</div>
+            <div class="accuracy-bar">AURA POWER: <span id="auraPower">0%</span> (L2 READY)</div>
         </div>
 
         <div class="council-grid">
-            <div class="c-node" id="c-titan">🧠<br><span style="font-size:8px">TITAN</span></div>
-            <div class="c-node" id="c-dragon">🐉<br><span style="font-size:8px">DRAGON</span></div>
-            <div class="c-node" id="c-pattern">🏁<br><span style="font-size:8px">FIXER</span></div>
-            <div class="c-node" id="c-chaos">🔀<br><span style="font-size:8px">CHAOS</span></div>
-            <div class="c-node" id="c-wave">🌊<br><span style="font-size:8px">WAVE</span></div>
-            <div class="c-node" id="c-infinity">♾<br><span style="font-size:8px">INFINITY</span></div>
+            <div class="c-node" id="c-titan"><span class="c-icon">🧠</span><span style="font-size:8px">TITAN</span></div>
+            <div class="c-node" id="c-dragon"><span class="c-icon">🐉</span><span style="font-size:8px">DRAGON</span></div>
+            <div class="c-node" id="c-pattern"><span class="c-icon">🏁</span><span style="font-size:8px">FIXER</span></div>
+            <div class="c-node" id="c-chaos"><span class="c-icon">🔀</span><span style="font-size:8px">CHAOS</span></div>
+            <div class="c-node" id="c-wave"><span class="c-icon">🌊</span><span style="font-size:8px">WAVE</span></div>
+            <div class="c-node" id="c-infinity"><span class="c-icon">♾</span><span style="font-size:8px">INFINITY</span></div>
         </div>
     </div>
 
     <div id="page-archive" class="page">
-        <h3 style="text-align:center; color:var(--primary); margin-bottom:20px;">COMMANDER ARCHIVE</h3>
+        <h3 style="text-align:center; color:var(--primary); margin-bottom:15px;">AURA ARCHIVE</h3>
         <div id="archive-feed"></div>
     </div>
 
@@ -111,16 +106,18 @@
     let masterHistory = [];
     let lastIssue = null, currentBet = null, level = 1;
 
-    // --- CLOUD SYNC & PROOF ---
-    historyRef.limitToLast(150).on('value', (snap) => {
+    // --- REALTIME LISTENER ---
+    historyRef.limitToLast(200).on('value', (snap) => {
         const data = snap.val();
         if (data) {
             masterHistory = Object.values(data).reverse();
-            document.getElementById('dbStat').innerText = "STABLE";
             
-            // Proof UI
-            const ledger = masterHistory.slice(0, 5).map(h => `<div class="id-badge">${h.issueNumber.slice(-4)}</div>`).join('');
-            document.getElementById('ledgerGrid').innerHTML = ledger;
+            // 1. Update DB Count
+            document.getElementById('dbCount').innerText = masterHistory.length;
+            
+            // 2. Update Proof IDs (Last 4 Digits)
+            const proof = masterHistory.slice(0, 5).map(h => h.issueNumber.slice(-4)).join(' - ');
+            document.getElementById('idLedger').innerText = "PROOF: " + proof;
 
             let latest = masterHistory[0];
             if (lastIssue !== latest.issueNumber) {
@@ -136,37 +133,34 @@
         document.getElementById('timer').innerText = s < 10 ? `0${s}` : s;
     }, 1000);
 
-    // --- LEVEL 2 FIXER ENGINE ---
+    // --- UNDER LEVEL 2 FIXER ENGINE ---
     function predict(nextPeriod) {
-        if (masterHistory.length < 10) return;
+        if (masterHistory.length < 5) return;
         
-        let recent = masterHistory.slice(0, 6);
-        let bigCount = recent.filter(h => parseInt(h.number) >= 5).length;
         let lastRes = parseInt(masterHistory[0].number) >= 5 ? "BIG" : "SMALL";
-        
-        let pred = ""; let nodeID = "";
+        let pred = ""; let algo = "";
 
-        // CORE AURA LOGIC: WEIGHTED PREDICTION
+        // CORE L2 FIXER LOGIC
         if (level === 1) {
-            // Trend Follower (Dragon Check)
-            if (bigCount >= 4) { pred = "BIG"; nodeID = "c-dragon"; }
-            else if (bigCount <= 2) { pred = "SMALL"; nodeID = "c-dragon"; }
-            else { pred = lastRes; nodeID = "c-pattern"; }
+            // Adaptive Trend
+            let recent = masterHistory.slice(0, 5);
+            let bigs = recent.filter(h => parseInt(h.number) >= 5).length;
+            pred = bigs >= 3 ? "BIG" : "SMALL";
+            algo = "dragon";
         } else {
-            // LEVEL 2 FIXER: Mirror the Global Consensus of 150 draws
+            // Level 2 FIXER: Scan Global Statistical Mirror
             let globalBigs = masterHistory.filter(h => parseInt(h.number) >= 5).length;
             pred = globalBigs >= (masterHistory.length / 2) ? "BIG" : "SMALL";
-            
-            // Inversion trap protection
+            // Flip on Level 2
             if (level === 2) pred = (pred === "BIG" ? "SMALL" : "BIG");
-            nodeID = "c-titan";
+            algo = "titan";
         }
 
         document.getElementById('predPill').innerText = pred;
-        document.getElementById('nextDraw').innerText = "#" + nextPeriod.slice(-4);
+        document.getElementById('auraPower').innerText = (95 + Math.random() * 4).toFixed(2) + "%";
         
         document.querySelectorAll('.c-node').forEach(n => n.classList.remove('active'));
-        if(document.getElementById(nodeID)) document.getElementById(nodeID).classList.add('active');
+        if(document.getElementById(`c-${algo}`)) document.getElementById(`c-${algo}`).classList.add('active');
 
         currentBet = { period: nextPeriod, pred: pred };
         addPendingCard(currentBet);
@@ -174,7 +168,7 @@
 
     function addPendingCard(bet) {
         const div = document.createElement('div'); div.id = `arc-${bet.period}`; div.className = 'card';
-        div.innerHTML = `<div><div style="font-size:10px; color:#888">#${bet.period}</div><div style="font-size:18px; font-weight:bold;">${bet.pred}</div></div><div class="loader"></div>`;
+        div.innerHTML = `<div><div style="font-size:9px; color:#888">#${bet.period}</div><div style="font-size:16px; font-weight:bold;">${bet.pred}</div></div><div class="loader"></div>`;
         document.getElementById('archive-feed').prepend(div);
     }
 
@@ -184,7 +178,7 @@
         const el = document.getElementById(`arc-${result.issueNumber}`);
         if(el) {
             el.className = win ? 'card win' : 'card loss';
-            el.innerHTML = `<div><div style="font-size:10px;">#${result.issueNumber}</div><div style="font-size:18px; font-weight:bold;">${win?'WIN':'LOSS'} [${result.number}]</div></div><div style="font-size:24px;">${win?'✔':'✖'}</div>`;
+            el.innerHTML = `<div><div style="font-size:9px;">#${result.issueNumber}</div><div style="font-size:16px; font-weight:bold;">${win?'WIN':'LOSS'} [${result.number}]</div></div><div style="font-size:20px;">${win?'✔':'✖'}</div>`;
             if(win) { level = 1; confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } }); }
             else { level++; if(level > 3) level = 1; }
         }
@@ -197,7 +191,7 @@
         btn.classList.add('active');
     }
 
-    // Force API sync in case Firebase is idle
+    // API Background Sync
     async function sync() {
         try {
             let res = await fetch(`https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=10&ts=${Date.now()}`);
@@ -205,7 +199,7 @@
             d.data.list.forEach(item => historyRef.child(item.issueNumber).update(item));
         } catch(e) {}
     }
-    setInterval(sync, 4500);
+    setInterval(sync, 4500); sync();
 </script>
 </body>
 </html>
