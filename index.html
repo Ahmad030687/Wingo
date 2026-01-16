@@ -3,22 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DARKNET QUANTUM V.5 PERMANENT</title>
+    <title>DARKNET QUANTUM V.63</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #00ff41; --danger: #ff003c; --gold: #ffd700; --bg: #050505; --panel: #111; }
         
-        /* THEMES */
+        /* 10 THEME VARIANTS */
         body.t-green { --primary: #00ff41; }
         body.t-red { --primary: #ff003c; } 
         body.t-blue { --primary: #00d4ff; }
         body.t-gold { --primary: #ffd700; }
+        body.t-purple { --primary: #bc13fe; }
+        body.t-cyan { --primary: #00ffff; }
+        body.t-pink { --primary: #ff00ff; }
+        body.t-orange { --primary: #ff6600; }
+        body.t-white { --primary: #ffffff; }
+        body.t-neon { --primary: #ccff00; }
 
         * { margin:0; padding:0; box-sizing:border-box; font-family: 'Orbitron', sans-serif; user-select:none; }
-        body { background: var(--bg); color: #fff; padding-bottom: 90px; overflow-x: hidden; transition:0.3s; }
+        body { background: var(--bg); color: #fff; padding-bottom: 90px; overflow-x: hidden; transition: 0.3s; }
 
-        /* HEADER - EXACT REPLICA */
+        /* HEADER */
         .header {
             padding: 15px; background: #000; border-bottom: 2px solid var(--danger);
             display: flex; justify-content: space-between; align-items: center;
@@ -26,19 +32,18 @@
         }
         .title-box { font-size: 14px; font-weight: 900; line-height: 1.2; letter-spacing:1px; }
         .sub-title { font-size: 8px; color: #aaa; letter-spacing: 1px; }
-        
         .timer-box {
             border: 1px solid var(--danger); background: #000; padding: 5px 10px;
             border-radius: 5px; text-align: center; min-width: 60px;
         }
         .timer-label { font-size: 6px; color: var(--danger); }
-        .timer-val { font-size: 18px; font-weight: 900; color: #fff; } /* BOLD WHITE TIMER */
+        .timer-val { font-size: 18px; font-weight: 900; color: #fff; }
 
         /* PAGES */
         .page { display:none; padding:15px; animation: fadeIn 0.3s; }
         #page-terminal { display:block; }
 
-        /* ALGORITHM STRIP */
+        /* TERMINAL ELEMENTS */
         .algo-strip {
             text-align: center; font-size: 10px; color: #aaa; margin-bottom: 15px;
             letter-spacing: 1px; text-shadow: 0 0 5px rgba(255,255,255,0.2);
@@ -46,11 +51,9 @@
         }
         .algo-highlight { color: var(--danger); font-weight: 900; text-transform:uppercase; }
 
-        /* PREDICTION PILL (ROUND RECTANGLE) */
         .pred-pill {
             background: rgba(255, 0, 60, 0.1); border: 2px solid var(--danger);
-            border-radius: 50px; /* Round Capsule */
-            padding: 10px 30px; margin: 0 auto 20px; width: fit-content;
+            border-radius: 50px; padding: 10px 30px; margin: 0 auto 20px; width: fit-content;
             font-size: 20px; font-weight: 900; color: #fff;
             box-shadow: 0 0 20px rgba(255,0,60,0.4); text-transform: uppercase;
         }
@@ -59,7 +62,6 @@
             box-shadow: 0 0 20px rgba(0,255,65,0.4); 
         }
 
-        /* JACKPOT BOXES */
         .jackpot-container {
             background: linear-gradient(180deg, #151515 0%, #000 100%);
             border: 1px solid #333; border-radius: 15px; padding: 20px;
@@ -79,7 +81,6 @@
             box-shadow: inset 0 0 15px rgba(255, 215, 0, 0.2);
         }
 
-        /* 6 COUNCILS GRID */
         .council-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 20px; }
         .c-node {
             background: #0a0a0a; border: 1px solid #222; border-radius: 8px;
@@ -101,7 +102,7 @@
         .nav-item { font-size: 20px; background:none; border:none; color:#555; cursor:pointer; }
         .nav-item.active { color: var(--danger); text-shadow: 0 0 10px var(--danger); }
 
-        /* HISTORY LOGS */
+        /* ARCHIVE CARDS (V.5 STYLE) */
         .card {
             background: #0f0f0f; border-left: 4px solid #333; border-radius: 8px;
             padding: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
@@ -109,9 +110,17 @@
         .card.win { border-left-color: var(--primary); background: linear-gradient(90deg, rgba(0,255,65,0.05), transparent); }
         .card.loss { border-left-color: var(--danger); background: linear-gradient(90deg, rgba(255,0,60,0.05), transparent); }
 
-        /* THEMES */
-        .theme-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-        .t-btn { padding:15px; border:1px solid #333; background:#000; color:#fff; font-size:10px; }
+        /* THEME GRID */
+        .theme-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .theme-btn {
+            background: #111; border: 1px solid #333; padding: 12px; border-radius: 8px;
+            display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 10px;
+        }
+        .color-dot { width: 15px; height: 15px; border-radius: 50%; border: 1px solid #fff; }
+
+        /* PROFILE */
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+        .stat-box { background: #111; border: 1px solid #333; padding: 15px; text-align: center; border-radius: 8px; }
 
         @keyframes fadeIn { from{opacity:0} to{opacity:1} }
     </style>
@@ -121,7 +130,7 @@
     <div class="header">
         <div>
             <div class="title-box">DARKNET QUANTUM V.5</div>
-            <div class="sub-title">JACKPOT SYSTEM</div>
+            <div class="sub-title">JACKPOT PREDICTION SYSTEM</div>
         </div>
         <div class="timer-box">
             <div class="timer-label">DRAW</div>
@@ -154,10 +163,9 @@
             <div class="c-node" id="c-wave"><span class="c-icon">🌊</span><span class="c-name">WAVE</span></div>
             <div class="c-node" id="c-infinity"><span class="c-icon">♾</span><span class="c-name">INFINITY</span></div>
         </div>
-
-        <div style="margin-top:20px; border-top:1px solid #222; padding-top:10px;">
-            <div style="font-size:10px; color:var(--primary); text-align:center; margin-bottom:10px;">SESSION HISTORY</div>
-            <div id="history-feed"></div>
+        
+        <div style="text-align: center; font-size: 9px; color: #444; margin-top: 20px;">
+            RESULTS MOVED TO ARCHIVE 📂
         </div>
     </div>
 
@@ -167,12 +175,18 @@
     </div>
 
     <div id="page-themes" class="page">
-        <h3>CUSTOMIZE UI</h3>
-        <div class="theme-grid" style="margin-top:20px;">
-            <button class="t-btn" onclick="setTheme('green')" style="border-color:#00ff41; color:#00ff41;">GREEN</button>
-            <button class="t-btn" onclick="setTheme('red')" style="border-color:#ff003c; color:#ff003c;">RED</button>
-            <button class="t-btn" onclick="setTheme('blue')" style="border-color:#00d4ff; color:#00d4ff;">BLUE</button>
-            <button class="t-btn" onclick="setTheme('gold')" style="border-color:#ffd700; color:#ffd700;">GOLD</button>
+        <h3 style="margin-bottom: 20px;">SELECT INTERFACE</h3>
+        <div class="theme-grid">
+            <div class="theme-btn" onclick="setTheme('green')"><div class="color-dot" style="background:#00ff41"></div> NEON GREEN</div>
+            <div class="theme-btn" onclick="setTheme('red')"><div class="color-dot" style="background:#ff003c"></div> BLOOD RED</div>
+            <div class="theme-btn" onclick="setTheme('blue')"><div class="color-dot" style="background:#00d4ff"></div> PLASMA BLUE</div>
+            <div class="theme-btn" onclick="setTheme('gold')"><div class="color-dot" style="background:#ffd700"></div> LUXURY GOLD</div>
+            <div class="theme-btn" onclick="setTheme('purple')"><div class="color-dot" style="background:#bc13fe"></div> DEEP PURPLE</div>
+            <div class="theme-btn" onclick="setTheme('cyan')"><div class="color-dot" style="background:#00ffff"></div> CYAN TECH</div>
+            <div class="theme-btn" onclick="setTheme('pink')"><div class="color-dot" style="background:#ff00ff"></div> HOT PINK</div>
+            <div class="theme-btn" onclick="setTheme('orange')"><div class="color-dot" style="background:#ff6600"></div> BLAZE ORANGE</div>
+            <div class="theme-btn" onclick="setTheme('white')"><div class="color-dot" style="background:#ffffff"></div> GHOST WHITE</div>
+            <div class="theme-btn" onclick="setTheme('neon')"><div class="color-dot" style="background:#ccff00"></div> TOXIC YELLOW</div>
         </div>
     </div>
 
@@ -180,14 +194,14 @@
         <div style="text-align:center; padding:30px; background:#111; border-radius:10px;">
             <div style="font-size:50px;">👤</div>
             <h2>AHMAD BOSS</h2>
-            <p style="color:var(--primary); font-size:10px;">LEVEL 3 ACCESS</p>
+            <p style="color:var(--primary); font-size:10px;">LEVEL 3 ACCESS GRANTED</p>
         </div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:20px;">
-            <div style="background:#111; padding:15px; text-align:center; border:1px solid #333;">
+        <div class="stat-grid">
+            <div class="stat-box">
                 <div style="font-size:24px; color:var(--primary)" id="totalWins">0</div>
                 <div style="font-size:10px;">WINS</div>
             </div>
-            <div style="background:#111; padding:15px; text-align:center; border:1px solid #333;">
+            <div class="stat-box">
                 <div style="font-size:24px; color:var(--danger)" id="totalLoss">0</div>
                 <div style="font-size:10px;">LOSSES</div>
             </div>
@@ -204,7 +218,7 @@
 <script>
     const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=50&ts=";
     
-    // MAPPING ALGOS TO ICONS
+    // ALGOS
     const ALGOS = {
         dragon: { name: "DRAGON", id: "c-dragon" },
         zigzag: { name: "ZIGZAG", id: "c-pattern" },
@@ -220,7 +234,7 @@
     let wins = 0; 
     let losses = 0;
 
-    // --- TIMER SYSTEM (BOLD WHITE) ---
+    // --- TIMER ---
     setInterval(() => {
         let d = new Date();
         let s = 60 - d.getSeconds();
@@ -247,23 +261,26 @@
         } catch(e) {}
     }
 
-    // --- QUANTUM ENGINE (LEVEL 3 FIXER) ---
+    // --- ENGINE (AGGRESSIVE L1 WINNINGS) ---
     function runQuantumEngine(history, nextIssue) {
         let lastRes = parseInt(history[0].number) >= 5 ? "BIG" : "SMALL";
         let pred = "";
         let algoKey = "";
 
-        // SELF-HEALING LOGIC
+        // STRATEGY: MAXIMIZE LEVEL 1 WINS
         if (level === 1) {
-            pred = lastRes; algoKey = "dragon"; // Follow Trend
+            // L1: DRAGON (Follow Trend) - 90% priority
+            pred = lastRes; algoKey = "dragon"; 
         } else if (level === 2) {
-            pred = lastRes === "BIG" ? "SMALL" : "BIG"; algoKey = "chaos"; // Reverse Trend
+            // L2: CHAOS (Flip)
+            pred = lastRes === "BIG" ? "SMALL" : "BIG"; algoKey = "chaos"; 
         } else {
+            // L3: TITAN (Consensus)
             let bigs = history.slice(0,10).filter(h => parseInt(h.number) >= 5).length;
-            pred = bigs >= 5 ? "BIG" : "SMALL"; algoKey = "titan"; // Consensus
+            pred = bigs >= 5 ? "BIG" : "SMALL"; algoKey = "titan"; 
         }
 
-        // Jackpot Seeds
+        // Seeds
         let s1 = pred === "BIG" ? 5+Math.floor(Math.random()*5) : Math.floor(Math.random()*5);
         let s2 = pred === "BIG" ? [6,7,8,9][Math.floor(Math.random()*4)] : [0,1,2,3][Math.floor(Math.random()*4)];
 
@@ -292,19 +309,19 @@
         let actual = parseInt(result.number) >= 5 ? "BIG" : "SMALL";
         let win = actual === currentBet.pred;
 
-        addHistoryCard(currentBet, win, result.number);
+        addArchiveCard(currentBet, win, result.number);
 
         if (win) {
-            wins++; level = 1;
+            wins++; level = 1; // Stay on L1 for winning streak
             confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
         } else {
             losses++; level++;
-            if(level > 3) level = 1; // Safe Reset
+            if(level > 3) level = 1; 
         }
         updateProfile();
     }
 
-    function addHistoryCard(bet, win, num) {
+    function addArchiveCard(bet, win, num) {
         const div = document.createElement('div');
         div.className = win ? 'card win' : 'card loss';
         div.innerHTML = `
@@ -314,10 +331,7 @@
             </div>
             <div style="font-size:20px">${win ? '✔' : '✖'}</div>
         `;
-        document.getElementById('history-feed').prepend(div);
-        
-        let clone = div.cloneNode(true);
-        document.getElementById('archive-feed').prepend(clone);
+        document.getElementById('archive-feed').prepend(div);
     }
 
     function updateProfile() {
@@ -325,7 +339,6 @@
         document.getElementById('totalLoss').innerText = losses;
     }
 
-    // --- WORKING NAV ---
     window.nav = function(id, btn) {
         document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
         document.getElementById('page-'+id).style.display = 'block';
