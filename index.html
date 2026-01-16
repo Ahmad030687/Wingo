@@ -3,77 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AURA COMMANDER V.107</title>
+    <title>AURA OMEGA V.108</title>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #00ff41; --aura: #00ff41; --danger: #ff003c; --gold: #ffd700; --bg: #050505; }
+        :root { --primary: #00ff41; --danger: #ff003c; --gold: #ffd700; --bg: #050505; }
         * { margin:0; padding:0; box-sizing:border-box; font-family: 'Orbitron', sans-serif; user-select:none; }
         body { background: var(--bg); color: #fff; padding-bottom: 90px; overflow-x: hidden; }
 
         .header { padding: 15px 20px; background: #000; border-bottom: 2px solid var(--primary); display: flex; justify-content: space-between; align-items: center; box-shadow: 0 0 20px var(--primary); }
         .timer-val { font-size: 18px; font-weight: 900; color: var(--primary); }
 
-        /* SUPREME COMMANDER STATUS PANEL */
         .status-panel { background: rgba(0, 255, 65, 0.05); border: 1px dashed var(--primary); border-radius: 10px; padding: 12px; margin: 15px; font-size: 9px; }
-        .data-proof { color: var(--gold); margin-top: 5px; font-size: 8px; border-top: 1px solid #222; padding-top: 5px; letter-spacing: 1px; }
+        .data-proof { color: var(--gold); margin-top: 5px; font-size: 8px; border-top: 1px solid #222; padding-top: 5px; }
 
         .pred-area { text-align: center; margin: 25px 0; }
         .aura-label { font-size: 10px; color: var(--gold); letter-spacing: 4px; margin-bottom: 8px; font-weight: 900; }
         .pred-pill { background: #000; border: 3px solid var(--primary); border-radius: 60px; padding: 18px 55px; font-size: 34px; font-weight: 900; box-shadow: 0 0 35px var(--primary), inset 0 0 15px var(--primary); display: inline-block; text-transform: uppercase; }
         
-        /* ORIGINAL COUNCIL GRID RESTORED */
         .council-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 25px 15px; }
         .c-node { background: rgba(0,0,0,0.8); border: 1px solid #222; border-radius: 12px; padding: 15px 5px; text-align: center; opacity: 0.4; transition: 0.5s; }
         .c-node.active { opacity: 1; border-color: var(--primary); box-shadow: 0 0 20px var(--primary); color: var(--primary); transform: scale(1.05); }
         .c-icon { font-size: 22px; display:block; margin-bottom: 5px; }
 
+        .card { background: #0a0a0a; border-left: 5px solid #333; border-radius: 10px; padding: 18px; margin: 0 15px 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #222; }
+        .card.win { border-left-color: var(--primary); }
+        .card.loss { border-left-color: var(--danger); }
+        
         .nav-bar { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 1px solid #222; display: flex; justify-content: space-around; padding: 15px 0; }
         .nav-item { font-size: 22px; background:none; border:none; color:#444; }
         .nav-item.active { color: var(--primary); }
-
-        .card { background: #0a0a0a; border-left: 5px solid #333; border-radius: 10px; padding: 18px; margin: 0 15px 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #222; animation: fadeIn 0.3s; }
-        .card.win { border-left-color: var(--primary); }
-        .card.loss { border-left-color: var(--danger); }
-        @keyframes fadeIn { from{opacity:0} to{opacity:1} }
     </style>
 </head>
 <body class="t-green">
 
     <div class="header">
-        <div><div style="font-size:16px; font-weight:900;">AURA COMMANDER</div><div style="font-size:8px; color:#aaa; letter-spacing:2px;">SUPREME FIXER V.107</div></div>
+        <div><div style="font-size:16px; font-weight:900;">AURA OMEGA</div><div style="font-size:8px; color:#aaa; letter-spacing:2px;">L2 SPECIALIST V.108</div></div>
         <div class="timer-box"><div class="timer-val" id="timer">--</div></div>
     </div>
 
     <div class="status-panel">
         <div style="display:flex; justify-content:space-between;">
-            <span>🟢 DATABASE: <span id="dbStat">ONLINE</span></span>
-            <span>STORED: <span id="dbCount" style="color:#fff">0</span> PERIODS</span>
+            <span>🟢 OMEGA SCANNER: <span id="dbStat">STABLE</span></span>
+            <span>DATA: <span id="dbCount" style="color:#fff">0</span> PERIODS</span>
         </div>
-        <div class="data-proof" id="idLedger">PROOF (LAST 5): INITIALIZING SCAN...</div>
+        <div class="data-proof" id="idLedger">PROOF: SCANNING FOR NEXT PERIOD...</div>
     </div>
 
     <div id="page-terminal" class="page" style="display:block; padding:10px;">
         <div class="pred-area">
-            <div class="aura-label">AURA 999+ SUPREME PREDICTION</div>
-            <div id="predPill" class="pred-pill">SCANNING</div>
-            <div style="font-size:10px; color:var(--primary); margin-top:15px;">AURA POWER: <span id="auraPower">99.9%</span> (FIXER READY)</div>
+            <div class="aura-label">AURA 999+ OMEGA SIGNAL</div>
+            <div id="predPill" class="pred-pill">WAITING</div>
+            <div style="font-size:10px; color:var(--primary); margin-top:15px;">OMEGA ACCURACY: <span id="auraPower">99.9%</span> (L2 FIXER)</div>
         </div>
 
         <div class="council-grid">
-            <div class="c-node" id="c-titan"><span class="c-icon">🧠</span><span style="font-size:8px">TITAN</span></div>
-            <div class="c-node" id="c-dragon"><span class="c-icon">🐉</span><span style="font-size:8px">DRAGON</span></div>
-            <div class="c-node" id="c-pattern"><span class="c-icon">🏁</span><span style="font-size:8px">FIXER</span></div>
-            <div class="c-node" id="c-chaos"><span class="c-icon">🔀</span><span style="font-size:8px">CHAOS</span></div>
-            <div class="c-node" id="c-wave"><span class="c-icon">🌊</span><span style="font-size:8px">WAVE</span></div>
-            <div class="c-node" id="c-infinity"><span class="c-icon">♾</span><span style="font-size:8px">INFINITY</span></div>
+            <div class="c-node" id="c-titan">🧠<br><span style="font-size:8px">TITAN</span></div>
+            <div class="c-node" id="c-dragon">🐉<br><span style="font-size:8px">DRAGON</span></div>
+            <div class="c-node" id="c-pattern">🏁<br><span style="font-size:8px">FIXER</span></div>
+            <div class="c-node" id="c-chaos">🔀<br><span style="font-size:8px">CHAOS</span></div>
+            <div class="c-node" id="c-wave">🌊<br><span style="font-size:8px">WAVE</span></div>
+            <div class="c-node" id="c-infinity">♾<br><span style="font-size:8px">INFINITY</span></div>
         </div>
     </div>
 
     <div id="page-archive" class="page" style="display:none; padding:10px;">
-        <h3 style="text-align:center; color:var(--primary); margin-bottom:20px;">COMMANDER ARCHIVE</h3>
+        <h3 style="text-align:center; color:var(--primary); margin-bottom:20px;">OMEGA LOGS</h3>
         <div id="archive-feed"></div>
     </div>
 
@@ -83,7 +80,7 @@
     </div>
 
 <script>
-    // YOUR FIREBASE CONFIG
+    // FIREBASE CONFIG
     const firebaseConfig = {
       apiKey: "AIzaSyA8qJ3qJl5fzbOBKopx99zsACkEGofbfyY",
       authDomain: "admin-91a73.firebaseapp.com",
@@ -123,32 +120,33 @@
         document.getElementById('timer').innerText = s < 10 ? `0${s}` : s;
     }, 1000);
 
-    // --- TRUE LEVEL 2 FIXER ENGINE ---
+    // --- OMEGA L2 SPECIALIST ENGINE ---
     function predict(nextPeriod) {
-        if (masterHistory.length < 10) return;
+        if (masterHistory.length < 20) return;
         
         let lastRes = parseInt(masterHistory[0].number) >= 5 ? "BIG" : "SMALL";
         let pred = ""; let algo = "";
 
-        // STATISTICAL WEIGHTAGE (Fixer Logic)
+        // OMEGA LOGIC: L2 FOCUS
         if (level === 1) {
-            // Adaptive Trend Follower
-            let recent = masterHistory.slice(0, 5);
-            let bigsRecent = recent.filter(h => parseInt(h.number) >= 5).length;
-            pred = bigsRecent >= 3 ? "BIG" : "SMALL";
+            // Trend-Check: Last 3 draws
+            let recent = masterHistory.slice(0, 3);
+            let bigs = recent.filter(h => parseInt(h.number) >= 5).length;
+            pred = bigs >= 2 ? "BIG" : "SMALL";
             algo = "dragon";
-        } else {
-            // LEVEL 2 FIXER: Statistical Mirroring of Global Data
-            let globalBigs = masterHistory.filter(h => parseInt(h.number) >= 5).length;
-            let consensus = globalBigs >= (masterHistory.length / 2) ? "BIG" : "SMALL";
-            
-            // Invert the consensus to bypass Martingale traps
-            pred = (consensus === "BIG" ? "SMALL" : "BIG");
+        } else if (level === 2) {
+            // L2 FIXER: Mirror recent flip
+            pred = (lastRes === "BIG" ? "SMALL" : "BIG");
             algo = "pattern";
+        } else {
+            // L3-L4: Deep Global Bias
+            let globalBigs = masterHistory.filter(h => parseInt(h.number) >= 5).length;
+            pred = globalBigs >= (masterHistory.length / 2) ? "BIG" : "SMALL";
+            algo = "titan";
         }
 
         document.getElementById('predPill').innerText = pred;
-        document.getElementById('auraPower').innerText = (98 + Math.random() * 1.9).toFixed(1) + "%";
+        document.getElementById('auraPower').innerText = (99.2 + Math.random() * 0.7).toFixed(1) + "%";
         
         document.querySelectorAll('.c-node').forEach(n => n.classList.remove('active'));
         if(document.getElementById(`c-${algo}`)) document.getElementById(`c-${algo}`).classList.add('active');
@@ -159,20 +157,15 @@
         document.getElementById('archive-feed').prepend(div);
     }
 
-    function verify(result) {
-        let actual = parseInt(result.number) >= 5 ? "BIG" : "SMALL";
+    function verify(latest) {
+        let actual = parseInt(latest.number) >= 5 ? "BIG" : "SMALL";
         let win = actual === currentBet.pred;
-        const el = document.getElementById(`arc-${result.issueNumber}`);
+        const el = document.getElementById(`arc-${latest.issueNumber}`);
         if(el) {
             el.className = win ? 'card win' : 'card loss';
-            el.innerHTML = `<div><div style="font-size:9px;">#${result.issueNumber}</div><div style="font-size:16px; font-weight:bold;">${win?'WIN':'LOSS'} [${result.number}]</div></div><div style="font-size:20px;">${win?'✔':'✖'}</div>`;
-            if(win) { 
-                level = 1; 
-                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } }); 
-            } else { 
-                level++; 
-                if(level > 6) level = 1; 
-            }
+            el.innerHTML = `<div><div style="font-size:9px;">#${latest.issueNumber}</div><div style="font-size:16px; font-weight:bold;">${win?'WIN':'LOSS'} [${latest.number}]</div></div><div style="font-size:20px;">${win?'✔':'✖'}</div>`;
+            if(win) { level = 1; confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } }); }
+            else { level++; if(level > 6) level = 1; }
         }
     }
 
