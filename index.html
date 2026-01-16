@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DARKNET QUANTUM V.65</title>
+    <title>DARKNET GOD V.66</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #00ff41; --danger: #ff003c; --gold: #ffd700; --bg: #050505; }
+        :root { --primary: #00ff41; --danger: #ff003c; --gold: #ffd700; --bg: #050505; --panel: #111; }
         
-        /* 10 THEMES */
+        /* THEMES */
         body.t-green { --primary: #00ff41; }
         body.t-red { --primary: #ff003c; } 
         body.t-blue { --primary: #00d4ff; }
@@ -24,9 +24,9 @@
         * { margin:0; padding:0; box-sizing:border-box; font-family: 'Orbitron', sans-serif; user-select:none; }
         body { background: var(--bg); color: #fff; padding-bottom: 90px; overflow-x: hidden; transition: 0.3s; }
 
-        /* V.5 HEADER */
+        /* HEADER */
         .header {
-            padding: 15px 20px; background: #000; border-bottom: 2px solid var(--primary);
+            padding: 15px; background: #000; border-bottom: 2px solid var(--primary);
             display: flex; justify-content: space-between; align-items: center;
             position: sticky; top: 0; z-index: 1000; box-shadow: 0 5px 20px rgba(0,0,0,0.5);
         }
@@ -42,7 +42,7 @@
         .page { display:none; padding:15px; animation: fadeIn 0.3s; }
         #page-terminal { display:block; }
 
-        /* TERMINAL UI (V.5 STYLE) */
+        /* TERMINAL UI */
         .algo-strip {
             text-align: center; font-size: 10px; color: #aaa; margin-bottom: 15px;
             letter-spacing: 1px; text-shadow: 0 0 5px rgba(255,255,255,0.2);
@@ -73,7 +73,7 @@
             box-shadow: inset 0 0 15px rgba(255, 215, 0, 0.2);
         }
 
-        /* COUNCIL GRID */
+        /* COUNCILS */
         .council-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 20px; }
         .c-node {
             background: #0a0a0a; border: 1px solid #222; border-radius: 8px;
@@ -86,17 +86,16 @@
         .c-icon { font-size: 18px; display:block; margin-bottom: 5px; }
         .c-name { font-size: 8px; color: #fff; letter-spacing: 1px; }
 
-        /* ARCHIVE CARDS & LOADING */
+        /* ARCHIVE CARDS */
         .card {
             background: #0f0f0f; border-left: 4px solid #555; border-radius: 8px;
             padding: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
             transition: 0.3s;
         }
         .card.pending { border-left-color: #888; }
-        .card.win { border-left-color: var(--primary); background: linear-gradient(90deg, rgba(0,255,65,0.05), transparent); }
+        .card.win { border-left-color: var(--primary); background: linear-gradient(90deg, rgba(255,255,255,0.05), transparent); }
         .card.loss { border-left-color: var(--danger); opacity: 0.8; }
         
-        /* LOADING SPINNER FOR PENDING */
         .loader {
             border: 3px solid #333; border-top: 3px solid var(--primary);
             border-radius: 50%; width: 20px; height: 20px;
@@ -104,7 +103,7 @@
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* THEMES GRID */
+        /* THEMES */
         .theme-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .theme-btn {
             background: #111; border: 1px solid #333; padding: 12px; border-radius: 8px;
@@ -120,7 +119,7 @@
         }
         .nav-item { font-size: 20px; background:none; border:none; color:#555; cursor:pointer; }
         .nav-item.active { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
-        
+
         /* PROFILE */
         .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
         .stat-box { background: #111; border: 1px solid #333; padding: 15px; text-align: center; border-radius: 8px; }
@@ -132,8 +131,8 @@
 
     <div class="header">
         <div>
-            <div class="title-box">DARKNET QUANTUM V.5</div>
-            <div class="sub-title">JACKPOT PREDICTION SYSTEM</div>
+            <div class="title-box">DARKNET GOD V.66</div>
+            <div class="sub-title">ULTIMATE PREDICTION SYSTEM</div>
         </div>
         <div class="timer-box">
             <div class="timer-label" style="color:var(--primary)">DRAW</div>
@@ -196,7 +195,7 @@
         <div style="text-align:center; padding:30px; background:#111; border-radius:10px;">
             <div style="font-size:50px;">👤</div>
             <h2>AHMAD BOSS</h2>
-            <p style="color:var(--primary); font-size:10px;">LEVEL 3 ACCESS</p>
+            <p style="color:var(--primary); font-size:10px;">GOD MODE ACTIVE</p>
         </div>
         <div class="stat-grid">
             <div class="stat-box">
@@ -220,7 +219,7 @@
 <script>
     const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=50&ts=";
     
-    // ALGOS
+    // ALGOS MAPPING
     const ALGOS = {
         dragon: { name: "DRAGON", id: "c-dragon" },
         zigzag: { name: "ZIGZAG", id: "c-pattern" },
@@ -262,17 +261,19 @@
         } catch(e) {}
     }
 
-    // --- PREDICT LOGIC ---
+    // --- GOD MODE ENGINE ---
     function predict(history, period) {
         let lastRes = parseInt(history[0].number) >= 5 ? "BIG" : "SMALL";
         let pred = "";
         let algoKey = "";
 
+        // MULTI-LAYER LOGIC (Trend -> Flip -> Consensus)
         if (level === 1) {
-            pred = lastRes; algoKey = "dragon"; // L1 = TREND
+            pred = lastRes; algoKey = "dragon"; // L1: Follow Trend (Max Profit)
         } else if (level === 2) {
-            pred = lastRes === "BIG" ? "SMALL" : "BIG"; algoKey = "chaos"; // L2 = FLIP
+            pred = lastRes === "BIG" ? "SMALL" : "BIG"; algoKey = "zigzag"; // L2: Flip (Recovery)
         } else {
+            // L3: Consensus (Safety)
             let bigs = history.slice(0,10).filter(h => parseInt(h.number) >= 5).length;
             pred = bigs >= 5 ? "BIG" : "SMALL"; algoKey = "titan"; 
         }
@@ -282,7 +283,6 @@
 
         updateUI(period, pred, algoKey, s1, s2);
         
-        // PENDING CARD IN ARCHIVE
         currentBet = { period: period, pred: pred, algo: algoKey, seeds: [s1, s2] };
         addPendingCard(currentBet);
     }
@@ -300,7 +300,6 @@
         }
     }
 
-    // --- ARCHIVE LOGIC (PENDING -> RESULT) ---
     function addPendingCard(bet) {
         const div = document.createElement('div');
         div.id = `arc-${bet.period}`;
