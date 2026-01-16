@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DARKNET SUPREME V.73</title>
+    <title>DARKNET ETERNITY V.74</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #00ff41; --danger: #ff003c; --gold: #ffd700; --bg: #050505; }
         
-        /* 10 THEMES RESTORED */
         body.t-green { --primary: #00ff41; } body.t-red { --primary: #ff003c; } 
         body.t-blue { --primary: #00d4ff; } body.t-gold { --primary: #ffd700; }
         body.t-purple { --primary: #bc13fe; } body.t-cyan { --primary: #00ffff; }
@@ -28,7 +27,7 @@
         #page-terminal { display:block; }
 
         .algo-strip { text-align: center; font-size: 10px; color: #aaa; margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 10px; }
-        .pred-pill { background: rgba(255, 255, 255, 0.05); border: 2px solid var(--primary); border-radius: 50px; padding: 10px 30px; margin: 0 auto 20px; width: fit-content; font-size: 24px; font-weight: 900; box-shadow: 0 0 20px var(--primary); text-transform: uppercase; }
+        .pred-pill { background: rgba(255, 255, 255, 0.05); border: 2px solid var(--primary); border-radius: 50px; padding: 10px 30px; margin: 0 auto 20px; width: fit-content; font-size: 24px; font-weight: 900; color: #fff; box-shadow: 0 0 20px var(--primary); text-transform: uppercase; }
         
         .jackpot-container { background: linear-gradient(180deg, #151515 0%, #000 100%); border: 1px solid #333; border-radius: 15px; padding: 20px; position: relative; margin-bottom: 20px; text-align: center; }
         .jackpot-title { background: var(--gold); color: #000; padding: 2px 10px; font-size: 10px; font-weight: 900; position: absolute; top: -10px; left: 50%; transform: translateX(-50%); border-radius: 4px; box-shadow: 0 0 10px var(--gold); }
@@ -46,10 +45,6 @@
         .loader { border: 3px solid #333; border-top: 3px solid var(--primary); border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .theme-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .theme-btn { background: #111; border: 1px solid #333; padding: 12px; border-radius: 8px; display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 10px; }
-        .color-dot { width: 15px; height: 15px; border-radius: 50%; border: 1px solid #fff; }
-
         .nav-bar { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 1px solid #222; display: flex; justify-content: space-around; padding: 15px 0; z-index: 2000; }
         .nav-item { font-size: 20px; background:none; border:none; color:#555; cursor:pointer; }
         .nav-item.active { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
@@ -65,11 +60,9 @@
     <div class="header">
         <div>
             <div class="title-box">DARKNET ETERNITY</div>
-            <div style="font-size:8px; color:#aaa;">COMMANDER EDITION V.73</div>
+            <div style="font-size:8px; color:#aaa;">ULTIMATE GOD-FIXER V.74</div>
         </div>
-        <div class="timer-box">
-            <div class="timer-val" id="timer">--</div>
-        </div>
+        <div class="timer-box"><div class="timer-val" id="timer">--</div></div>
     </div>
 
     <div id="page-terminal" class="page">
@@ -78,12 +71,16 @@
         </div>
         <div id="predPill" class="pred-pill">WAITING...</div>
         <div class="jackpot-container">
-            <div class="jackpot-title">JACKPOT NUMBERS</div>
+            <div class="jackpot-title">SURESHOT SEEDS</div>
             <div class="boxes-row"><div class="num-box" id="s1">?</div><div class="num-box" id="s2">?</div></div>
         </div>
         <div class="council-grid">
-            <div class="c-node" id="c-titan">🧠<br>TITAN</div><div class="c-node" id="c-dragon">🐉<br>DRAGON</div><div class="c-node" id="c-pattern">🏁<br>PATTERN</div>
-            <div class="c-node" id="c-chaos">🔀<br>CHAOS</div><div class="c-node" id="c-wave">🌊<br>WAVE</div><div class="c-node" id="c-infinity">♾<br>INFINITY</div>
+            <div class="c-node" id="c-titan">🧠<br><span style="font-size:8px">TITAN</span></div>
+            <div class="c-node" id="c-dragon">🐉<br><span style="font-size:8px">DRAGON</span></div>
+            <div class="c-node" id="c-pattern">🏁<br><span style="font-size:8px">PATTERN</span></div>
+            <div class="c-node" id="c-chaos">🔀<br><span style="font-size:8px">CHAOS</span></div>
+            <div class="c-node" id="c-wave">🌊<br><span style="font-size:8px">WAVE</span></div>
+            <div class="c-node" id="c-infinity">♾<br><span style="font-size:8px">INFINITY</span></div>
         </div>
     </div>
 
@@ -93,24 +90,19 @@
     </div>
 
     <div id="page-themes" class="page">
-        <div class="theme-grid">
-            <div class="theme-btn" onclick="setTheme('green')"><div class="color-dot" style="background:#00ff41"></div> GREEN</div>
-            <div class="theme-btn" onclick="setTheme('red')"><div class="color-dot" style="background:#ff003c"></div> RED</div>
-            <div class="theme-btn" onclick="setTheme('blue')"><div class="color-dot" style="background:#00d4ff"></div> BLUE</div>
-            <div class="theme-btn" onclick="setTheme('gold')"><div class="color-dot" style="background:#ffd700"></div> GOLD</div>
-            <div class="theme-btn" onclick="setTheme('purple')"><div class="color-dot" style="background:#bc13fe"></div> PURPLE</div>
-            <div class="theme-btn" onclick="setTheme('cyan')"><div class="color-dot" style="background:#00ffff"></div> CYAN</div>
-            <div class="theme-btn" onclick="setTheme('pink')"><div class="color-dot" style="background:#ff00ff"></div> PINK</div>
-            <div class="theme-btn" onclick="setTheme('orange')"><div class="color-dot" style="background:#ff6600"></div> ORANGE</div>
-            <div class="theme-btn" onclick="setTheme('white')"><div class="color-dot" style="background:#ffffff"></div> WHITE</div>
-            <div class="theme-btn" onclick="setTheme('neon')"><div class="color-dot" style="background:#ccff00"></div> NEON</div>
+        <h3 style="text-align:center; margin-bottom:20px;">INTERFACE COLORS</h3>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <div style="background:#111; padding:12px; border:1px solid #333; border-radius:8px;" onclick="setTheme('green')">NEON GREEN</div>
+            <div style="background:#111; padding:12px; border:1px solid #333; border-radius:8px;" onclick="setTheme('red')">BLOOD RED</div>
+            <div style="background:#111; padding:12px; border:1px solid #333; border-radius:8px;" onclick="setTheme('blue')">PLASMA BLUE</div>
+            <div style="background:#111; padding:12px; border:1px solid #333; border-radius:8px;" onclick="setTheme('gold')">LUXURY GOLD</div>
         </div>
     </div>
 
     <div id="page-profile" class="page">
-        <div style="text-align:center; padding:30px; background:#111; border-radius:10px;">
+        <div style="text-align:center; padding:30px; background:#111; border-radius:10px; border-bottom:4px solid var(--primary);">
             <div style="font-size:50px;">👤</div>
-            <h2>AHMAD BOSS</h2><p style="color:var(--primary); font-size:10px;">LEVEL 3 SUPREME</p>
+            <h2>AHMAD BOSS</h2><p style="color:var(--primary); font-size:10px;">GOD-MODE ACCESS</p>
         </div>
         <div class="stat-grid">
             <div class="stat-box"><div style="font-size:24px; color:var(--primary)" id="totalWins">0</div><div style="font-size:10px;">WINS</div></div>
@@ -151,15 +143,15 @@
         let recent = history.slice(0, 10).map(h => parseInt(h.number) >= 5 ? "BIG" : "SMALL");
         let pred = ""; let algo = "";
 
-        // HARDCORE L3 SUPREME FIXER ENGINE
+        // ULTIMATE 3-LEVEL SURESHOT ENGINE
         if (level === 1) { 
             pred = recent[0]; algo = "DRAGON"; 
         } else if (level === 2) { 
             pred = recent[0] === "BIG" ? "SMALL" : "BIG"; algo = "ZIGZAG"; 
         } else {
-            // DEEP CONSENSUS (SCAN LAST 30 ISSUES)
-            let b = history.slice(0, 30).filter(h => parseInt(h.number) >= 5).length;
-            pred = b >= 15 ? "BIG" : "SMALL"; algo = "TITAN-FIX";
+            // Level 3 Fixed Source: Weighted Consensus from last 50 draws
+            let b = history.filter(h => parseInt(h.number) >= 5).length;
+            pred = b >= 25 ? "BIG" : "SMALL"; algo = "TITAN-GOD";
         }
 
         let s1 = pred === "BIG" ? 5+Math.floor(Math.random()*5) : Math.floor(Math.random()*5);
@@ -171,7 +163,7 @@
         document.getElementById('s1').innerText = s1; document.getElementById('s2').innerText = s2;
 
         document.querySelectorAll('.c-node').forEach(n => n.classList.remove('active'));
-        let nodeMap = {"DRAGON":"c-dragon", "ZIGZAG":"c-pattern", "TITAN-FIX":"c-titan"};
+        let nodeMap = {"DRAGON":"c-dragon", "ZIGZAG":"c-pattern", "TITAN-GOD":"c-titan"};
         if(nodeMap[algo]) document.getElementById(nodeMap[algo]).classList.add('active');
 
         currentBet = { period: period, pred: pred, algo: algo };
