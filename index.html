@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DARKNET GOD V.66</title>
+    <title>DARKNET SNIPER V.68</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #00ff41; --danger: #ff003c; --gold: #ffd700; --bg: #050505; --panel: #111; }
+        :root { --primary: #00ff41; --danger: #ff003c; --gold: #ffd700; --bg: #050505; }
         
-        /* THEMES */
+        /* 10 THEMES */
         body.t-green { --primary: #00ff41; }
         body.t-red { --primary: #ff003c; } 
         body.t-blue { --primary: #00d4ff; }
@@ -26,7 +26,7 @@
 
         /* HEADER */
         .header {
-            padding: 15px; background: #000; border-bottom: 2px solid var(--primary);
+            padding: 15px 20px; background: #000; border-bottom: 2px solid var(--primary);
             display: flex; justify-content: space-between; align-items: center;
             position: sticky; top: 0; z-index: 1000; box-shadow: 0 5px 20px rgba(0,0,0,0.5);
         }
@@ -48,6 +48,16 @@
             letter-spacing: 1px; text-shadow: 0 0 5px rgba(255,255,255,0.2);
             border-bottom: 1px solid #222; padding-bottom: 10px;
         }
+        
+        /* CONFIDENCE BAR */
+        .conf-box {
+            width: 80%; margin: 0 auto 10px; background: #111; border-radius: 10px; overflow: hidden; border: 1px solid #333;
+        }
+        .conf-fill {
+            height: 6px; background: var(--primary); width: 0%; transition: 1s;
+        }
+        .conf-text { text-align: center; font-size: 9px; margin-bottom: 15px; color: #aaa; }
+
         .pred-pill {
             background: rgba(255, 255, 255, 0.05); border: 2px solid var(--primary);
             border-radius: 50px; padding: 10px 30px; margin: 0 auto 20px; width: fit-content;
@@ -93,7 +103,7 @@
             transition: 0.3s;
         }
         .card.pending { border-left-color: #888; }
-        .card.win { border-left-color: var(--primary); background: linear-gradient(90deg, rgba(255,255,255,0.05), transparent); }
+        .card.win { border-left-color: var(--primary); background: linear-gradient(90deg, rgba(0,255,65,0.05), transparent); }
         .card.loss { border-left-color: var(--danger); opacity: 0.8; }
         
         .loader {
@@ -119,7 +129,7 @@
         }
         .nav-item { font-size: 20px; background:none; border:none; color:#555; cursor:pointer; }
         .nav-item.active { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
-
+        
         /* PROFILE */
         .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
         .stat-box { background: #111; border: 1px solid #333; padding: 15px; text-align: center; border-radius: 8px; }
@@ -131,8 +141,8 @@
 
     <div class="header">
         <div>
-            <div class="title-box">DARKNET GOD V.66</div>
-            <div class="sub-title">ULTIMATE PREDICTION SYSTEM</div>
+            <div class="title-box">DARKNET SNIPER V.68</div>
+            <div class="sub-title">PATTERN LOCK TECHNOLOGY</div>
         </div>
         <div class="timer-box">
             <div class="timer-label" style="color:var(--primary)">DRAW</div>
@@ -142,8 +152,11 @@
 
     <div id="page-terminal" class="page">
         <div class="algo-strip">
-            DRAW: <span id="drawInfo" style="color:#fff">#----</span> | ALGORITHM: <span id="algoName" style="color:var(--primary); font-weight:bold;">SCANNING</span>
+            DRAW: <span id="drawInfo" style="color:#fff">#----</span> | ALGO: <span id="algoName" style="color:var(--primary); font-weight:bold;">SCANNING</span>
         </div>
+
+        <div class="conf-box"><div class="conf-fill" id="confFill"></div></div>
+        <div class="conf-text">SIGNAL STRENGTH: <span id="confVal" style="color:#fff">0%</span></div>
 
         <div id="predPill" class="pred-pill">WAITING...</div>
 
@@ -195,7 +208,7 @@
         <div style="text-align:center; padding:30px; background:#111; border-radius:10px;">
             <div style="font-size:50px;">👤</div>
             <h2>AHMAD BOSS</h2>
-            <p style="color:var(--primary); font-size:10px;">GOD MODE ACTIVE</p>
+            <p style="color:var(--primary); font-size:10px;">SNIPER MODE ACCESS</p>
         </div>
         <div class="stat-grid">
             <div class="stat-box">
@@ -219,7 +232,7 @@
 <script>
     const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=50&ts=";
     
-    // ALGOS MAPPING
+    // ALGOS
     const ALGOS = {
         dragon: { name: "DRAGON", id: "c-dragon" },
         zigzag: { name: "ZIGZAG", id: "c-pattern" },
@@ -231,7 +244,6 @@
 
     let lastIssue = null;
     let currentBet = null;
-    let level = 1;
     let wins = 0; losses = 0;
 
     // --- TIMER ---
@@ -256,44 +268,64 @@
                     verify(latest);
                 }
                 lastIssue = latest.issueNumber;
-                predict(history, nextIssue);
+                analyzeAndPredict(history, nextIssue);
             }
         } catch(e) {}
     }
 
-    // --- GOD MODE ENGINE ---
-    function predict(history, period) {
+    // --- SNIPER LOGIC (PATTERN LOCK) ---
+    function analyzeAndPredict(history, period) {
         let lastRes = parseInt(history[0].number) >= 5 ? "BIG" : "SMALL";
         let pred = "";
         let algoKey = "";
+        let confidence = 50;
 
-        // MULTI-LAYER LOGIC (Trend -> Flip -> Consensus)
-        if (level === 1) {
-            pred = lastRes; algoKey = "dragon"; // L1: Follow Trend (Max Profit)
-        } else if (level === 2) {
-            pred = lastRes === "BIG" ? "SMALL" : "BIG"; algoKey = "zigzag"; // L2: Flip (Recovery)
-        } else {
-            // L3: Consensus (Safety)
-            let bigs = history.slice(0,10).filter(h => parseInt(h.number) >= 5).length;
-            pred = bigs >= 5 ? "BIG" : "SMALL"; algoKey = "titan"; 
+        // ANALYZE LAST 5 RESULTS
+        let recent = history.slice(0, 5).map(h => parseInt(h.number) >= 5 ? "BIG" : "SMALL");
+        
+        // 1. CHECK FOR DRAGON (TREND)
+        if (recent[0] === recent[1] && recent[1] === recent[2]) {
+            // 3 in a row -> Strong Pattern
+            pred = recent[0];
+            algoKey = "dragon";
+            confidence = 90; 
+        } 
+        // 2. CHECK FOR ZIGZAG
+        else if (recent[0] !== recent[1] && recent[1] !== recent[2]) {
+            // B-S-B pattern
+            pred = recent[0] === "BIG" ? "SMALL" : "BIG";
+            algoKey = "zigzag";
+            confidence = 85;
+        }
+        // 3. CHAOS / WEAK PATTERN
+        else {
+            // Fallback to Majority in last 10
+            let bigs = history.slice(0, 10).filter(h => parseInt(h.number) >= 5).length;
+            pred = bigs >= 5 ? "BIG" : "SMALL";
+            algoKey = "titan";
+            confidence = 40; // Low Confidence
         }
 
         let s1 = pred === "BIG" ? 5+Math.floor(Math.random()*5) : Math.floor(Math.random()*5);
         let s2 = pred === "BIG" ? [6,7,8,9][Math.floor(Math.random()*4)] : [0,1,2,3][Math.floor(Math.random()*4)];
 
-        updateUI(period, pred, algoKey, s1, s2);
-        
-        currentBet = { period: period, pred: pred, algo: algoKey, seeds: [s1, s2] };
+        updateUI(period, pred, algoKey, s1, s2, confidence);
+        currentBet = { period: period, pred: pred, algo: algoKey, seeds: [s1, s2], conf: confidence };
         addPendingCard(currentBet);
     }
 
-    function updateUI(issue, pred, algoKey, s1, s2) {
+    function updateUI(issue, pred, algoKey, s1, s2, conf) {
         document.getElementById('drawInfo').innerText = "#" + issue.slice(-4);
         document.getElementById('algoName').innerText = ALGOS[algoKey].name;
         document.getElementById('predPill').innerText = pred;
         document.getElementById('s1').innerText = s1;
         document.getElementById('s2').innerText = s2;
         
+        // Update Confidence
+        document.getElementById('confFill').style.width = conf + "%";
+        document.getElementById('confVal').innerText = conf + "%";
+        document.getElementById('confFill').style.background = conf > 70 ? "var(--primary)" : "var(--danger)";
+
         document.querySelectorAll('.c-node').forEach(n => n.classList.remove('active'));
         if(document.getElementById(ALGOS[algoKey].id)) {
             document.getElementById(ALGOS[algoKey].id).classList.add('active');
@@ -304,11 +336,14 @@
         const div = document.createElement('div');
         div.id = `arc-${bet.period}`;
         div.className = 'card pending';
+        // Show Risk Warning if Confidence is low
+        let riskText = bet.conf < 60 ? "<span style='color:#ff003c'>(RISKY)</span>" : "<span style='color:#00ff41'>(SAFE)</span>";
+        
         div.innerHTML = `
             <div>
                 <div style="font-size:9px; color:#888">#${bet.period} | ${ALGOS[bet.algo].name}</div>
-                <div style="font-size:16px; font-weight:bold; color:#fff">${bet.pred}</div>
-                <div style="font-size:8px; color:var(--primary)">ANALYZING...</div>
+                <div style="font-size:16px; font-weight:bold; color:#fff">${bet.pred} ${riskText}</div>
+                <div style="font-size:8px; color:var(--primary)">CONFIDENCE: ${bet.conf}%</div>
             </div>
             <div class="loader"></div>
         `;
@@ -322,11 +357,10 @@
         updateArchiveCard(currentBet.period, win, result.number);
 
         if (win) {
-            wins++; level = 1;
+            wins++; 
             confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
         } else {
-            losses++; level++;
-            if(level > 3) level = 1; 
+            losses++;
         }
         document.getElementById('totalWins').innerText = wins;
         document.getElementById('totalLoss').innerText = losses;
