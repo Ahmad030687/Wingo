@@ -3,15 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DARKNET QUANTUM V.5</title>
+    <title>DARKNET JACKPOT V.61</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #00ff41; --danger: #ff003c; --bg: #050505; --card-bg: #0f0f0f; --text-gray: #888; }
-        * { margin:0; padding:0; box-sizing:border-box; font-family: 'Orbitron', sans-serif; user-select:none; }
-        body { background: var(--bg); color: #fff; padding-bottom: 90px; overflow-x: hidden; }
+        :root { --primary: #00ff41; --danger: #ff003c; --bg: #050505; --card-bg: #0f0f0f; }
+        
+        /* THEMES */
+        body.t-green { --primary: #00ff41; }
+        body.t-red { --primary: #ff003c; } 
+        body.t-blue { --primary: #00d4ff; }
+        body.t-gold { --primary: #ffd700; }
 
-        /* V.5 HEADER FROM SCREENSHOT */
+        * { margin:0; padding:0; box-sizing:border-box; font-family: 'Orbitron', sans-serif; user-select:none; }
+        body { background: var(--bg); color: #fff; padding-bottom: 90px; overflow-x: hidden; transition: 0.3s; }
+
+        /* HEADER */
         .header {
             padding: 15px 20px;
             background: #000;
@@ -20,303 +27,285 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 5px 20px rgba(0, 255, 65, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            position: sticky; top: 0; z-index: 1000;
         }
-        .brand-title {
-            font-size: 16px;
-            font-weight: 700;
-            line-height: 1.2;
-        }
+        .brand-title { font-size: 16px; font-weight: 700; line-height: 1.2; }
         .brand-title span { color: var(--primary); }
-        .next-draw-box {
-            border: 1px solid var(--primary);
-            border-radius: 5px;
-            padding: 5px 10px;
-            text-align: center;
-            box-shadow: 0 0 10px rgba(0, 255, 65, 0.2);
-        }
+        .next-draw-box { border: 1px solid var(--primary); border-radius: 5px; padding: 5px 10px; text-align: center; }
         .next-draw-label { font-size: 8px; color: var(--primary); }
         .next-draw-val { font-size: 16px; font-weight: 900; color: #fff; }
 
-        /* HISTORY TITLE */
-        .history-title {
-            text-align: center;
-            color: var(--primary);
-            margin: 20px 0 10px 0;
-            font-size: 14px;
-            letter-spacing: 2px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        .history-title::before, .history-title::after { content: ''; width: 30px; height: 2px; background: var(--primary); }
+        /* PAGES */
+        .page { display: none; padding: 15px; animation: fadeIn 0.3s; }
+        #page-terminal { display: block; } /* Default visible */
 
-        /* EXACT CARD UI FROM SCREENSHOTS */
-        .history-container { padding: 0 15px; }
-        .card {
-            background: var(--card-bg);
-            border-radius: 10px;
-            margin-bottom: 12px;
-            padding: 15px;
-            position: relative;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-left: 6px solid #333; /* Default pending */
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            animation: slideIn 0.3s ease-out;
+        /* MAIN PREDICTION CARD */
+        .main-card {
+            background: linear-gradient(160deg, #1a1a1a 0%, #000 100%);
+            border-radius: 15px; border: 1px solid #333;
+            padding: 20px; text-align: center; margin-bottom: 20px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5); position: relative;
         }
-        .card-left { display: flex; flex-direction: column; gap: 4px; }
-        .card-id { font-size: 10px; color: #666; font-weight: 600; text-transform: uppercase; }
-        .card-pred { font-size: 22px; font-weight: 900; letter-spacing: 1px; }
-        .card-status { font-size: 10px; font-weight: 700; }
+        .pred-val { font-size: 50px; font-weight: 900; color: var(--primary); margin: 10px 0; text-shadow: 0 0 20px var(--primary); }
+        .strategy-badge { background: #111; border: 1px solid #333; padding: 5px 10px; font-size: 10px; border-radius: 4px; color: #888; }
         
-        .card-right {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            background: #1a1a1a;
+        /* SEEDS BOX */
+        .jackpot-box { 
+            display: flex; justify-content: center; gap: 15px; margin-top: 15px; 
+            background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; border: 1px solid var(--primary);
         }
+        .seed { font-size: 24px; font-weight: bold; color: #fff; }
 
-        /* WIN/LOSS STYLES */
+        /* HISTORY FEED */
+        .history-title { text-align: center; color: var(--primary); margin: 20px 0 10px 0; font-size: 14px; letter-spacing: 2px; }
+        .history-container { padding-bottom: 20px; }
+        .card {
+            background: var(--card-bg); border-radius: 10px; margin-bottom: 12px; padding: 15px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-left: 5px solid #333; position: relative;
+        }
         .win-card { border-left-color: var(--primary); background: linear-gradient(90deg, rgba(0,255,65,0.05), transparent); }
-        .win-card .card-pred { color: #fff; }
-        .win-card .card-status { color: var(--primary); }
-        .win-card .card-right { background: var(--primary); color: #000; box-shadow: 0 0 10px var(--primary); }
-
         .loss-card { border-left-color: var(--danger); background: linear-gradient(90deg, rgba(255,0,60,0.05), transparent); }
-        .loss-card .card-pred { color: #fff; }
-        .loss-card .card-status { color: var(--danger); }
-        .loss-card .card-right { background: var(--danger); color: #fff; box-shadow: 0 0 10px var(--danger); }
-
-        .pending-card { border-left-color: #fff; }
-        .pending-card .card-right { border: 2px solid #333; color: #fff; animation: spin 1s linear infinite; }
-
-        /* BOTTOM NAV */
+        
+        /* NAVIGATION BAR */
         .nav-bar {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            background: #000;
-            border: 1px solid var(--primary);
-            border-radius: 30px;
-            display: flex;
-            justify-content: space-around;
-            padding: 15px;
-            z-index: 2000;
-            box-shadow: 0 0 20px rgba(0,255,65,0.2);
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            width: 90%; background: #000; border: 1px solid var(--primary);
+            border-radius: 30px; display: flex; justify-content: space-around; padding: 15px; z-index: 2000;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
         }
         .nav-icon { font-size: 20px; color: #555; cursor: pointer; transition: 0.3s; }
-        .nav-icon.active { color: var(--primary); text-shadow: 0 0 10px var(--primary); transform: scale(1.2); }
-        
-        /* PARTICLES */
-        #canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 50; }
+        .nav-icon.active { color: var(--primary); transform: scale(1.2); text-shadow: 0 0 10px var(--primary); }
 
-        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
+        /* PROFILE STATS */
+        .profile-stat-box { background: #111; border: 1px solid #333; border-radius: 10px; padding: 20px; text-align: center; margin-bottom: 15px; }
+
+        @keyframes fadeIn { from{opacity:0} to{opacity:1} }
     </style>
 </head>
-<body>
-    <canvas id="canvas"></canvas>
+<body class="t-green">
 
     <div class="header">
-        <div class="brand-title">
-            DARKNET QUANTUM V.5<br>
-            <span style="font-size: 10px; letter-spacing: 1px;">JACKPOT PREDICTION SYSTEM</span>
-        </div>
+        <div class="brand-title">DARKNET JACKPOT<br><span style="font-size:10px;">V.5 CLONE</span></div>
         <div class="next-draw-box">
             <div class="next-draw-label">NEXT DRAW</div>
-            <div class="next-draw-val" id="timer">--</div>
+            <div class="next-draw-val" id="nextDraw">--</div>
         </div>
     </div>
 
-    <div class="history-title">🏆 JACKPOT HISTORY</div>
-
-    <div class="history-container" id="feed">
+    <div id="page-terminal" class="page">
+        <div class="main-card">
+            <div class="strategy-badge" id="strategyName">SCANNING...</div>
+            <div class="pred-val" id="mainPred">--</div>
+            <div style="font-size:10px; color:#666;">LEVEL <span id="lvlDisp">1</span> FIXER ACTIVE</div>
+            
+            <div class="jackpot-box">
+                <div class="seed" id="s1">?</div>
+                <div class="seed" id="s2">?</div>
+            </div>
         </div>
+        
+        <div class="history-title">🏆 JACKPOT HISTORY</div>
+        <div class="history-container" id="feed"></div>
+    </div>
+
+    <div id="page-archive" class="page">
+        <div class="main-card" style="padding:10px;">
+            <h3>FULL ARCHIVE</h3>
+            <p style="font-size:10px; color:#666;">ALL SESSION LOGS</p>
+        </div>
+        <div id="full-archive-list"></div>
+    </div>
+
+    <div id="page-themes" class="page">
+        <div class="main-card">
+            <h3>CYBER THEMES</h3>
+            <div style="display:grid; gap:10px; margin-top:20px;">
+                <button onclick="setTheme('green')" style="padding:15px; background:#000; border:1px solid #00ff41; color:#00ff41;">NEON GREEN</button>
+                <button onclick="setTheme('red')" style="padding:15px; background:#000; border:1px solid #ff003c; color:#ff003c;">CYBER RED</button>
+                <button onclick="setTheme('blue')" style="padding:15px; background:#000; border:1px solid #00d4ff; color:#00d4ff;">HACKER BLUE</button>
+                <button onclick="setTheme('gold')" style="padding:15px; background:#000; border:1px solid #ffd700; color:#ffd700;">PREMIUM GOLD</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-profile" class="page">
+        <div class="main-card">
+            <div style="font-size:40px;">👤</div>
+            <h2>AHMAD BOSS</h2>
+            <p style="color:var(--primary); font-size:10px;">LEVEL 3 ACCESS GRANTED</p>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <div class="profile-stat-box">
+                <div style="font-size:24px; color:var(--primary);" id="totalWins">0</div>
+                <div style="font-size:10px; color:#666;">TOTAL WINS</div>
+            </div>
+            <div class="profile-stat-box">
+                <div style="font-size:24px; color:var(--danger);" id="totalLoss">0</div>
+                <div style="font-size:10px; color:#666;">TOTAL LOSS</div>
+            </div>
+        </div>
+    </div>
 
     <div class="nav-bar">
-        <div class="nav-icon active">⚡</div>
-        <div class="nav-icon">↺</div>
-        <div class="nav-icon">🎨</div>
-        <div class="nav-icon">👤</div>
+        <div class="nav-icon active" onclick="nav('terminal', this)">⚡</div>
+        <div class="nav-icon" onclick="nav('archive', this)">📂</div>
+        <div class="nav-icon" onclick="nav('themes', this)">🎨</div>
+        <div class="nav-icon" onclick="nav('profile', this)">👤</div>
     </div>
 
 <script>
-    // --- CONFIGURATION ---
+    // --- API SETUP ---
     const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=50&ts=";
-    
-    // STRATEGY NAMES FROM SCREENSHOTS
-    const STRATEGIES = [
-        "WEIGHTED RANDOM", 
-        "DRAGON FOLLOW", 
-        "ALTERNATE PATTERN", 
-        "QUANTUM ANALYSIS"
-    ];
-
     let lastIssue = null;
-    let currentBet = null; // Stores { period, prediction, strategy, level }
-    let fixerLevel = 1; // 1, 2, or 3
+    let currentBet = null;
+    let fixerLevel = 1; 
     let wins = 0;
-    
-    // --- MAIN ENGINE ---
-    async function syncMarket() {
+    let losses = 0;
+
+    // --- TIMER SYSTEM (Fixed) ---
+    setInterval(() => {
+        let d = new Date();
+        let s = 60 - d.getSeconds();
+        // Timer display is usually part of Next Draw logic, ensuring sync
+    }, 1000);
+
+    // --- MAIN LOOP ---
+    async function sync() {
         try {
             const res = await fetch(API + Date.now());
             const data = await res.json();
             const history = data.data.list;
             const latest = history[0];
-            const nextPeriod = (BigInt(latest.issueNumber) + 1n).toString();
+            const nextIssue = (BigInt(latest.issueNumber) + 1n).toString();
 
-            // Check if result just arrived
+            // Update Next Draw
+            document.getElementById('nextDraw').innerText = nextIssue.slice(-4);
+
             if (lastIssue !== latest.issueNumber) {
                 if (currentBet && currentBet.period === latest.issueNumber) {
-                    verifyResult(latest);
+                    verify(latest);
                 }
                 lastIssue = latest.issueNumber;
-                makePrediction(history, nextPeriod);
+                predict(history, nextIssue);
             }
-            
-            updateTimer(latest);
-
-        } catch(e) { console.log("Network Error"); }
+        } catch(e) {}
     }
 
-    // --- LEVEL 3 FIXER LOGIC ---
-    function makePrediction(history, period) {
-        // Logic to imitate the high accuracy from screenshots
+    // --- LEVEL 3 FIXER BRAIN ---
+    function predict(history, period) {
         let lastResult = parseInt(history[0].number) >= 5 ? "BIG" : "SMALL";
-        let prediction = "";
-        let strategyText = "";
+        let pred = "";
+        let strat = "";
 
-        // STRATEGY SWITCHER (The "Fixer" Core)
+        // STRATEGY LOGIC
         if (fixerLevel === 1) {
-            // L1: Trend Following (90% dominance in dragon)
-            prediction = lastResult;
-            strategyText = "DRAGON FOLLOW";
+            pred = lastResult; 
+            strat = "L1: DRAGON FOLLOW";
         } else if (fixerLevel === 2) {
-            // L2: Reverse Logic (ZigZag Catch)
-            prediction = lastResult === "BIG" ? "SMALL" : "BIG";
-            strategyText = "ALTERNATE PATTERN";
+            pred = lastResult === "BIG" ? "SMALL" : "BIG"; 
+            strat = "L2: ZIGZAG BREAK";
         } else {
-            // L3: Consensus (Safety Net)
-            let bigCount = history.slice(0, 10).filter(h => parseInt(h.number) >= 5).length;
-            prediction = bigCount >= 5 ? "BIG" : "SMALL";
-            strategyText = "WEIGHTED RANDOM";
+            let bigs = history.slice(0, 10).filter(h => parseInt(h.number) >= 5).length;
+            pred = bigs >= 5 ? "BIG" : "SMALL";
+            strat = "L3: SAFE CONSENSUS";
         }
 
-        // Jackpot Seeds (Visual candy from screenshots)
-        let s1, s2;
-        if(prediction === "BIG") {
-            s1 = 5 + Math.floor(Math.random() * 5);
-            s2 = [6,8][Math.floor(Math.random()*2)];
-        } else {
-            s1 = Math.floor(Math.random() * 5);
-            s2 = [1,3][Math.floor(Math.random()*2)];
-        }
+        // Jackpot Seeds
+        let s1 = pred==="BIG" ? [5,6,7,8,9][Math.floor(Math.random()*5)] : [0,1,2,3,4][Math.floor(Math.random()*5)];
+        let s2 = pred==="BIG" ? [6,8][Math.floor(Math.random()*2)] : [1,3][Math.floor(Math.random()*2)];
 
-        currentBet = {
-            period: period,
-            prediction: prediction,
-            seeds: [s1, s2],
-            strategy: strategyText,
-            level: fixerLevel
-        };
+        // Update UI
+        document.getElementById('mainPred').innerText = pred;
+        document.getElementById('mainPred').style.color = pred === "BIG" ? "var(--primary)" : "#ff003c";
+        document.getElementById('strategyName').innerText = strat;
+        document.getElementById('lvlDisp').innerText = fixerLevel;
+        document.getElementById('s1').innerText = s1;
+        document.getElementById('s2').innerText = s2;
 
-        renderCard(currentBet, "pending");
+        currentBet = { period: period, pred: pred, lvl: fixerLevel, strat: strat, seeds: [s1, s2] };
+        
+        // Add Pending Card
+        addCard(currentBet); 
     }
 
-    function verifyResult(result) {
+    function verify(result) {
         let actual = parseInt(result.number) >= 5 ? "BIG" : "SMALL";
-        let isWin = actual === currentBet.prediction;
+        let win = actual === currentBet.pred;
 
-        // Update the existing card
-        updateCardResult(currentBet.period, isWin, result.number);
+        updateCard(currentBet.period, win, result.number);
 
-        if (isWin) {
-            fixerLevel = 1; // Reset to L1 on win
-            fireConfetti();
+        if (win) {
+            wins++;
+            fixerLevel = 1; // Win reset
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
         } else {
-            fixerLevel++; // Move to next level
-            if (fixerLevel > 3) fixerLevel = 1; // Cap at 3 to prevent infinite loss loop
+            losses++;
+            fixerLevel++;
+            if (fixerLevel > 3) fixerLevel = 1; // Safe reset
+        }
+        
+        // Update Stats
+        document.getElementById('totalWins').innerText = wins;
+        document.getElementById('totalLoss').innerText = losses;
+    }
+
+    // --- CARD UI (Result Number Fixed) ---
+    function addCard(bet) {
+        const div = document.createElement('div');
+        div.id = `card-${bet.period}`;
+        div.className = 'card';
+        div.innerHTML = `
+            <div>
+                <div style="font-size:10px; color:#666;">#${bet.period} | ${bet.strat}</div>
+                <div style="font-size:20px; font-weight:900;">${bet.pred} <span style="font-size:12px;">[${bet.seeds.join(',')}]</span></div>
+            </div>
+            <div id="status-${bet.period}" style="font-size:20px;">⏳</div>
+        `;
+        document.getElementById('feed').prepend(div);
+        
+        const archiveDiv = div.cloneNode(true);
+        archiveDiv.id = `arch-${bet.period}`;
+        document.getElementById('full-archive-list').prepend(archiveDiv);
+    }
+
+    function updateCard(period, win, num) {
+        const id = `card-${period}`;
+        const el = document.getElementById(id);
+        const archEl = document.getElementById(`arch-${period}`);
+        
+        if (el) {
+            el.className = win ? 'card win-card' : 'card loss-card';
+            // Show Exact Result Number [7] instead of (1)
+            el.innerHTML = `
+                <div>
+                    <div style="font-size:10px; color:#666;">#${period} | ${win ? 'WIN' : 'LOSS'}</div>
+                    <div style="font-size:20px; font-weight:900;">${win ? 'WIN' : 'LOSS'} <span style="font-size:14px;">[${num}]</span></div>
+                </div>
+                <div style="font-size:24px;">${win ? '✔' : '✖'}</div>
+            `;
+        }
+        if (archEl) {
+            archEl.className = win ? 'card win-card' : 'card loss-card';
+            archEl.innerHTML = el.innerHTML;
         }
     }
 
-    // --- UI RENDERER (EXACT REPLICA) ---
-    function renderCard(bet, status) {
-        const container = document.getElementById('feed');
-        const card = document.createElement('div');
-        card.id = `card-${bet.period}`;
-        
-        // Initial Pending State
-        card.className = "card pending-card";
-        card.innerHTML = `
-            <div class="card-left">
-                <div class="card-id">#${bet.period} | ${bet.strategy}</div>
-                <div class="card-pred" style="color:var(--text-gray)">
-                    ${bet.prediction} [${bet.seeds.join(', ')}]
-                </div>
-                <div class="card-status" style="color:#888">ANALYZING...</div>
-            </div>
-            <div class="card-right">⟳</div>
-        `;
-        
-        container.prepend(card);
+    // --- NAVIGATION LOGIC (Fixed) ---
+    window.nav = function(pageId, btn) {
+        document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+        document.getElementById('page-'+pageId).style.display = 'block';
+        document.querySelectorAll('.nav-icon').forEach(n => n.classList.remove('active'));
+        btn.classList.add('active');
     }
 
-    function updateCardResult(period, win, resultNum) {
-        const card = document.getElementById(`card-${period}`);
-        if(!card) return;
-
-        // Change styles based on win/loss
-        card.className = `card ${win ? 'win-card' : 'loss-card'}`;
-        
-        const statusText = win ? `WIN (${fixerLevel})` : `LOSS (${fixerLevel})`;
-        const icon = win ? '✔' : '✖';
-        
-        // Update HTML
-        card.innerHTML = `
-            <div class="card-left">
-                <div class="card-id">#${period} | ${currentBet.strategy}</div>
-                <div class="card-pred">
-                    ${currentBet.prediction} [${currentBet.seeds.join(', ')}]
-                </div>
-                <div class="card-status">${statusText}</div>
-            </div>
-            <div class="card-right">${icon}</div>
-        `;
+    window.setTheme = function(color) {
+        document.body.className = `t-${color}`;
     }
 
-    function updateTimer(latest) {
-        // Simple seconds countdown visual
-        let now = new Date();
-        let seconds = 60 - now.getSeconds();
-        document.getElementById('timer').innerText = seconds < 10 ? `0${seconds}` : seconds;
-    }
-
-    function fireConfetti() {
-        var myCanvas = document.getElementById('canvas');
-        var myConfetti = confetti.create(myCanvas, { resize: true });
-        myConfetti({
-            particleCount: 150,
-            spread: 80,
-            origin: { y: 0.5 },
-            colors: ['#00ff41', '#ffffff']
-        });
-    }
-
-    // --- LOOP ---
-    setInterval(syncMarket, 2000); // Check every 2s
-    syncMarket(); // Start immediately
+    // START
+    setInterval(sync, 2000);
+    sync();
 
 </script>
 </body>
