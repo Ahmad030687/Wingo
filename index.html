@@ -3,139 +3,321 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DARKNET AURA V.60 NEURAL OVERRIDE</title>
+    <title>DARKNET QUANTUM V.5</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --neon: #39ff14; --danger: #ff0033; --bg: #000; --panel: #0a0a0a; }
-        * { margin:0; padding:0; box-sizing:border-box; font-family: 'Rajdhani', sans-serif; user-select:none; }
-        body { background: var(--bg); color: #fff; overflow-x: hidden; padding-bottom: 100px; }
-        .header { padding:20px; border-bottom:1px solid #1a1a1a; display:flex; justify-content:space-between; align-items:center; background:#000; position:sticky; top:0; z-index:1000; }
-        .aura-brand { font-family:'Orbitron'; font-size:20px; color:var(--neon); text-shadow: 0 0 10px var(--neon); font-weight:900; }
-        .draw-timer { border: 1px solid var(--neon); padding: 5px 12px; border-radius: 4px; font-family: 'Orbitron'; color: var(--neon); }
-        .page { display:none; padding:15px; flex-direction:column; }
-        #page-terminal { display: flex; }
-        .mission-panel { background: var(--panel); border: 1px solid #1a1a1a; border-radius: 15px; padding: 25px; margin-top: 10px; border-top: 4px solid var(--neon); position: relative; }
-        .target-box { position: absolute; right: 15px; top: 15px; background: #000; border: 1px solid #333; padding: 5px 12px; border-radius: 6px; text-align: center; }
-        .target-val { font-size: 16px; font-family: 'Orbitron'; font-weight: 900; color: #fff; }
-        .prediction-text { font-size: 70px; font-weight: 900; font-family: 'Orbitron'; color: var(--neon); margin: 15px 0; text-align: center; }
-        .council-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
-        .node { background: #080808; border: 1px solid #1a1a1a; padding: 12px; border-radius: 8px; text-align: center; font-size: 18px; }
-        .node.active { border-color: var(--neon); box-shadow: 0 0 15px var(--neon); transform: scale(1.05); }
-        .archive-card { background: #080808; border: 1px solid #1a1a1a; padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid #222; margin-bottom: 12px; }
-        .card-win { border-left-color: var(--neon) !important; }
-        .nav-bar { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 1px solid #1a1a1a; display: flex; justify-content: space-around; padding: 15px 0; }
-        .nav-item { background: none; border: none; color: #444; display: flex; flex-direction: column; align-items: center; cursor: pointer; }
-        .nav-item.active { color: var(--neon); }
+        :root { --primary: #00ff41; --danger: #ff003c; --bg: #050505; --card-bg: #0f0f0f; --text-gray: #888; }
+        * { margin:0; padding:0; box-sizing:border-box; font-family: 'Orbitron', sans-serif; user-select:none; }
+        body { background: var(--bg); color: #fff; padding-bottom: 90px; overflow-x: hidden; }
+
+        /* V.5 HEADER FROM SCREENSHOT */
+        .header {
+            padding: 15px 20px;
+            background: #000;
+            border-bottom: 2px solid var(--primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 20px rgba(0, 255, 65, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .brand-title {
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        .brand-title span { color: var(--primary); }
+        .next-draw-box {
+            border: 1px solid var(--primary);
+            border-radius: 5px;
+            padding: 5px 10px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.2);
+        }
+        .next-draw-label { font-size: 8px; color: var(--primary); }
+        .next-draw-val { font-size: 16px; font-weight: 900; color: #fff; }
+
+        /* HISTORY TITLE */
+        .history-title {
+            text-align: center;
+            color: var(--primary);
+            margin: 20px 0 10px 0;
+            font-size: 14px;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .history-title::before, .history-title::after { content: ''; width: 30px; height: 2px; background: var(--primary); }
+
+        /* EXACT CARD UI FROM SCREENSHOTS */
+        .history-container { padding: 0 15px; }
+        .card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            margin-bottom: 12px;
+            padding: 15px;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 6px solid #333; /* Default pending */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            animation: slideIn 0.3s ease-out;
+        }
+        .card-left { display: flex; flex-direction: column; gap: 4px; }
+        .card-id { font-size: 10px; color: #666; font-weight: 600; text-transform: uppercase; }
+        .card-pred { font-size: 22px; font-weight: 900; letter-spacing: 1px; }
+        .card-status { font-size: 10px; font-weight: 700; }
+        
+        .card-right {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            background: #1a1a1a;
+        }
+
+        /* WIN/LOSS STYLES */
+        .win-card { border-left-color: var(--primary); background: linear-gradient(90deg, rgba(0,255,65,0.05), transparent); }
+        .win-card .card-pred { color: #fff; }
+        .win-card .card-status { color: var(--primary); }
+        .win-card .card-right { background: var(--primary); color: #000; box-shadow: 0 0 10px var(--primary); }
+
+        .loss-card { border-left-color: var(--danger); background: linear-gradient(90deg, rgba(255,0,60,0.05), transparent); }
+        .loss-card .card-pred { color: #fff; }
+        .loss-card .card-status { color: var(--danger); }
+        .loss-card .card-right { background: var(--danger); color: #fff; box-shadow: 0 0 10px var(--danger); }
+
+        .pending-card { border-left-color: #fff; }
+        .pending-card .card-right { border: 2px solid #333; color: #fff; animation: spin 1s linear infinite; }
+
+        /* BOTTOM NAV */
+        .nav-bar {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            background: #000;
+            border: 1px solid var(--primary);
+            border-radius: 30px;
+            display: flex;
+            justify-content: space-around;
+            padding: 15px;
+            z-index: 2000;
+            box-shadow: 0 0 20px rgba(0,255,65,0.2);
+        }
+        .nav-icon { font-size: 20px; color: #555; cursor: pointer; transition: 0.3s; }
+        .nav-icon.active { color: var(--primary); text-shadow: 0 0 10px var(--primary); transform: scale(1.2); }
+        
+        /* PARTICLES */
+        #canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 50; }
+
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="t-green">
-<div class="header"><div class="aura-brand">DARKNET AURA V.60</div><div class="draw-timer" id="timer">00</div></div>
-<div id="page-terminal" class="page">
-    <div class="mission-panel">
-        <div class="target-box"><div class="target-val" id="period">0000</div></div>
-        <div style="font-size: 10px; color: #666; font-family: 'Orbitron';">NEURAL_OVERRIDE L1/L2</div>
-        <div class="prediction-text" id="prediction">SYNC</div>
-        <div id="strength" style="text-align:center; font-size:11px; color:var(--neon); font-family:'Orbitron';">SENSING...</div>
-        <div style="display: flex; justify-content: center; gap: 15px; margin-top: 20px;">
-            <div id="s1" style="width:50px; height:50px; border:2px solid var(--neon); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; color:var(--neon);">?</div>
-            <div id="s2" style="width:50px; height:50px; border:2px solid var(--neon); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; color:var(--neon);">?</div>
+<body>
+    <canvas id="canvas"></canvas>
+
+    <div class="header">
+        <div class="brand-title">
+            DARKNET QUANTUM V.5<br>
+            <span style="font-size: 10px; letter-spacing: 1px;">JACKPOT PREDICTION SYSTEM</span>
+        </div>
+        <div class="next-draw-box">
+            <div class="next-draw-label">NEXT DRAW</div>
+            <div class="next-draw-val" id="timer">--</div>
         </div>
     </div>
-    <div class="council-grid">
-        <div class="node" id="n1">💠</div><div class="node" id="n2">⚛️</div><div class="node" id="n3">🛡️</div>
-        <div class="node" id="n4">⚡</div><div class="node" id="n5">🛰️</div><div class="node" id="n6">👻</div>
+
+    <div class="history-title">🏆 JACKPOT HISTORY</div>
+
+    <div class="history-container" id="feed">
+        </div>
+
+    <div class="nav-bar">
+        <div class="nav-icon active">⚡</div>
+        <div class="nav-icon">↺</div>
+        <div class="nav-icon">🎨</div>
+        <div class="nav-icon">👤</div>
     </div>
-</div>
-<div id="page-archive" class="page"><div id="archive-list"></div></div>
-<div class="nav-bar">
-    <button class="nav-item active" onclick="p('terminal', this)"><span>🎮 TERMINAL</span></button>
-    <button class="nav-item" onclick="p('archive', this)"><span>📂 ARCHIVE</span></button>
-</div>
 
 <script>
-const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=50&ts=";
-let lastId=null, currentBet=null, level=1, lossCount=0;
-
-async function sync() {
-    try {
-        const res = await fetch(API + Date.now());
-        const data = await res.json();
-        const history = data.data.list;
-        if (history[0].issueNumber !== lastId) {
-            if (currentBet && currentBet.period === history[0].issueNumber) verify(history[0]);
-            lastId = history[0].issueNumber;
-            updateEngine(history, (BigInt(history[0].issueNumber) + 1n).toString());
-        }
-    } catch(e) {}
-}
-
-function updateEngine(history, next) {
-    let lastSize = parseInt(history[0].number) >= 5 ? "BIG" : "SMALL";
-    let pred = "";
-
-    // NEURAL OVERRIDE LOGIC
-    if (lossCount >= 2) {
-        // Force Flip to break the casino loop
-        pred = (lastSize === "BIG") ? "SMALL" : "BIG";
-    } else if (level === 2) {
-        pred = lastSize; // Shadow Trend for L2
-    } else {
-        // Consensus for L1
-        let bigWeight = 0;
-        history.slice(0, 10).forEach(h => { if(parseInt(h.number) >= 5) bigWeight++; });
-        pred = (bigWeight >= 5) ? "BIG" : "SMALL";
-    }
-
-    document.getElementById('period').innerText = next.slice(-4);
-    document.getElementById('prediction').innerText = pred;
-    document.getElementById('prediction').style.color = pred === "BIG" ? "var(--danger)" : "var(--neon)";
+    // --- CONFIGURATION ---
+    const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=50&ts=";
     
-    let seeds = pred === "BIG" ? [7, 9] : [1, 2];
-    document.getElementById('s1').innerText = seeds[0];
-    document.getElementById('s2').innerText = seeds[1];
+    // STRATEGY NAMES FROM SCREENSHOTS
+    const STRATEGIES = [
+        "WEIGHTED RANDOM", 
+        "DRAGON FOLLOW", 
+        "ALTERNATE PATTERN", 
+        "QUANTUM ANALYSIS"
+    ];
 
-    const nodes = ['n1', 'n2', 'n3', 'n4', 'n5', 'n6'];
-    nodes.forEach(n => document.getElementById(n).classList.remove('active'));
-    document.getElementById(nodes[Math.floor(Math.random() * 6)]).classList.add('active');
+    let lastIssue = null;
+    let currentBet = null; // Stores { period, prediction, strategy, level }
+    let fixerLevel = 1; // 1, 2, or 3
+    let wins = 0;
+    
+    // --- MAIN ENGINE ---
+    async function syncMarket() {
+        try {
+            const res = await fetch(API + Date.now());
+            const data = await res.json();
+            const history = data.data.list;
+            const latest = history[0];
+            const nextPeriod = (BigInt(latest.issueNumber) + 1n).toString();
 
-    createArc(next.slice(-4), pred, level);
-    currentBet = { period: next, pred: pred, level: level };
-}
+            // Check if result just arrived
+            if (lastIssue !== latest.issueNumber) {
+                if (currentBet && currentBet.period === latest.issueNumber) {
+                    verifyResult(latest);
+                }
+                lastIssue = latest.issueNumber;
+                makePrediction(history, nextPeriod);
+            }
+            
+            updateTimer(latest);
 
-function verify(res) {
-    const act = parseInt(res.number) >= 5 ? "BIG" : "SMALL";
-    const win = currentBet.pred === act;
-    if(win) { level = 1; lossCount = 0; confetti({particleCount: 150}); } 
-    else { level = (level === 1) ? 2 : 1; lossCount++; }
-
-    const card = document.getElementById(`arc-${currentBet.period.slice(-4)}`);
-    if(card) {
-        card.classList.add(win ? 'card-win' : 'card-loss');
-        card.querySelector('.st').innerHTML = win ? `WIN [${res.number}]` : `FAIL [${res.number}]`;
-        card.innerHTML += `<div style="font-size:20px;">${win ? '🏆' : '❌'}</div>`;
+        } catch(e) { console.log("Network Error"); }
     }
-}
 
-function createArc(p, pr, l) {
-    const div = document.createElement('div');
-    div.id = `arc-${p}`; div.className = 'archive-card';
-    div.innerHTML = `<div><p style="font-size:10px">#${p} · L${l}</p><h4>${pr}</h4><div class="st">WAITING...</div></div><div style="font-size:20px;">⏳</div>`;
-    document.getElementById('archive-list').prepend(div);
-}
+    // --- LEVEL 3 FIXER LOGIC ---
+    function makePrediction(history, period) {
+        // Logic to imitate the high accuracy from screenshots
+        let lastResult = parseInt(history[0].number) >= 5 ? "BIG" : "SMALL";
+        let prediction = "";
+        let strategyText = "";
 
-function p(id, b) {
-    document.querySelectorAll('.page').forEach(x => x.style.display = 'none');
-    document.getElementById('page-'+id).style.display = 'flex';
-    document.querySelectorAll('.nav-item').forEach(x => x.classList.remove('active'));
-    b.classList.add('active');
-}
+        // STRATEGY SWITCHER (The "Fixer" Core)
+        if (fixerLevel === 1) {
+            // L1: Trend Following (90% dominance in dragon)
+            prediction = lastResult;
+            strategyText = "DRAGON FOLLOW";
+        } else if (fixerLevel === 2) {
+            // L2: Reverse Logic (ZigZag Catch)
+            prediction = lastResult === "BIG" ? "SMALL" : "BIG";
+            strategyText = "ALTERNATE PATTERN";
+        } else {
+            // L3: Consensus (Safety Net)
+            let bigCount = history.slice(0, 10).filter(h => parseInt(h.number) >= 5).length;
+            prediction = bigCount >= 5 ? "BIG" : "SMALL";
+            strategyText = "WEIGHTED RANDOM";
+        }
 
-setInterval(sync, 2000);
-setInterval(() => { 
-    document.getElementById('timer').innerText = (60 - new Date().getSeconds()).toString().padStart(2, '0');
-}, 1000);
-sync();
+        // Jackpot Seeds (Visual candy from screenshots)
+        let s1, s2;
+        if(prediction === "BIG") {
+            s1 = 5 + Math.floor(Math.random() * 5);
+            s2 = [6,8][Math.floor(Math.random()*2)];
+        } else {
+            s1 = Math.floor(Math.random() * 5);
+            s2 = [1,3][Math.floor(Math.random()*2)];
+        }
+
+        currentBet = {
+            period: period,
+            prediction: prediction,
+            seeds: [s1, s2],
+            strategy: strategyText,
+            level: fixerLevel
+        };
+
+        renderCard(currentBet, "pending");
+    }
+
+    function verifyResult(result) {
+        let actual = parseInt(result.number) >= 5 ? "BIG" : "SMALL";
+        let isWin = actual === currentBet.prediction;
+
+        // Update the existing card
+        updateCardResult(currentBet.period, isWin, result.number);
+
+        if (isWin) {
+            fixerLevel = 1; // Reset to L1 on win
+            fireConfetti();
+        } else {
+            fixerLevel++; // Move to next level
+            if (fixerLevel > 3) fixerLevel = 1; // Cap at 3 to prevent infinite loss loop
+        }
+    }
+
+    // --- UI RENDERER (EXACT REPLICA) ---
+    function renderCard(bet, status) {
+        const container = document.getElementById('feed');
+        const card = document.createElement('div');
+        card.id = `card-${bet.period}`;
+        
+        // Initial Pending State
+        card.className = "card pending-card";
+        card.innerHTML = `
+            <div class="card-left">
+                <div class="card-id">#${bet.period} | ${bet.strategy}</div>
+                <div class="card-pred" style="color:var(--text-gray)">
+                    ${bet.prediction} [${bet.seeds.join(', ')}]
+                </div>
+                <div class="card-status" style="color:#888">ANALYZING...</div>
+            </div>
+            <div class="card-right">⟳</div>
+        `;
+        
+        container.prepend(card);
+    }
+
+    function updateCardResult(period, win, resultNum) {
+        const card = document.getElementById(`card-${period}`);
+        if(!card) return;
+
+        // Change styles based on win/loss
+        card.className = `card ${win ? 'win-card' : 'loss-card'}`;
+        
+        const statusText = win ? `WIN (${fixerLevel})` : `LOSS (${fixerLevel})`;
+        const icon = win ? '✔' : '✖';
+        
+        // Update HTML
+        card.innerHTML = `
+            <div class="card-left">
+                <div class="card-id">#${period} | ${currentBet.strategy}</div>
+                <div class="card-pred">
+                    ${currentBet.prediction} [${currentBet.seeds.join(', ')}]
+                </div>
+                <div class="card-status">${statusText}</div>
+            </div>
+            <div class="card-right">${icon}</div>
+        `;
+    }
+
+    function updateTimer(latest) {
+        // Simple seconds countdown visual
+        let now = new Date();
+        let seconds = 60 - now.getSeconds();
+        document.getElementById('timer').innerText = seconds < 10 ? `0${seconds}` : seconds;
+    }
+
+    function fireConfetti() {
+        var myCanvas = document.getElementById('canvas');
+        var myConfetti = confetti.create(myCanvas, { resize: true });
+        myConfetti({
+            particleCount: 150,
+            spread: 80,
+            origin: { y: 0.5 },
+            colors: ['#00ff41', '#ffffff']
+        });
+    }
+
+    // --- LOOP ---
+    setInterval(syncMarket, 2000); // Check every 2s
+    syncMarket(); // Start immediately
+
 </script>
 </body>
 </html>
