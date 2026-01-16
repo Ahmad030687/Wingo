@@ -3,13 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DARKNET SUPREME V.80</title>
+    <title>DARKNET SUPREME V.81</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #00ff41; --danger: #ff003c; --gold: #ffd700; --bg: #050505; }
-        
-        /* 10 THEMES RESTORED */
         body.t-green { --primary: #00ff41; } body.t-red { --primary: #ff003c; } 
         body.t-blue { --primary: #00d4ff; } body.t-gold { --primary: #ffd700; }
         body.t-purple { --primary: #bc13fe; } body.t-cyan { --primary: #00ffff; }
@@ -19,23 +17,26 @@
         * { margin:0; padding:0; box-sizing:border-box; font-family: 'Orbitron', sans-serif; user-select:none; }
         body { background: var(--bg); color: #fff; padding-bottom: 90px; overflow-x: hidden; transition: 0.3s; }
 
-        /* V.5 STYLE UI */
-        .header { padding: 15px 20px; background: #000; border-bottom: 2px solid var(--primary); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        .header { padding: 15px 20px; background: #000; border-bottom: 2px solid var(--primary); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 5px 20px rgba(0,0,0,0.5); }
+        .title-box { font-size: 14px; font-weight: 900; line-height: 1.2; letter-spacing:1px; }
         .timer-box { border: 1px solid var(--primary); background: #000; padding: 5px 10px; border-radius: 5px; text-align: center; min-width: 60px; }
-        .timer-val { font-size: 18px; font-weight: 900; }
+        .timer-val { font-size: 18px; font-weight: 900; color: #fff; }
 
         .page { display:none; padding:15px; animation: fadeIn 0.3s; }
         #page-terminal { display:block; }
 
         .algo-strip { text-align: center; font-size: 10px; color: #aaa; margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 10px; }
-        .pred-pill { background: rgba(255, 255, 255, 0.05); border: 2px solid var(--primary); border-radius: 50px; padding: 12px 40px; margin: 0 auto 20px; width: fit-content; font-size: 26px; font-weight: 900; box-shadow: 0 0 20px var(--primary); text-transform: uppercase; text-align: center; display: block; }
+        .pred-pill { background: rgba(255, 255, 255, 0.05); border: 2px solid var(--primary); border-radius: 50px; padding: 10px 30px; margin: 0 auto 20px; width: fit-content; font-size: 24px; font-weight: 900; color: #fff; box-shadow: 0 0 20px var(--primary); text-transform: uppercase; }
         
         .jackpot-container { background: linear-gradient(180deg, #151515 0%, #000 100%); border: 1px solid #333; border-radius: 15px; padding: 20px; position: relative; margin-bottom: 20px; text-align: center; }
+        .jackpot-title { background: var(--gold); color: #000; padding: 2px 10px; font-size: 10px; font-weight: 900; position: absolute; top: -10px; left: 50%; transform: translateX(-50%); border-radius: 4px; box-shadow: 0 0 10px var(--gold); }
         .num-box { width: 50px; height: 50px; border: 2px solid var(--gold); border-radius: 8px; background: #000; color: var(--gold); font-size: 24px; font-weight: 900; display: flex; align-items: center; justify-content: center; }
 
         .council-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 20px; }
-        .c-node { background: #0a0a0a; border: 1px solid #222; border-radius: 8px; padding: 10px 5px; text-align: center; opacity: 0.5; transition: 0.3s; }
-        .c-node.active { opacity: 1; border-color: var(--primary); box-shadow: 0 0 15px var(--primary); color: var(--primary); }
+        .c-node { background: #0a0a0a; border: 1px solid #222; border-radius: 8px; padding: 10px 5px; text-align: center; transition: 0.3s; opacity: 0.6; }
+        .c-node.active { opacity: 1; border-color: var(--primary); background: rgba(255,255,255,0.05); box-shadow: 0 0 15px var(--primary); transform: scale(1.05); color: var(--primary); }
+        .c-icon { font-size: 18px; display:block; margin-bottom: 5px; }
+        .c-name { font-size: 8px; color: #fff; letter-spacing: 1px; }
 
         .card { background: #0f0f0f; border-left: 4px solid #555; border-radius: 8px; padding: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
         .card.win { border-left-color: var(--primary); background: linear-gradient(90deg, rgba(0,255,65,0.05), transparent); }
@@ -45,7 +46,7 @@
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         .nav-bar { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 1px solid #222; display: flex; justify-content: space-around; padding: 15px 0; z-index: 2000; }
-        .nav-item { font-size: 22px; background:none; border:none; color:#555; cursor:pointer; }
+        .nav-item { font-size: 20px; background:none; border:none; color:#555; cursor:pointer; }
         .nav-item.active { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
 
         .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
@@ -57,56 +58,47 @@
 <body class="t-green">
 
     <div class="header">
-        <div>
-            <div style="font-size:14px; font-weight:900;">DARKNET SUPREME</div>
-            <div style="font-size:8px; color:#aaa;">BYPASS ENGINE V.80</div>
-        </div>
+        <div><div class="title-box">DARKNET SUPREME</div><div style="font-size:8px; color:#aaa;">BYPASS ENGINE V.81</div></div>
         <div class="timer-box"><div class="timer-val" id="timer">--</div></div>
     </div>
 
     <div id="page-terminal" class="page">
-        <div class="algo-strip">DATA SOURCE: <span id="scanStatus" style="color:var(--primary)">BYPASSING LIMITS...</span></div>
-        <div id="predPill" class="pred-pill">WAITING...</div>
+        <div class="algo-strip">
+            DRAW: <span id="drawInfo" style="color:#fff">#----</span> | SCAN: <span id="scanCount" style="color:var(--primary)">0</span>/100 | ALGO: <span id="algoName" style="color:var(--primary); font-weight:bold;">INIT</span>
+        </div>
+        <div id="predPill" class="pred-pill" style="margin: 0 auto 20px;">WAITING...</div>
         <div class="jackpot-container">
-            <div style="background:var(--gold); color:#000; padding:2px 10px; font-size:10px; font-weight:900; position:absolute; top:-10px; left:50%; transform:translateX(-50%); border-radius:4px;">GOD SEEDS</div>
-            <div style="display:flex; justify-content:center; gap:20px; margin:10px 0;"><div class="num-box" id="s1">?</div><div class="num-box" id="s2">?</div></div>
+            <div class="jackpot-title">JACKPOT NUMBERS</div>
+            <div class="boxes-row"><div class="num-box" id="s1">?</div><div class="num-box" id="s2">?</div></div>
         </div>
         <div class="council-grid">
-            <div class="c-node active" id="c-titan">🧠<br>TITAN</div>
-            <div class="c-node active" id="c-dragon">🐉<br>DRAGON</div>
-            <div class="c-node active" id="c-pattern">🏁<br>FIXER</div>
+            <div class="c-node" id="c-titan"><span class="c-icon">🧠</span><span class="c-name">TITAN</span></div>
+            <div class="c-node" id="c-dragon"><span class="c-icon">🐉</span><span class="c-name">DRAGON</span></div>
+            <div class="c-node" id="c-pattern"><span class="c-icon">🏁</span><span class="c-name">PATTERN</span></div>
+            <div class="c-node" id="c-chaos"><span class="c-icon">🔀</span><span class="c-name">CHAOS</span></div>
+            <div class="c-node" id="c-wave"><span class="c-icon">🌊</span><span class="c-name">WAVE</span></div>
+            <div class="c-node" id="c-infinity"><span class="c-icon">♾</span><span class="c-name">INFINITY</span></div>
         </div>
     </div>
 
     <div id="page-archive" class="page">
-        <h3 style="text-align:center; color:var(--primary); margin-bottom:15px;">BYPASS LOGS (100 DRAWS)</h3>
+        <h3 style="text-align:center; color:var(--primary); margin-bottom:15px;">BYPASS LOGS</h3>
         <div id="archive-feed"></div>
     </div>
 
-    <div id="page-themes" class="page">
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-            <div style="background:#111; padding:12px; border:1px solid #333; border-radius:8px;" onclick="setTheme('green')">GREEN</div>
-            <div style="background:#111; padding:12px; border:1px solid #333; border-radius:8px;" onclick="setTheme('red')">RED</div>
-            <div style="background:#111; padding:12px; border:1px solid #333; border-radius:8px;" onclick="setTheme('blue')">BLUE</div>
-            <div style="background:#111; padding:12px; border:1px solid #333; border-radius:8px;" onclick="setTheme('gold')">GOLD</div>
-            <div style="background:#111; padding:12px; border:1px solid #333; border-radius:8px;" onclick="setTheme('neon')">NEON</div>
-        </div>
-    </div>
-
     <div id="page-profile" class="page">
-        <div style="text-align:center; padding:30px; background:#111; border-radius:10px; border-bottom:4px solid var(--primary);">
-            <div style="font-size:50px;">👤</div><h2>AHMAD BOSS</h2><p style="color:var(--primary); font-size:10px;">SUPREME COMMANDER</p>
+        <div style="text-align:center; padding:30px; background:#111; border-radius:10px;">
+            <div style="font-size:50px;">👤</div><h2>AHMAD BOSS</h2><p style="color:var(--primary); font-size:10px;">SUPREME ACCESS</p>
         </div>
         <div class="stat-grid">
             <div class="stat-box"><div style="font-size:24px; color:var(--primary)" id="totalWins">0</div><div>WINS</div></div>
-            <div class="stat-box"><div style="font-size:24px; color:var(--danger)" id="totalLosses">0</div><div>LOSSES</div></div>
+            <div class="stat-box"><div style="font-size:24px; color:var(--danger)" id="totalLoss">0</div><div>LOSS</div></div>
         </div>
     </div>
 
     <div class="nav-bar">
         <button class="nav-item active" onclick="nav('terminal', this)">⚡</button>
         <button class="nav-item" onclick="nav('archive', this)">📂</button>
-        <button class="nav-item" onclick="nav('themes', this)">🎨</button>
         <button class="nav-item" onclick="nav('profile', this)">👤</button>
     </div>
 
@@ -119,56 +111,60 @@
         document.getElementById('timer').innerText = s < 10 ? `0${s}` : s;
     }, 1000);
 
-    // --- 100-PERIOD BYPASS ENGINE ---
-    async function bypassSync() {
+    // --- BYPASS 100 PERIODS SYNC ---
+    async function sync() {
         try {
-            document.getElementById('scanStatus').innerText = "FETCHING 100 PERIODS...";
-            let fullData = [];
-            
-            // Loop for 10 pages to bypass the 10-period limit
+            let fullHistory = [];
             for (let i = 1; i <= 10; i++) {
                 let res = await fetch(`${API_BASE}${Date.now()}&pageNo=${i}`);
                 let d = await res.json();
-                fullData = fullData.concat(d.data.list);
+                fullHistory = fullHistory.concat(d.data.list);
             }
+            document.getElementById('scanCount').innerText = fullHistory.length;
 
-            document.getElementById('scanStatus').innerText = "100 PERIODS SYNCED ✅";
-            let latest = fullData[0];
-
+            let latest = fullHistory[0];
             if (lastIssue !== latest.issueNumber) {
                 if (currentBet && currentBet.period === latest.issueNumber) verify(latest);
                 lastIssue = latest.issueNumber;
-                predict(fullData, (BigInt(latest.issueNumber) + 1n).toString());
+                predict(fullHistory, (BigInt(latest.issueNumber) + 1n).toString());
             }
-        } catch(e) { document.getElementById('scanStatus').innerText = "BYPASS ERROR ⚠️"; }
+        } catch(e) {}
     }
 
     function predict(history, period) {
         let lastRes = parseInt(history[0].number) >= 5 ? "BIG" : "SMALL";
-        let pred = ""; let algo = "";
+        let pred = ""; let algoKey = "";
 
         // UNDER LEVEL 2 FIXER LOGIC
-        if (level === 1) { 
-            pred = lastRes; algo = "DRAGON-LOCK"; 
-        } else { 
-            // Level 2 Hyper-Scan: Finding the pattern in 100 draws
-            let bigCount = history.filter(h => parseInt(h.number) >= 5).length;
-            pred = bigCount >= 50 ? "BIG" : "SMALL"; 
-            algo = "SUPREME-FIX";
+        if (level === 1) {
+            pred = lastRes; algoKey = "dragon";
+        } else if (level === 2) {
+            // Level 2 FIXER: Scan full 100 history for trend reversal
+            let bigs = history.slice(0, 50).filter(h => parseInt(h.number) >= 5).length;
+            pred = bigs >= 25 ? "BIG" : "SMALL"; algoKey = "chaos";
+        } else {
+            // Level 3 Sureshot: Statistical majority of 100 draws
+            let bigs = history.filter(h => parseInt(h.number) >= 5).length;
+            pred = bigs >= 50 ? "BIG" : "SMALL"; algoKey = "titan";
         }
 
+        document.getElementById('drawInfo').innerText = "#" + period.slice(-4);
         document.getElementById('predPill').innerText = pred;
-        document.getElementById('algoName').innerText = algo;
+        document.getElementById('algoName').innerText = algoKey.toUpperCase();
         document.getElementById('s1').innerText = pred === "BIG" ? "8" : "2";
         document.getElementById('s2').innerText = pred === "BIG" ? "6" : "4";
 
-        currentBet = { period: period, pred: pred, algo: algo };
+        document.querySelectorAll('.c-node').forEach(n => n.classList.remove('active'));
+        let nodeMap = {"dragon":"c-dragon", "chaos":"c-chaos", "titan":"c-titan"};
+        if(nodeMap[algoKey]) document.getElementById(nodeMap[algoKey]).classList.add('active');
+
+        currentBet = { period: period, pred: pred, algo: algoKey };
         addPendingCard(currentBet);
     }
 
     function addPendingCard(bet) {
         const div = document.createElement('div'); div.id = `arc-${bet.period}`; div.className = 'card pending';
-        div.innerHTML = `<div><div style="font-size:9px; color:#888">#${bet.period} | ${bet.algo}</div><div style="font-size:16px; font-weight:bold;">${bet.pred}</div></div><div class="loader"></div>`;
+        div.innerHTML = `<div><div style="font-size:9px; color:#888">#${bet.period} | ${bet.algo.toUpperCase()}</div><div style="font-size:16px; font-weight:bold;">${bet.pred}</div></div><div class="loader"></div>`;
         document.getElementById('archive-feed').prepend(div);
     }
 
@@ -182,7 +178,7 @@
             if(win) { wins++; level = 1; confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } }); }
             else { losses++; level++; if(level > 3) level = 1; }
         }
-        document.getElementById('totalWins').innerText = wins; document.getElementById('totalLosses').innerText = losses;
+        document.getElementById('totalWins').innerText = wins; document.getElementById('totalLoss').innerText = losses;
     }
 
     function nav(id, btn) {
@@ -192,8 +188,7 @@
         btn.classList.add('active');
     }
 
-    function setTheme(c) { document.body.className = `t-${c}`; }
-    setInterval(bypassSync, 3000); bypassSync();
+    setInterval(sync, 3000); sync();
 </script>
 </body>
 </html>
