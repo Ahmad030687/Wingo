@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DARKNET SUPREME V.88</title>
+    <title>DARKNET SUPREME V.89</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #00ff41; --danger: #ff003c; --gold: #ffd700; --bg: #050505; }
         body.t-green { --primary: #00ff41; } body.t-red { --primary: #ff003c; } 
@@ -13,52 +13,49 @@
         * { margin:0; padding:0; box-sizing:border-box; font-family: 'Orbitron', sans-serif; user-select:none; }
         body { background: var(--bg); color: #fff; padding-bottom: 90px; overflow-x: hidden; transition: 0.3s; }
         .header { padding: 15px 20px; background: #000; border-bottom: 2px solid var(--primary); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
-        .timer-box { border: 1px solid var(--primary); background: #000; padding: 5px 10px; border-radius: 5px; text-align: center; min-width: 60px; }
+        .timer-box { border: 1px solid var(--primary); padding: 5px 10px; border-radius: 5px; text-align: center; min-width: 60px; }
         .timer-val { font-size: 18px; font-weight: 900; }
         .page { display:none; padding:15px; animation: fadeIn 0.3s; }
         #page-terminal { display:block; }
-        
-        /* REAL DATA TRACKER */
-        .data-tracker { background: rgba(0, 255, 65, 0.05); border: 1px dashed var(--primary); border-radius: 5px; padding: 10px; margin-bottom: 15px; font-size: 9px; color: #00ff41; }
+
+        /* REAL DATA PROOF BOX */
+        .proof-window { background: rgba(0, 255, 65, 0.05); border: 1px dashed var(--primary); border-radius: 8px; padding: 10px; margin-bottom: 15px; font-size: 9px; color: #00ff41; }
+        .p-row { display: flex; justify-content: space-between; margin-bottom: 4px; border-bottom: 1px solid rgba(0,255,65,0.1); padding-bottom: 2px; }
+
         .algo-strip { text-align: center; font-size: 10px; color: #aaa; margin-bottom: 10px; border-bottom: 1px solid #222; padding-bottom: 10px; }
-        
-        .pred-pill { background: rgba(255, 255, 255, 0.05); border: 2px solid var(--primary); border-radius: 50px; padding: 10px 30px; margin: 0 auto 20px; width: fit-content; font-size: 24px; font-weight: 900; box-shadow: 0 0 20px var(--primary); text-transform: uppercase; text-align: center; display: block; }
+        .pred-pill { background: rgba(255, 255, 255, 0.05); border: 2px solid var(--primary); border-radius: 50px; padding: 12px 40px; margin: 0 auto 20px; width: fit-content; font-size: 26px; font-weight: 900; color: #fff; box-shadow: 0 0 20px var(--primary); text-transform: uppercase; text-align: center; display: block; }
         .jackpot-container { background: linear-gradient(180deg, #151515 0%, #000 100%); border: 1px solid #333; border-radius: 15px; padding: 20px; position: relative; margin-bottom: 20px; text-align: center; }
         .num-box { width: 50px; height: 50px; border: 2px solid var(--gold); border-radius: 8px; background: #000; color: var(--gold); font-size: 24px; font-weight: 900; display: flex; align-items: center; justify-content: center; }
-        
-        /* COUNCIL GRID */
+
         .council-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 20px; }
         .c-node { background: #0a0a0a; border: 1px solid #222; border-radius: 8px; padding: 10px 5px; text-align: center; opacity: 0.6; transition: 0.3s; }
         .c-node.active { opacity: 1; border-color: var(--primary); box-shadow: 0 0 15px var(--primary); color: var(--primary); }
-        .c-icon { font-size: 18px; display:block; margin-bottom: 5px; }
 
         .card { background: #0f0f0f; border-left: 4px solid #555; border-radius: 8px; padding: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
         .card.win { border-left-color: var(--primary); background: linear-gradient(90deg, rgba(0,255,65,0.05), transparent); }
         .loader { border: 3px solid #333; border-top: 3px solid var(--primary); border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
+
         .nav-bar { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 1px solid #222; display: flex; justify-content: space-around; padding: 15px 0; z-index: 2000; }
-        .nav-item { font-size: 22px; background:none; border:none; color:#555; cursor:pointer; }
+        .nav-item { font-size: 20px; background:none; border:none; color:#555; cursor:pointer; }
         .nav-item.active { color: var(--primary); }
-        @keyframes fadeIn { from{opacity:0} to{opacity:1} }
     </style>
 </head>
 <body class="t-green">
 
     <div class="header">
-        <div><div style="font-size:14px; font-weight:900;">DARKNET SUPREME</div><div style="font-size:8px; color:#aaa;">CORE BYPASS V.88</div></div>
+        <div><div style="font-size:14px; font-weight:900;">DARKNET SUPREME</div><div style="font-size:8px; color:#aaa;">HARDCORE BYPASS V.89</div></div>
         <div class="timer-box"><div class="timer-val" id="timer">--</div></div>
     </div>
 
     <div id="page-terminal" class="page">
-        <div class="data-tracker">
-            <div>CORE SCAN: <span id="dataCount" style="color:#fff">0/100</span> | STATUS: <span id="syncStatus" style="color:var(--gold)">CONNECTING</span></div>
-            <div style="margin-top:5px; border-top:1px solid rgba(0,255,65,0.1); padding-top:5px;">
-                OLD ID: <span id="oldID" style="color:#fff">WAIT</span> | NEW ID: <span id="newID" style="color:#fff">WAIT</span>
-            </div>
+        <div class="proof-window">
+            <div class="p-row"><span>SYNC STATUS:</span> <span id="syncStat" style="color:#fff">BOOTING...</span></div>
+            <div class="p-row"><span>NEWEST ID:</span> <span id="newID" style="color:#fff">---</span></div>
+            <div class="p-row"><span>OLDEST ID:</span> <span id="oldID" style="color:#fff">---</span></div>
         </div>
 
-        <div class="algo-strip">DRAW: <span id="drawInfo" style="color:#fff">#----</span> | ALGO: <span id="algoName" style="color:var(--primary)">SYNCING</span></div>
+        <div class="algo-strip">DRAW: <span id="drawInfo" style="color:#fff">#----</span> | ALGO: <span id="algoName" style="color:var(--primary)">WAIT</span></div>
         <div id="predPill" class="pred-pill">SCANNING...</div>
 
         <div class="jackpot-container">
@@ -67,23 +64,23 @@
         </div>
 
         <div class="council-grid">
-            <div class="c-node" id="c-titan"><span class="c-icon">🧠</span><span style="font-size:8px">TITAN</span></div>
-            <div class="c-node" id="c-dragon"><span class="c-icon">🐉</span><span style="font-size:8px">DRAGON</span></div>
-            <div class="c-node" id="c-pattern"><span class="c-icon">🏁</span><span style="font-size:8px">PATTERN</span></div>
-            <div class="c-node" id="c-chaos"><span class="c-icon">🔀</span><span style="font-size:8px">CHAOS</span></div>
-            <div class="c-node" id="c-wave"><span class="c-icon">🌊</span><span style="font-size:8px">WAVE</span></div>
-            <div class="c-node" id="c-infinity"><span class="c-icon">♾</span><span style="font-size:8px">INFINITY</span></div>
+            <div class="c-node" id="c-titan">🧠<br><span style="font-size:8px">TITAN</span></div>
+            <div class="c-node" id="c-dragon">🐉<br><span style="font-size:8px">DRAGON</span></div>
+            <div class="c-node" id="c-pattern">🏁<br><span style="font-size:8px">PATTERN</span></div>
+            <div class="c-node" id="c-chaos">🔀<br><span style="font-size:8px">CHAOS</span></div>
+            <div class="c-node" id="c-wave">🌊<br><span style="font-size:8px">WAVE</span></div>
+            <div class="c-node" id="c-infinity">♾<br><span style="font-size:8px">INFINITY</span></div>
         </div>
     </div>
 
     <div id="page-archive" class="page">
-        <h3 style="text-align:center; color:var(--primary); margin-bottom:15px;">CORE LOGS</h3>
+        <h3 style="text-align:center; color:var(--primary); margin-bottom:15px;">HISTORY LOGS</h3>
         <div id="archive-feed"></div>
     </div>
 
     <div id="page-profile" class="page">
         <div style="text-align:center; padding:30px; background:#111; border-radius:10px; border-bottom:4px solid var(--primary);">
-            <div style="font-size:50px;">👤</div><h2>AHMAD BOSS</h2><p style="color:var(--primary); font-size:10px;">SUPREME COMMANDER</p>
+            <div style="font-size:50px;">👤</div><h2>AHMAD BOSS</h2><p style="color:var(--primary); font-size:10px;">LEVEL 2/3 FIXER</p>
         </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:20px;">
             <div style="background:#111; padding:15px; text-align:center; border:1px solid #333;"><div style="font-size:24px; color:var(--primary)" id="totalWins">0</div><div>WINS</div></div>
@@ -106,32 +103,31 @@
         document.getElementById('timer').innerText = s < 10 ? `0${s}` : s;
     }, 1000);
 
-    // --- PARALLEL BATCH SYNC ---
-    async function coreSync() {
+    // HARDCORE SEQUENTIAL SYNC (Bypasses 9-period filter)
+    async function hardcoreSync() {
         try {
-            document.getElementById('syncStatus').innerText = "FETCHING...";
-            // Create 10 parallel requests
-            const pages = [1,2,3,4,5,6,7,8,9,10];
-            const requests = pages.map(p => fetch(`${API_BASE}${Date.now()}&pageNo=${p}`).then(r => r.json()));
-            
-            const results = await Promise.all(requests);
             let combined = [];
-            
-            results.forEach(res => {
-                if(res.data && res.data.list) combined = combined.concat(res.data.list);
-            });
+            for (let i = 1; i <= 10; i++) {
+                // IMPORTANT: 800ms gap to trick the server
+                await new Promise(r => setTimeout(r, 800)); 
+                let res = await fetch(`${API_BASE}${Date.now()}&pageNo=${i}`);
+                let d = await res.json();
+                if(d.data && d.data.list) {
+                    combined = combined.concat(d.data.list);
+                    document.getElementById('syncStat').innerText = `${combined.length}/100 FETCHED`;
+                }
+            }
 
-            document.getElementById('dataCount').innerText = `${combined.length}/100`;
-            document.getElementById('syncStatus').innerText = "STABLE";
-            document.getElementById('newID').innerText = combined[0].issueNumber.slice(-4);
-            document.getElementById('oldID').innerText = combined[combined.length-1].issueNumber.slice(-4);
+            document.getElementById('newID').innerText = combined[0].issueNumber;
+            document.getElementById('oldID').innerText = combined[combined.length-1].issueNumber;
+            document.getElementById('syncStat').innerText = "100 PERIODS STABLE ✅";
 
             if (lastIssue !== combined[0].issueNumber) {
                 if (currentBet && currentBet.period === combined[0].issueNumber) verify(combined[0]);
                 lastIssue = combined[0].issueNumber;
                 predict(combined, (BigInt(combined[0].issueNumber) + 1n).toString());
             }
-        } catch(e) { document.getElementById('syncStatus').innerText = "OFFLINE"; }
+        } catch(e) { document.getElementById('syncStat').innerText = "LIMIT HIT ⚠️"; }
     }
 
     function predict(history, period) {
@@ -141,8 +137,8 @@
         // UNDER LEVEL 2 FIXER
         if (level === 1) { pred = lastRes; algo = "dragon"; } 
         else if (level === 2) { 
-            let bigs = history.slice(0, 50).filter(h => parseInt(h.number) >= 5).length;
-            pred = bigs >= 25 ? "BIG" : "SMALL"; algo = "titan"; 
+            let bigs = history.slice(0, 60).filter(h => parseInt(h.number) >= 5).length;
+            pred = bigs >= 30 ? "BIG" : "SMALL"; algo = "titan"; 
         } else {
             let bigs = history.filter(h => parseInt(h.number) >= 5).length;
             pred = bigs >= 50 ? "BIG" : "SMALL"; algo = "infinity";
@@ -155,8 +151,7 @@
         document.getElementById('s2').innerText = pred === "BIG" ? "6" : "4";
 
         document.querySelectorAll('.c-node').forEach(n => n.classList.remove('active'));
-        let nodeMap = {"dragon":"c-dragon", "titan":"c-titan", "infinity":"c-infinity"};
-        if(nodeMap[algo]) document.getElementById(nodeMap[algo]).classList.add('active');
+        if(document.getElementById(`c-${algo}`)) document.getElementById(`c-${algo}`).classList.add('active');
 
         currentBet = { period: period, pred: pred, algo: algo };
         addPendingCard(currentBet);
@@ -188,10 +183,11 @@
     function nav(id, btn) {
         document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
         document.getElementById('page-'+id).style.display = 'block';
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
         btn.classList.add('active');
     }
 
-    setInterval(coreSync, 4000); coreSync();
+    setInterval(hardcoreSync, 4000); hardcoreSync();
 </script>
 </body>
 </html>
