@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DARKNET SUPREME V.87</title>
+    <title>DARKNET SUPREME V.88</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
@@ -18,15 +18,15 @@
         .page { display:none; padding:15px; animation: fadeIn 0.3s; }
         #page-terminal { display:block; }
         
-        /* DATA PROOF BAR */
-        .proof-bar { background: rgba(0, 255, 65, 0.05); border: 1px dashed var(--primary); border-radius: 5px; padding: 8px; margin-bottom: 10px; font-size: 9px; color: #00ff41; }
-        .algo-strip { text-align: center; font-size: 10px; color: #aaa; margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 10px; }
+        /* REAL DATA TRACKER */
+        .data-tracker { background: rgba(0, 255, 65, 0.05); border: 1px dashed var(--primary); border-radius: 5px; padding: 10px; margin-bottom: 15px; font-size: 9px; color: #00ff41; }
+        .algo-strip { text-align: center; font-size: 10px; color: #aaa; margin-bottom: 10px; border-bottom: 1px solid #222; padding-bottom: 10px; }
         
-        .pred-pill { background: rgba(255, 255, 255, 0.05); border: 2px solid var(--primary); border-radius: 50px; padding: 12px 40px; margin: 0 auto 20px; width: fit-content; font-size: 26px; font-weight: 900; box-shadow: 0 0 20px var(--primary); text-transform: uppercase; text-align: center; display: block; }
+        .pred-pill { background: rgba(255, 255, 255, 0.05); border: 2px solid var(--primary); border-radius: 50px; padding: 10px 30px; margin: 0 auto 20px; width: fit-content; font-size: 24px; font-weight: 900; box-shadow: 0 0 20px var(--primary); text-transform: uppercase; text-align: center; display: block; }
         .jackpot-container { background: linear-gradient(180deg, #151515 0%, #000 100%); border: 1px solid #333; border-radius: 15px; padding: 20px; position: relative; margin-bottom: 20px; text-align: center; }
         .num-box { width: 50px; height: 50px; border: 2px solid var(--gold); border-radius: 8px; background: #000; color: var(--gold); font-size: 24px; font-weight: 900; display: flex; align-items: center; justify-content: center; }
         
-        /* COUNCIL GRID FIX */
+        /* COUNCIL GRID */
         .council-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 20px; }
         .c-node { background: #0a0a0a; border: 1px solid #222; border-radius: 8px; padding: 10px 5px; text-align: center; opacity: 0.6; transition: 0.3s; }
         .c-node.active { opacity: 1; border-color: var(--primary); box-shadow: 0 0 15px var(--primary); color: var(--primary); }
@@ -40,24 +40,25 @@
         .nav-bar { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 1px solid #222; display: flex; justify-content: space-around; padding: 15px 0; z-index: 2000; }
         .nav-item { font-size: 22px; background:none; border:none; color:#555; cursor:pointer; }
         .nav-item.active { color: var(--primary); }
-
         @keyframes fadeIn { from{opacity:0} to{opacity:1} }
     </style>
 </head>
 <body class="t-green">
 
     <div class="header">
-        <div><div style="font-size:14px; font-weight:900;">DARKNET SUPREME</div><div style="font-size:8px; color:#aaa;">STRICT BYPASS V.87</div></div>
+        <div><div style="font-size:14px; font-weight:900;">DARKNET SUPREME</div><div style="font-size:8px; color:#aaa;">CORE BYPASS V.88</div></div>
         <div class="timer-box"><div class="timer-val" id="timer">--</div></div>
     </div>
 
     <div id="page-terminal" class="page">
-        <div class="proof-bar">
-            SYNC: <span id="syncStatus" style="color:#fff">BOOTING...</span> | 
-            OLDEST: <span id="oldID" style="color:#fff">WAIT</span>
+        <div class="data-tracker">
+            <div>CORE SCAN: <span id="dataCount" style="color:#fff">0/100</span> | STATUS: <span id="syncStatus" style="color:var(--gold)">CONNECTING</span></div>
+            <div style="margin-top:5px; border-top:1px solid rgba(0,255,65,0.1); padding-top:5px;">
+                OLD ID: <span id="oldID" style="color:#fff">WAIT</span> | NEW ID: <span id="newID" style="color:#fff">WAIT</span>
+            </div>
         </div>
-        <div class="algo-strip">DRAW: <span id="drawInfo" style="color:#fff">#----</span> | ALGO: <span id="algoName" style="color:var(--primary)">SCANNING</span></div>
-        
+
+        <div class="algo-strip">DRAW: <span id="drawInfo" style="color:#fff">#----</span> | ALGO: <span id="algoName" style="color:var(--primary)">SYNCING</span></div>
         <div id="predPill" class="pred-pill">SCANNING...</div>
 
         <div class="jackpot-container">
@@ -76,7 +77,7 @@
     </div>
 
     <div id="page-archive" class="page">
-        <h3 style="text-align:center; color:var(--primary); margin-bottom:15px;">BYPASS LOGS</h3>
+        <h3 style="text-align:center; color:var(--primary); margin-bottom:15px;">CORE LOGS</h3>
         <div id="archive-feed"></div>
     </div>
 
@@ -105,42 +106,44 @@
         document.getElementById('timer').innerText = s < 10 ? `0${s}` : s;
     }, 1000);
 
-    // --- STRICT 100-PERIOD SYNC (WITH DELAY) ---
-    async function strictSync() {
+    // --- PARALLEL BATCH SYNC ---
+    async function coreSync() {
         try {
+            document.getElementById('syncStatus').innerText = "FETCHING...";
+            // Create 10 parallel requests
+            const pages = [1,2,3,4,5,6,7,8,9,10];
+            const requests = pages.map(p => fetch(`${API_BASE}${Date.now()}&pageNo=${p}`).then(r => r.json()));
+            
+            const results = await Promise.all(requests);
             let combined = [];
-            for (let p = 1; p <= 10; p++) {
-                // IMPORTANT: 500ms delay to ensure server provides all 100 periods
-                await new Promise(res => setTimeout(res, 500)); 
-                let response = await fetch(`${API_BASE}${Date.now()}&pageNo=${p}`);
-                let d = await response.json();
-                if(d.data && d.data.list) {
-                    combined = combined.concat(d.data.list);
-                    document.getElementById('syncStatus').innerText = `${combined.length}/100 SYNCED`;
-                    if(p === 10) document.getElementById('oldID').innerText = d.data.list[9].issueNumber.slice(-4);
-                }
-            }
+            
+            results.forEach(res => {
+                if(res.data && res.data.list) combined = combined.concat(res.data.list);
+            });
+
+            document.getElementById('dataCount').innerText = `${combined.length}/100`;
+            document.getElementById('syncStatus').innerText = "STABLE";
+            document.getElementById('newID').innerText = combined[0].issueNumber.slice(-4);
+            document.getElementById('oldID').innerText = combined[combined.length-1].issueNumber.slice(-4);
 
             if (lastIssue !== combined[0].issueNumber) {
                 if (currentBet && currentBet.period === combined[0].issueNumber) verify(combined[0]);
                 lastIssue = combined[0].issueNumber;
                 predict(combined, (BigInt(combined[0].issueNumber) + 1n).toString());
             }
-        } catch(e) { document.getElementById('syncStatus').innerText = "RETRYING..."; }
+        } catch(e) { document.getElementById('syncStatus').innerText = "OFFLINE"; }
     }
 
     function predict(history, period) {
         let lastRes = parseInt(history[0].number) >= 5 ? "BIG" : "SMALL";
         let pred = ""; let algo = "";
 
-        // UNDER LEVEL 2 FIXER ENGINE (Using Real 100 Data)
+        // UNDER LEVEL 2 FIXER
         if (level === 1) { pred = lastRes; algo = "dragon"; } 
         else if (level === 2) { 
-            // Fixer: Consensus of last 50
             let bigs = history.slice(0, 50).filter(h => parseInt(h.number) >= 5).length;
             pred = bigs >= 25 ? "BIG" : "SMALL"; algo = "titan"; 
         } else {
-            // Sureshot: Statistical weight of 100
             let bigs = history.filter(h => parseInt(h.number) >= 5).length;
             pred = bigs >= 50 ? "BIG" : "SMALL"; algo = "infinity";
         }
@@ -174,7 +177,6 @@
             el.innerHTML = `<div><div style="font-size:9px;">#${currentBet.period}</div><div style="font-size:16px; font-weight:bold;">${win?'WIN':'LOSS'} <span style="color:var(--primary)">[${result.number}]</span></div></div><div style="font-size:20px;">${win?'✔':'✖'}</div>`;
             if(win) { 
                 wins++; level = 1; 
-                // CELEBRATION ONLY ON WIN
                 confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } }); 
             } else { 
                 losses++; level++; if(level > 3) level = 1; 
@@ -186,11 +188,10 @@
     function nav(id, btn) {
         document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
         document.getElementById('page-'+id).style.display = 'block';
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
         btn.classList.add('active');
     }
 
-    setInterval(strictSync, 5000); strictSync();
+    setInterval(coreSync, 4000); coreSync();
 </script>
 </body>
 </html>
