@@ -3,31 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DARKNET SUPREME V.90</title>
+    <title>DARKNET SUPREME V.91</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #00ff41; --danger: #ff003c; --gold: #ffd700; --bg: #050505; }
         body.t-green { --primary: #00ff41; } body.t-red { --primary: #ff003c; } 
         body.t-blue { --primary: #00d4ff; } body.t-gold { --primary: #ffd700; }
+        
         * { margin:0; padding:0; box-sizing:border-box; font-family: 'Orbitron', sans-serif; user-select:none; }
         body { background: var(--bg); color: #fff; padding-bottom: 90px; overflow-x: hidden; transition: 0.3s; }
+
         .header { padding: 15px 20px; background: #000; border-bottom: 2px solid var(--primary); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        .title-box { font-size: 14px; font-weight: 900; line-height: 1.2; letter-spacing:1px; }
         .timer-box { border: 1px solid var(--primary); background: #000; padding: 5px 10px; border-radius: 5px; text-align: center; min-width: 60px; }
         .timer-val { font-size: 18px; font-weight: 900; }
+
         .page { display:none; padding:15px; animation: fadeIn 0.3s; }
         #page-terminal { display:block; }
+
+        /* REAL DATA PROOF BAR */
+        .proof-bar { background: rgba(0, 255, 65, 0.05); border: 1px dashed var(--primary); border-radius: 8px; padding: 10px; margin-bottom: 15px; font-size: 9px; color: #00ff41; line-height: 1.6; }
+        
         .algo-strip { text-align: center; font-size: 10px; color: #aaa; margin-bottom: 10px; border-bottom: 1px solid #222; padding-bottom: 10px; }
+        .pred-pill { background: rgba(255, 255, 255, 0.05); border: 2px solid var(--primary); border-radius: 50px; padding: 12px 40px; margin: 0 auto 20px; width: fit-content; font-size: 26px; font-weight: 900; box-shadow: 0 0 20px var(--primary); text-transform: uppercase; text-align: center; display: block; }
         
-        /* DATA PROOF BOX */
-        .proof-box { background: rgba(0, 255, 65, 0.05); border: 1px dashed var(--primary); border-radius: 5px; padding: 8px; margin-bottom: 15px; font-size: 9px; color: #00ff41; }
-        
-        .pred-pill { background: rgba(255, 255, 255, 0.05); border: 2px solid var(--primary); border-radius: 50px; padding: 10px 30px; margin: 0 auto 20px; width: fit-content; font-size: 24px; font-weight: 900; text-align: center; display: block; box-shadow: 0 0 20px var(--primary); text-transform: uppercase; }
         .jackpot-container { background: linear-gradient(180deg, #151515 0%, #000 100%); border: 1px solid #333; border-radius: 15px; padding: 20px; position: relative; margin-bottom: 20px; text-align: center; }
         .num-box { width: 50px; height: 50px; border: 2px solid var(--gold); border-radius: 8px; background: #000; color: var(--gold); font-size: 24px; font-weight: 900; display: flex; align-items: center; justify-content: center; }
-        
+
         .council-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 20px; }
-        .c-node { background: #0a0a0a; border: 1px solid #222; border-radius: 8px; padding: 10px 5px; text-align: center; transition: 0.3s; opacity: 0.6; }
+        .c-node { background: #0a0a0a; border: 1px solid #222; border-radius: 8px; padding: 10px 5px; text-align: center; transition: 0.3s; opacity: 0.5; }
         .c-node.active { opacity: 1; border-color: var(--primary); box-shadow: 0 0 15px var(--primary); color: var(--primary); }
         .c-icon { font-size: 18px; display:block; margin-bottom: 5px; }
 
@@ -35,6 +40,7 @@
         .card.win { border-left-color: var(--primary); background: linear-gradient(90deg, rgba(0,255,65,0.05), transparent); }
         .loader { border: 3px solid #333; border-top: 3px solid var(--primary); border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
         .nav-bar { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 1px solid #222; display: flex; justify-content: space-around; padding: 15px 0; z-index: 2000; }
         .nav-item { font-size: 20px; background:none; border:none; color:#555; cursor:pointer; }
         .nav-item.active { color: var(--primary); }
@@ -44,21 +50,24 @@
 <body class="t-green">
 
     <div class="header">
-        <div><div style="font-size:14px; font-weight:900;">DARKNET SUPREME</div><div style="font-size:8px; color:#aaa;">COMMANDER V.90</div></div>
+        <div><div class="title-box">DARKNET SUPREME</div><div style="font-size:8px; color:#aaa;">BYPASS ENGINE V.91</div></div>
         <div class="timer-box"><div class="timer-val" id="timer">--</div></div>
     </div>
 
     <div id="page-terminal" class="page">
-        <div class="proof-box">
-            SYNC: <span id="syncStat" style="color:#fff">BOOTING...</span> | 
-            OLDEST ID: <span id="oldID" style="color:#fff">---</span>
+        <div class="proof-bar">
+            SYNC STATUS: <span id="syncStat" style="color:#fff">BOOTING...</span><br>
+            NEWEST ID: <span id="newID" style="color:#fff">---</span> | OLDEST ID: <span id="oldID" style="color:#fff">---</span>
         </div>
+
         <div class="algo-strip">DRAW: <span id="drawInfo" style="color:#fff">#----</span> | ALGO: <span id="algoName" style="color:var(--primary)">SCANNING</span></div>
-        <div id="predPill" class="pred-pill">SCANNING...</div>
+        <div id="predPill" class="pred-pill">ANALYZING...</div>
+
         <div class="jackpot-container">
-            <div style="background:var(--gold); color:#000; padding:2px 10px; font-size:10px; font-weight:900; position:absolute; top:-10px; left:50%; transform:translateX(-50%); border-radius:4px;">GOD SEEDS</div>
+            <div style="background:var(--gold); color:#000; padding:2px 10px; font-size:10px; font-weight:900; position:absolute; top:-10px; left:50%; transform:translateX(-50%); border-radius:4px;">JACKPOT SEEDS</div>
             <div style="display:flex; justify-content:center; gap:20px; margin:10px 0;"><div class="num-box" id="s1">?</div><div class="num-box" id="s2">?</div></div>
         </div>
+
         <div class="council-grid">
             <div class="c-node" id="c-titan"><span class="c-icon">🧠</span><span style="font-size:8px">TITAN</span></div>
             <div class="c-node" id="c-dragon"><span class="c-icon">🐉</span><span style="font-size:8px">DRAGON</span></div>
@@ -75,12 +84,12 @@
     </div>
 
     <div id="page-profile" class="page">
-        <div style="text-align:center; padding:30px; background:#111; border-radius:10px; border-bottom:4px solid var(--primary);">
-            <div style="font-size:50px;">👤</div><h2>AHMAD BOSS</h2><p style="color:var(--primary); font-size:10px;">SUPREME COMMANDER</p>
+        <div style="text-align:center; padding:30px; background:#111; border-radius:10px;">
+            <div style="font-size:50px;">👤</div><h2>AHMAD BOSS</h2><p style="color:var(--primary); font-size:10px;">LEVEL 2/3 FIXER</p>
         </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:20px;">
             <div style="background:#111; padding:15px; text-align:center; border:1px solid #333;"><div style="font-size:24px; color:var(--primary)" id="totalWins">0</div><div>WINS</div></div>
-            <div style="background:#111; padding:15px; text-align:center; border:1px solid #333;"><div style="font-size:24px; color:var(--danger)" id="totalLosses">0</div><div>LOSS</div></div>
+            <div style="background:#111; padding:15px; text-align:center; border:1px solid #333;"><div style="font-size:24px; color:var(--danger)" id="totalLosses">0</div><div>LOSSES</div></div>
         </div>
     </div>
 
@@ -99,42 +108,47 @@
         document.getElementById('timer').innerText = s < 10 ? `0${s}` : s;
     }, 1000);
 
-    // --- RECURSIVE BYPASS ENGINE (REAL 100 DRAWS) ---
-    async function fetchAllData() {
+    // --- RECURSIVE CHUNK FETCH (100% BYPASS) ---
+    async function fetch100Periods() {
         try {
-            let combined = [];
-            for (let p = 1; p <= 10; p++) {
-                // Human-like staggered delay to bypass server rate limit
-                await new Promise(r => setTimeout(r, 600)); 
-                let res = await fetch(`${API_BASE}${Date.now()}&pageNo=${p}`);
+            document.getElementById('syncStat').innerText = "FETCHING CHUNKS...";
+            let fullData = [];
+            
+            // Loop with staggered delay to avoid 9-period rate limit
+            for (let i = 1; i <= 10; i++) {
+                await new Promise(r => setTimeout(r, 450)); 
+                let res = await fetch(`${API_BASE}${Date.now()}&pageNo=${i}`);
                 let d = await res.json();
                 if(d.data && d.data.list) {
-                    combined = combined.concat(d.data.list);
-                    document.getElementById('syncStat').innerText = `${combined.length}/100 SYNCED`;
-                    if(p === 10) document.getElementById('oldID').innerText = d.data.list[9].issueNumber.slice(-4);
+                    fullData = fullData.concat(d.data.list);
+                    document.getElementById('syncStat').innerText = `${fullData.length}/100 SYNCED ✅`;
                 }
             }
 
-            if (lastIssue !== combined[0].issueNumber) {
-                if (currentBet && currentBet.period === combined[0].issueNumber) verify(combined[0]);
-                lastIssue = combined[0].issueNumber;
-                predict(combined, (BigInt(combined[0].issueNumber) + 1n).toString());
+            document.getElementById('newID').innerText = fullData[0].issueNumber.slice(-4);
+            document.getElementById('oldID').innerText = fullData[fullData.length-1].issueNumber.slice(-4);
+
+            if (lastIssue !== fullData[0].issueNumber) {
+                if (currentBet && currentBet.period === fullData[0].issueNumber) verify(fullData[0]);
+                lastIssue = fullData[0].issueNumber;
+                predict(fullData, (BigInt(fullData[0].issueNumber) + 1n).toString());
             }
-        } catch(e) { document.getElementById('syncStat').innerText = "ERROR ⚠️"; }
+        } catch(e) { document.getElementById('syncStat').innerText = "RETRYING SYNC..."; }
     }
 
     function predict(history, period) {
         let lastRes = parseInt(history[0].number) >= 5 ? "BIG" : "SMALL";
         let pred = ""; let algo = "";
 
-        // UNDER LEVEL 2 FIXER ENGINE (Scanning 100)
-        if (level === 1) { pred = lastRes; algo = "dragon"; } 
-        else if (level === 2) { 
-            // Fixer consensus from 60 draws
+        // UNDER LEVEL 2 FIXER LOGIC (Scan 100 Draws)
+        if (level === 1) { 
+            pred = lastRes; algo = "dragon"; 
+        } else if (level === 2) { 
+            // Level 2 FIXER: Mirror detection from last 60
             let bigs = history.slice(0, 60).filter(h => parseInt(h.number) >= 5).length;
-            pred = bigs >= 30 ? "BIG" : "SMALL"; algo = "titan"; 
+            pred = bigs >= 30 ? "BIG" : "SMALL"; algo = "titan";
         } else {
-            // Sureshot from 100 draws
+            // Level 3 Sureshot: 100 draw Consensus
             let bigs = history.filter(h => parseInt(h.number) >= 5).length;
             pred = bigs >= 50 ? "BIG" : "SMALL"; algo = "infinity";
         }
@@ -142,8 +156,8 @@
         document.getElementById('drawInfo').innerText = "#" + period.slice(-4);
         document.getElementById('predPill').innerText = pred;
         document.getElementById('algoName').innerText = algo.toUpperCase();
-        document.getElementById('s1').innerText = pred === "BIG" ? "9" : "1";
-        document.getElementById('s2').innerText = pred === "BIG" ? "7" : "3";
+        document.getElementById('s1').innerText = pred === "BIG" ? "8" : "2";
+        document.getElementById('s2').innerText = pred === "BIG" ? "6" : "4";
 
         document.querySelectorAll('.c-node').forEach(n => n.classList.remove('active'));
         if(document.getElementById(`c-${algo}`)) document.getElementById(`c-${algo}`).classList.add('active');
@@ -167,6 +181,7 @@
             el.innerHTML = `<div><div style="font-size:9px;">#${currentBet.period}</div><div style="font-size:16px; font-weight:bold;">${win?'WIN':'LOSS'} <span style="color:var(--primary)">[${result.number}]</span></div></div><div style="font-size:20px;">${win?'✔':'✖'}</div>`;
             if(win) { 
                 wins++; level = 1; 
+                // CELEBRATION ONLY ON WIN
                 confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } }); 
             } else { 
                 losses++; level++; if(level > 3) level = 1; 
@@ -182,7 +197,7 @@
         btn.classList.add('active');
     }
 
-    setInterval(fetchAllData, 5000); fetchAllData();
+    setInterval(fetch100Periods, 4500); fetch100Periods();
 </script>
 </body>
 </html>
