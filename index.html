@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DARKNET SUPREME V.72</title>
+    <title>DARKNET SUPREME V.73</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #00ff41; --danger: #ff003c; --gold: #ffd700; --bg: #050505; }
         
+        /* 10 THEMES RESTORED */
         body.t-green { --primary: #00ff41; } body.t-red { --primary: #ff003c; } 
         body.t-blue { --primary: #00d4ff; } body.t-gold { --primary: #ffd700; }
         body.t-purple { --primary: #bc13fe; } body.t-cyan { --primary: #00ffff; }
@@ -27,7 +28,7 @@
         #page-terminal { display:block; }
 
         .algo-strip { text-align: center; font-size: 10px; color: #aaa; margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 10px; }
-        .pred-pill { background: rgba(255, 255, 255, 0.05); border: 2px solid var(--primary); border-radius: 50px; padding: 10px 30px; margin: 0 auto 20px; width: fit-content; font-size: 24px; font-weight: 900; color: #fff; box-shadow: 0 0 20px var(--primary); text-transform: uppercase; }
+        .pred-pill { background: rgba(255, 255, 255, 0.05); border: 2px solid var(--primary); border-radius: 50px; padding: 10px 30px; margin: 0 auto 20px; width: fit-content; font-size: 24px; font-weight: 900; box-shadow: 0 0 20px var(--primary); text-transform: uppercase; }
         
         .jackpot-container { background: linear-gradient(180deg, #151515 0%, #000 100%); border: 1px solid #333; border-radius: 15px; padding: 20px; position: relative; margin-bottom: 20px; text-align: center; }
         .jackpot-title { background: var(--gold); color: #000; padding: 2px 10px; font-size: 10px; font-weight: 900; position: absolute; top: -10px; left: 50%; transform: translateX(-50%); border-radius: 4px; box-shadow: 0 0 10px var(--gold); }
@@ -63,8 +64,8 @@
 
     <div class="header">
         <div>
-            <div class="title-box">DARKNET SUPREME</div>
-            <div style="font-size:8px; color:#aaa;">GOD-FIXER V.72</div>
+            <div class="title-box">DARKNET ETERNITY</div>
+            <div style="font-size:8px; color:#aaa;">COMMANDER EDITION V.73</div>
         </div>
         <div class="timer-box">
             <div class="timer-val" id="timer">--</div>
@@ -77,7 +78,7 @@
         </div>
         <div id="predPill" class="pred-pill">WAITING...</div>
         <div class="jackpot-container">
-            <div class="jackpot-title">JACKPOT SEEDS</div>
+            <div class="jackpot-title">JACKPOT NUMBERS</div>
             <div class="boxes-row"><div class="num-box" id="s1">?</div><div class="num-box" id="s2">?</div></div>
         </div>
         <div class="council-grid">
@@ -87,12 +88,11 @@
     </div>
 
     <div id="page-archive" class="page">
-        <h3 style="text-align:center; color:var(--primary); margin-bottom:15px;">SUPREME LOGS</h3>
+        <h3 style="text-align:center; color:var(--primary); margin-bottom:15px;">SESSION HISTORY</h3>
         <div id="archive-feed"></div>
     </div>
 
     <div id="page-themes" class="page">
-        <h3 style="text-align:center; margin-bottom:20px;">INTERFACE COLORS</h3>
         <div class="theme-grid">
             <div class="theme-btn" onclick="setTheme('green')"><div class="color-dot" style="background:#00ff41"></div> GREEN</div>
             <div class="theme-btn" onclick="setTheme('red')"><div class="color-dot" style="background:#ff003c"></div> RED</div>
@@ -108,8 +108,9 @@
     </div>
 
     <div id="page-profile" class="page">
-        <div style="text-align:center; padding:30px; background:#111; border-radius:10px; border-bottom:4px solid var(--primary);">
-            <div style="font-size:50px;">👤</div><h2>AHMAD BOSS</h2><p style="color:var(--primary); font-size:10px;">SUPREME COMMANDER</p>
+        <div style="text-align:center; padding:30px; background:#111; border-radius:10px;">
+            <div style="font-size:50px;">👤</div>
+            <h2>AHMAD BOSS</h2><p style="color:var(--primary); font-size:10px;">LEVEL 3 SUPREME</p>
         </div>
         <div class="stat-grid">
             <div class="stat-box"><div style="font-size:24px; color:var(--primary)" id="totalWins">0</div><div style="font-size:10px;">WINS</div></div>
@@ -150,15 +151,15 @@
         let recent = history.slice(0, 10).map(h => parseInt(h.number) >= 5 ? "BIG" : "SMALL");
         let pred = ""; let algo = "";
 
-        // HARDCORE LEVEL 3 FIXER LOGIC
+        // HARDCORE L3 SUPREME FIXER ENGINE
         if (level === 1) { 
             pred = recent[0]; algo = "DRAGON"; 
         } else if (level === 2) { 
             pred = recent[0] === "BIG" ? "SMALL" : "BIG"; algo = "ZIGZAG"; 
         } else {
-            // Level 3 Titan Fixer: Weighted consensus
-            let bigs = history.slice(0, 20).filter(h => parseInt(h.number) >= 5).length;
-            pred = bigs >= 10 ? "BIG" : "SMALL"; algo = "TITAN";
+            // DEEP CONSENSUS (SCAN LAST 30 ISSUES)
+            let b = history.slice(0, 30).filter(h => parseInt(h.number) >= 5).length;
+            pred = b >= 15 ? "BIG" : "SMALL"; algo = "TITAN-FIX";
         }
 
         let s1 = pred === "BIG" ? 5+Math.floor(Math.random()*5) : Math.floor(Math.random()*5);
@@ -170,7 +171,7 @@
         document.getElementById('s1').innerText = s1; document.getElementById('s2').innerText = s2;
 
         document.querySelectorAll('.c-node').forEach(n => n.classList.remove('active'));
-        let nodeMap = {"DRAGON":"c-dragon", "ZIGZAG":"c-chaos", "TITAN":"c-titan"};
+        let nodeMap = {"DRAGON":"c-dragon", "ZIGZAG":"c-pattern", "TITAN-FIX":"c-titan"};
         if(nodeMap[algo]) document.getElementById(nodeMap[algo]).classList.add('active');
 
         currentBet = { period: period, pred: pred, algo: algo };
@@ -178,7 +179,7 @@
     }
 
     function addPendingCard(bet) {
-        const div = document.createElement('div'); div.id = `arc-${bet.period}`; div.className = 'card';
+        const div = document.createElement('div'); div.id = `arc-${bet.period}`; div.className = 'card pending';
         div.innerHTML = `<div><div style="font-size:9px; color:#888">#${bet.period} | ${bet.algo}</div><div style="font-size:16px; font-weight:bold;">${bet.pred}</div></div><div class="loader"></div>`;
         document.getElementById('archive-feed').prepend(div);
     }
