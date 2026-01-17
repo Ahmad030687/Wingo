@@ -3,17 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DARKNET SUPREME V.119</title>
+    <title>DARKNET SUPREME COMMANDER V.121</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #00ff41; --danger: #ff003c; --gold: #ffd700; --bg: #050505; }
         
-        body.t-green { --primary: #00ff41; }
-        
         * { margin:0; padding:0; box-sizing:border-box; font-family: 'Orbitron', sans-serif; user-select:none; }
-        body { background: var(--bg); color: #fff; padding-bottom: 90px; overflow-x: hidden; transition: 0.3s; }
+        body { background: var(--bg); color: #fff; padding-bottom: 90px; overflow-x: hidden; }
 
+        /* HEADER (Exact V.65 Style) */
         .header {
             padding: 15px 20px; background: #000; border-bottom: 2px solid var(--primary);
             display: flex; justify-content: space-between; align-items: center;
@@ -28,21 +27,23 @@
         .timer-val { font-size: 18px; font-weight: 900; color: #fff; }
 
         .page { padding:15px; }
-        
+
+        /* ALGO STRIP */
         .algo-strip {
             text-align: center; font-size: 10px; color: #aaa; margin-bottom: 15px;
             letter-spacing: 1px; border-bottom: 1px solid #222; padding-bottom: 10px;
         }
-        
-        /* PREDICTION PILL */
+
+        /* SUPREME PREDICTION PILL */
         .pred-pill {
             background: rgba(255, 255, 255, 0.05); border: 2px solid var(--primary);
             border-radius: 50px; padding: 15px 40px; margin: 0 auto 20px; width: fit-content;
-            font-size: 32px; font-weight: 900; color: #fff;
-            box-shadow: 0 0 25px var(--primary); text-transform: uppercase;
+            font-size: 34px; font-weight: 900; color: #fff;
+            box-shadow: 0 0 35px var(--primary); text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
         }
 
-        /* JACKPOT CONTAINER */
+        /* JACKPOT CONTAINER (Gold Theme) */
         .jackpot-container {
             background: linear-gradient(180deg, #151515 0%, #000 100%);
             border: 1px solid #333; border-radius: 15px; padding: 20px;
@@ -62,15 +63,15 @@
             box-shadow: inset 0 0 15px rgba(255, 215, 0, 0.2);
         }
 
-        /* COUNCIL GRID */
+        /* COUNCIL ICONS (The "Supreme" Algorithms) */
         .council-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 20px; }
         .c-node {
             background: #0a0a0a; border: 1px solid #222; border-radius: 8px;
             padding: 10px 5px; text-align: center; transition: 0.3s; opacity: 0.4;
         }
         .c-node.active {
-            opacity: 1; border-color: var(--primary); background: rgba(255,255,255,0.05);
-            box-shadow: 0 0 15px var(--primary); transform: scale(1.05); color: var(--primary);
+            opacity: 1; border-color: var(--primary); background: rgba(0,255,65,0.05);
+            box-shadow: 0 0 20px var(--primary); transform: scale(1.05); color: var(--primary);
         }
         .c-icon { font-size: 20px; display:block; margin-bottom: 5px; }
         .c-name { font-size: 8px; color: #fff; letter-spacing: 1px; }
@@ -79,11 +80,17 @@
         .card {
             background: #0f0f0f; border-left: 4px solid #555; border-radius: 8px;
             padding: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
-            transition: 0.3s;
         }
         .card.win { border-left-color: var(--primary); background: linear-gradient(90deg, rgba(0,255,65,0.05), transparent); }
         .card.loss { border-left-color: var(--danger); opacity: 0.8; }
         
+        /* LEVEL INDICATOR */
+        .level-badge {
+            display: inline-block; background: #222; padding: 5px 10px; 
+            border-radius: 4px; font-size: 10px; border: 1px solid #444; margin-top: 10px;
+        }
+
+        /* BOTTOM NAV */
         .nav-bar {
             position: fixed; bottom: 0; width: 100%; background: #000;
             border-top: 1px solid #222; display: flex; justify-content: space-around;
@@ -96,12 +103,12 @@
         @keyframes blinker { 50% { opacity: 0; } }
     </style>
 </head>
-<body class="t-green">
+<body>
 
     <div class="header">
         <div>
-            <div class="title-box">DARKNET V.119</div>
-            <div class="sub-title">24/7 STRIKER • <span id="dbSize" class="blink" style="color:var(--primary)">SYNCING...</span></div>
+            <div class="title-box">DARKNET V.121</div>
+            <div class="sub-title">SUPREME COMMANDER • <span id="dbSize" class="blink" style="color:var(--primary)">ONLINE</span></div>
         </div>
         <div class="timer-box">
             <div class="timer-label" style="color:var(--primary); font-size:8px;">DRAW</div>
@@ -125,18 +132,17 @@
             <div style="font-size:8px; color:#555;">ID PROOF: <span id="idLedger" style="color:var(--gold)">SCANNING...</span></div>
         </div>
 
-        <div class="council-grid">
-            <div class="c-node" id="c-neural"><span class="c-icon">🧠</span><span class="c-name">NEURAL</span></div>
-            <div class="c-node" id="c-dragon"><span class="c-icon">🐉</span><span class="c-name">DRAGON</span></div>
-            <div class="c-node" id="c-alt"><span class="c-icon">🔀</span><span class="c-name">ALT PAT.</span></div>
-            <div class="c-node" id="c-weight"><span class="c-icon">⚖️</span><span class="c-name">WEIGHT</span></div>
-            <div class="c-node" id="c-wave"><span class="c-icon">🌊</span><span class="c-name">WAVE</span></div>
-            <div class="c-node" id="c-infinity"><span class="c-icon">♾️</span><span class="c-name">INFINITY</span></div>
+        <div style="text-align:center;">
+            <div class="level-badge">RECOVERY LEVEL: <span id="levelDisp" style="color:var(--primary); font-weight:bold;">1</span></div>
         </div>
 
-        <div style="text-align:center; margin-top:20px;">
-            <div style="font-size:10px; color:#666;">SESSION STATS</div>
-            <div style="font-size:14px; color:var(--primary); font-weight:bold;">WINS: <span id="wins">0</span> | LOSS: <span id="losses" style="color:var(--danger)">0</span></div>
+        <div class="council-grid">
+            <div class="c-node" id="c-neural"><span class="c-icon">🧠</span><span class="c-name">NEURAL CORE</span></div>
+            <div class="c-node" id="c-dragon"><span class="c-icon">🐉</span><span class="c-name">DRAGON</span></div>
+            <div class="c-node" id="c-alt"><span class="c-icon">🔀</span><span class="c-name">ALT PATTERN</span></div>
+            <div class="c-node" id="c-weight"><span class="c-icon">⚖️</span><span class="c-name">WEIGHTAGE</span></div>
+            <div class="c-node" id="c-wave"><span class="c-icon">🌊</span><span class="c-name">WAVE</span></div>
+            <div class="c-node" id="c-infinity"><span class="c-icon">♾️</span><span class="c-name">INFINITY</span></div>
         </div>
     </div>
 
@@ -152,12 +158,14 @@
     </div>
 
 <script>
+    // DIRECT API (NO WAITING)
     const API_URL = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=50&ts=";
     
+    // ALGORITHM MAPPING
     const ALGOS = {
         neural: { name: "NEURAL CORE", id: "c-neural" },
         dragon: { name: "DRAGON FOLLOW", id: "c-dragon" },
-        alt: { name: "ALT PATTERN", id: "c-alt" },
+        alt: { name: "ALT RECOVERY", id: "c-alt" },
         weight: { name: "WEIGHTAGE RND", id: "c-weight" },
         wave: { name: "WAVE REVERSAL", id: "c-wave" },
         infinity: { name: "INFINITY LOCK", id: "c-infinity" }
@@ -166,10 +174,10 @@
     let historyData = [];
     let lastIssue = null;
     let currentBet = null;
+    let level = 1; // 1 = Trend, 2 = Recovery
     let wins = 0;
-    let losses = 0;
-    let level = 1;
 
+    // TIMER & SYNC
     setInterval(() => {
         let s = 60 - new Date().getSeconds();
         document.getElementById('timer').innerText = s < 10 ? `0${s}` : s;
@@ -182,6 +190,7 @@
             let json = await res.json();
             historyData = json.data.list;
             
+            // UI Updates
             document.getElementById('dbSize').innerText = historyData.length + " PERIODS";
             document.getElementById('dbSize').classList.remove('blink');
             document.getElementById('idLedger').innerText = historyData.slice(0, 3).map(h => h.issueNumber.slice(-4)).join(' - ');
@@ -193,67 +202,63 @@
     function processGame() {
         if(!historyData.length) return;
         let latest = historyData[0];
-        let latestIssue = latest.issueNumber;
-
-        if(currentBet && currentBet.period === latestIssue) {
+        
+        // CHECK WIN/LOSS
+        if(currentBet && currentBet.period === latest.issueNumber) {
             verifyWin(latest);
         }
 
-        if(lastIssue !== latestIssue) {
-            let nextIssue = (BigInt(latestIssue) + 1n).toString();
-            lastIssue = latestIssue;
+        // PREDICT NEXT
+        if(lastIssue !== latest.issueNumber) {
+            let nextIssue = (BigInt(latest.issueNumber) + 1n).toString();
+            lastIssue = latest.issueNumber;
             predict(nextIssue);
         }
     }
 
-    // --- THE "24/7 STRIKER" LOGIC ---
+    // --- SUPREME COMMANDER LOGIC ---
     function predict(issue) {
         let lastRes = parseInt(historyData[0].number) >= 5 ? "BIG" : "SMALL";
         let pred = "";
         let algoKey = "";
-        
-        // --- LEVEL 2 PROTECTION (Anti-Back-to-Back Loss) ---
-        if (level === 2) {
-            // Logic: If we lost on L1, the trend probably flipped or broke.
-            // Action: Don't persist. ADAPT immediately.
-            
-            // Check Global Weightage (Last 50 draws)
-            let last50 = historyData.slice(0, 50);
-            let bigs = last50.filter(x => parseInt(x.number) >= 5).length;
-            
-            // If market is HEAVILY one-sided, bet on that side
-            if(bigs > 30) { pred = "BIG"; algoKey = "weight"; }
-            else if(bigs < 20) { pred = "SMALL"; algoKey = "weight"; }
-            else {
-                // Otherwise, assume the L1 Trend Break was real -> Follow New Trend
-                pred = lastRes; 
-                algoKey = "wave"; // Riding the new wave
-            }
-        } 
-        // --- LEVEL 1 AGGRESSION (Normal Play) ---
-        else {
-            let recent = historyData.slice(0, 10);
-            let last3 = recent.slice(0,3).map(x => parseInt(x.number) >= 5 ? "BIG" : "SMALL");
 
-            // 1. DRAGON FOLLOW
-            if(last3[0] === last3[1] && last3[1] === last3[2]) {
-                pred = last3[0]; algoKey = "dragon";
-            }
-            // 2. ALT PATTERN
-            else if(last3[0] !== last3[1]) {
-                pred = (lastRes === "BIG" ? "SMALL" : "BIG"); algoKey = "alt";
-            }
-            // 3. NEURAL FALLBACK
-            else {
-                pred = lastRes; algoKey = "neural";
+        // === LEVEL 2: THE SURESHOT RECOVERY ===
+        // Logic: If L1 failed, the trend (Dragon) is broken. Market is now Zigzag.
+        // Action: Bet OPPOSITE of last result.
+        if (level === 2) {
+            pred = (lastRes === "BIG" ? "SMALL" : "BIG"); 
+            algoKey = "alt";
+        }
+        
+        // === LEVEL 1: RIDE THE DRAGON ===
+        // Logic: Always follow the trend initially.
+        // Check "Weightage" just in case market is heavily skewed.
+        else {
+            // Check Frequency of last 20
+            let last20 = historyData.slice(0, 20);
+            let bigs = last20.filter(x => parseInt(x.number) >= 5).length;
+
+            if (bigs >= 14) { 
+                // Market too heavy on BIG -> Reversal likely
+                pred = "SMALL"; algoKey = "weight"; 
+            } else if (bigs <= 6) { 
+                // Market too heavy on SMALL -> Reversal likely
+                pred = "BIG"; algoKey = "weight"; 
+            } else {
+                // Normal Condition: FOLLOW THE LAST RESULT (Dragon)
+                pred = lastRes; 
+                algoKey = "dragon";
             }
         }
 
-        // Generate Seeds based on prediction
-        let s1 = pred === "BIG" ? [6,7,8,9][Math.floor(Math.random()*4)] : [0,1,2,3][Math.floor(Math.random()*4)];
+        // Generate Quantum Seeds (Visual only)
+        let s1 = pred === "BIG" ? [6,8,9][Math.floor(Math.random()*3)] : [1,3,4][Math.floor(Math.random()*3)];
         let s2 = Math.floor(Math.random() * 10);
 
+        // Update UI
         updateUI(issue, pred, algoKey, s1, s2);
+        
+        // Save Bet
         currentBet = { period: issue, pred: pred, algo: algoKey };
         addHistoryCard(currentBet);
     }
@@ -261,13 +266,24 @@
     function updateUI(issue, pred, algoKey, s1, s2) {
         document.getElementById('drawInfo').innerText = "#" + issue.slice(-4);
         document.getElementById('algoName').innerText = ALGOS[algoKey].name;
-        document.getElementById('predPill').innerText = pred;
-        document.getElementById('predPill').style.borderColor = pred === "BIG" ? "var(--primary)" : "var(--danger)";
-        document.getElementById('predPill').style.boxShadow = pred === "BIG" ? "0 0 25px var(--primary)" : "0 0 25px var(--danger)";
         
+        // Prediction Pill
+        const pill = document.getElementById('predPill');
+        pill.innerText = pred;
+        pill.style.borderColor = pred === "BIG" ? "var(--primary)" : "var(--danger)";
+        pill.style.boxShadow = pred === "BIG" ? "0 0 35px var(--primary)" : "0 0 35px var(--danger)";
+        pill.style.color = "#fff";
+
+        // Seeds
         document.getElementById('s1').innerText = s1;
         document.getElementById('s2').innerText = s2;
         
+        // Level Indicator
+        const lvlDisp = document.getElementById('levelDisp');
+        lvlDisp.innerText = level;
+        lvlDisp.style.color = level === 1 ? "var(--primary)" : "var(--gold)";
+        
+        // Icon Active
         document.querySelectorAll('.c-node').forEach(n => n.classList.remove('active'));
         if(document.getElementById(ALGOS[algoKey].id)) {
             document.getElementById(ALGOS[algoKey].id).classList.add('active');
@@ -305,13 +321,11 @@
             `;
             
             if(win) { 
-                wins++; level = 1;
+                level = 1; // RESET TO LEVEL 1 (Sureshot Success)
                 confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
             } else {
-                losses++; level = 2; // Activate Recovery Mode
+                level = 2; // ACTIVATE LEVEL 2 (The Assassin Mode)
             }
-            document.getElementById('wins').innerText = wins;
-            document.getElementById('losses').innerText = losses;
         }
     }
 
@@ -321,7 +335,8 @@
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
         btn.classList.add('active');
     }
-
+    
+    // Start System
     syncData();
 </script>
 </body>
