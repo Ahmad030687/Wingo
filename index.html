@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DARKNET QUANTUM V.113</title>
+    <title>DARKNET QUANTUM V.114</title>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
@@ -110,10 +110,6 @@
         .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
         .stat-box { background: #111; border: 1px solid #333; padding: 15px; text-align: center; border-radius: 8px; }
 
-        /* LIVE UPDATE ANIMATION */
-        @keyframes flashGreen { 0% {color:#fff;} 50% {color:var(--primary); text-shadow:0 0 10px var(--primary);} 100% {color:#fff;} }
-        .data-flash { animation: flashGreen 1s ease; }
-
         @keyframes fadeIn { from{opacity:0} to{opacity:1} }
     </style>
 </head>
@@ -121,8 +117,8 @@
 
     <div class="header">
         <div>
-            <div class="title-box">DARKNET QUANTUM V.113</div>
-            <div style="font-size:8px; color:#aaa;">DB PERIODS: <span id="dbCount" style="font-weight:bold; font-size:10px;">0</span></div>
+            <div class="title-box">DARKNET QUANTUM V.114</div>
+            <div style="font-size:8px; color:#aaa;">ALGO ENGINE: <span id="dbCount" style="font-weight:bold; color:var(--primary)">ONLINE</span></div>
         </div>
         <div class="timer-box">
             <div class="timer-label" style="color:var(--primary); font-size: 8px;">DRAW</div>
@@ -147,17 +143,17 @@
         </div>
 
         <div class="council-grid">
-            <div class="c-node" id="c-titan"><span class="c-icon">🧠</span><span class="c-name">TITAN</span></div>
-            <div class="c-node" id="c-dragon"><span class="c-icon">🐉</span><span class="c-name">DRAGON</span></div>
-            <div class="c-node" id="c-pattern"><span class="c-icon">🏁</span><span class="c-name">SURFER</span></div>
-            <div class="c-node" id="c-chaos"><span class="c-icon">🔀</span><span class="c-name">CHAOS</span></div>
+            <div class="c-node" id="c-neural"><span class="c-icon">🧠</span><span class="c-name">NEURAL CORE</span></div>
+            <div class="c-node" id="c-dragon"><span class="c-icon">🐉</span><span class="c-name">DRAGON FOLLOW</span></div>
+            <div class="c-node" id="c-alt"><span class="c-icon">🔀</span><span class="c-name">ALT PATTERN</span></div>
+            <div class="c-node" id="c-weight"><span class="c-icon">⚖️</span><span class="c-name">WEIGHTAGE RND</span></div>
             <div class="c-node" id="c-wave"><span class="c-icon">🌊</span><span class="c-name">WAVE</span></div>
             <div class="c-node" id="c-infinity"><span class="c-icon">♾️</span><span class="c-name">INFINITY</span></div>
         </div>
     </div>
 
     <div id="page-archive" class="page">
-        <h3 style="text-align:center; color:var(--primary); margin-bottom:15px;">OMEGA ARCHIVE</h3>
+        <h3 style="text-align:center; color:var(--primary); margin-bottom:15px;">DARKNET LOGS</h3>
         <div id="archive-feed"></div>
     </div>
 
@@ -170,10 +166,6 @@
             <div class="theme-btn" onclick="setTheme('gold')"><div class="color-dot" style="background:#ffd700"></div> LUXURY GOLD</div>
             <div class="theme-btn" onclick="setTheme('purple')"><div class="color-dot" style="background:#bc13fe"></div> DEEP PURPLE</div>
             <div class="theme-btn" onclick="setTheme('cyan')"><div class="color-dot" style="background:#00ffff"></div> CYAN TECH</div>
-            <div class="theme-btn" onclick="setTheme('pink')"><div class="color-dot" style="background:#ff00ff"></div> HOT PINK</div>
-            <div class="theme-btn" onclick="setTheme('orange')"><div class="color-dot" style="background:#ff6600"></div> BLAZE ORANGE</div>
-            <div class="theme-btn" onclick="setTheme('white')"><div class="color-dot" style="background:#ffffff"></div> GHOST WHITE</div>
-            <div class="theme-btn" onclick="setTheme('neon')"><div class="color-dot" style="background:#ccff00"></div> TOXIC YELLOW</div>
         </div>
     </div>
 
@@ -203,7 +195,6 @@
     </div>
 
 <script>
-    // FIREBASE CONFIG
     const firebaseConfig = {
       apiKey: "AIzaSyA8qJ3qJl5fzbOBKopx99zsACkEGofbfyY",
       authDomain: "admin-91a73.firebaseapp.com",
@@ -218,20 +209,21 @@
     const db = firebase.database();
     const historyRef = db.ref('wingo_history');
 
+    // --- EXACT DARKNET ALGORITHMS ---
     const ALGOS = {
-        dragon: { name: "DRAGON", id: "c-dragon" },
-        surfer: { name: "SURFER", id: "c-pattern" }, // NEW ANTI-ZIDD
-        titan: { name: "TITAN", id: "c-titan" },
-        chaos: { name: "CHAOS", id: "c-chaos" },
-        mirror: { name: "MIRROR", id: "c-infinity" },
-        wave: { name: "WAVE", id: "c-wave" }
+        neural: { name: "NEURAL CORE", id: "c-neural" },
+        dragon: { name: "DRAGON FOLLOW", id: "c-dragon" },
+        alt: { name: "ALT PATTERN", id: "c-alt" },
+        weight: { name: "WEIGHTAGE RND", id: "c-weight" },
+        wave: { name: "WAVE", id: "c-wave" },
+        infinity: { name: "INFINITY", id: "c-infinity" }
     };
 
     let masterHistory = [];
     let lastIssue = null;
     let currentBet = null;
     let level = 1;
-    let consecutiveLosses = 0; // Tracks Zidd
+    let consecutiveLosses = 0; 
     let wins = 0; losses = 0;
 
     setInterval(() => {
@@ -243,14 +235,7 @@
         const data = snap.val();
         if (data) {
             masterHistory = Object.values(data).reverse();
-            
-            // UI Updates
-            const countEl = document.getElementById('dbCount');
-            countEl.innerText = masterHistory.length;
-            countEl.classList.remove('data-flash');
-            void countEl.offsetWidth; 
-            countEl.classList.add('data-flash');
-            
+            document.getElementById('dbCount').innerText = masterHistory.length;
             document.getElementById('idLedger').innerText = masterHistory.slice(0, 3).map(h => h.issueNumber.slice(-4)).join(' - ');
 
             let latest = masterHistory[0];
@@ -262,7 +247,7 @@
         }
     });
 
-    // --- V.113 ANTI-ZIDD LOGIC ---
+    // --- THE DARKNET ALL-TO-ALL LOGIC ---
     function predict(period) {
         if (masterHistory.length < 10) return;
         
@@ -270,37 +255,45 @@
         let pred = "";
         let algoKey = "";
 
-        // ANTI-ZIDD CHECK: If we lost twice in a row, SWITCH to Trend Surfing
-        if (consecutiveLosses >= 2) {
-             // Logic: Stop fighting the trend. If last result was BIG, bet BIG.
-            pred = lastRes; 
-            algoKey = "surfer"; 
-        } 
-        else if (level === 1) {
-            // Normal Trend Follower
-            let recent = masterHistory.slice(0, 5);
-            let bigs = recent.filter(h => parseInt(h.number) >= 5).length;
-            if (bigs >= 4) { pred = "BIG"; algoKey = "dragon"; }
-            else if (bigs <= 1) { pred = "SMALL"; algoKey = "dragon"; }
-            else { pred = lastRes; algoKey = "titan"; }
-        } 
+        let recent = masterHistory.slice(0, 6);
+        let bigs = recent.filter(h => parseInt(h.number) >= 5).length;
+        let smalls = 6 - bigs;
+
+        // 1. DRAGON FOLLOW (Priority: Streak)
+        if (bigs >= 5 || smalls >= 5) {
+            pred = (bigs >= 5) ? "BIG" : "SMALL";
+            algoKey = "dragon";
+        }
+        // 2. ALTERNATIVE PATTERN (Zigzag Check)
+        else if (masterHistory[0].number !== masterHistory[1].number && masterHistory[1].number !== masterHistory[2].number) {
+            // Zigzag detected: B-S-B... Predict Opposite of last
+            pred = (lastRes === "BIG" ? "SMALL" : "BIG");
+            algoKey = "alt";
+        }
+        // 3. WEIGHTAGE RANDOM (Frequency Bias)
         else {
-            // Level 2 Fixer (Standard)
             let totalBigs = masterHistory.filter(h => parseInt(h.number) >= 5).length;
             let ratio = totalBigs / masterHistory.length;
-            if (ratio > 0.55) { pred = "SMALL"; algoKey = "wave"; }
-            else if (ratio < 0.45) { pred = "BIG"; algoKey = "wave"; }
-            else { pred = (lastRes === "BIG" ? "SMALL" : "BIG"); algoKey = "chaos"; }
+            
+            if (Math.abs(ratio - 0.5) > 0.05) {
+                // Skewed Market: Apply Weightage
+                pred = (ratio > 0.5) ? "BIG" : "SMALL"; 
+                algoKey = "weight";
+            } else {
+                // 4. NEURAL CORE (Deep Learning / Fallback)
+                pred = (level > 1) ? (lastRes === "BIG" ? "SMALL" : "BIG") : lastRes; 
+                algoKey = "neural";
+            }
         }
 
-        // Quantum Seeds
+        // Generate Weighted Seeds
         let s1, s2;
         if(pred === "BIG") {
-            s1 = Math.random() > 0.5 ? 8 : 6;
-            s2 = Math.random() > 0.5 ? 7 : 9;
+            s1 = [5,6,7,8,9][Math.floor(Math.random()*5)];
+            s2 = [5,6,7,8,9][Math.floor(Math.random()*5)];
         } else {
-            s1 = Math.random() > 0.5 ? 1 : 3;
-            s2 = Math.random() > 0.5 ? 2 : 4;
+            s1 = [0,1,2,3,4][Math.floor(Math.random()*5)];
+            s2 = [0,1,2,3,4][Math.floor(Math.random()*5)];
         }
 
         updateUI(period, pred, algoKey, s1, s2);
@@ -354,10 +347,10 @@
         }
 
         if (win) {
-            wins++; level = 1; consecutiveLosses = 0; // Reset Zidd
+            wins++; level = 1; consecutiveLosses = 0;
             confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
         } else {
-            losses++; level++; consecutiveLosses++; // Increase Zidd tracker
+            losses++; level++; consecutiveLosses++;
             if(level > 6) level = 1; 
         }
         document.getElementById('totalWins').innerText = wins;
@@ -371,9 +364,7 @@
         btn.classList.add('active');
     }
 
-    window.setTheme = function(c) {
-        document.body.className = `t-${c}`;
-    }
+    window.setTheme = function(c) { document.body.className = `t-${c}`; }
 
     async function sync() {
         try {
