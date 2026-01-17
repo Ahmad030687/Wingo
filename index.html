@@ -3,91 +3,209 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AURA COMMANDER V.111</title>
+    <title>DARKNET QUANTUM V.65</title>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #00ff41; --danger: #ff003c; --gold: #ffd700; --bg: #050505; }
+        
+        body.t-green { --primary: #00ff41; }
+        body.t-red { --primary: #ff003c; } 
+        body.t-blue { --primary: #00d4ff; }
+        body.t-gold { --primary: #ffd700; }
+        body.t-purple { --primary: #bc13fe; }
+        body.t-cyan { --primary: #00ffff; }
+        body.t-pink { --primary: #ff00ff; }
+        body.t-orange { --primary: #ff6600; }
+        body.t-white { --primary: #ffffff; }
+        body.t-neon { --primary: #ccff00; }
+
         * { margin:0; padding:0; box-sizing:border-box; font-family: 'Orbitron', sans-serif; user-select:none; }
-        body { background: var(--bg); color: #fff; padding-bottom: 90px; overflow-x: hidden; }
+        body { background: var(--bg); color: #fff; padding-bottom: 90px; overflow-x: hidden; transition: 0.3s; }
 
-        .header { padding: 15px 20px; background: #000; border-bottom: 2px solid var(--primary); display: flex; justify-content: space-between; align-items: center; box-shadow: 0 0 20px var(--primary); }
-        .timer-val { font-size: 18px; font-weight: 900; color: var(--primary); }
+        .header {
+            padding: 15px 20px; background: #000; border-bottom: 2px solid var(--primary);
+            display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 1000; box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+        }
+        .title-box { font-size: 14px; font-weight: 900; line-height: 1.2; letter-spacing:1px; }
+        .sub-title { font-size: 8px; color: #aaa; letter-spacing: 1px; }
+        .timer-box {
+            border: 1px solid var(--primary); background: #000; padding: 5px 10px;
+            border-radius: 5px; text-align: center; min-width: 60px;
+        }
+        .timer-val { font-size: 18px; font-weight: 900; color: #fff; }
 
-        .status-panel { background: rgba(0, 255, 65, 0.05); border: 1px dashed var(--primary); border-radius: 10px; padding: 12px; margin: 15px; font-size: 9px; }
-        .id-proof { color: var(--gold); font-size: 8px; margin-top: 5px; letter-spacing: 1px; }
+        .page { display:none; padding:15px; animation: fadeIn 0.3s; }
+        #page-terminal { display:block; }
 
-        .pred-area { text-align: center; margin: 20px 0; }
-        .pred-pill { background: #000; border: 3px solid var(--primary); border-radius: 60px; padding: 15px 50px; font-size: 34px; font-weight: 900; box-shadow: 0 0 30px var(--primary), inset 0 0 15px var(--primary); display: inline-block; text-transform: uppercase; }
+        .algo-strip {
+            text-align: center; font-size: 10px; color: #aaa; margin-bottom: 15px;
+            letter-spacing: 1px; text-shadow: 0 0 5px rgba(255,255,255,0.2);
+            border-bottom: 1px solid #222; padding-bottom: 10px;
+        }
+        .pred-pill {
+            background: rgba(255, 255, 255, 0.05); border: 2px solid var(--primary);
+            border-radius: 50px; padding: 10px 30px; margin: 0 auto 20px; width: fit-content;
+            font-size: 24px; font-weight: 900; color: #fff;
+            box-shadow: 0 0 20px var(--primary); text-transform: uppercase;
+        }
+        .jackpot-container {
+            background: linear-gradient(180deg, #151515 0%, #000 100%);
+            border: 1px solid #333; border-radius: 15px; padding: 20px;
+            position: relative; margin-bottom: 20px; text-align: center;
+        }
+        .jackpot-title {
+            background: var(--gold); color: #000; padding: 2px 10px;
+            font-size: 10px; font-weight: 900; position: absolute; top: -10px;
+            left: 50%; transform: translateX(-50%); border-radius: 4px;
+            box-shadow: 0 0 10px var(--gold);
+        }
+        .boxes-row { display: flex; justify-content: center; gap: 20px; margin: 20px 0; }
+        .num-box {
+            width: 50px; height: 50px; border: 2px solid var(--gold); border-radius: 8px;
+            background: #000; color: var(--gold); font-size: 24px; font-weight: 900;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: inset 0 0 15px rgba(255, 215, 0, 0.2);
+        }
+
+        .council-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 20px; }
+        .c-node {
+            background: #0a0a0a; border: 1px solid #222; border-radius: 8px;
+            padding: 10px 5px; text-align: center; transition: 0.3s; opacity: 0.6;
+        }
+        .c-node.active {
+            opacity: 1; border-color: var(--primary); background: rgba(255,255,255,0.05);
+            box-shadow: 0 0 15px var(--primary); transform: scale(1.05); color: var(--primary);
+        }
+        .c-icon { font-size: 18px; display:block; margin-bottom: 5px; }
+        .c-name { font-size: 8px; color: #fff; letter-spacing: 1px; }
+
+        .card {
+            background: #0f0f0f; border-left: 4px solid #555; border-radius: 8px;
+            padding: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
+            transition: 0.3s;
+        }
+        .card.win { border-left-color: var(--primary); background: linear-gradient(90deg, rgba(0,255,65,0.05), transparent); }
+        .card.loss { border-left-color: var(--danger); opacity: 0.8; }
         
-        /* JACKPOT NUMBERS RESTORED */
-        .jackpot-container { background: linear-gradient(180deg, #151515 0%, #000 100%); border: 1px solid #333; border-radius: 15px; padding: 20px; position: relative; margin: 20px 15px; text-align: center; }
-        .num-box { width: 50px; height: 50px; border: 2px solid var(--gold); border-radius: 8px; background: #000; color: var(--gold); font-size: 24px; font-weight: 900; display: flex; align-items: center; justify-content: center; }
+        .loader {
+            border: 3px solid #333; border-top: 3px solid var(--primary);
+            border-radius: 50%; width: 20px; height: 20px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* THE ORIGINAL V.65 COUNCIL GRID */
-        .council-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 15px; }
-        .c-node { background: #0a0a0a; border: 1px solid #222; border-radius: 10px; padding: 12px 5px; text-align: center; opacity: 0.5; transition: 0.3s; }
-        .c-node.active { opacity: 1; border-color: var(--primary); box-shadow: 0 0 15px var(--primary); color: var(--primary); }
-        .c-icon { font-size: 20px; display:block; margin-bottom: 5px; }
+        .theme-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .theme-btn {
+            background: #111; border: 1px solid #333; padding: 12px; border-radius: 8px;
+            display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 10px;
+        }
+        .color-dot { width: 15px; height: 15px; border-radius: 50%; border: 1px solid #fff; }
 
-        .card { background: #0a0a0a; border-left: 5px solid #333; border-radius: 10px; padding: 18px; margin: 0 15px 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #222; }
-        .card.win { border-left-color: var(--primary); }
+        .nav-bar {
+            position: fixed; bottom: 0; width: 100%; background: #000;
+            border-top: 1px solid #222; display: flex; justify-content: space-around;
+            padding: 15px 0; z-index: 2000;
+        }
+        .nav-item { font-size: 20px; background:none; border:none; color:#555; cursor:pointer; }
+        .nav-item.active { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
         
-        .nav-bar { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 1px solid #222; display: flex; justify-content: space-around; padding: 15px 0; }
-        .nav-item { font-size: 22px; background:none; border:none; color:#444; }
-        .nav-item.active { color: var(--primary); }
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+        .stat-box { background: #111; border: 1px solid #333; padding: 15px; text-align: center; border-radius: 8px; }
+
+        @keyframes fadeIn { from{opacity:0} to{opacity:1} }
     </style>
 </head>
 <body class="t-green">
 
     <div class="header">
-        <div><div style="font-size:16px; font-weight:900;">AURA COMMANDER</div><div style="font-size:8px; color:#aaa; letter-spacing:2px;">SUPREME RESTORE V.111</div></div>
-        <div class="timer-box"><div class="timer-val" id="timer">--</div></div>
+        <div>
+            <div class="title-box">DARKNET QUANTUM V.65</div>
+            <div class="sub-title">CLOUDSYNC: <span id="dbCount">0</span> PERIODS</div>
+        </div>
+        <div class="timer-box">
+            <div class="timer-label" style="color:var(--primary); font-size: 8px;">DRAW</div>
+            <div class="timer-val" id="timer">--</div>
+        </div>
     </div>
 
-    <div class="status-panel">
-        <div style="display:flex; justify-content:space-between;">
-            <span>🟢 DATABASE: <span id="dbStat">ONLINE</span></span>
-            <span>MEM: <span id="dbCount" style="color:#fff">0</span> PERIODS</span>
+    <div id="page-terminal" class="page">
+        <div class="algo-strip">
+            DRAW: <span id="drawInfo" style="color:#fff">#----</span> | ALGO: <span id="algoName" style="color:var(--primary); font-weight:bold;">SCANNING</span>
         </div>
-        <div class="id-proof" id="idLedger">ID SCAN: WAITING FOR DATA...</div>
-    </div>
 
-    <div id="page-terminal" class="page" style="display:block;">
-        <div class="pred-area">
-            <div style="font-size:10px; color:var(--gold); letter-spacing:4px; margin-bottom:8px; font-weight:900;">SUPREME SIGNAL</div>
-            <div id="predPill" class="pred-pill">SCANNING</div>
-            <div style="font-size:10px; color:var(--primary); margin-top:10px;">ACCURACY: 99.9% (FIXER ACTIVE)</div>
-        </div>
+        <div id="predPill" class="pred-pill">WAITING...</div>
 
         <div class="jackpot-container">
-            <div style="background:var(--gold); color:#000; padding:2px 10px; font-size:10px; font-weight:900; position:absolute; top:-10px; left:50%; transform:translateX(-50%); border-radius:4px;">QUANTUM SEEDS</div>
-            <div style="display:flex; justify-content:center; gap:20px; margin:10px 0;"><div class="num-box" id="s1">?</div><div class="num-box" id="s2">?</div></div>
+            <div class="jackpot-title">JACKPOT NUMBERS</div>
+            <div class="boxes-row">
+                <div class="num-box" id="s1">?</div>
+                <div class="num-box" id="s2">?</div>
+            </div>
+            <div style="font-size:8px; color:#555;">ID PROOF: <span id="idLedger" style="color:var(--gold)">SCANNING...</span></div>
         </div>
 
         <div class="council-grid">
-            <div class="c-node" id="c-titan"><span class="c-icon">🧠</span><span style="font-size:8px">TITAN</span></div>
-            <div class="c-node" id="c-dragon"><span class="c-icon">🐉</span><span style="font-size:8px">DRAGON</span></div>
-            <div class="c-node" id="c-pattern"><span class="c-icon">🏁</span><span style="font-size:8px">FIXER</span></div>
-            <div class="c-node" id="c-chaos"><span class="c-icon">🔀</span><span style="font-size:8px">CHAOS</span></div>
-            <div class="c-node" id="c-wave"><span class="c-icon">🌊</span><span style="font-size:8px">WAVE</span></div>
-            <div class="c-node" id="c-infinity"><span class="c-icon">♾</span><span style="font-size:8px">INFINITY</span></div>
+            <div class="c-node" id="c-titan"><span class="c-icon">🧠</span><span class="c-name">TITAN</span></div>
+            <div class="c-node" id="c-dragon"><span class="c-icon">🐉</span><span class="c-name">DRAGON</span></div>
+            <div class="c-node" id="c-pattern"><span class="c-icon">🏁</span><span class="c-name">PATTERN</span></div>
+            <div class="c-node" id="c-chaos"><span class="c-icon">🔀</span><span class="c-name">CHAOS</span></div>
+            <div class="c-node" id="c-wave"><span class="c-icon">🌊</span><span class="c-name">WAVE</span></div>
+            <div class="c-node" id="c-infinity"><span class="c-icon">♾️</span><span class="c-name">INFINITY</span></div>
         </div>
     </div>
 
-    <div id="page-archive" class="page" style="display:none; padding:10px;">
-        <h3 style="text-align:center; color:var(--primary); margin-bottom:20px;">COMMANDER ARCHIVE</h3>
+    <div id="page-archive" class="page">
+        <h3 style="text-align:center; color:var(--primary); margin-bottom:15px;">OMEGA ARCHIVE</h3>
         <div id="archive-feed"></div>
+    </div>
+
+    <div id="page-themes" class="page">
+        <h3 style="text-align:center; margin-bottom:20px;">INTERFACE COLORS</h3>
+        <div class="theme-grid">
+            <div class="theme-btn" onclick="setTheme('green')"><div class="color-dot" style="background:#00ff41"></div> NEON GREEN</div>
+            <div class="theme-btn" onclick="setTheme('red')"><div class="color-dot" style="background:#ff003c"></div> BLOOD RED</div>
+            <div class="theme-btn" onclick="setTheme('blue')"><div class="color-dot" style="background:#00d4ff"></div> PLASMA BLUE</div>
+            <div class="theme-btn" onclick="setTheme('gold')"><div class="color-dot" style="background:#ffd700"></div> LUXURY GOLD</div>
+            <div class="theme-btn" onclick="setTheme('purple')"><div class="color-dot" style="background:#bc13fe"></div> DEEP PURPLE</div>
+            <div class="theme-btn" onclick="setTheme('cyan')"><div class="color-dot" style="background:#00ffff"></div> CYAN TECH</div>
+            <div class="theme-btn" onclick="setTheme('pink')"><div class="color-dot" style="background:#ff00ff"></div> HOT PINK</div>
+            <div class="theme-btn" onclick="setTheme('orange')"><div class="color-dot" style="background:#ff6600"></div> BLAZE ORANGE</div>
+            <div class="theme-btn" onclick="setTheme('white')"><div class="color-dot" style="background:#ffffff"></div> GHOST WHITE</div>
+            <div class="theme-btn" onclick="setTheme('neon')"><div class="color-dot" style="background:#ccff00"></div> TOXIC YELLOW</div>
+        </div>
+    </div>
+
+    <div id="page-profile" class="page">
+        <div style="text-align:center; padding:30px; background:#111; border-radius:10px;">
+            <div style="font-size:50px;">👤</div>
+            <h2>AHMAD BOSS</h2>
+            <p style="color:var(--primary); font-size:10px;">SUPREME COMMANDER</p>
+        </div>
+        <div class="stat-grid">
+            <div class="stat-box">
+                <div style="font-size:24px; color:var(--primary)" id="totalWins">0</div>
+                <div style="font-size:10px;">WINS</div>
+            </div>
+            <div class="stat-box">
+                <div style="font-size:24px; color:#ff003c" id="totalLoss">0</div>
+                <div style="font-size:10px;">LOSSES</div>
+            </div>
+        </div>
     </div>
 
     <div class="nav-bar">
         <button class="nav-item active" onclick="nav('terminal', this)">⚡</button>
         <button class="nav-item" onclick="nav('archive', this)">📂</button>
+        <button class="nav-item" onclick="nav('themes', this)">🎨</button>
+        <button class="nav-item" onclick="nav('profile', this)">👤</button>
     </div>
 
 <script>
+    // FIREBASE CONFIG
     const firebaseConfig = {
       apiKey: "AIzaSyA8qJ3qJl5fzbOBKopx99zsACkEGofbfyY",
       authDomain: "admin-91a73.firebaseapp.com",
@@ -102,16 +220,37 @@
     const db = firebase.database();
     const historyRef = db.ref('wingo_history');
 
-    let masterHistory = [];
-    let lastIssue = null, currentBet = null, level = 1;
+    const ALGOS = {
+        dragon: { name: "DRAGON", id: "c-dragon" },
+        zigzag: { name: "ZIGZAG", id: "c-pattern" },
+        titan: { name: "TITAN", id: "c-titan" },
+        chaos: { name: "CHAOS", id: "c-chaos" },
+        mirror: { name: "MIRROR", id: "c-infinity" },
+        wave: { name: "WAVE", id: "c-wave" }
+    };
 
+    let masterHistory = [];
+    let lastIssue = null;
+    let currentBet = null;
+    let level = 1;
+    let wins = 0; losses = 0;
+
+    // --- TIMER ---
+    setInterval(() => {
+        let s = 60 - new Date().getSeconds();
+        document.getElementById('timer').innerText = s < 10 ? `0${s}` : s;
+    }, 1000);
+
+    // --- FIREBASE SYNC (Accuracy Engine) ---
     historyRef.limitToLast(250).on('value', (snap) => {
         const data = snap.val();
         if (data) {
             masterHistory = Object.values(data).reverse();
             document.getElementById('dbCount').innerText = masterHistory.length;
-            const proof = masterHistory.slice(0, 5).map(h => h.issueNumber.slice(-4)).join(' - ');
-            document.getElementById('idLedger').innerText = "ID SCAN: " + proof;
+            
+            // Proof IDs
+            const proof = masterHistory.slice(0, 3).map(h => h.issueNumber.slice(-4)).join(' - ');
+            document.getElementById('idLedger').innerText = proof;
 
             let latest = masterHistory[0];
             if (lastIssue !== latest.issueNumber) {
@@ -122,66 +261,108 @@
         }
     });
 
-    setInterval(() => {
-        let s = 60 - new Date().getSeconds();
-        document.getElementById('timer').innerText = s < 10 ? `0${s}` : s;
-    }, 1000);
-
-    function predict(nextPeriod) {
+    // --- PREDICT LOGIC (Under Level 2 Fixer) ---
+    function predict(period) {
         if (masterHistory.length < 10) return;
         
         let lastRes = parseInt(masterHistory[0].number) >= 5 ? "BIG" : "SMALL";
-        let pred = ""; let algo = "";
+        let pred = "";
+        let algoKey = "";
 
-        // UNDER LEVEL 2 FIXER LOGIC
         if (level === 1) {
+            // Trend Follower
             let recent = masterHistory.slice(0, 5);
             let bigs = recent.filter(h => parseInt(h.number) >= 5).length;
             pred = bigs >= 3 ? "BIG" : "SMALL";
-            algo = "dragon";
+            algoKey = "dragon";
         } else {
-            // Level 2 Statistical Majority Scan
+            // LEVEL 2 FIXER: Statistical Majority Reversal
             let globalBigs = masterHistory.filter(h => parseInt(h.number) >= 5).length;
             let consensus = globalBigs >= (masterHistory.length / 2) ? "BIG" : "SMALL";
-            pred = (consensus === "BIG" ? "SMALL" : "BIG"); // Force Trap Flip
-            algo = "pattern";
+            pred = (consensus === "BIG" ? "SMALL" : "BIG"); 
+            algoKey = "titan";
         }
 
+        // Jackpot Seeds
+        let s1 = pred === "BIG" ? 8 : 1;
+        let s2 = pred === "BIG" ? 6 : 3;
+
+        updateUI(period, pred, algoKey, s1, s2);
+        
+        currentBet = { period: period, pred: pred, algo: algoKey };
+        addPendingCard(currentBet);
+    }
+
+    function updateUI(issue, pred, algoKey, s1, s2) {
+        document.getElementById('drawInfo').innerText = "#" + issue.slice(-4);
+        document.getElementById('algoName').innerText = ALGOS[algoKey].name;
         document.getElementById('predPill').innerText = pred;
-        document.getElementById('s1').innerText = pred === "BIG" ? "8" : "1";
-        document.getElementById('s2').innerText = pred === "BIG" ? "6" : "3";
+        document.getElementById('s1').innerText = s1;
+        document.getElementById('s2').innerText = s2;
         
         document.querySelectorAll('.c-node').forEach(n => n.classList.remove('active'));
-        if(document.getElementById(`c-${algo}`)) document.getElementById(`c-${algo}`).classList.add('active');
+        if(document.getElementById(ALGOS[algoKey].id)) {
+            document.getElementById(ALGOS[algoKey].id).classList.add('active');
+        }
+    }
 
-        currentBet = { period: nextPeriod, pred: pred };
-        const div = document.createElement('div'); div.id = `arc-${nextPeriod}`; div.className = 'card';
-        div.innerHTML = `<div><div style="font-size:9px; color:#888">#${nextPeriod}</div><div style="font-size:16px; font-weight:bold;">${pred}</div></div><div style="font-size:12px; color:var(--primary)">PENDING...</div>`;
+    function addPendingCard(bet) {
+        const div = document.createElement('div');
+        div.id = `arc-${bet.period}`;
+        div.className = 'card pending';
+        div.innerHTML = `
+            <div>
+                <div style="font-size:9px; color:#888">#${bet.period} | ${ALGOS[bet.algo].name}</div>
+                <div style="font-size:16px; font-weight:bold; color:#fff">${bet.pred}</div>
+                <div style="font-size:8px; color:var(--primary)">PENDING...</div>
+            </div>
+            <div class="loader"></div>
+        `;
         document.getElementById('archive-feed').prepend(div);
     }
 
-    function verify(latest) {
-        let actual = parseInt(latest.number) >= 5 ? "BIG" : "SMALL";
+    function verify(result) {
+        let actual = parseInt(result.number) >= 5 ? "BIG" : "SMALL";
         let win = actual === currentBet.pred;
-        const el = document.getElementById(`arc-${latest.issueNumber}`);
+
+        const el = document.getElementById(`arc-${currentBet.period}`);
         if(el) {
             el.className = win ? 'card win' : 'card loss';
-            el.innerHTML = `<div><div style="font-size:9px;">#${latest.issueNumber}</div><div style="font-size:16px; font-weight:bold;">${win?'WIN':'LOSS'} [${latest.number}]</div></div><div style="font-size:24px;">${win?'✔':'✖'}</div>`;
-            if(win) { level = 1; confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } }); }
-            else { level++; if(level > 6) level = 1; }
+            el.innerHTML = `
+                <div>
+                    <div style="font-size:9px; color:#888">#${currentBet.period}</div>
+                    <div style="font-size:16px; font-weight:bold; color:#fff">${win ? 'WIN' : 'LOSS'} <span style="font-size:12px; color:var(--primary)">[${result.number}]</span></div>
+                </div>
+                <div style="font-size:20px;">${win?'✔':'✖'}</div>
+            `;
         }
+
+        if (win) {
+            wins++; level = 1;
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+        } else {
+            losses++; level++;
+            if(level > 6) level = 1; 
+        }
+        document.getElementById('totalWins').innerText = wins;
+        document.getElementById('totalLoss').innerText = losses;
     }
 
-    function nav(id, btn) {
+    window.nav = function(id, btn) {
         document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
         document.getElementById('page-'+id).style.display = 'block';
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
         btn.classList.add('active');
     }
 
+    window.setTheme = function(c) {
+        document.body.className = `t-${c}`;
+    }
+
+    // Ghost Sync for fallback
     async function sync() {
         try {
-            let res = await fetch(`https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=10&ts=${Date.now()}`);
+            let res = await fetch("https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=10&ts=" + Date.now());
             let d = await res.json();
             d.data.list.forEach(item => historyRef.child(item.issueNumber).update(item));
         } catch(e) {}
