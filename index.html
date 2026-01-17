@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DARKNET QUANTUM V.112</title>
+    <title>DARKNET QUANTUM V.113</title>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
@@ -121,7 +121,7 @@
 
     <div class="header">
         <div>
-            <div class="title-box">DARKNET QUANTUM V.112</div>
+            <div class="title-box">DARKNET QUANTUM V.113</div>
             <div style="font-size:8px; color:#aaa;">DB PERIODS: <span id="dbCount" style="font-weight:bold; font-size:10px;">0</span></div>
         </div>
         <div class="timer-box">
@@ -149,7 +149,7 @@
         <div class="council-grid">
             <div class="c-node" id="c-titan"><span class="c-icon">🧠</span><span class="c-name">TITAN</span></div>
             <div class="c-node" id="c-dragon"><span class="c-icon">🐉</span><span class="c-name">DRAGON</span></div>
-            <div class="c-node" id="c-pattern"><span class="c-icon">🏁</span><span class="c-name">PATTERN</span></div>
+            <div class="c-node" id="c-pattern"><span class="c-icon">🏁</span><span class="c-name">SURFER</span></div>
             <div class="c-node" id="c-chaos"><span class="c-icon">🔀</span><span class="c-name">CHAOS</span></div>
             <div class="c-node" id="c-wave"><span class="c-icon">🌊</span><span class="c-name">WAVE</span></div>
             <div class="c-node" id="c-infinity"><span class="c-icon">♾️</span><span class="c-name">INFINITY</span></div>
@@ -220,7 +220,7 @@
 
     const ALGOS = {
         dragon: { name: "DRAGON", id: "c-dragon" },
-        zigzag: { name: "ZIGZAG", id: "c-pattern" },
+        surfer: { name: "SURFER", id: "c-pattern" }, // NEW ANTI-ZIDD
         titan: { name: "TITAN", id: "c-titan" },
         chaos: { name: "CHAOS", id: "c-chaos" },
         mirror: { name: "MIRROR", id: "c-infinity" },
@@ -231,6 +231,7 @@
     let lastIssue = null;
     let currentBet = null;
     let level = 1;
+    let consecutiveLosses = 0; // Tracks Zidd
     let wins = 0; losses = 0;
 
     setInterval(() => {
@@ -238,22 +239,19 @@
         document.getElementById('timer').innerText = s < 10 ? `0${s}` : s;
     }, 1000);
 
-    // --- REALTIME DATABASE SYNC ---
     historyRef.limitToLast(500).on('value', (snap) => {
         const data = snap.val();
         if (data) {
             masterHistory = Object.values(data).reverse();
             
-            // Real-Time Counter with Flash Effect
+            // UI Updates
             const countEl = document.getElementById('dbCount');
             countEl.innerText = masterHistory.length;
             countEl.classList.remove('data-flash');
-            void countEl.offsetWidth; // Trigger reflow
+            void countEl.offsetWidth; 
             countEl.classList.add('data-flash');
             
-            // Proof IDs
-            const proof = masterHistory.slice(0, 3).map(h => h.issueNumber.slice(-4)).join(' - ');
-            document.getElementById('idLedger').innerText = proof;
+            document.getElementById('idLedger').innerText = masterHistory.slice(0, 3).map(h => h.issueNumber.slice(-4)).join(' - ');
 
             let latest = masterHistory[0];
             if (lastIssue !== latest.issueNumber) {
@@ -264,7 +262,7 @@
         }
     });
 
-    // --- DEEP MEMORY PREDICTION (V.112) ---
+    // --- V.113 ANTI-ZIDD LOGIC ---
     function predict(period) {
         if (masterHistory.length < 10) return;
         
@@ -272,28 +270,30 @@
         let pred = "";
         let algoKey = "";
 
-        if (level === 1) {
-            // Trend Follower
+        // ANTI-ZIDD CHECK: If we lost twice in a row, SWITCH to Trend Surfing
+        if (consecutiveLosses >= 2) {
+             // Logic: Stop fighting the trend. If last result was BIG, bet BIG.
+            pred = lastRes; 
+            algoKey = "surfer"; 
+        } 
+        else if (level === 1) {
+            // Normal Trend Follower
             let recent = masterHistory.slice(0, 5);
             let bigs = recent.filter(h => parseInt(h.number) >= 5).length;
-            if (bigs >= 4 || bigs <= 1) { pred = (bigs >= 4 ? "BIG" : "SMALL"); algoKey = "dragon"; }
+            if (bigs >= 4) { pred = "BIG"; algoKey = "dragon"; }
+            else if (bigs <= 1) { pred = "SMALL"; algoKey = "dragon"; }
             else { pred = lastRes; algoKey = "titan"; }
-        } else {
-            // DEEP FIXER: 250 Period Scan
-            // Calculate Global Ratio
+        } 
+        else {
+            // Level 2 Fixer (Standard)
             let totalBigs = masterHistory.filter(h => parseInt(h.number) >= 5).length;
             let ratio = totalBigs / masterHistory.length;
-            
-            // If market is heavily biased (e.g., too many BIGs), bet opposite (Mean Reversion)
             if (ratio > 0.55) { pred = "SMALL"; algoKey = "wave"; }
             else if (ratio < 0.45) { pred = "BIG"; algoKey = "wave"; }
-            else { 
-                // Else use simple mirror
-                pred = (lastRes === "BIG" ? "SMALL" : "BIG"); algoKey = "chaos";
-            }
+            else { pred = (lastRes === "BIG" ? "SMALL" : "BIG"); algoKey = "chaos"; }
         }
 
-        // Quantum Seeds (Weighted)
+        // Quantum Seeds
         let s1, s2;
         if(pred === "BIG") {
             s1 = Math.random() > 0.5 ? 8 : 6;
@@ -354,10 +354,10 @@
         }
 
         if (win) {
-            wins++; level = 1;
+            wins++; level = 1; consecutiveLosses = 0; // Reset Zidd
             confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
         } else {
-            losses++; level++;
+            losses++; level++; consecutiveLosses++; // Increase Zidd tracker
             if(level > 6) level = 1; 
         }
         document.getElementById('totalWins').innerText = wins;
@@ -375,7 +375,6 @@
         document.body.className = `t-${c}`;
     }
 
-    // Fallback sync
     async function sync() {
         try {
             let res = await fetch("https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=10&ts=" + Date.now());
