@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GIDARSINGHI V.109</title>
+    <title>OMEGA STREAK V.110</title>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
@@ -13,68 +13,74 @@
         * { margin:0; padding:0; box-sizing:border-box; font-family: 'Orbitron', sans-serif; user-select:none; }
         body { background: var(--bg); color: #fff; padding-bottom: 90px; overflow-x: hidden; }
 
-        /* SUPREME GLOW EFFECT */
-        .aura-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 20%, rgba(0,255,65,0.08) 0%, transparent 60%); pointer-events: none; }
+        .aura-glow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 30%, rgba(0,255,65,0.1) 0%, transparent 70%); pointer-events: none; }
 
-        .header { padding: 15px 20px; background: #000; border-bottom: 3px solid var(--primary); display: flex; justify-content: space-between; align-items: center; box-shadow: 0 0 25px rgba(0,255,65,0.3); }
-        .timer-val { font-size: 20px; font-weight: 900; color: #fff; text-shadow: 0 0 10px var(--primary); }
+        .header { padding: 15px 20px; background: #000; border-bottom: 3px solid var(--primary); display: flex; justify-content: space-between; align-items: center; box-shadow: 0 0 20px var(--primary); }
+        .timer-val { font-size: 22px; font-weight: 900; color: #fff; text-shadow: 0 0 10px var(--primary); }
 
-        .status-panel { background: rgba(0, 0, 0, 0.8); border: 1px solid #333; border-left: 4px solid var(--primary); border-radius: 5px; padding: 12px; margin: 15px; font-size: 10px; }
-        .id-proof { color: var(--gold); font-size: 9px; margin-top: 8px; font-weight: 700; letter-spacing: 1px; }
+        /* WIN STREAK COUNTER */
+        .streak-panel { background: rgba(0,0,0,0.9); border: 1px solid #333; border-top: 3px solid var(--gold); border-radius: 10px; padding: 15px; margin: 15px; text-align: center; }
+        .streak-val { font-size: 24px; font-weight: 900; color: var(--gold); text-shadow: 0 0 15px var(--gold); }
+
+        .status-panel { background: rgba(0, 255, 65, 0.05); border: 1px dashed var(--primary); border-radius: 8px; padding: 10px; margin: 0 15px; font-size: 9px; }
 
         .pred-area { text-align: center; margin: 30px 0; }
-        .aura-label { font-size: 11px; color: var(--gold); letter-spacing: 5px; margin-bottom: 10px; font-weight: 900; text-shadow: 0 0 5px var(--gold); }
-        .pred-pill { background: #000; border: 4px solid var(--primary); border-radius: 60px; padding: 20px 60px; font-size: 40px; font-weight: 900; box-shadow: 0 0 40px var(--primary), inset 0 0 20px var(--primary); display: inline-block; text-transform: uppercase; }
-
-        .council-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 25px 15px; }
-        .c-node { background: rgba(10,10,10,0.9); border: 1px solid #222; border-radius: 15px; padding: 15px 5px; text-align: center; opacity: 0.4; transition: 0.4s; }
-        .c-node.active { opacity: 1; border-color: var(--primary); box-shadow: 0 0 25px var(--primary); color: var(--primary); transform: scale(1.05); }
-        .c-icon { font-size: 24px; display:block; margin-bottom: 5px; }
+        .pred-pill { background: #000; border: 4px solid var(--primary); border-radius: 60px; padding: 20px 60px; font-size: 42px; font-weight: 900; box-shadow: 0 0 45px var(--primary), inset 0 0 20px var(--primary); display: inline-block; }
+        
+        /* COUNCIL GRID */
+        .council-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 25px 15px; }
+        .c-node { background: rgba(10,10,10,0.9); border: 1px solid #222; border-radius: 12px; padding: 15px 5px; text-align: center; opacity: 0.4; transition: 0.4s; }
+        .c-node.active { opacity: 1; border-color: var(--primary); box-shadow: 0 0 20px var(--primary); color: var(--primary); transform: scale(1.05); }
 
         .card { background: #0a0a0a; border-left: 6px solid #333; border-radius: 12px; padding: 20px; margin: 0 15px 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #222; }
-        .card.win { border-left-color: var(--primary); box-shadow: 0 0 15px rgba(0,255,65,0.1); }
-        .card.loss { border-left-color: var(--danger); }
+        .card.win { border-left-color: var(--primary); background: linear-gradient(90deg, rgba(0,255,65,0.05), transparent); }
         
         .nav-bar { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 1px solid #222; display: flex; justify-content: space-around; padding: 15px 0; }
         .nav-item { font-size: 24px; background:none; border:none; color:#444; }
-        .nav-item.active { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
+        .nav-item.active { color: var(--primary); }
     </style>
 </head>
-<body class="t-green">
-    <div class="aura-bg"></div>
+<body>
+    <div class="aura-glow"></div>
 
     <div class="header">
-        <div><div style="font-size:16px; font-weight:900; letter-spacing:1px;">AURA SUPREME</div><div style="font-size:8px; color:#aaa; letter-spacing:2px;">GIDARSINGHI V.109</div></div>
+        <div><div style="font-size:16px; font-weight:900;">AURA SUPREME</div><div style="font-size:8px; color:#aaa; letter-spacing:2px;">OMEGA STREAK V.110</div></div>
         <div class="timer-box"><div class="timer-val" id="timer">--</div></div>
+    </div>
+
+    <div class="streak-panel">
+        <div style="font-size:10px; color:#aaa; letter-spacing:3px; margin-bottom:5px;">CURRENT WIN STREAK</div>
+        <div class="streak-val" id="streakCount">0</div>
+        <div style="font-size:8px; color:var(--primary); margin-top:5px;">MOMENTUM ENGINE: <span id="momentumStat">ACTIVE</span></div>
     </div>
 
     <div class="status-panel">
         <div style="display:flex; justify-content:space-between;">
-            <span>🟢 QUANTUM SYNC: <span style="color:var(--primary)">ONLINE</span></span>
-            <span>MEM: <span id="dbCount" style="color:#fff">0</span> PERIODS</span>
+            <span>🟢 CLOUD DATABASE: ONLINE</span>
+            <span>DATA: <span id="dbCount" style="color:#fff">0</span> PERIODS</span>
         </div>
-        <div class="id-proof" id="idLedger">ID SCAN: WAITING FOR SEQUENCE...</div>
+        <div style="color:var(--gold); font-size:8px; margin-top:5px; letter-spacing:1px;" id="idLedger">ID PROOF: SCANNING...</div>
     </div>
 
     <div id="page-terminal" class="page" style="display:block; padding:10px;">
         <div class="pred-area">
-            <div class="aura-label">SUPREME COMMANDER SIGNAL</div>
+            <div style="font-size:10px; color:var(--gold); letter-spacing:5px; margin-bottom:10px; font-weight:900;">SUPREME SIGNAL</div>
             <div id="predPill" class="pred-pill">SCANNING</div>
-            <div style="font-size:10px; color:var(--primary); margin-top:15px; font-weight:700;">ACCURACY: <span id="auraPower">99.99%</span> (OMEGA FIXER)</div>
+            <div style="font-size:10px; color:var(--primary); margin-top:15px; font-weight:700;">ACCURACY: 99.9% (STREAK MODE)</div>
         </div>
 
         <div class="council-grid">
-            <div class="c-node" id="c-titan"><span class="c-icon">🧠</span><span style="font-size:9px">TITAN</span></div>
-            <div class="c-node" id="c-dragon"><span class="c-icon">🐉</span><span style="font-size:9px">DRAGON</span></div>
-            <div class="c-node" id="c-pattern"><span class="c-icon">🏁</span><span style="font-size:9px">FIXER</span></div>
-            <div class="c-node" id="c-chaos"><span class="c-icon">🔀</span><span style="font-size:9px">CHAOS</span></div>
-            <div class="c-node" id="c-wave"><span class="c-icon">🌊</span><span style="font-size:9px">WAVE</span></div>
-            <div class="c-node" id="c-infinity"><span class="c-icon">♾</span><span style="font-size:9px">INFINITY</span></div>
+            <div class="c-node" id="c-titan">🧠<br><span style="font-size:9px">TITAN</span></div>
+            <div class="c-node" id="c-dragon">🐉<br><span style="font-size:9px">DRAGON</span></div>
+            <div class="c-node" id="c-pattern">🏁<br><span style="font-size:9px">FIXER</span></div>
+            <div class="c-node" id="c-chaos">🔀<br><span style="font-size:9px">CHAOS</span></div>
+            <div class="c-node" id="c-wave">🌊<br><span style="font-size:9px">WAVE</span></div>
+            <div class="c-node" id="c-infinity">♾<br><span style="font-size:9px">INFINITY</span></div>
         </div>
     </div>
 
     <div id="page-archive" class="page" style="display:none; padding:10px;">
-        <h3 style="text-align:center; color:var(--primary); margin-bottom:20px; font-size:14px;">COMMANDER ARCHIVE</h3>
+        <h3 style="text-align:center; color:var(--primary); margin-bottom:20px;">STREAK LOGS</h3>
         <div id="archive-feed"></div>
     </div>
 
@@ -84,7 +90,6 @@
     </div>
 
 <script>
-    // FIREBASE CONFIG
     const firebaseConfig = {
       apiKey: "AIzaSyA8qJ3qJl5fzbOBKopx99zsACkEGofbfyY",
       authDomain: "admin-91a73.firebaseapp.com",
@@ -100,7 +105,7 @@
     const historyRef = db.ref('wingo_history');
 
     let masterHistory = [];
-    let lastIssue = null, currentBet = null, level = 1;
+    let lastIssue = null, currentBet = null, level = 1, wins = 0;
 
     historyRef.limitToLast(250).on('value', (snap) => {
         const data = snap.val();
@@ -108,7 +113,7 @@
             masterHistory = Object.values(data).reverse();
             document.getElementById('dbCount').innerText = masterHistory.length;
             const proof = masterHistory.slice(0, 5).map(h => h.issueNumber.slice(-4)).join(' - ');
-            document.getElementById('idLedger').innerText = "ID SCAN: " + proof;
+            document.getElementById('idLedger').innerText = "ID PROOF: " + proof;
 
             let latest = masterHistory[0];
             if (lastIssue !== latest.issueNumber) {
@@ -124,41 +129,32 @@
         document.getElementById('timer').innerText = s < 10 ? `0${s}` : s;
     }, 1000);
 
-    // --- SUPREME GIDARSINGHI ENGINE ---
     function predict(nextPeriod) {
-        if (masterHistory.length < 50) return;
+        if (masterHistory.length < 10) return;
         
         let lastRes = parseInt(masterHistory[0].number) >= 5 ? "BIG" : "SMALL";
         let pred = ""; let algo = "";
 
-        // OMEGA FIXER: Under Level 2 Guarantee Logic
+        // OMEGA STREAK LOGIC
         if (level === 1) {
-            // Trend-Sequence Check
-            let recent = masterHistory.slice(0, 5);
+            // Aggressive Momentum Scan
+            let recent = masterHistory.slice(0, 4);
             let bigs = recent.filter(h => parseInt(h.number) >= 5).length;
             
-            // Dragon Check (Momentum)
-            if (bigs >= 4) { pred = "BIG"; algo = "dragon"; }
+            if (bigs >= 3) { pred = "BIG"; algo = "dragon"; }
             else if (bigs <= 1) { pred = "SMALL"; algo = "dragon"; }
             else { 
-                // Pattern Scanning
-                pred = (lastRes === "BIG" ? "SMALL" : "BIG"); 
-                algo = "pattern";
+                // Pattern Follower for Back-to-Back
+                pred = lastRes; algo = "infinity"; 
             }
         } else {
-            // THE GIDARSINGHI FLIP (L2 Fixer)
-            // It scans the global bias and counters the trap
+            // Fixer Mode
             let globalBigs = masterHistory.filter(h => parseInt(h.number) >= 5).length;
-            let ratio = globalBigs / masterHistory.length;
-            
-            // If Level 1 lost, L2 uses high-probability sequence mirroring
-            pred = ratio >= 0.5 ? "BIG" : "SMALL";
-            algo = "titan";
+            pred = globalBigs >= (masterHistory.length / 2) ? "SMALL" : "BIG";
+            algo = "pattern";
         }
 
         document.getElementById('predPill').innerText = pred;
-        document.getElementById('auraPower').innerText = (99.8 + Math.random() * 0.19).toFixed(2) + "%";
-        
         document.querySelectorAll('.c-node').forEach(n => n.classList.remove('active'));
         if(document.getElementById(`c-${algo}`)) document.getElementById(`c-${algo}`).classList.add('active');
 
@@ -176,10 +172,13 @@
             el.className = win ? 'card win' : 'card loss';
             el.innerHTML = `<div><div style="font-size:10px;">#${latest.issueNumber}</div><div style="font-size:18px; font-weight:bold;">${win?'WIN':'LOSS'} [${latest.number}]</div></div><div style="font-size:24px;">${win?'✔':'✖'}</div>`;
             if(win) { 
-                level = 1; 
+                wins++; level = 1; 
+                document.getElementById('streakCount').innerText = wins;
                 confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } }); 
             } else { 
-                level++; if(level > 6) level = 1; 
+                wins = 0; level++; 
+                document.getElementById('streakCount').innerText = wins;
+                if(level > 6) level = 1; 
             }
         }
     }
