@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DARKNET QUANTUM V.65</title>
+    <title>DARKNET QUANTUM V.112</title>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
@@ -11,16 +11,10 @@
     <style>
         :root { --primary: #00ff41; --danger: #ff003c; --gold: #ffd700; --bg: #050505; }
         
-        body.t-green { --primary: #00ff41; }
-        body.t-red { --primary: #ff003c; } 
-        body.t-blue { --primary: #00d4ff; }
-        body.t-gold { --primary: #ffd700; }
-        body.t-purple { --primary: #bc13fe; }
-        body.t-cyan { --primary: #00ffff; }
-        body.t-pink { --primary: #ff00ff; }
-        body.t-orange { --primary: #ff6600; }
-        body.t-white { --primary: #ffffff; }
-        body.t-neon { --primary: #ccff00; }
+        body.t-green { --primary: #00ff41; } body.t-red { --primary: #ff003c; } 
+        body.t-blue { --primary: #00d4ff; } body.t-gold { --primary: #ffd700; }
+        body.t-purple { --primary: #bc13fe; } body.t-cyan { --primary: #00ffff; }
+        body.t-pink { --primary: #ff00ff; } body.t-orange { --primary: #ff6600; }
 
         * { margin:0; padding:0; box-sizing:border-box; font-family: 'Orbitron', sans-serif; user-select:none; }
         body { background: var(--bg); color: #fff; padding-bottom: 90px; overflow-x: hidden; transition: 0.3s; }
@@ -31,7 +25,6 @@
             position: sticky; top: 0; z-index: 1000; box-shadow: 0 5px 20px rgba(0,0,0,0.5);
         }
         .title-box { font-size: 14px; font-weight: 900; line-height: 1.2; letter-spacing:1px; }
-        .sub-title { font-size: 8px; color: #aaa; letter-spacing: 1px; }
         .timer-box {
             border: 1px solid var(--primary); background: #000; padding: 5px 10px;
             border-radius: 5px; text-align: center; min-width: 60px;
@@ -98,6 +91,7 @@
         }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
+        /* THEMES & NAV */
         .theme-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .theme-btn {
             background: #111; border: 1px solid #333; padding: 12px; border-radius: 8px;
@@ -116,6 +110,10 @@
         .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
         .stat-box { background: #111; border: 1px solid #333; padding: 15px; text-align: center; border-radius: 8px; }
 
+        /* LIVE UPDATE ANIMATION */
+        @keyframes flashGreen { 0% {color:#fff;} 50% {color:var(--primary); text-shadow:0 0 10px var(--primary);} 100% {color:#fff;} }
+        .data-flash { animation: flashGreen 1s ease; }
+
         @keyframes fadeIn { from{opacity:0} to{opacity:1} }
     </style>
 </head>
@@ -123,8 +121,8 @@
 
     <div class="header">
         <div>
-            <div class="title-box">DARKNET QUANTUM V.65</div>
-            <div class="sub-title">CLOUDSYNC: <span id="dbCount">0</span> PERIODS</div>
+            <div class="title-box">DARKNET QUANTUM V.112</div>
+            <div style="font-size:8px; color:#aaa;">DB PERIODS: <span id="dbCount" style="font-weight:bold; font-size:10px;">0</span></div>
         </div>
         <div class="timer-box">
             <div class="timer-label" style="color:var(--primary); font-size: 8px;">DRAW</div>
@@ -140,7 +138,7 @@
         <div id="predPill" class="pred-pill">WAITING...</div>
 
         <div class="jackpot-container">
-            <div class="jackpot-title">JACKPOT NUMBERS</div>
+            <div class="jackpot-title">QUANTUM SEEDS</div>
             <div class="boxes-row">
                 <div class="num-box" id="s1">?</div>
                 <div class="num-box" id="s2">?</div>
@@ -235,18 +233,23 @@
     let level = 1;
     let wins = 0; losses = 0;
 
-    // --- TIMER ---
     setInterval(() => {
         let s = 60 - new Date().getSeconds();
         document.getElementById('timer').innerText = s < 10 ? `0${s}` : s;
     }, 1000);
 
-    // --- FIREBASE SYNC (Accuracy Engine) ---
-    historyRef.limitToLast(250).on('value', (snap) => {
+    // --- REALTIME DATABASE SYNC ---
+    historyRef.limitToLast(500).on('value', (snap) => {
         const data = snap.val();
         if (data) {
             masterHistory = Object.values(data).reverse();
-            document.getElementById('dbCount').innerText = masterHistory.length;
+            
+            // Real-Time Counter with Flash Effect
+            const countEl = document.getElementById('dbCount');
+            countEl.innerText = masterHistory.length;
+            countEl.classList.remove('data-flash');
+            void countEl.offsetWidth; // Trigger reflow
+            countEl.classList.add('data-flash');
             
             // Proof IDs
             const proof = masterHistory.slice(0, 3).map(h => h.issueNumber.slice(-4)).join(' - ');
@@ -261,7 +264,7 @@
         }
     });
 
-    // --- PREDICT LOGIC (Under Level 2 Fixer) ---
+    // --- DEEP MEMORY PREDICTION (V.112) ---
     function predict(period) {
         if (masterHistory.length < 10) return;
         
@@ -273,19 +276,32 @@
             // Trend Follower
             let recent = masterHistory.slice(0, 5);
             let bigs = recent.filter(h => parseInt(h.number) >= 5).length;
-            pred = bigs >= 3 ? "BIG" : "SMALL";
-            algoKey = "dragon";
+            if (bigs >= 4 || bigs <= 1) { pred = (bigs >= 4 ? "BIG" : "SMALL"); algoKey = "dragon"; }
+            else { pred = lastRes; algoKey = "titan"; }
         } else {
-            // LEVEL 2 FIXER: Statistical Majority Reversal
-            let globalBigs = masterHistory.filter(h => parseInt(h.number) >= 5).length;
-            let consensus = globalBigs >= (masterHistory.length / 2) ? "BIG" : "SMALL";
-            pred = (consensus === "BIG" ? "SMALL" : "BIG"); 
-            algoKey = "titan";
+            // DEEP FIXER: 250 Period Scan
+            // Calculate Global Ratio
+            let totalBigs = masterHistory.filter(h => parseInt(h.number) >= 5).length;
+            let ratio = totalBigs / masterHistory.length;
+            
+            // If market is heavily biased (e.g., too many BIGs), bet opposite (Mean Reversion)
+            if (ratio > 0.55) { pred = "SMALL"; algoKey = "wave"; }
+            else if (ratio < 0.45) { pred = "BIG"; algoKey = "wave"; }
+            else { 
+                // Else use simple mirror
+                pred = (lastRes === "BIG" ? "SMALL" : "BIG"); algoKey = "chaos";
+            }
         }
 
-        // Jackpot Seeds
-        let s1 = pred === "BIG" ? 8 : 1;
-        let s2 = pred === "BIG" ? 6 : 3;
+        // Quantum Seeds (Weighted)
+        let s1, s2;
+        if(pred === "BIG") {
+            s1 = Math.random() > 0.5 ? 8 : 6;
+            s2 = Math.random() > 0.5 ? 7 : 9;
+        } else {
+            s1 = Math.random() > 0.5 ? 1 : 3;
+            s2 = Math.random() > 0.5 ? 2 : 4;
+        }
 
         updateUI(period, pred, algoKey, s1, s2);
         
@@ -359,7 +375,7 @@
         document.body.className = `t-${c}`;
     }
 
-    // Ghost Sync for fallback
+    // Fallback sync
     async function sync() {
         try {
             let res = await fetch("https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=10&ts=" + Date.now());
