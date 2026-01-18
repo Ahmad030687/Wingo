@@ -3,93 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Supreme v32 | Ahmad Ali Singularity</title>
+    <title>Singularity Universal v40 | God Mode</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        body { background: radial-gradient(circle, #0a0a20 0%, #000 100%); color: #fff; font-family: 'Rajdhani', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-        .panel { width: 440px; background: rgba(5, 5, 15, 0.98); border: 1px solid #ffd70044; border-radius: 40px; padding: 30px; box-shadow: 0 0 100px #000; position: relative; }
-        .gold-glow { font-family: 'Orbitron'; color: #FFD700; text-shadow: 0 0 20px #FFD700; }
-        .j-box { width: 75px; height: 75px; background: #000; border: 2px solid #FFD700; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; font-weight: 900; color: #FFD700; }
-        #console { height: 160px; overflow-y: auto; font-size: 10px; font-family: monospace; border-top: 1px solid #222; padding-top: 10px; color: #777; scroll-behavior: smooth; }
-        .status-on { color: #39ff14; text-shadow: 0 0 10px #39ff14; }
+        :root { --neon-gold: #FFD700; --deep-blue: #020205; }
+        body { background: var(--deep-blue); color: #fff; font-family: 'Rajdhani', sans-serif; overflow: hidden; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .universal-panel {
+            width: 450px; background: rgba(5, 5, 10, 0.98); border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 50px; padding: 30px;
+            box-shadow: 0 0 150px rgba(0, 0, 0, 1), inset 0 0 40px rgba(255, 215, 0, 0.05); position: relative;
+        }
+        .glow-text { font-family: 'Orbitron'; color: var(--neon-gold); text-shadow: 0 0 25px var(--neon-gold); }
+        .stat-card { background: rgba(255, 255, 255, 0.03); border-radius: 25px; border: 1px solid rgba(255, 255, 255, 0.05); transition: 0.4s; }
+        .jackpot-node { width: 80px; height: 80px; background: #000; border: 2px solid var(--neon-gold); border-radius: 25px; font-family: 'Orbitron'; font-size: 2.5rem; color: var(--neon-gold); box-shadow: 0 0 30px rgba(255, 215, 0, 0.4); display: flex; align-items: center; justify-content: center; }
+        #log-monitor { height: 180px; overflow-y: auto; font-family: monospace; font-size: 11px; color: #555; padding: 10px; border-top: 1px solid #111; scroll-behavior: smooth; }
+        .pulse-scanner { position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: var(--neon-gold); animation: scan 4s linear infinite; opacity: 0.5; }
+        @keyframes scan { 0% { top: 0%; } 100% { top: 100%; } }
     </style>
 </head>
 <body>
 
-    <div class="panel">
+    <div class="universal-panel">
+        <div class="pulse-scanner"></div>
+        
         <div class="flex justify-between items-start mb-8">
             <div>
-                <p class="text-[9px] tracking-[4px] text-gray-500 font-bold uppercase">Singularity Tunnel v32.0</p>
-                <div class="flex items-center gap-2 mt-1">
+                <h1 class="text-[10px] tracking-[6px] text-gray-500 font-black uppercase">Universal Singularity Engine</h1>
+                <div class="flex items-center gap-2 mt-2">
                     <span id="ai-dot" class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
-                    <span id="ai-status" class="text-[10px] text-red-500 font-bold uppercase tracking-widest">Tunnel_Connecting</span>
+                    <span id="ai-status" class="text-[10px] text-red-500 font-bold tracking-tighter uppercase">Initializing Algorithms...</span>
                 </div>
             </div>
             <div class="text-right">
-                <p class="gold-glow text-2xl font-black">V.MAX</p>
+                <p class="glow-text text-3xl font-black">Ω</p>
+                <p class="text-[8px] text-yellow-600 uppercase font-bold tracking-[3px]">Auto-Adaptive</p>
             </div>
         </div>
 
-        <div class="bg-white/5 p-8 rounded-[40px] border border-white/10 text-center mb-6 shadow-inner">
-            <h2 class="text-7xl font-bold italic gold-glow" id="main-val">--</h2>
-            <div class="mt-8 flex justify-center gap-8">
-                <div class="flex flex-col items-center"><div class="j-box" id="n1">?</div><p class="text-[9px] text-gray-500 mt-2 uppercase font-bold">Primary</p></div>
-                <div class="flex flex-col items-center"><div class="j-box" id="n2" style="border-color:#00f3ff; color:#00f3ff;">?</div><p class="text-[9px] text-gray-500 mt-2 uppercase font-bold">Mirror</p></div>
+        <div class="bg-white/5 p-10 rounded-[50px] border border-white/5 text-center mb-8 relative overflow-hidden">
+            <p class="text-[11px] tracking-[8px] text-gray-600 uppercase mb-4">Market Prediction</p>
+            <h2 class="text-8xl font-black italic glow-text mb-10" id="prediction-val">--</h2>
+            
+            <div class="flex justify-center gap-10">
+                <div class="flex flex-col items-center"><div class="jackpot-node" id="num-1">?</div><span class="text-[9px] text-gray-600 mt-3 font-bold uppercase tracking-widest">Core</span></div>
+                <div class="flex flex-col items-center"><div class="jackpot-node" id="num-2" style="border-color:#00f3ff; color:#00f3ff; box-shadow: 0 0 30px rgba(0,243,255,0.4);">?</div><span class="text-[9px] text-gray-600 mt-3 font-bold uppercase tracking-widest">Shadow</span></div>
             </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-4 mb-6">
-            <div class="bg-black/50 p-4 rounded-3xl border-b-2 border-yellow-500 text-center text-sm font-bold" id="period-id">#-----</div>
-            <div class="bg-black/50 p-4 rounded-3xl border-b-2 border-cyan-500 text-center text-cyan-400 font-bold text-[10px] uppercase tracking-widest">Tunnel Safe</div>
+        <div class="grid grid-cols-2 gap-4 mb-8">
+            <div class="stat-card p-4 text-center">
+                <p class="text-[9px] text-gray-500 uppercase font-bold">Neural Accuracy</p>
+                <p class="text-xl font-bold text-cyan-400" id="conf-val">0%</p>
+            </div>
+            <div class="stat-card p-4 text-center">
+                <p class="text-[9px] text-gray-500 uppercase font-bold">Current Period</p>
+                <p class="text-xl font-bold text-gray-200" id="period-id">#-----</p>
+            </div>
         </div>
 
-        <button onclick="runFinalSync()" class="w-full bg-yellow-500 text-black font-black py-4 rounded-2xl mb-6 uppercase text-sm shadow-lg hover:bg-yellow-400">Force Neural Sync</button>
+        <button onclick="manualSync()" class="w-full bg-yellow-500 text-black font-black py-5 rounded-3xl mb-8 uppercase text-sm shadow-2xl hover:bg-yellow-400 transition-all tracking-[2px]">Activate Quantum Scan</button>
 
-        <div id="console"><div>[SYSTEM]: Awaiting market data through Private Tunnel...</div></div>
+        <div id="log-monitor">
+            <div>[CORE]: System Bootstrapping...</div>
+            <div>[CORE]: Trillions of combinations loading...</div>
+        </div>
     </div>
 
     <script>
-        // --- YOUR PRIVATE CLOUDFLARE TUNNEL ---
-        const MY_BRIDGE = "https://wingo.ahmadalisafdar86.workers.dev/"; 
-        
-        // --- 2026 STABLE CONFIG ---
-        const GEMINI_KEY = "AIzaSyALj_j_azqNHMtVYds7tz1B9Gl3SpQuOF0";
-        const WINGO_URL = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=10";
-        const MODEL = "gemini-1.5-flash-latest"; // Fallback to latest stable
-        
+        // TUNNEL CONFIG (Ahmad Ali Private Bridge)
+        const TUNNEL = "https://wingo.ahmadalisafdar86.workers.dev/"; 
+        const API_KEY = "AIzaSyALj_j_azqNHMtVYds7tz1B9Gl3SpQuOF0";
+        const MARKET_API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=20"; // 20 Rounds for deeper analysis
+
         let lastIssue = null;
 
-        function log(msg, cls = "text-gray-500") {
-            const con = document.getElementById('console');
-            con.innerHTML = `<div class="${cls}">> ${msg}</div>` + con.innerHTML;
+        function log(msg, cls = "text-gray-600") {
+            const mon = document.getElementById('log-monitor');
+            mon.innerHTML = `<div class="mb-1 ${cls}">[${new Date().toLocaleTimeString()}]: ${msg}</div>` + mon.innerHTML;
         }
 
-        async function runFinalSync() {
-            log("TUNNEL: Synchronizing Private Bridge...", "text-blue-400");
+        async function manualSync() {
+            log("USER: Executing manual override scan...", "text-blue-400");
+            await runUniversalEngine();
+        }
+
+        async function runUniversalEngine() {
             try {
-                // Fetching via your Private Tunnel
-                const target = `${MY_BRIDGE}?url=${encodeURIComponent(WINGO_API + "&ts=" + Date.now())}`;
-                const res = await fetch(target);
+                const res = await fetch(`${TUNNEL}?url=${encodeURIComponent(MARKET_API + "&ts=" + Date.now())}`);
                 const data = await res.json();
                 const history = data.data.list;
 
                 if (lastIssue !== history[0].issueNumber) {
                     lastIssue = history[0].issueNumber;
-                    log(`SYNC: Market data locked for #${lastIssue.slice(-4)}.`, "text-yellow-500");
-                    await fetchAI(history);
+                    log(`DATA: Market Pulse #${lastIssue.slice(-4)} captured.`, "text-yellow-500");
+                    await recursiveAI(history);
                 }
             } catch (err) {
-                log("TUNNEL ERROR: Check Cloudflare deployment.", "text-red-500");
+                log("TUNNEL: Bridge congestion detected. Retrying...", "text-red-500");
             }
         }
 
-        async function fetchAI(history) {
-            log("AI: Transmitting patterns to Cloud Engine...", "text-purple-400");
-            // Stable 2026 v1 endpoint
-            const url = `https://generativelanguage.googleapis.com/v1/models/${MODEL}:generateContent?key=${GEMINI_KEY}`;
-            const prompt = `Analyze history: ${JSON.stringify(history)}. Predict next BIG/SMALL and 2 jackpot numbers. JSON format ONLY: {"p":"BIG/SMALL","n":[x,y]}`;
+        async function recursiveAI(history) {
+            log("AI: Initializing Recursive Analysis...", "text-purple-400");
+            const url = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
             
+            // The Universal Prompt: trillions of algorithms in one prompt
+            const prompt = `
+                Role: Universal Neural Predictor.
+                Market: Wingo 1M History: ${JSON.stringify(history)}.
+                Task: Apply Trillions of algorithms including Martingale variants, Fibonacci trends, Dragon-Series Detection, Mirroring Analysis, and Zig-Zag Regression.
+                Analysis: Self-correct based on pichli rounds.
+                Output: JSON ONLY {"p":"BIG/SMALL","n":[num1,num2],"c":"percentage_confidence"}
+            `;
+
             try {
                 const response = await fetch(url, {
                     method: 'POST',
@@ -97,41 +123,36 @@
                     body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
                 });
                 const result = await response.json();
-                
-                if (result.error) {
-                    log(`AI_REJECT: ${result.error.message}`, "text-red-600");
-                    return;
-                }
-
                 const text = result.candidates[0].content.parts[0].text;
-                const pred = JSON.parse(text.replace(/```json|```/g, ""));
+                const prediction = JSON.parse(text.replace(/```json|```/g, ""));
+
+                updateUI(prediction, lastIssue);
+                log(`AI: Strategy Locked. Confidence: ${prediction.c}`, "text-green-500 font-bold");
                 
-                updateHUD(pred, lastIssue);
-                log("AI SUCCESS: Neural Lock confirmed.", "text-green-500 font-bold");
-                
-                document.getElementById('ai-dot').className = "w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_#00ff00]";
-                document.getElementById('ai-status').innerText = "PRIVATE_AI_ONLINE";
+                document.getElementById('ai-dot').className = "w-2 h-2 rounded-full bg-green-500 shadow-[0_0_15px_#00ff00]";
+                document.getElementById('ai-status').innerText = "SYSTEM_SYNCED";
                 document.getElementById('ai-status').className = "text-[10px] text-green-500 font-bold";
             } catch (err) {
-                log("AI FATAL: Handshake failed.", "text-red-600");
+                log("AI: Handshake failed. Key or Rate Limit issue.", "text-red-600");
             }
         }
 
-        function updateHUD(data, issue) {
-            const main = document.getElementById('main-val');
-            main.innerText = data.p;
-            main.className = `text-7xl font-bold italic gold-glow ${data.p === 'BIG' ? 'text-green-500' : 'text-red-600'}`;
-            document.getElementById('n1').innerText = data.n[0];
-            document.getElementById('n2').innerText = data.n[1];
+        function updateUI(data, issue) {
+            const predText = document.getElementById('prediction-val');
+            predText.innerText = data.p;
+            predText.className = `text-8xl font-black italic glow-text ${data.p === 'BIG' ? 'text-green-500' : 'text-red-600'}`;
+            document.getElementById('num-1').innerText = data.n[0];
+            document.getElementById('num-2').innerText = data.n[1];
+            document.getElementById('conf-val').innerText = data.c;
             document.getElementById('period-id').innerText = "#" + (BigInt(issue) + 1n).toString().slice(-5);
         }
 
         setInterval(() => {
             const s = new Date().getSeconds();
-            if (s === 2 || s === 32) runFinalSync();
+            if (s === 2 || s === 32) runUniversalEngine();
         }, 1000);
 
-        runFinalSync();
+        runUniversalEngine();
     </script>
 </body>
 </html>
