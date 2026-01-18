@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Supreme v22 | Stable v1 Engine</title>
+    <title>Supreme v23 | Dynamic Model Sniper</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
@@ -20,41 +20,39 @@
     <div class="panel">
         <div class="flex justify-between items-start mb-8">
             <div>
-                <p class="text-[9px] tracking-[4px] text-gray-500 font-bold uppercase">Singularity v22.0 Stable</p>
+                <p class="text-[9px] tracking-[4px] text-gray-500 font-bold uppercase">Singularity v23.0 Omega</p>
                 <div class="flex items-center gap-2 mt-1">
                     <span id="ai-dot" class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
-                    <span id="ai-status" class="text-[10px] text-red-500 font-bold uppercase">v1_LINK_WAITING</span>
+                    <span id="ai-status" class="text-[10px] text-red-500 font-bold uppercase" id="model-name">DISCONNECTED</span>
                 </div>
             </div>
-            <div class="text-right">
-                <p class="gold-glow text-2xl font-black">V.MAX</p>
-            </div>
+            <div class="text-right"><p class="gold-glow text-2xl font-black">V.MAX</p></div>
         </div>
 
         <div class="bg-white/5 p-8 rounded-[40px] border border-white/10 text-center mb-6 shadow-inner">
             <h2 class="text-7xl font-bold italic gold-glow" id="main-val">--</h2>
-            <div class="flex justify-center gap-8 mt-8">
-                <div class="flex flex-col items-center"><div class="jackpot-box j-box" id="n1">?</div><p class="text-[9px] text-gray-500 mt-2 font-bold uppercase">Primary</p></div>
+            <div class="mt-8 flex justify-center gap-8">
+                <div class="flex flex-col items-center"><div class="j-box" id="n1">?</div><p class="text-[9px] text-gray-500 mt-2 font-bold uppercase">Primary</p></div>
                 <div class="flex flex-col items-center"><div class="j-box" id="n2" style="border-color: var(--cyan); color: var(--cyan);">?</div><p class="text-[9px] text-gray-500 mt-2 font-bold uppercase">Mirror</p></div>
             </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-4 mb-6">
-            <div class="bg-black/50 p-4 rounded-3xl border-b-2 border-yellow-500 text-center">
-                <p class="text-[10px] text-gray-500 font-black">Target Issue</p>
+        <div class="grid grid-cols-2 gap-4 mb-6 text-center">
+            <div class="bg-black/50 p-4 rounded-3xl border-b-2 border-yellow-500">
+                <p class="text-[10px] text-gray-500 font-black uppercase">Current Issue</p>
                 <p class="text-lg font-bold" id="issue-id">#-----</p>
             </div>
-            <div class="bg-black/50 p-4 rounded-3xl border-b-2 border-cyan-500 text-center">
-                <p class="text-[10px] text-gray-500 font-black">Neural State</p>
-                <p class="text-lg font-bold text-cyan-400" id="shield">v1_READY</p>
+            <div class="bg-black/50 p-4 rounded-3xl border-b-2 border-cyan-500">
+                <p class="text-[10px] text-gray-500 font-black uppercase">Model State</p>
+                <p class="text-lg font-bold text-cyan-400" id="m-state">AUTO_SCAN</p>
             </div>
         </div>
 
-        <button onclick="startNeuralScan()" class="w-full bg-yellow-500 text-black font-black py-4 rounded-2xl mb-6 uppercase text-sm shadow-lg hover:bg-yellow-400">Execute v1 Neural Scan</button>
+        <button onclick="manualTrigger()" class="w-full bg-yellow-500 text-black font-black py-4 rounded-2xl mb-6 uppercase text-sm shadow-lg hover:bg-yellow-400">Neural Sync 2026</button>
 
         <div>
-            <p class="text-[10px] text-gray-600 font-bold tracking-[4px] mb-2 uppercase ml-1">Traffic Monitor</p>
-            <div id="console"><div>[SYSTEM]: Stable v1 Engine Loaded. Handshake Initialized.</div></div>
+            <p class="text-[10px] text-gray-600 font-bold tracking-[4px] mb-2 uppercase ml-1">AI Deep Scan Monitor</p>
+            <div id="console"><div>[SYSTEM]: Kernel v23.0 Online. Initializing Discovery...</div></div>
         </div>
     </div>
 
@@ -63,8 +61,15 @@
         const PROXY = "https://api.codetabs.com/v1/proxy?quest=";
         const WINGO_API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=10";
         
+        // 2026 MODEL LIST: Sequence to try if one fails
+        const MODEL_SEQUENCE = [
+            "gemini-2.0-flash",
+            "gemini-1.5-flash",
+            "gemini-2.0-pro-exp",
+            "gemini-pro"
+        ];
+        let activeModelIdx = 0;
         let lastIssue = null;
-        let isLock = false;
 
         function log(msg, cls = "text-gray-500") {
             const con = document.getElementById('console');
@@ -72,9 +77,12 @@
             con.innerHTML = `<div class="mb-1 ${cls}"><span class="opacity-40">[${time}]</span> > ${msg}</div>` + con.innerHTML;
         }
 
-        async function startNeuralScan() {
-            if(isLock) return;
-            log("NETWORK: Accessing market DNA via Secure Tunnel...", "text-white");
+        async function manualTrigger() {
+            log("MANUAL: Overriding timer. Re-scanning models...", "text-blue-400");
+            await runEngine();
+        }
+
+        async function runEngine() {
             try {
                 const res = await fetch(PROXY + encodeURIComponent(WINGO_API + "&ts=" + Date.now()));
                 const data = await res.json();
@@ -82,23 +90,22 @@
 
                 if (lastIssue !== latest.issueNumber) {
                     lastIssue = latest.issueNumber;
-                    log(`SYNC: History locked for #${lastIssue.slice(-4)}. Calling AI...`, "text-yellow-500");
-                    const aiPred = await callGeminiV1(data.data.list);
-                    if (aiPred) updateHUD(aiPred, lastIssue);
+                    log(`SYNC: Data locked for #${lastIssue.slice(-4)}. Connecting AI...`, "text-white");
+                    await callDynamicAI(data.data.list);
                 }
             } catch (err) {
-                log("FETCH ERROR: Tunnel busy. Retrying in next cycle.", "text-red-400");
+                log("FETCH ERROR: Market tunnel congested.", "text-red-400");
             }
         }
 
-        async function callGeminiV1(history) {
-            // UPDATED: Switching to v1 stable endpoint
-            const url = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`;
+        async function callDynamicAI(history) {
+            const currentModel = MODEL_SEQUENCE[activeModelIdx];
+            log(`AI ATTEMPT: Trying ${currentModel}...`, "text-yellow-500");
             
-            const prompt = `Analyze history: ${JSON.stringify(history)}. Predict next BIG/SMALL and 2 jackpot numbers. Output JSON ONLY: {"p":"BIG","n":[x,y],"c":"95%"}`;
+            const url = `https://generativelanguage.googleapis.com/v1/models/${currentModel}:generateContent?key=${GEMINI_KEY}`;
+            const prompt = `Analyze: ${JSON.stringify(history)}. Output JSON ONLY: {"p":"BIG/SMALL","n":[x,y],"c":"95%"}`;
             
             try {
-                log("AI: Transmitting to Stable v1 Cloud...", "text-purple-400");
                 const response = await fetch(url, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
@@ -106,22 +113,36 @@
                 });
 
                 const result = await response.json();
-                
+
                 if (result.error) {
-                    log(`STABLE ERROR: ${result.error.message}`, "text-red-500");
-                    return null;
+                    log(`FAILED: ${currentModel} - ${result.error.status}`, "text-red-500");
+                    // SWITCH MODEL AND RETRY
+                    if (activeModelIdx < MODEL_SEQUENCE.length - 1) {
+                        activeModelIdx++;
+                        log(`SWITCHING: Retrying with ${MODEL_SEQUENCE[activeModelIdx]}...`, "text-cyan-400");
+                        return await callDynamicAI(history);
+                    } else {
+                        log("CRITICAL: All models failed. Check API Key.", "text-red-600 font-bold");
+                        activeModelIdx = 0; // Reset for next round
+                        return null;
+                    }
                 }
 
                 const aiText = result.candidates[0].content.parts[0].text;
                 const pred = JSON.parse(aiText.replace(/```json|```/g, ""));
                 
+                // UI UPDATE ON SUCCESS
                 document.getElementById('ai-dot').className = "w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_#39ff14]";
-                document.getElementById('ai-status').innerText = "AI STABLE ONLINE";
-                document.getElementById('ai-status').className = "text-[10px] text-green-500 font-bold uppercase";
+                document.getElementById('ai-status').innerText = currentModel.toUpperCase();
+                document.getElementById('ai-status').className = "text-[10px] text-green-500 font-bold";
+                document.getElementById('m-state').innerText = "STABLE";
                 
+                updateHUD(pred, lastIssue);
+                log(`SUCCESS: Locked with ${currentModel}`, "text-green-500 font-bold");
                 return pred;
+
             } catch (err) {
-                log("AI FATAL: Handshake rejected by v1 Server.", "text-red-600");
+                log("FATAL: AI Handshake rejected by all tunnels.", "text-red-600");
                 return null;
             }
         }
@@ -133,18 +154,14 @@
             document.getElementById('n1').innerText = data.n[0];
             document.getElementById('n2').innerText = data.n[1];
             document.getElementById('issue-id').innerText = "#" + (BigInt(issue) + 1n).toString().slice(-5);
-            document.getElementById('conf').innerText = data.c; // Confidence display update logic
-            
-            isLock = true;
-            setTimeout(() => { isLock = false; }, 30000);
         }
 
         setInterval(() => {
             const s = new Date().getSeconds();
-            if ((s === 2 || s === 32) && !isLock) startNeuralScan();
+            if (s === 2 || s === 32) runEngine();
         }, 1000);
 
-        startNeuralScan();
+        runEngine();
     </script>
 </body>
 </html>
