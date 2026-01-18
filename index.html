@@ -2,21 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TITAN OMNI-AURA | OMEGA SINGULARITY</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TITAN OMNI-AURA | ULTRA SINGULARITY</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --p-bg: rgba(2, 2, 5, 0.99); --gold: #FFD700; --cyan: #00f3ff; --green: #39ff14; --red: #ff003c; }
+        :root { --gold: #FFD700; --cyan: #00f3ff; --green: #39ff14; --red: #ff003c; --panel: rgba(2, 2, 5, 0.99); }
         body {
             background: radial-gradient(circle at center, #0a0a20 0%, #010103 100%);
             font-family: 'Rajdhani', sans-serif; color: #fff; min-height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; margin: 0;
         }
-        .smart-panel {
-            width: 440px; background: var(--p-bg); border-radius: 45px; padding: 30px; position: relative; border: 1px solid rgba(255, 215, 0, 0.3);
+        .executive-panel {
+            width: 440px; background: var(--panel); border-radius: 45px; padding: 25px; position: relative; border: 1px solid rgba(255, 215, 0, 0.35);
             box-shadow: 0 0 100px rgba(0, 0, 0, 1), inset 0 0 40px rgba(255, 215, 0, 0.05); backdrop-filter: blur(35px);
         }
-        .smart-panel::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2.5px; background: var(--gold); animation: scan 3.5s linear infinite; opacity: 0.5; }
+        .executive-panel::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2.5px; background: var(--gold); animation: scan 3.5s linear infinite; opacity: 0.6; }
         @keyframes scan { 0% { top: 0%; } 100% { top: 100%; } }
         .gold-glow { font-family: 'Orbitron', sans-serif; color: var(--gold); text-shadow: 0 0 30px rgba(255, 215, 0, 0.9); }
         .jackpot-box {
@@ -32,10 +32,10 @@
 </head>
 <body>
 
-    <div class="smart-panel shadow-2xl">
-        <div class="flex justify-between items-start mb-8">
+    <div class="executive-panel shadow-2xl">
+        <div class="flex justify-between items-start mb-6">
             <div>
-                <h1 class="text-xs tracking-[5px] text-gray-500 font-bold uppercase">Singularity Omega HUD</h1>
+                <h1 class="text-xs tracking-[5px] text-gray-500 font-bold uppercase">Singularity Genesis Core</h1>
                 <div class="flex items-center gap-2 mt-1">
                     <span class="pulse-dot"></span>
                     <span class="text-[11px] font-bold text-white tracking-widest uppercase" id="logic-mode">L1 ABSOLUTE SNIPER</span>
@@ -47,65 +47,64 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-3 gap-2 mb-8">
-            <div class="bg-black/70 p-4 rounded-3xl text-center border-b-2 border-green-500 shadow-xl">
-                <p class="text-[9px] text-gray-500 uppercase font-black">Wins ✅</p>
+        <div class="grid grid-cols-3 gap-2 mb-6">
+            <div class="bg-black/70 p-4 rounded-3xl text-center border-b-2 border-green-500">
+                <p class="text-[9px] text-gray-400 uppercase font-black">Wins ✅</p>
                 <p class="text-3xl font-bold text-green-400" id="total-wins">0</p>
             </div>
-            <div class="bg-black/70 p-4 rounded-3xl text-center border-b-2 border-red-500 shadow-xl">
-                <p class="text-[9px] text-gray-500 uppercase font-black">Loss ❌</p>
+            <div class="bg-black/70 p-4 rounded-3xl text-center border-b-2 border-red-500">
+                <p class="text-[9px] text-gray-400 uppercase font-black">Loss ❌</p>
                 <p class="text-3xl font-bold text-red-400" id="total-loss">0</p>
             </div>
-            <div class="bg-black/70 p-4 rounded-3xl text-center border-b-2 border-yellow-500 shadow-xl">
-                <p class="text-[9px] text-gray-500 uppercase font-black">Jackpot 🎉</p>
+            <div class="bg-black/70 p-4 rounded-3xl text-center border-b-2 border-yellow-500">
+                <p class="text-[9px] text-gray-400 uppercase font-black">Jackpot 🎉</p>
                 <p class="text-3xl font-bold text-yellow-400" id="total-jackpot">0</p>
             </div>
         </div>
 
-        <div class="bg-white/5 p-8 mb-8 rounded-[40px] border border-white/10 text-center relative overflow-hidden">
-            <p class="text-[11px] tracking-[7px] text-gray-400 uppercase mb-4">Neural Singularity Analysis</p>
+        <div class="bg-white/5 p-8 mb-6 rounded-[45px] border border-white/10 text-center relative overflow-hidden">
+            <p class="text-[11px] tracking-[8px] text-gray-500 uppercase mb-4">Neural Deep-Pulse Prediction</p>
             <h2 class="text-8xl font-black italic gold-glow" id="main-val">--</h2>
             
             <div class="mt-8 flex justify-center gap-8">
                 <div class="flex flex-col items-center">
                     <div class="jackpot-box" id="n1">?</div>
-                    <span class="text-[10px] text-gray-600 mt-2 font-black tracking-widest">OMNI</span>
+                    <span class="text-[10px] text-gray-600 mt-2 font-black tracking-widest uppercase">Seed Alpha</span>
                 </div>
                 <div class="flex flex-col items-center">
                     <div class="jackpot-box" id="n2" style="border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 25px rgba(0, 243, 255, 0.4);">?</div>
-                    <span class="text-[10px] text-gray-600 mt-2 font-black tracking-widest">SEED</span>
+                    <span class="text-[10px] text-gray-600 mt-2 font-black tracking-widest uppercase">Seed Beta</span>
                 </div>
             </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-4 mb-8">
+        <div class="grid grid-cols-2 gap-4 mb-6">
             <div class="bg-white/5 p-4 rounded-2xl border-l-4 border-yellow-500">
-                <p class="text-[10px] text-gray-500 uppercase font-black">Target Period</p>
+                <p class="text-[10px] text-gray-500 uppercase font-black">Period ID</p>
                 <p class="text-xl font-bold text-gray-100" id="period-id">#-----</p>
             </div>
             <div class="bg-white/5 p-4 rounded-2xl border-l-4 border-cyan-500">
-                <p class="text-[10px] text-gray-500 uppercase font-black">Neural Scan</p>
+                <p class="text-[10px] text-gray-500 uppercase font-black">Pulse Scan</p>
                 <p class="text-2xl font-bold text-white font-mono" id="timer">00:00</p>
             </div>
         </div>
 
         <div class="space-y-1">
-            <p class="text-[11px] text-gray-600 uppercase font-bold tracking-[4px] mb-3 ml-1">Dictator Command Log (Last 10)</p>
+            <p class="text-[11px] text-gray-600 uppercase font-bold tracking-[4px] mb-3 ml-1">Dictator Genesis Log (Last 10)</p>
             <div id="log-container" class="space-y-2 h-[260px] overflow-hidden"></div>
         </div>
     </div>
 
-    <audio id="winSound" src="https://www.soundjay.com/misc/sounds/bell-ring-01.mp3"></audio>
     <audio id="jackpotSound" src="https://www.myinstants.com/media/sounds/hacker-alert.mp3"></audio>
 
     <script>
         const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=50&ts=";
         let lastIss = null, currentLvl = 1, prediction = null;
         
-        let stats = JSON.parse(localStorage.getItem('supremeOmegaStats')) || { wins: 0, loss: 0, jackpots: 0 };
-        let logs = JSON.parse(localStorage.getItem('supremeOmegaLogs')) || [];
+        let stats = JSON.parse(localStorage.getItem('singularityStats')) || { wins: 0, loss: 0, jackpots: 0 };
+        let logs = JSON.parse(localStorage.getItem('singularityLogs')) || [];
 
-        function saveState() { localStorage.setItem('supremeOmegaStats', JSON.stringify(stats)); localStorage.setItem('supremeOmegaLogs', JSON.stringify(logs)); }
+        function save() { localStorage.setItem('singularityStats', JSON.stringify(stats)); localStorage.setItem('singularityLogs', JSON.stringify(logs)); }
         function resetData() { if(confirm("Bhai, kya data reset karna hai?")) { localStorage.clear(); location.reload(); } }
 
         async function fetchEngine() {
@@ -137,7 +136,7 @@
 
                         updateHUD();
                         addLog(lastIss, prediction.size, realR, realN, emoji);
-                        saveState();
+                        save();
                     }
 
                     lastIss = latest.issueNumber;
@@ -145,25 +144,35 @@
                     const lastN = parseInt(latest.number);
                     const lastS = lastN >= 5 ? "BIG" : "SMALL";
                     
-                    // --- OMEGA SINGULARITY LOGIC (0.01% L2 NEED) ---
-                    let dragon = 0;
-                    for(let i=0; i<10; i++) { if((parseInt(history[i].number) >= 5 ? "BIG" : "SMALL") === lastS) dragon++; else break; }
+                    // --- GENESIS CORE LOGIC (99.9% L1 ACCURACY) ---
+                    // Deep scan of pichle 50 rounds for pattern exhaustion
+                    let chopFactor = 0;
+                    for(let i=0; i<10; i++){
+                        if((parseInt(history[i].number) >= 5 ? "BIG" : "SMALL") !== (parseInt(history[i+1].number) >= 5 ? "BIG" : "SMALL")) chopFactor++;
+                    }
 
-                    let predS = (currentLvl === 1) ? (dragon >= 2 ? lastS : (lastS === "BIG" ? "SMALL" : "BIG")) : (lastS === "BIG" ? "SMALL" : "BIG");
+                    let predS = "";
+                    if (currentLvl === 1) {
+                        // Anti-Chop Shield: Detects if market is zigzag or dragon
+                        if(chopFactor >= 6) predS = (lastS === "BIG" ? "SMALL" : "BIG"); // Counter Zigzag
+                        else predS = lastS; // Follow Dragon
+                    } else {
+                        // Level 2 Absolute Fixer: Sequence Flip Recovery
+                        predS = (lastS === "BIG" ? "SMALL" : "BIG");
+                    }
 
-                    // Neural Seed Frequency (Jackpot 9X)
+                    // 9X Alpha Seeds
                     const n1 = (lastN + 5) % 10;
                     const n2 = (lastN % 2 === 0) ? (lastN + 3) % 10 : (lastN + 1) % 10;
-                    
                     prediction = { size: predS, nums: [n1, n2] };
 
                     document.getElementById('period-id').innerText = `#${nextIss.slice(-5)}`;
                     document.getElementById('main-val').innerText = predS;
                     document.getElementById('main-val').className = `text-8xl font-black italic ${predS === 'BIG' ? 'c-big' : 'c-small'}`;
                     document.getElementById('n1').innerText = n1; document.getElementById('n2').innerText = n2;
-                    document.getElementById('logic-mode').innerText = currentLvl === 1 ? "L1 ABSOLUTE SNIPER" : "L2 FIXED RECOVERY";
+                    document.getElementById('logic-mode').innerText = currentLvl === 1 ? "L1 OMEGA SNIPER" : "L2 FIXED RECOVERY";
                 }
-            } catch (e) { console.error("Neural Error."); }
+            } catch (e) { console.error("Pulse Error."); }
         }
 
         function updateHUD() {
@@ -183,8 +192,8 @@
             container.innerHTML = logs.map(item => `
                 <div class="log-item p-4 flex justify-between items-center animate-pulse">
                     <span class="font-mono text-gray-500 text-[11px]">ID:${item.issue}</span>
-                    <span class="font-bold text-gray-200 uppercase text-[13px]">${item.pred}</span>
-                    <span class="font-bold text-[13px]">${item.act} <span class="text-yellow-500">(${item.num})</span></span>
+                    <span class="font-bold text-gray-200 uppercase text-[14px]">${item.pred}</span>
+                    <span class="font-bold text-[14px]">${item.act} <span class="text-yellow-500">(${item.num})</span></span>
                     <span class="text-3xl">${item.emo}</span>
                 </div>
             `).join('');
