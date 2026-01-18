@@ -2,18 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TITAN GENESIS | OMEGA EDITION</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TITAN GENESIS | OMEGA SUPREME</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root { --gold: #FFD700; --cyan: #00f3ff; --green: #39ff14; --red: #ff003c; --panel: rgba(2, 2, 5, 0.99); }
         body { background: radial-gradient(circle at center, #0a0a20 0%, #010103 100%); font-family: 'Rajdhani', sans-serif; color: #fff; min-height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; margin: 0; }
-        .executive-panel { width: 440px; background: var(--panel); border-radius: 45px; padding: 25px; position: relative; border: 1px solid rgba(255, 215, 0, 0.4); box-shadow: 0 0 100px rgba(0, 0, 0, 1), inset 0 0 40px rgba(255, 215, 0, 0.05); backdrop-filter: blur(35px); }
-        .executive-panel::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2.5px; background: var(--gold); animation: scan 3.5s linear infinite; opacity: 0.6; }
+        .executive-panel { width: 440px; background: var(--panel); border-radius: 45px; padding: 25px; position: relative; border: 1px solid rgba(255, 215, 0, 0.5); box-shadow: 0 0 100px rgba(0, 0, 0, 1), inset 0 0 40px rgba(255, 215, 0, 0.05); backdrop-filter: blur(35px); }
+        .executive-panel::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2.5px; background: var(--gold); animation: scan 3s linear infinite; opacity: 0.6; }
         @keyframes scan { 0% { top: 0%; } 100% { top: 100%; } }
-        .gold-glow { font-family: 'Orbitron', sans-serif; color: var(--gold); text-shadow: 0 0 30px rgba(255, 215, 0, 0.9); }
-        .jackpot-box { width: 65px; height: 65px; background: #000; border: 2px solid var(--gold); border-radius: 18px; display: flex; align-items: center; justify-content: center; font-family: 'Orbitron'; font-weight: 900; color: var(--gold); box-shadow: 0 0 25px rgba(255, 215, 0, 0.4); font-size: 2rem; }
+        .gold-glow { font-family: 'Orbitron', sans-serif; color: var(--gold); text-shadow: 0 0 35px rgba(255, 215, 0, 0.95); }
+        .jackpot-box { width: 70px; height: 70px; background: #000; border: 2px solid var(--gold); border-radius: 18px; display: flex; align-items: center; justify-content: center; font-family: 'Orbitron'; font-weight: 900; color: var(--gold); box-shadow: 0 0 25px rgba(255, 215, 0, 0.4); font-size: 2.2rem; }
         .c-big { color: var(--green); text-shadow: 0 0 35px var(--green); } .c-small { color: var(--red); text-shadow: 0 0 35px var(--red); }
     </style>
 </head>
@@ -22,27 +22,28 @@
     <div class="executive-panel shadow-2xl">
         <div class="flex justify-between items-start mb-6">
             <div>
-                <h1 class="text-xs tracking-[5px] text-gray-500 font-bold uppercase">Genesis Velocity HUD</h1>
+                <h1 class="text-xs tracking-[5px] text-gray-400 font-bold uppercase">Genesis Velocity HUD</h1>
                 <div class="flex items-center gap-2 mt-1">
                     <span class="w-2.5 h-2.5 bg-yellow-500 rounded-full animate-pulse shadow-[0_0_15px_#FFD700]"></span>
                     <span class="text-[11px] font-bold text-white tracking-widest uppercase" id="logic-mode">OMEGA VELOCITY ACTIVE</span>
                 </div>
             </div>
-            <div class="text-right" onclick="location.reload()" style="cursor:pointer">
+            <div class="text-right" onclick="resetStats()" style="cursor:pointer">
                 <p class="gold-glow text-3xl font-black italic">V.MAX</p>
+                <p class="text-[8px] text-gray-600 uppercase">Ahmad Ali Singularity</p>
             </div>
         </div>
 
         <div class="grid grid-cols-3 gap-2 mb-6">
-            <div class="bg-black/70 p-4 rounded-3xl text-center border-b-2 border-green-500 shadow-xl">
+            <div class="bg-black/80 p-4 rounded-3xl text-center border-b-2 border-green-500 shadow-xl">
                 <p class="text-[9px] text-gray-400 uppercase font-black">Wins ✅</p>
                 <p class="text-3xl font-bold text-green-400" id="total-wins">0</p>
             </div>
-            <div class="bg-black/70 p-4 rounded-3xl text-center border-b-2 border-red-500 shadow-xl">
+            <div class="bg-black/80 p-4 rounded-3xl text-center border-b-2 border-red-500 shadow-xl">
                 <p class="text-[9px] text-gray-400 uppercase font-black">Loss ❌</p>
                 <p class="text-3xl font-bold text-red-400" id="total-loss">0</p>
             </div>
-            <div class="bg-black/70 p-4 rounded-3xl text-center border-b-2 border-yellow-500 shadow-xl">
+            <div class="bg-black/80 p-4 rounded-3xl text-center border-b-2 border-yellow-500 shadow-xl">
                 <p class="text-[9px] text-gray-400 uppercase font-black">Jackpot 🎉</p>
                 <p class="text-3xl font-bold text-yellow-400" id="total-jackpot">0</p>
             </div>
@@ -66,8 +67,8 @@
 
         <div class="grid grid-cols-2 gap-4 mb-6">
             <div class="bg-white/5 p-4 rounded-2xl border-l-4 border-yellow-500 shadow-inner">
-                <p class="text-[10px] text-gray-500 uppercase font-black">Period ID</p>
-                <p class="text-xl font-bold text-gray-100" id="period-id">#-----</p>
+                <p class="text-[10px] text-gray-500 uppercase font-black">Target Period</p>
+                <p class="text-xl font-bold text-gray-200" id="period-id">#-----</p>
             </div>
             <div class="bg-white/5 p-4 rounded-2xl border-l-4 border-cyan-500 shadow-inner">
                 <p class="text-[10px] text-gray-500 uppercase font-black">Velocity Scan</p>
@@ -76,7 +77,7 @@
         </div>
 
         <div class="space-y-1">
-            <p class="text-[11px] text-gray-600 uppercase font-bold tracking-[4px] mb-3 ml-1">Genesis Command Log (Persistent)</p>
+            <p class="text-[11px] text-gray-600 uppercase font-bold tracking-[4px] mb-3 ml-1">Dictator Genesis Log (Persistent)</p>
             <div id="log-container" class="space-y-2 h-[260px] overflow-hidden"></div>
         </div>
     </div>
@@ -84,10 +85,16 @@
     <script>
         const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=50&ts=";
         let lastIss = null, currentLvl = 1, prediction = null;
-        let stats = JSON.parse(localStorage.getItem('aliOmegaStats')) || { wins: 0, loss: 0, jackpots: 0 };
-        let logs = JSON.parse(localStorage.getItem('aliOmegaLogs')) || [];
+        
+        let stats = JSON.parse(localStorage.getItem('supremeOmegaStats')) || { wins: 0, loss: 0, jackpots: 0 };
+        let logs = JSON.parse(localStorage.getItem('supremeOmegaLogs')) || [];
 
-        function save() { localStorage.setItem('aliOmegaStats', JSON.stringify(stats)); localStorage.setItem('aliOmegaLogs', JSON.stringify(logs)); }
+        function save() { 
+            localStorage.setItem('supremeOmegaStats', JSON.stringify(stats)); 
+            localStorage.setItem('supremeOmegaLogs', JSON.stringify(logs)); 
+        }
+
+        function resetStats() { if(confirm("Bhai, kya stats zero karne hain?")) { localStorage.clear(); location.reload(); } }
 
         async function fetchEngine() {
             try {
@@ -107,7 +114,7 @@
                         if (winBS && winJP) { emo = "🎉✅"; stats.wins++; stats.jackpots++; currentLvl = 1; }
                         else if (winBS) { emo = "✅"; stats.wins++; currentLvl = 1; }
                         else if (winJP) { emo = "🎉"; stats.jackpots++; currentLvl = 1; }
-                        else { emo = "❌"; stats.loss++; currentLvl = 2; }
+                        else { emoji = "❌"; stats.loss++; currentLvl = 2; }
 
                         updateHUD(); addLog(lastIss, prediction.size, realR, realN, emo); save();
                     }
@@ -117,56 +124,60 @@
                     const lastN = parseInt(latest.number);
                     const lastS = lastN >= 5 ? "BIG" : "SMALL";
                     
-                    // --- VELOCITY OMEGA LOGIC (Handles 2-4 Min Shifts) ---
-                    // Scans the last 5 periods (Short-term velocity)
-                    let momentum = 0;
-                    for(let i=0; i<4; i++) {
-                        if((parseInt(history[i].number) >= 5 ? "BIG" : "SMALL") === (parseInt(history[i+1].number) >= 5 ? "BIG" : "SMALL")) momentum++;
+                    // --- OMEGA VELOCITY LOGIC (Handles 2-4 Min Shifts) ---
+                    let patterns = 0;
+                    for(let i=0; i<6; i++) {
+                        if((parseInt(history[i].number) >= 5 ? "BIG" : "SMALL") === (parseInt(history[i+1].number) >= 5 ? "BIG" : "SMALL")) patterns++;
                     }
 
                     let predS = "";
                     if (currentLvl === 1) {
-                        // High Momentum = Dragon | Low Momentum = Chop (Zigzag)
-                        if (momentum >= 2) predS = lastS; // Trend Continuation
-                        else predS = (lastS === "BIG" ? "SMALL" : "BIG"); // Adaptive Flip
+                        // Adaptive Scan: Trend vs Flip detecting shifts every 2 mins
+                        predS = (patterns >= 3) ? lastS : (lastS === "BIG" ? "SMALL" : "BIG");
                     } else {
-                        predS = (lastS === "BIG" ? "SMALL" : "BIG");
+                        predS = (lastS === "BIG" ? "SMALL" : "BIG"); // Level 2 Forced Reversal
                     }
 
+                    // 9X Seeds
                     const n1 = (lastN + 5) % 10;
-                    const n2 = (lastN % 2 === 0) ? (lastN + 3) % 10 : (lastN + 1) % 10;
+                    const n2 = (lastN % 2 === 0) ? (lastN + 3) % 10 : (lastN + 7) % 10;
                     prediction = { size: predS, nums: [n1, n2] };
 
                     document.getElementById('period-id').innerText = `#${nextIss.slice(-5)}`;
                     document.getElementById('main-val').innerText = predS;
                     document.getElementById('main-val').className = `text-8xl font-black italic ${predS === 'BIG' ? 'c-big' : 'c-small'}`;
                     document.getElementById('n1').innerText = n1; document.getElementById('n2').innerText = n2;
+                    document.getElementById('logic-mode').innerText = currentLvl === 1 ? "L1 ABSOLUTE SNIPER" : "L2 RECOVERY FIXED";
                 }
-            } catch (e) { console.error("Pulse Sync Error"); }
+            } catch (e) { console.error("Neural Error."); }
         }
 
         function updateHUD() { document.getElementById('total-wins').innerText = stats.wins; document.getElementById('total-loss').innerText = stats.loss; document.getElementById('total-jackpot').innerText = stats.jackpots; }
+        
         function addLog(iss, pred, act, num, emo) {
             logs.unshift({ issue: iss.slice(-4), pred, act, num, emo });
             if (logs.length > 10) logs.pop();
             renderLogs();
         }
+
         function renderLogs() {
             const container = document.getElementById('log-container');
             container.innerHTML = logs.map(item => `
-                <div class="p-4 bg-white/5 rounded-xl flex justify-between items-center mb-2">
+                <div class="p-4 bg-white/5 rounded-2xl flex justify-between items-center mb-2 animate-pulse border border-white/5">
                     <span class="font-mono text-gray-500 text-xs">ID:${item.issue}</span>
-                    <span class="font-bold text-white uppercase text-sm">${item.pred}</span>
+                    <span class="font-bold text-gray-200 uppercase text-sm">${item.pred}</span>
                     <span class="font-bold text-gray-400 text-sm">${item.act} <span class="text-yellow-600">(${item.num})</span></span>
                     <span class="text-3xl">${item.emo}</span>
                 </div>
             `).join('');
         }
+
         setInterval(() => {
             const now = new Date(); const s = 60 - now.getSeconds();
             document.getElementById('timer').innerText = `00:${s < 10 ? '0' + s : s}`;
             if (s === 59 || s === 30) fetchEngine();
         }, 1000);
+
         updateHUD(); renderLogs(); fetchEngine();
     </script>
 </body>
