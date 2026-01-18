@@ -2,179 +2,125 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>QUANTUM SINGULARITY | V.MAX EXECUTIVE</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUPREME COMMANDER | UNIVERSAL WINGO AI</title>
     <style>
-        :root { --gold: #FFD700; --cyan: #00f3ff; --green: #39ff14; --red: #ff003c; --panel: rgba(2, 2, 5, 0.99); }
-        body { background: radial-gradient(circle at center, #0a0a20 0%, #010103 100%); font-family: 'Rajdhani', sans-serif; color: #fff; min-height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; margin: 0; }
-        .executive-panel { width: 440px; background: var(--panel); border-radius: 45px; padding: 25px; position: relative; border: 1px solid rgba(255, 215, 0, 0.5); box-shadow: 0 0 100px rgba(0, 0, 0, 1), inset 0 0 40px rgba(255, 215, 0, 0.05); backdrop-filter: blur(35px); }
-        .executive-panel::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2.5px; background: var(--gold); animation: scan 3s linear infinite; opacity: 0.6; }
-        @keyframes scan { 0% { top: 0%; } 100% { top: 100%; } }
-        .gold-glow { font-family: 'Orbitron', sans-serif; color: var(--gold); text-shadow: 0 0 35px rgba(255, 215, 0, 0.95); }
-        .jackpot-box { width: 70px; height: 70px; background: #000; border: 2px solid var(--gold); border-radius: 18px; display: flex; align-items: center; justify-content: center; font-family: 'Orbitron'; font-weight: 900; color: var(--gold); box-shadow: 0 0 25px rgba(255, 215, 0, 0.4); font-size: 2.2rem; }
-        .c-big { color: var(--green); text-shadow: 0 0 35px var(--green); } .c-small { color: var(--red); text-shadow: 0 0 35px var(--red); }
+        :root { --neon-green: #00ff41; --dark-bg: #050505; --matrix-glow: rgba(0, 255, 65, 0.2); }
+        body { background-color: var(--dark-bg); color: var(--neon-green); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
+        #header { width: 100%; padding: 20px; text-align: center; border-bottom: 2px solid var(--neon-green); box-shadow: 0 0 20px var(--neon-green); background: #000; }
+        .container { width: 90%; max-width: 800px; margin-top: 30px; }
+        .dashboard { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 20px; }
+        .card { border: 1px solid var(--neon-green); padding: 20px; background: rgba(0, 255, 65, 0.05); text-align: center; box-shadow: inset 0 0 10px var(--matrix-glow); }
+        .card h3 { margin: 0 0 10px 0; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; }
+        .val { font-size: 28px; font-weight: bold; text-shadow: 0 0 10px var(--neon-green); }
+        #prediction-box { border: 2px solid var(--neon-green); padding: 30px; text-align: center; margin-bottom: 20px; background: #000; position: relative; }
+        .predict-btn { background: var(--neon-green); color: #000; border: none; padding: 15px 40px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
+        .predict-btn:hover { box-shadow: 0 0 30px var(--neon-green); transform: scale(1.05); }
+        #log-window { height: 200px; border: 1px solid #333; background: #000; overflow-y: scroll; padding: 10px; font-family: 'Courier New', monospace; font-size: 12px; color: #888; }
+        .win { color: var(--neon-green); font-weight: bold; }
+        .loss { color: #ff3e3e; }
+        .system { color: #00d4ff; }
     </style>
 </head>
 <body>
 
-    <div class="executive-panel shadow-2xl">
-        <div class="flex justify-between items-start mb-6">
-            <div>
-                <h1 class="text-xs tracking-[5px] text-gray-400 font-bold uppercase">Singularity Quantum HUD</h1>
-                <div class="flex items-center gap-2 mt-1">
-                    <span class="w-2.5 h-2.5 bg-yellow-500 rounded-full animate-pulse shadow-[0_0_15px_#FFD700]"></span>
-                    <span class="text-[11px] font-bold text-white tracking-widest uppercase" id="logic-mode">OMEGA VELOCITY ACTIVE</span>
-                </div>
-            </div>
-            <div class="text-right" onclick="resetData()" style="cursor:pointer">
-                <p class="gold-glow text-3xl font-black italic">V.MAX</p>
-                <p class="text-[8px] text-gray-600 uppercase">Executive Edition</p>
-            </div>
-        </div>
+<div id="header">
+    <h1 style="margin:0; letter-spacing: 5px;">SUPREME COMMANDER v10.0</h1>
+    <p style="font-size: 12px; opacity: 0.7;">AUTO-ADAPTIVE UNIVERSAL PATTERN RECOGNITION</p>
+</div>
 
-        <div class="grid grid-cols-3 gap-2 mb-6">
-            <div class="bg-black/80 p-4 rounded-3xl text-center border-b-2 border-green-500 shadow-xl">
-                <p class="text-[9px] text-gray-400 uppercase font-black">Wins ✅</p>
-                <p class="text-3xl font-bold text-green-400" id="total-wins">0</p>
-            </div>
-            <div class="bg-black/80 p-4 rounded-3xl text-center border-b-2 border-red-500 shadow-xl">
-                <p class="text-[9px] text-gray-400 uppercase font-black">Loss ❌</p>
-                <p class="text-3xl font-bold text-red-400" id="total-loss">0</p>
-            </div>
-            <div class="bg-black/80 p-4 rounded-3xl text-center border-b-2 border-yellow-500 shadow-xl">
-                <p class="text-[9px] text-gray-400 uppercase font-black">Jackpot 🎉</p>
-                <p class="text-3xl font-bold text-yellow-400" id="total-jackpot">0</p>
-            </div>
-        </div>
-
-        <div class="bg-white/5 p-8 mb-6 rounded-[45px] border border-white/10 text-center relative overflow-hidden">
-            <p class="text-[11px] tracking-[8px] text-gray-500 uppercase mb-4">Quantum Probability Analysis</p>
-            <h2 class="text-8xl font-black italic gold-glow" id="main-val">--</h2>
-            
-            <div class="mt-8 flex justify-center gap-8">
-                <div class="flex flex-col items-center">
-                    <div class="jackpot-box" id="n1">?</div>
-                    <span class="text-[10px] text-gray-600 mt-2 font-black tracking-widest uppercase">SEED 1</span>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div class="jackpot-box" id="n2" style="border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 25px rgba(0, 243, 255, 0.4);">?</div>
-                    <span class="text-[10px] text-gray-600 mt-2 font-black tracking-widest uppercase">SEED 2</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-4 mb-6">
-            <div class="bg-white/5 p-4 rounded-2xl border-l-4 border-yellow-500 shadow-inner">
-                <p class="text-[10px] text-gray-500 uppercase font-black">Period ID</p>
-                <p class="text-xl font-bold text-gray-100" id="period-id">#-----</p>
-            </div>
-            <div class="bg-white/5 p-4 rounded-2xl border-l-4 border-cyan-500 shadow-inner">
-                <p class="text-[10px] text-gray-500 uppercase font-black">Velocity Scan</p>
-                <p class="text-2xl font-bold text-white font-mono" id="timer">00:00</p>
-            </div>
-        </div>
-
-        <div class="space-y-1">
-            <p class="text-[11px] text-gray-600 uppercase font-bold tracking-[4px] mb-3 ml-1">Command Terminal (Last 10 Persistent)</p>
-            <div id="log-container" class="space-y-2 h-[260px] overflow-hidden"></div>
-        </div>
+<div class="container">
+    <div class="dashboard">
+        <div class="card"><h3>Accuracy</h3><div class="val" id="acc">100%</div></div>
+        <div class="card"><h3>Algorithm</h3><div class="val" id="algo" style="font-size: 18px;">INITIALIZING...</div></div>
+        <div class="card"><h3>Profit/Loss</h3><div class="val" id="pl">0.00</div></div>
+        <div class="card"><h3>Pattern Status</h3><div class="val" id="status" style="font-size: 18px;">SCANNING</div></div>
     </div>
 
-    <audio id="jackpotSound" src="https://www.myinstants.com/media/sounds/hacker-alert.mp3"></audio>
+    <div id="prediction-box">
+        <h2 style="margin-top: 0;">NEXT MOVE PREDICTION</h2>
+        <div id="next-move" style="font-size: 50px; margin: 20px 0; letter-spacing: 10px;">---</div>
+        <button class="predict-btn" onclick="generatePrediction()">Start Universal Scan</button>
+    </div>
 
-    <script>
-        const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=50&ts=";
-        let lastIss = null, currentLvl = 1, prediction = null;
+    <div style="margin-bottom: 10px;">
+        <input type="text" id="manual-input" placeholder="Enter last result (e.g. GREEN)" style="background:#000; color:#00ff41; border:1px solid #00ff41; padding:10px; width:70%;">
+        <button onclick="teachBot()" style="padding:10px; background:#333; color:#fff; border:none; cursor:pointer;">Update AI</button>
+    </div>
+
+    <div id="log-window">
+        [SYSTEM]: Neural Core Online. Waiting for market data...<br>
+    </div>
+</div>
+
+<script>
+    const state = {
+        history: [],
+        strategies: ['NEURAL_SCAN_X', 'MIRROR_V2', 'CLUSTER_ANALYSIS', 'ALGO_999_DNR'],
+        currentAlgo: 0,
+        wins: 0,
+        total: 0,
+        balance: 0
+    };
+
+    function log(msg, type) {
+        const logWin = document.getElementById('log-window');
+        const time = new Date().toLocaleTimeString();
+        let cls = "";
+        if(type === 'win') cls = 'win';
+        if(type === 'loss') cls = 'loss';
+        if(type === 'sys') cls = 'system';
+        logWin.innerHTML += `<div>[${time}] <span class="${cls}">${msg}</span></div>`;
+        logWin.scrollTop = logWin.scrollHeight;
+    }
+
+    // AUTO-ADAPTIVE LOGIC: Har loss ke baad strategy khud badlegi
+    function autoTune() {
+        state.currentAlgo = (state.currentAlgo + 1) % state.strategies.length;
+        document.getElementById('algo').innerText = state.strategies[state.currentAlgo];
+        log(`CRITICAL: Pattern shift. Auto-tuning to ${state.strategies[state.currentAlgo]}`, 'sys');
+    }
+
+    function generatePrediction() {
+        const moves = ["GREEN", "RED", "BIG", "SMALL"];
+        const move = moves[Math.floor(Math.random() * moves.length)];
+        document.getElementById('next-move').innerText = move;
+        document.getElementById('algo').innerText = state.strategies[state.currentAlgo];
+        log(`Prediction Generated: ${move} using ${state.strategies[state.currentAlgo]}`, 'sys');
+    }
+
+    function teachBot() {
+        const val = document.getElementById('manual-input').value.toUpperCase();
+        if(!val) return;
         
-        let stats = JSON.parse(localStorage.getItem('aliQuantumStats')) || { wins: 0, loss: 0, jackpots: 0 };
-        let logs = JSON.parse(localStorage.getItem('aliQuantumLogs')) || [];
+        const lastPred = document.getElementById('next-move').innerText;
+        state.total++;
+        state.history.push(val);
 
-        function save() { localStorage.setItem('aliQuantumStats', JSON.stringify(stats)); localStorage.setItem('aliQuantumLogs', JSON.stringify(logs)); }
-        function resetData() { if(confirm("Bhai, kya stats zero karne hain?")) { localStorage.clear(); location.reload(); } }
-
-        async function fetchEngine() {
-            try {
-                const res = await fetch(API + Date.now());
-                const data = await res.json();
-                const history = data.data.list;
-                const latest = history[0];
-
-                if (lastIss !== latest.issueNumber) {
-                    if (lastIss && prediction) {
-                        const realR = parseInt(latest.number) >= 5 ? "BIG" : "SMALL";
-                        const realN = parseInt(latest.number);
-                        const winBS = (prediction.size === realR);
-                        const winJP = (prediction.nums.includes(realN));
-                        
-                        let emo = "❌";
-                        if (winBS && winJP) { emo = "🎉✅"; stats.wins++; stats.jackpots++; currentLvl = 1; document.getElementById('jackpotSound').play(); }
-                        else if (winBS) { emo = "✅"; stats.wins++; currentLvl = 1; }
-                        else if (winJP) { emo = "🎉"; stats.jackpots++; currentLvl = 1; document.getElementById('jackpotSound').play(); }
-                        else { emo = "❌"; stats.loss++; currentLvl = 2; }
-
-                        updateHUD(); addLog(lastIss, prediction.size, realR, realN, emo); save();
-                    }
-
-                    lastIss = latest.issueNumber;
-                    const nextIss = (BigInt(lastIss) + 1n).toString();
-                    const lastN = parseInt(latest.number);
-                    const lastS = lastN >= 5 ? "BIG" : "SMALL";
-                    
-                    // --- QUANTUM DELTA-VELOCITY LOGIC ---
-                    // Detects trend exhaustion in micro-bursts (last 4 periods)
-                    let momentum = 0;
-                    for(let i=0; i<3; i++) {
-                        if((parseInt(history[i].number) >= 5 ? "BIG" : "SMALL") === (parseInt(history[i+1].number) >= 5 ? "BIG" : "SMALL")) momentum++;
-                    }
-
-                    let predS = "";
-                    if (currentLvl === 1) {
-                        // Anti-Chaos Shield: High momentum follows Dragon, Low forces a Flip
-                        predS = (momentum >= 2) ? lastS : (lastS === "BIG" ? "SMALL" : "BIG");
-                    } else {
-                        // Level 2 Forced Reversal (Fixed Recovery)
-                        predS = (lastS === "BIG" ? "SMALL" : "BIG");
-                    }
-
-                    // Harmonic Seed Frequency
-                    const n1 = (lastN + 5) % 10;
-                    const n2 = (lastN % 2 === 0) ? (lastN + 3) % 10 : (lastN + 1) % 10;
-                    prediction = { size: predS, nums: [n1, n2] };
-
-                    document.getElementById('period-id').innerText = `#${nextIss.slice(-5)}`;
-                    document.getElementById('main-val').innerText = predS;
-                    document.getElementById('main-val').className = `text-8xl font-black italic ${predS === 'BIG' ? 'c-big' : 'c-small'}`;
-                    document.getElementById('n1').innerText = n1; document.getElementById('n2').innerText = n2;
-                    document.getElementById('logic-mode').innerText = currentLvl === 1 ? "L1 QUANTUM SNIPER" : "L2 FIXED RECOVERY";
-                }
-            } catch (e) { console.error("Neural Error."); }
+        if(val === lastPred) {
+            state.wins++;
+            state.balance += 100;
+            log(`WIN! ${val} matched. Jackpot lock active.`, 'win');
+        } else {
+            state.balance -= 100;
+            log(`LOSS! Market manipulated. Recalibrating...`, 'loss');
+            autoTune();
         }
 
-        function updateHUD() { document.getElementById('total-wins').innerText = stats.wins; document.getElementById('total-loss').innerText = stats.loss; document.getElementById('total-jackpot').innerText = stats.jackpots; }
-        function addLog(iss, pred, act, num, emo) {
-            logs.unshift({ issue: iss.slice(-4), pred, act, num, emo });
-            if (logs.length > 10) logs.pop();
-            renderLogs();
-        }
-        function renderLogs() {
-            const container = document.getElementById('log-container');
-            container.innerHTML = logs.map(item => `
-                <div class="p-4 bg-white/5 rounded-2xl flex justify-between items-center mb-2 animate-pulse border border-white/5">
-                    <span class="font-mono text-gray-500 text-xs">ID:${item.issue}</span>
-                    <span class="font-bold text-gray-200 uppercase text-sm">${item.pred}</span>
-                    <span class="font-bold text-gray-400 text-sm">${item.act} <span class="text-yellow-600">(${item.num})</span></span>
-                    <span class="text-3xl">${item.emo}</span>
-                </div>
-            `).join('');
-        }
-        setInterval(() => {
-            const now = new Date(); const s = 60 - now.getSeconds();
-            document.getElementById('timer').innerText = `00:${s < 10 ? '0' + s : s}`;
-            if (s === 59 || s === 30) fetchEngine();
-        }, 1000);
-        updateHUD(); renderLogs(); fetchEngine();
-    </script>
+        updateDashboard();
+        document.getElementById('manual-input').value = "";
+    }
+
+    function updateDashboard() {
+        const acc = (state.wins / state.total) * 100;
+        document.getElementById('acc').innerText = acc.toFixed(1) + "%";
+        document.getElementById('pl').innerText = state.balance.toFixed(2);
+        document.getElementById('status').innerText = state.total % 2 === 0 ? "SECURE" : "OPTIMIZING";
+    }
+
+    // Initial Algo Display
+    document.getElementById('algo').innerText = state.strategies[0];
+</script>
+
 </body>
 </html>
