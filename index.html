@@ -3,172 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wingo Smart Panel | Singularity Omega</title>
+    <title>Supreme v21 | Diagnostic Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --panel-bg: rgba(5, 5, 10, 0.99); --smart-gold: #FFD700; --neon-green: #39ff14; --neon-red: #ff003c; }
-        body {
-            background: radial-gradient(circle at center, #0a0a20 0%, #020205 100%);
-            font-family: 'Rajdhani', sans-serif; color: #fff; min-height: 100vh; display: flex; justify-content: center; align-items: center; margin: 0; overflow-x: hidden;
-        }
-        .smart-panel {
-            width: 440px; background: var(--panel-bg); border-radius: 40px; padding: 30px; position: relative; border: 1px solid rgba(255, 215, 0, 0.4);
-            box-shadow: 0 0 100px rgba(0, 0, 0, 1), inset 0 0 30px rgba(255, 215, 0, 0.05); backdrop-filter: blur(30px);
-        }
-        .smart-panel::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: var(--smart-gold); animation: scan 3s linear infinite; opacity: 0.6; }
-        @keyframes scan { 0% { top: 0%; } 100% { top: 100%; } }
-        .gold-glow { font-family: 'Orbitron', sans-serif; color: var(--smart-gold); text-shadow: 0 0 25px rgba(255, 215, 0, 0.9); }
-        .prediction-node { background: radial-gradient(circle at top right, rgba(218, 165, 32, 0.2), transparent); border: 1px solid rgba(255, 215, 0, 0.25); border-radius: 35px; }
-        .jackpot-box {
-            width: 65px; height: 65px; background: #000; border: 2px solid var(--smart-gold); border-radius: 18px;
-            display: flex; align-items: center; justify-content: center; font-family: 'Orbitron'; font-weight: 900; color: var(--smart-gold); box-shadow: 0 0 25px rgba(255, 215, 0, 0.5); font-size: 2rem;
-        }
-        .log-item { background: rgba(255, 255, 255, 0.05); border-radius: 15px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.08); transition: 0.3s; font-size: 12px; }
-        .c-big { color: var(--neon-green); text-shadow: 0 0 30px var(--neon-green); }
-        .c-small { color: var(--neon-red); text-shadow: 0 0 30px var(--neon-red); }
-        .status-pulse { width: 10px; height: 10px; border-radius: 50%; background: #ff003c; box-shadow: 0 0 15px #ff003c; animation: blink 1s infinite; }
-        @keyframes blink { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.3; transform: scale(1.3); } }
-        #log-container::-webkit-scrollbar { width: 4px; }
-        #log-container::-webkit-scrollbar-thumb { background: var(--smart-gold); border-radius: 10px; }
+        :root { --gold: #FFD700; --cyan: #00f3ff; }
+        body { background: #000; color: #fff; font-family: 'Rajdhani', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .panel { width: 440px; background: rgba(5, 5, 15, 0.98); border: 1px solid rgba(255, 215, 0, 0.5); border-radius: 40px; padding: 30px; box-shadow: 0 0 100px #000; position: relative; }
+        .gold-glow { font-family: 'Orbitron'; color: var(--gold); text-shadow: 0 0 20px var(--gold); }
+        .j-box { width: 75px; height: 75px; background: #000; border: 2px solid var(--gold); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; font-weight: 900; color: var(--gold); }
+        #console { height: 160px; overflow-y: auto; font-size: 10px; font-family: monospace; border-top: 1px solid #333; padding-top: 10px; color: #777; scroll-behavior: smooth; }
+        .diag-btn { background: #222; color: #555; border: 1px solid #444; font-size: 9px; padding: 2px 10px; rounded: 50px; }
     </style>
 </head>
 <body>
 
-    <div class="smart-panel shadow-2xl">
+    <div class="panel">
         <div class="flex justify-between items-start mb-8">
             <div>
-                <h1 class="text-xs tracking-[5px] text-gray-500 font-bold uppercase">Singularity Omega HUD</h1>
+                <p class="text-[9px] tracking-[4px] text-gray-500 font-bold uppercase">Singularity v21.0 Diagnostic</p>
                 <div class="flex items-center gap-2 mt-1">
-                    <span class="status-pulse" id="status-dot"></span>
-                    <span class="text-[11px] font-bold text-white tracking-widest uppercase" id="ai-status">WAITING SERVER</span>
+                    <span id="ai-dot" class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
+                    <span id="ai-status" class="text-[10px] text-red-500 font-bold uppercase">System Offline</span>
                 </div>
             </div>
             <div class="text-right">
                 <p class="gold-glow text-2xl font-black">V.MAX</p>
-                <p class="text-[8px] text-gray-500 uppercase tracking-widest">Permanent Edition</p>
+                <button onclick="testKeyOnly()" class="diag-btn hover:text-white">TEST KEY</button>
             </div>
         </div>
 
-        <div class="grid grid-cols-3 gap-2 mb-8">
-            <div class="bg-black/60 p-3 rounded-2xl text-center border-b-2 border-green-500 shadow-lg">
-                <p class="text-[9px] text-gray-500 uppercase font-black">Winning ✅</p>
-                <p class="text-2xl font-bold text-green-400" id="stat-wins">0</p>
-            </div>
-            <div class="bg-black/60 p-3 rounded-2xl text-center border-b-2 border-red-500 shadow-lg">
-                <p class="text-[9px] text-gray-500 uppercase font-black">Adaptive 🔄</p>
-                <p class="text-2xl font-bold text-red-400" id="stat-loss">0</p>
-            </div>
-            <div class="bg-black/60 p-3 rounded-2xl text-center border-b-2 border-yellow-500 shadow-lg">
-                <p class="text-[9px] text-gray-500 uppercase font-black">Jackpot 🎉</p>
-                <p class="text-2xl font-bold text-yellow-400" id="stat-jp">0</p>
-            </div>
-        </div>
-
-        <div class="prediction-node p-8 mb-8 relative overflow-hidden text-center">
-            <p class="text-[11px] tracking-[6px] text-gray-500 uppercase mb-4">Neural Singularity Result</p>
+        <div class="bg-white/5 p-8 rounded-[40px] border border-white/10 text-center mb-6">
             <h2 class="text-7xl font-bold italic gold-glow" id="main-val">--</h2>
-            
-            <div class="mt-8 flex justify-center gap-8">
-                <div class="flex flex-col items-center">
-                    <div class="jackpot-box" id="n1">?</div>
-                    <span class="text-[10px] text-gray-500 mt-2 uppercase font-black tracking-widest">Primary</span>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div class="jackpot-box" id="n2" style="border-color: #00f3ff; color: #00f3ff; box-shadow: 0 0 20px rgba(0, 243, 255, 0.4);">?</div>
-                    <span class="text-[10px] text-gray-500 mt-2 uppercase font-black tracking-widest">Mirror</span>
-                </div>
+            <div class="flex justify-center gap-8 mt-8">
+                <div class="flex flex-col items-center"><div class="j-box" id="n1">?</div><p class="text-[9px] text-gray-500 mt-2 font-bold uppercase">Primary</p></div>
+                <div class="flex flex-col items-center"><div class="j-box" id="n2" style="border-color: var(--cyan); color: var(--cyan);">?</div><p class="text-[9px] text-gray-500 mt-2 font-bold uppercase">Mirror</p></div>
             </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-4 mb-8">
-            <div class="bg-white/5 p-4 rounded-2xl border-l-4 border-yellow-500 shadow-inner text-center">
-                <p class="text-[10px] text-gray-500 uppercase font-black">Target Period</p>
-                <p class="text-lg font-bold text-gray-200" id="period-id">#-----</p>
+        <div class="grid grid-cols-2 gap-4 mb-6">
+            <div class="bg-black/50 p-4 rounded-3xl border-b-2 border-yellow-500 text-center">
+                <p class="text-[10px] text-gray-500 font-black">Period ID</p>
+                <p class="text-lg font-bold" id="issue-id">#-----</p>
             </div>
-            <div class="bg-white/5 p-4 rounded-2xl border-l-4 border-yellow-600 shadow-inner text-center">
-                <p class="text-[10px] text-gray-500 uppercase font-black">Auto-Sync Pulse</p>
-                <p class="text-2xl font-bold text-white font-mono" id="timer">00:00</p>
+            <div class="bg-black/50 p-4 rounded-3xl border-b-2 border-cyan-500 text-center">
+                <p class="text-[10px] text-gray-500 font-black">Shield Status</p>
+                <p class="text-lg font-bold text-cyan-400" id="shield">READY</p>
             </div>
         </div>
 
-        <div class="space-y-1">
-            <p class="text-[11px] text-gray-600 uppercase font-bold tracking-[4px] mb-3 ml-1">Universal Activity Log</p>
-            <div id="log-container" class="space-y-2 h-[200px] overflow-y-auto pr-2">
-                <p class="text-center text-[10px] text-gray-700">Connecting to Serverless Core...</p>
-            </div>
+        <button onclick="startNeuralScan()" class="w-full bg-yellow-500 text-black font-black py-4 rounded-2xl mb-6 uppercase text-sm shadow-lg hover:bg-yellow-400">Force Neural Sync</button>
+
+        <div>
+            <p class="text-[10px] text-gray-600 font-bold tracking-[4px] mb-2 uppercase ml-1">Traffic Monitor</p>
+            <div id="console"><div>[SYSTEM]: Singularity Kernel v21 Ready.</div></div>
         </div>
     </div>
 
     <script>
+        // --- APNI KEY YAHAN DALEN (CHECK SPACES) ---
+        const GEMINI_KEY = "AIzaSyBE8T8-cibRfRoxm0ag0ZHMsjTRB8H4bUk"; 
+        
+        const PROXY = "https://api.codetabs.com/v1/proxy?quest=";
+        const WINGO_API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=10";
+        
         let lastIssue = null;
-        let stats = { wins: 0, loss: 0, jp: 0 };
+        let isLock = false;
 
-        function log(msg, colorClass = "text-gray-400") {
-            const container = document.getElementById('log-container');
-            const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
-            const div = document.createElement('div');
-            div.className = `log-item p-3 flex justify-between items-center ${colorClass}`;
-            div.innerHTML = `<span>[${time}]</span> <span class="font-bold">${msg}</span>`;
-            container.prepend(div);
-            if (container.children.length > 15) container.lastChild.remove();
+        function log(msg, cls = "text-gray-500") {
+            const con = document.getElementById('console');
+            const time = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', second:'2-digit'});
+            con.innerHTML = `<div class="mb-1 ${cls}"><span class="opacity-40">[${time}]</span> > ${msg}</div>` + con.innerHTML;
         }
 
-        async function runSupremeEngine() {
-            const aiStatus = document.getElementById('ai-status');
-            const aiDot = document.getElementById('status-dot');
-            
+        async function testKeyOnly() {
+            log("DIAGNOSTIC: Testing Key with simple ping...", "text-blue-400");
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`;
             try {
-                // Vercel Serverless Function Call
-                const res = await fetch('/api/prediction');
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ contents: [{ parts: [{ text: "ping" }] }] })
+                });
                 const data = await res.json();
-
                 if (data.error) {
-                    log(`API ERROR: ${data.error}`, "text-red-500");
-                    aiStatus.innerText = "SERVER_FAIL";
-                    aiDot.style.background = "#ff003c";
-                    return;
+                    log(`KEY FAILED: ${data.error.status} - ${data.error.message}`, "text-red-500 font-bold");
+                } else {
+                    log("KEY SUCCESS: Google Handshake complete!", "text-green-500 font-bold");
                 }
-
-                if (data.prediction) {
-                    const nextIssue = (BigInt(data.latestIssue) + 1n).toString();
-                    document.getElementById('period-id').innerText = "#" + nextIssue.slice(-5);
-                    
-                    const p = data.prediction;
-                    const mainVal = document.getElementById('main-val');
-                    mainVal.innerText = p.p;
-                    mainVal.className = `text-7xl font-bold italic gold-glow ${p.p === 'BIG' ? 'c-big' : 'c-small'}`;
-                    
-                    document.getElementById('n1').innerText = p.n[0];
-                    document.getElementById('n2').innerText = p.n[1];
-
-                    // Connection Success Indicators
-                    aiDot.style.background = "#39ff14";
-                    aiDot.style.boxShadow = "0 0 15px #39ff14";
-                    aiStatus.innerText = "AI ONLINE";
-                    aiStatus.className = "text-[11px] font-bold text-green-400 tracking-widest uppercase";
-                    
-                    log(`Prediction Received: ${p.p} (${p.n.join(',')})`, "text-green-400");
-                }
-            } catch (err) {
-                log(`HANDSHAKE FAILED: ${err.message}`, "text-red-400");
-                aiStatus.innerText = "OFFLINE";
-                aiDot.style.background = "#ff003c";
+            } catch (e) {
+                log("FETCH ERROR: Key cannot reach Google.", "text-red-600");
             }
         }
 
-        // Timer Logic
+        async function startNeuralScan() {
+            if(isLock) return;
+            log("NETWORK: Fetching last 10 rounds...", "text-white");
+            try {
+                const res = await fetch(PROXY + encodeURIComponent(WINGO_API + "&ts=" + Date.now()));
+                const data = await res.json();
+                const latest = data.data.list[0];
+
+                if (lastIssue !== latest.issueNumber) {
+                    lastIssue = latest.issueNumber;
+                    log(`SYNC: New data for #${lastIssue.slice(-4)}.`, "text-yellow-500");
+                    const aiPred = await callGeminiAI(data.data.list);
+                    if (aiPred) updateHUD(aiPred, lastIssue);
+                }
+            } catch (err) {
+                log("PROXY ERROR: Switching tunnel...", "text-red-400");
+            }
+        }
+
+        async function callGeminiAI(history) {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`;
+            const prompt = `Analyze history: ${JSON.stringify(history)}. Predict next BIG/SMALL and 2 jackpot numbers. Output JSON ONLY: {"p":"BIG","n":[x,y],"c":"95%"}`;
+            
+            try {
+                log("AI: Decoding market DNA...", "text-purple-400");
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                });
+
+                const result = await response.json();
+                if (result.error) {
+                    log(`AI ERROR: ${result.error.message}`, "text-red-500");
+                    return null;
+                }
+
+                const aiText = result.candidates[0].content.parts[0].text;
+                const pred = JSON.parse(aiText.replace(/```json|```/g, ""));
+                
+                document.getElementById('ai-dot').className = "w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_#39ff14]";
+                document.getElementById('ai-status').innerText = "AI ONLINE";
+                document.getElementById('ai-status').className = "text-[10px] text-green-500 font-bold uppercase";
+                
+                return pred;
+            } catch (err) {
+                log("AI FATAL: Key rejected or rate limited.", "text-red-600");
+                return null;
+            }
+        }
+
+        function updateHUD(data, issue) {
+            const main = document.getElementById('main-val');
+            main.innerText = data.p;
+            main.className = `text-7xl font-bold italic gold-glow ${data.p === 'BIG' ? 'text-green-500' : 'text-red-600'}`;
+            document.getElementById('n1').innerText = data.n[0];
+            document.getElementById('n2').innerText = data.n[1];
+            document.getElementById('issue-id').innerText = "#" + (BigInt(issue) + 1n).toString().slice(-5);
+            
+            // Cooldown 30s
+            isLock = true;
+            document.getElementById('shield').innerText = "COOLDOWN";
+            setTimeout(() => { isLock = false; document.getElementById('shield').innerText = "READY"; }, 30000);
+        }
+
         setInterval(() => {
             const s = new Date().getSeconds();
-            const remaining = 60 - s;
-            document.getElementById('timer').innerText = `00:${remaining < 10 ? '0' + remaining : remaining}`;
-            
-            // Sync exactly at period transition
-            if (s === 1 || s === 30) runSupremeEngine();
+            if ((s === 2 || s === 32) && !isLock) startNeuralScan();
         }, 1000);
 
-        // Initial Run
-        runSupremeEngine();
+        startNeuralScan();
     </script>
 </body>
 </html>
