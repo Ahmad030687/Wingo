@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TITAN OMNI-AURA | GANDI MARKET CRUSHER</title>
+    <title>TITAN OMNI-AURA | GOD MODE COMMANDER</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #ffd700; --gold-dark: #b8860b; --bg: #020205; --panel-bg: rgba(10, 10, 15, 0.98); }
+        :root { --gold: #ffd700; --gold-dark: #b8860b; --bg: #020205; --panel: rgba(10, 10, 15, 0.98); }
         body {
             background: radial-gradient(circle at center, #1a1a2e 0%, #020205 100%);
             font-family: 'Rajdhani', sans-serif; color: #fff; min-height: 100vh; display: flex; justify-content: center; align-items: center; overflow-x: hidden; margin: 0;
         }
         .smart-panel {
-            width: 440px; background: var(--panel-bg); border-radius: 40px; padding: 25px; border: 1px solid rgba(255, 215, 0, 0.25);
+            width: 440px; background: var(--panel); border-radius: 40px; padding: 25px; border: 1px solid rgba(255, 215, 0, 0.25);
             box-shadow: 0 0 60px rgba(0, 0, 0, 0.9), inset 0 0 20px rgba(255, 215, 0, 0.05); position: relative; backdrop-filter: blur(15px);
         }
         .smart-panel::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: var(--gold); animation: scan 4s linear infinite; opacity: 0.3; }
@@ -34,15 +34,15 @@
     <div class="smart-panel shadow-2xl">
         <div class="flex justify-between items-start mb-6">
             <div>
-                <h1 class="text-xs tracking-[4px] text-gray-500 font-bold uppercase">Market Dictator HUD</h1>
+                <h1 class="text-xs tracking-[4px] text-gray-500 font-bold uppercase">Executive AI Panel</h1>
                 <div class="flex items-center gap-2 mt-1">
-                    <span class="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></span>
-                    <span class="text-[10px] font-bold text-white tracking-widest uppercase" id="logic-mode">L1 OMEGA SNIPER</span>
+                    <span class="w-2 h-2 bg-yellow-500 rounded-full animate-pulse shadow-[0_0_10px_#FFD700]"></span>
+                    <span class="text-[10px] font-bold text-white tracking-widest uppercase" id="logic-mode">L1 SNIPER ACTIVE</span>
                 </div>
             </div>
             <div class="text-right" onclick="resetStats()" style="cursor:pointer">
                 <p class="gold-glow text-xl">V.MAX</p>
-                <p class="text-[7px] text-gray-600 uppercase">Clear Stats (Click)</p>
+                <p class="text-[7px] text-gray-600 uppercase">Clear (Click)</p>
             </div>
         </div>
 
@@ -62,17 +62,17 @@
         </div>
 
         <div class="bg-white/5 p-6 rounded-[35px] mb-6 text-center border border-white/5 relative overflow-hidden">
-            <p class="text-[9px] tracking-[6px] text-gray-500 uppercase mb-2">Dictator Core Prediction</p>
+            <p class="text-[9px] tracking-[6px] text-gray-500 uppercase mb-2">Omni-Pulse Result</p>
             <h2 class="text-7xl font-bold italic gold-glow" id="main-val">--</h2>
             
             <div class="mt-6 flex justify-center gap-6">
                 <div class="flex flex-col items-center">
                     <div class="jackpot-num" id="n1">?</div>
-                    <span class="text-[9px] text-gray-500 mt-2 uppercase font-bold tracking-widest">Seed 1</span>
+                    <span class="text-[9px] text-gray-500 mt-2 uppercase font-bold tracking-widest">Primary</span>
                 </div>
                 <div class="flex flex-col items-center">
                     <div class="jackpot-num" id="n2" style="border-color: #00f3ff; color: #00f3ff; box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);">?</div>
-                    <span class="text-[9px] text-gray-500 mt-2 uppercase font-bold tracking-widest">Seed 2</span>
+                    <span class="text-[9px] text-gray-500 mt-2 uppercase font-bold tracking-widest">Mirror</span>
                 </div>
             </div>
         </div>
@@ -83,13 +83,13 @@
                 <p class="text-lg font-bold text-gray-200" id="period-id">#-----</p>
             </div>
             <div class="data-card" style="border-color: #DAA520;">
-                <p class="text-[9px] text-gray-500 uppercase font-black">Market Scan</p>
+                <p class="text-[9px] text-gray-500 uppercase font-black">Pulse Scan</p>
                 <p class="text-2xl font-bold text-white font-mono" id="timer">00:00</p>
             </div>
         </div>
 
         <div class="space-y-1">
-            <p class="text-[10px] text-gray-600 uppercase font-bold tracking-[3px] mb-2 ml-1">Dictator Traffic Log (Persistent)</p>
+            <p class="text-[10px] text-gray-600 uppercase font-bold tracking-[3px] mb-2 ml-1">Traffic Log (Last 10 - Persistent)</p>
             <div id="log-container" class="space-y-2 h-[220px] overflow-hidden">
                 </div>
         </div>
@@ -99,17 +99,17 @@
         const API_URL = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=50&ts=";
         let lastIssue = null, currentLvl = 1, prediction = null;
         
-        // --- PERSISTENCE LOGIC (Load from LocalStorage) ---
-        let stats = JSON.parse(localStorage.getItem('mickeyStats')) || { wins: 0, loss: 0, jackpots: 0 };
-        let persistentLogs = JSON.parse(localStorage.getItem('mickeyLogs')) || [];
+        // --- LOCAL STORAGE DATA ---
+        let stats = JSON.parse(localStorage.getItem('supremeStats')) || { wins: 0, loss: 0, jackpots: 0 };
+        let persistentLogs = JSON.parse(localStorage.getItem('supremeLogs')) || [];
 
-        function saveToLocal() {
-            localStorage.setItem('mickeyStats', JSON.stringify(stats));
-            localStorage.setItem('mickeyLogs', JSON.stringify(persistentLogs));
+        function saveState() {
+            localStorage.setItem('supremeStats', JSON.stringify(stats));
+            localStorage.setItem('supremeLogs', JSON.stringify(persistentLogs));
         }
 
         function resetStats() {
-            if(confirm("Bhai, kya stats zero karne hain?")) {
+            if(confirm("Bhai, kya stats clear karne hain?")) {
                 localStorage.clear();
                 location.reload();
             }
@@ -135,22 +135,37 @@
                         else if (jpWin) { emoji = "🎉"; stats.jackpots++; currentLvl = 1; }
                         else { emoji = "❌"; stats.loss++; currentLvl = 2; }
 
-                        addLogEntry(lastIssue, prediction.size, realRes, realNum, emoji);
+                        updateLogs(lastIssue, prediction.size, realRes, realNum, emoji);
                         updateHud();
-                        saveToLocal();
+                        saveState();
                     }
 
                     lastIssue = latest.issueNumber;
                     const nextIssue = (BigInt(lastIssue) + 1n).toString();
                     
-                    // --- GANDI MARKET SNIPER LOGIC (UNDER LEVEL 2) ---
+                    // --- NEURAL 10-ROUND SCAN LOGIC ---
                     const lastNum = parseInt(latest.number);
                     const lastSize = lastNum >= 5 ? "BIG" : "SMALL";
                     
-                    // L1 follows trend. L2 forces a fixed flip based on sequence exhaustion.
-                    let predSize = (currentLvl === 1) ? lastSize : (lastSize === "BIG" ? "SMALL" : "BIG");
+                    // History Analysis (Scan pichle 10 rounds)
+                    let dragonCount = 0;
+                    for(let i=0; i<10; i++) {
+                        if((parseInt(history[i].number) >= 5 ? "BIG" : "SMALL") === lastSize) dragonCount++;
+                        else break;
+                    }
 
-                    // Jackpot Matrix: Mirror frequency analysis
+                    // Level 1 Strategy: Pattern Lock
+                    let predSize = "";
+                    if (currentLvl === 1) {
+                        // Agar 2 baar same aaya to trend follow karo (Dragon)
+                        if(dragonCount >= 2) predSize = lastSize;
+                        else predSize = lastSize === "BIG" ? "SMALL" : "BIG"; // Catch the Flip
+                    } else {
+                        // Level 2 Fixed: Reversal Hack
+                        predSize = lastSize === "BIG" ? "SMALL" : "BIG";
+                    }
+
+                    // Jackpot Algorithm (Mirror + Neural Step)
                     const n1 = (lastNum + 5) % 10;
                     const n2 = (lastNum % 2 === 0) ? (lastNum + 3) % 10 : (lastNum + 1) % 10;
                     
@@ -161,9 +176,9 @@
                     document.getElementById('main-val').className = `text-7xl font-bold italic ${predSize === 'BIG' ? 'c-big' : 'c-small'}`;
                     document.getElementById('n1').innerText = n1;
                     document.getElementById('n2').innerText = n2;
-                    document.getElementById('logic-mode').innerText = currentLvl === 1 ? "L1 OMEGA SNIPER" : "L2 RECOVERY FIXED";
+                    document.getElementById('logic-mode').innerText = currentLvl === 1 ? "L1 OMEGA SNIPER" : "L2 FIXED RECOVERY";
                 }
-            } catch (err) { console.error("Neural Sync Failed."); }
+            } catch (err) { console.error("Pulse Failed."); }
         }
 
         function updateHud() {
@@ -172,21 +187,20 @@
             document.getElementById('total-jackpot').innerText = stats.jackpots;
         }
 
-        function addLogEntry(issue, pred, actual, num, emoji) {
-            const entry = { issue: issue.slice(-4), pred, actual, num, emoji };
-            persistentLogs.unshift(entry);
-            if (persistentLogs.length > 20) persistentLogs.pop();
+        function updateLogs(issue, pred, actual, num, emoji) {
+            persistentLogs.unshift({ issue: issue.slice(-4), pred, actual, num, emoji });
+            if (persistentLogs.length > 10) persistentLogs.pop();
             renderLogs();
         }
 
         function renderLogs() {
             const container = document.getElementById('log-container');
-            container.innerHTML = persistentLogs.map(log => `
-                <div class="history-row p-3 flex justify-between items-center text-xs animate-fade-in">
-                    <span class="font-mono text-gray-500">ID:${log.issue}</span>
-                    <span class="font-bold text-gray-300 uppercase">${log.pred}</span>
-                    <span class="font-bold">${log.actual} <span class="text-yellow-600">(${log.num})</span></span>
-                    <span class="text-xl">${log.emoji}</span>
+            container.innerHTML = persistentLogs.map(item => `
+                <div class="history-row p-3 flex justify-between items-center text-xs animate-pulse">
+                    <span class="font-mono text-gray-500">ID:${item.issue}</span>
+                    <span class="font-bold text-gray-300 uppercase">${item.pred}</span>
+                    <span class="font-bold">${item.actual} <span class="text-yellow-600">(${item.num})</span></span>
+                    <span class="text-xl">${item.emoji}</span>
                 </div>
             `).join('');
         }
@@ -198,7 +212,7 @@
             if (seconds === 59 || seconds === 30) fetchPulse();
         }, 1000);
 
-        // Initial Load
+        // Bootstrap
         updateHud();
         renderLogs();
         fetchPulse();
