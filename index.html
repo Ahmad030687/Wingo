@@ -3,154 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Supreme Commander | Deep AI Monitor</title>
+    <title>Supreme Commander | Proxy DNA Engine</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --panel-bg: rgba(5, 5, 10, 0.99); --smart-gold: #FFD700; --neon-green: #39ff14; --neon-red: #ff003c; }
-        body { background: radial-gradient(circle at center, #0a0a20 0%, #020205 100%); font-family: 'Rajdhani', sans-serif; color: #fff; min-height: 100vh; display: flex; justify-content: center; align-items: center; margin: 0; }
-        .smart-panel { width: 440px; background: var(--panel-bg); border-radius: 40px; padding: 30px; border: 1px solid rgba(255, 215, 0, 0.4); box-shadow: 0 0 100px #000; position: relative; }
-        .gold-glow { font-family: 'Orbitron', sans-serif; color: var(--smart-gold); text-shadow: 0 0 25px rgba(255, 215, 0, 0.9); }
-        .jackpot-box { width: 65px; height: 65px; background: #000; border: 2px solid var(--smart-gold); border-radius: 18px; display: flex; align-items: center; justify-content: center; font-family: 'Orbitron'; font-weight: 900; color: var(--smart-gold); font-size: 2rem; }
-        #log-container { height: 180px; overflow-y: auto; font-size: 11px; font-family: 'Courier New', monospace; border-top: 1px solid rgba(255,215,0,0.2); padding-top: 10px; }
-        .log-entry { margin-bottom: 4px; padding: 4px; border-radius: 4px; background: rgba(255,255,255,0.03); }
-        .status-on { color: #39ff14; text-shadow: 0 0 10px #39ff14; }
-        .status-off { color: #ff003c; text-shadow: 0 0 10px #ff003c; }
+        :root { --panel-bg: rgba(5, 5, 12, 0.98); --smart-gold: #FFD700; --neon-cyan: #00f3ff; }
+        body { background: radial-gradient(circle at center, #0a0a20 0%, #000 100%); font-family: 'Rajdhani', sans-serif; color: #fff; min-height: 100vh; display: flex; justify-content: center; align-items: center; margin: 0; }
+        .smart-panel { width: 440px; background: var(--panel-bg); border-radius: 40px; padding: 25px; border: 1px solid rgba(255, 215, 0, 0.3); box-shadow: 0 0 80px #000; position: relative; overflow: hidden; }
+        .gold-glow { font-family: 'Orbitron', sans-serif; color: var(--smart-gold); text-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+        .jackpot-box { width: 70px; height: 70px; background: #000; border: 2px solid var(--smart-gold); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-family: 'Orbitron'; font-weight: 900; color: var(--smart-gold); font-size: 2.2rem; box-shadow: inset 0 0 15px rgba(255, 215, 0, 0.2); }
+        #log-container { height: 160px; overflow-y: auto; font-size: 11px; font-family: 'Courier New', monospace; border-top: 1px solid rgba(255,215,0,0.1); padding-top: 10px; scroll-behavior: smooth; }
+        .log-entry { margin-bottom: 5px; border-left: 2px solid #333; padding-left: 8px; }
+        .btn-force { background: linear-gradient(90deg, #b8860b, #ffd700); color: #000; font-weight: 900; font-size: 10px; padding: 5px 15px; border-radius: 50px; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
+        .btn-force:hover { box-shadow: 0 0 20px var(--smart-gold); transform: scale(1.05); }
     </style>
 </head>
 <body>
 
     <div class="smart-panel">
-        <div class="flex justify-between items-start mb-6">
+        <div class="flex justify-between items-center mb-6">
             <div>
-                <h1 class="text-[10px] tracking-[4px] text-gray-500 font-bold">SINGULARITY OMEGA v11</h1>
-                <div class="flex items-center gap-2 mt-1">
-                    <span id="ai-status-dot" class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
-                    <span class="text-[10px] font-bold text-gray-400 tracking-widest" id="conn-text">GEMINI: DISCONNECTED</span>
+                <p class="text-[9px] tracking-[4px] text-gray-500 font-bold uppercase">Singularity Proxy Core</p>
+                <div class="flex items-center gap-2">
+                    <span id="ai-dot" class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
+                    <span id="ai-status-text" class="text-[10px] text-red-500 font-bold tracking-widest uppercase">Proxy Offline</span>
                 </div>
             </div>
-            <button onclick="fetchPulse()" class="bg-yellow-600/20 border border-yellow-500/50 text-yellow-500 text-[9px] px-3 py-1 rounded-full hover:bg-yellow-500 hover:text-black transition-all">FORCE SCAN</button>
+            <button onclick="runSupremeScan()" class="btn-force">Neural Scan</button>
         </div>
 
-        <div class="text-center bg-white/5 p-6 rounded-[30px] border border-white/10 mb-6">
-            <p class="text-[10px] tracking-[5px] text-gray-500 uppercase mb-2">AI Quantum Target</p>
-            <h2 class="text-6xl font-bold italic gold-glow" id="main-val">--</h2>
-            <div class="flex justify-center gap-6 mt-6">
-                <div class="flex flex-col items-center"><div class="jackpot-box" id="n1">?</div><span class="text-[9px] text-gray-500 mt-2 uppercase">Jackpot 1</span></div>
-                <div class="flex flex-col items-center"><div class="jackpot-box" id="n2" style="border-color: #00f3ff; color: #00f3ff;">?</div><span class="text-[9px] text-gray-500 mt-2 uppercase">Jackpot 2</span></div>
+        <div class="bg-white/5 p-6 rounded-[35px] border border-white/10 text-center mb-6">
+            <p class="text-[10px] tracking-[6px] text-gray-500 uppercase mb-3">AI OMEGA TARGET</p>
+            <h2 class="text-7xl font-bold italic gold-glow" id="main-val">--</h2>
+            
+            <div class="flex justify-center gap-8 mt-8">
+                <div class="flex flex-col items-center">
+                    <div class="jackpot-box" id="n1">?</div>
+                    <span class="text-[9px] text-gray-600 mt-2 font-bold uppercase">Primary</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="jackpot-box" id="n2" style="border-color: var(--neon-cyan); color: var(--neon-cyan); box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);">?</div>
+                    <span class="text-[9px] text-gray-600 mt-2 font-bold uppercase">Mirror</span>
+                </div>
             </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-3 mb-6">
-            <div class="bg-white/5 p-3 rounded-2xl border-l-2 border-yellow-500">
-                <p class="text-[9px] text-gray-500 uppercase">Target Period</p>
-                <p class="text-sm font-bold text-gray-200" id="period-id">#WAITING</p>
+        <div class="grid grid-cols-2 gap-3 mb-6 text-center">
+            <div class="bg-white/5 p-3 rounded-2xl border-b-2 border-yellow-600">
+                <p class="text-[9px] text-gray-500 uppercase font-black">Target Issue</p>
+                <p class="text-lg font-bold text-gray-200" id="period-id">#-----</p>
             </div>
-            <div class="bg-white/5 p-3 rounded-2xl border-l-2 border-blue-500">
-                <p class="text-[9px] text-gray-500 uppercase">Neural Confidence</p>
-                <p class="text-sm font-bold text-blue-400" id="conf-val">0%</p>
+            <div class="bg-white/5 p-3 rounded-2xl border-b-2 border-cyan-600">
+                <p class="text-[9px] text-gray-500 uppercase font-black">Confidence</p>
+                <p class="text-lg font-bold text-cyan-400" id="conf-val">0%</p>
             </div>
         </div>
 
         <div>
-            <p class="text-[10px] text-gray-600 font-bold tracking-widest mb-2 ml-1 uppercase">Process Monitor (Live)</p>
+            <p class="text-[10px] text-gray-600 font-bold tracking-widest mb-2 uppercase">Deep Pattern Console</p>
             <div id="log-container">
-                <div class="text-gray-700 italic">Waiting for command...</div>
+                <div class="text-gray-700">System Ready. Press Neural Scan to begin.</div>
             </div>
         </div>
     </div>
 
     <script>
-        const WINGO_API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=30&ts=";
+        const PROXY = "https://cors-anywhere.herokuapp.com/";
+        const WINGO_API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=10&ts=";
         const GEMINI_KEY = "AIzaSyD-WE7SdSUYHQGHtF9NJDvEaM8tVWFVrLk";
         const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`;
 
         let lastIssue = null;
 
-        function addMonitorLog(msg, color = "text-gray-400") {
+        function log(msg, color = "text-gray-500") {
             const container = document.getElementById('log-container');
-            const time = new Date().toLocaleTimeString();
             const div = document.createElement('div');
             div.className = `log-entry ${color}`;
-            div.innerHTML = `<span class="opacity-30">[${time}]</span> ${msg}`;
+            div.innerHTML = `> ${msg}`;
             container.prepend(div);
         }
 
-        async function askGemini(historyData) {
-            addMonitorLog("AI PROMPT: Decoding pattern strings...", "text-blue-400");
-            const prompt = `Act as a Quantum Wingo Pattern Analyst. Analyze this JSON history: ${JSON.stringify(historyData)}. Predict the NEXT move. Respond ONLY in this JSON format: {"prediction": "BIG or SMALL", "numbers": [num1, num2], "confidence": "percentage"}`;
+        async function fetchWingoData() {
+            log("FETCHING: Requesting last 10 periods...", "text-white");
+            try {
+                // Proxy use kar rahe hain taake CORS issue na aaye
+                const response = await fetch(PROXY + WINGO_API + Date.now());
+                if(response.status === 403) {
+                    log("ACTION REQUIRED: Visit 'cors-anywhere.herokuapp.com/corsdemo' and click Enable!", "text-red-500 font-bold");
+                    return null;
+                }
+                const data = await response.json();
+                return data.data.list;
+            } catch (e) {
+                log("FETCH ERROR: Network restricted.", "text-red-400");
+                return null;
+            }
+        }
+
+        async function askGeminiAI(history) {
+            log("AI SYNC: Sending data to Gemini Core...", "text-yellow-500");
+            const prompt = `Analyze these 10 Wingo results: ${JSON.stringify(history)}. Predict the NEXT result (BIG/SMALL) and 2 most probable Jackpot numbers. Response format: JSON {"prediction":"BIG","numbers":[x,y],"confidence":"95%"}`;
             
             try {
-                addMonitorLog("DATA SENT: Transmitting to Gemini Cloud...", "text-yellow-500");
-                const response = await fetch(GEMINI_URL, {
+                const response = await fetch(PROXY + GEMINI_URL, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
                 });
                 
-                if(!response.ok) throw new Error("API_ERROR");
-
                 const result = await response.json();
-                addMonitorLog("ANALYSIS: Gemini is processing entropy...", "text-purple-400");
+                const aiText = result.candidates[0].content.parts[0].text;
+                const prediction = JSON.parse(aiText.replace(/```json|```/g, ""));
                 
-                const text = result.candidates[0].content.parts[0].text;
-                const cleanJson = JSON.parse(text.replace(/```json|```/g, ""));
+                // Update Status UI
+                document.getElementById('ai-dot').className = "w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_#39ff14]";
+                document.getElementById('ai-status-text').innerText = "GEMINI: CONNECTED";
+                document.getElementById('ai-status-text').className = "text-[10px] text-green-500 font-bold tracking-widest uppercase";
                 
-                document.getElementById('ai-status-dot').className = "w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_#39ff14]";
-                document.getElementById('conn-text').innerText = "GEMINI: CONNECTED";
-                document.getElementById('conn-text').className = "text-[10px] font-bold status-on tracking-widest";
-                
-                return cleanJson;
-            } catch (err) {
-                addMonitorLog("ERROR: Gemini Connection Failed. Check API Key/CORS.", "text-red-500");
+                return prediction;
+            } catch (e) {
+                log("AI ERROR: Could not decode patterns.", "text-red-500");
                 return null;
             }
         }
 
-        async function fetchPulse() {
-            addMonitorLog("NETWORK: Fetching Wingo History...", "text-white");
-            try {
-                const res = await fetch(WINGO_API + Date.now());
-                const data = await res.json();
-                const latest = data.data.list[0];
+        async function runSupremeScan() {
+            const history = await fetchWingoData();
+            if(!history) return;
 
-                if (lastIssue !== latest.issueNumber) {
-                    lastIssue = latest.issueNumber;
-                    const nextIssue = (BigInt(lastIssue) + 1n).toString();
-                    document.getElementById('period-id').innerText = `#${nextIssue.slice(-5)}`;
-                    
-                    const aiPrediction = await askGemini(data.data.list);
-                    if (aiPrediction) {
-                        updateHUD(aiPrediction);
-                        addMonitorLog(`SUCCESS: Prediction Locked for #${nextIssue.slice(-4)}`, "text-green-400");
-                    }
-                } else {
-                    addMonitorLog("IDLE: No new period detected yet.");
+            const latest = history[0];
+            if(lastIssue !== latest.issueNumber) {
+                lastIssue = latest.issueNumber;
+                const nextIssue = (BigInt(lastIssue) + 1n).toString();
+                document.getElementById('period-id').innerText = `#${nextIssue.slice(-5)}`;
+
+                const result = await askGeminiAI(history);
+                if(result) {
+                    updateUI(result);
+                    log(`SUCCESS: Prediction locked for #${nextIssue.slice(-5)}`, "text-green-400");
                 }
-            } catch (err) {
-                addMonitorLog("FETCH ERROR: Check your Internet or Proxy.", "text-red-500");
+            } else {
+                log("IDLE: Waiting for new period data...");
             }
         }
 
-        function updateHUD(data) {
+        function updateUI(data) {
             const main = document.getElementById('main-val');
             main.innerText = data.prediction;
-            main.className = `text-6xl font-bold italic ${data.prediction === 'BIG' ? 'text-green-400' : 'text-red-500'} gold-glow`;
+            main.className = `text-7xl font-bold italic gold-glow ${data.prediction === 'BIG' ? 'text-green-400' : 'text-red-500'}`;
             document.getElementById('n1').innerText = data.numbers[0];
             document.getElementById('n2').innerText = data.numbers[1];
             document.getElementById('conf-val').innerText = data.confidence;
         }
 
-        // Timer Logic
+        // Automatic Loop every 30 seconds
         setInterval(() => {
             const s = new Date().getSeconds();
-            const remaining = 60 - s;
-            if (s === 1 || s === 58) fetchPulse();
+            if(s === 1 || s === 30) runSupremeScan();
         }, 1000);
 
-        // Initial Boot
-        addMonitorLog("SYSTEM: Singularity Kernel v11 Loaded.");
-        fetchPulse();
+        log("SYSTEM: Singularity Kernel v12 Online.");
+        runSupremeScan();
     </script>
 </body>
 </html>
