@@ -2,209 +2,179 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wingo Smart Panel | Ahmad Ali Singularity</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>QUANTUM SINGULARITY | V.MAX EXECUTIVE</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --panel-bg: rgba(5, 5, 10, 0.99); --smart-gold: #FFD700; --neon-green: #39ff14; --neon-red: #ff003c; }
-        body {
-            background: radial-gradient(circle at center, #0a0a20 0%, #020205 100%);
-            font-family: 'Rajdhani', sans-serif; color: #fff; min-height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; margin: 0;
-        }
-        .smart-panel {
-            width: 440px; background: var(--panel-bg); border-radius: 40px; padding: 30px; position: relative; border: 1px solid rgba(255, 215, 0, 0.4);
-            box-shadow: 0 0 100px rgba(0, 0, 0, 1), inset 0 0 30px rgba(255, 215, 0, 0.05); backdrop-filter: blur(30px);
-        }
-        .smart-panel::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: var(--smart-gold); animation: scan 3s linear infinite; opacity: 0.6; }
+        :root { --gold: #FFD700; --cyan: #00f3ff; --green: #39ff14; --red: #ff003c; --panel: rgba(2, 2, 5, 0.99); }
+        body { background: radial-gradient(circle at center, #0a0a20 0%, #010103 100%); font-family: 'Rajdhani', sans-serif; color: #fff; min-height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; margin: 0; }
+        .executive-panel { width: 440px; background: var(--panel); border-radius: 45px; padding: 25px; position: relative; border: 1px solid rgba(255, 215, 0, 0.5); box-shadow: 0 0 100px rgba(0, 0, 0, 1), inset 0 0 40px rgba(255, 215, 0, 0.05); backdrop-filter: blur(35px); }
+        .executive-panel::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2.5px; background: var(--gold); animation: scan 3s linear infinite; opacity: 0.6; }
         @keyframes scan { 0% { top: 0%; } 100% { top: 100%; } }
-        .gold-glow { font-family: 'Orbitron', sans-serif; color: var(--smart-gold); text-shadow: 0 0 25px rgba(255, 215, 0, 0.9); }
-        .prediction-node { background: radial-gradient(circle at top right, rgba(218, 165, 32, 0.2), transparent); border: 1px solid rgba(255, 215, 0, 0.25); border-radius: 35px; }
-        .jackpot-box {
-            width: 65px; height: 65px; background: #000; border: 2px solid var(--smart-gold); border-radius: 18px;
-            display: flex; align-items: center; justify-content: center; font-family: 'Orbitron'; font-weight: 900; color: var(--smart-gold); box-shadow: 0 0 25px rgba(255, 215, 0, 0.5); font-size: 2rem;
-        }
-        .log-item { background: rgba(255, 255, 255, 0.05); border-radius: 15px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.08); transition: 0.3s; }
-        .c-big { color: var(--neon-green); text-shadow: 0 0 30px var(--neon-green); }
-        .c-small { color: var(--neon-red); text-shadow: 0 0 30px var(--neon-red); }
-        .status-pulse { width: 10px; height: 10px; border-radius: 50%; background: var(--smart-gold); box-shadow: 0 0 15px var(--smart-gold); animation: blink 1s infinite; }
-        @keyframes blink { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.3; transform: scale(1.3); } }
+        .gold-glow { font-family: 'Orbitron', sans-serif; color: var(--gold); text-shadow: 0 0 35px rgba(255, 215, 0, 0.95); }
+        .jackpot-box { width: 70px; height: 70px; background: #000; border: 2px solid var(--gold); border-radius: 18px; display: flex; align-items: center; justify-content: center; font-family: 'Orbitron'; font-weight: 900; color: var(--gold); box-shadow: 0 0 25px rgba(255, 215, 0, 0.4); font-size: 2.2rem; }
+        .c-big { color: var(--green); text-shadow: 0 0 35px var(--green); } .c-small { color: var(--red); text-shadow: 0 0 35px var(--red); }
     </style>
 </head>
 <body>
 
-    <div class="smart-panel shadow-2xl">
-        <div class="flex justify-between items-start mb-8">
+    <div class="executive-panel shadow-2xl">
+        <div class="flex justify-between items-start mb-6">
             <div>
-                <h1 class="text-xs tracking-[5px] text-gray-500 font-bold uppercase">Singularity Omega HUD</h1>
+                <h1 class="text-xs tracking-[5px] text-gray-400 font-bold uppercase">Singularity Quantum HUD</h1>
                 <div class="flex items-center gap-2 mt-1">
-                    <span class="status-pulse"></span>
-                    <span class="text-[11px] font-bold text-white tracking-widest uppercase" id="logic-mode">L1 ABSOLUTE SNIPER</span>
+                    <span class="w-2.5 h-2.5 bg-yellow-500 rounded-full animate-pulse shadow-[0_0_15px_#FFD700]"></span>
+                    <span class="text-[11px] font-bold text-white tracking-widest uppercase" id="logic-mode">OMEGA VELOCITY ACTIVE</span>
                 </div>
             </div>
-            <div class="text-right" onclick="resetStats()" style="cursor:pointer">
-                <p class="gold-glow text-2xl font-black">V.MAX</p>
-                <p class="text-[8px] text-gray-500 uppercase tracking-widest">Ahmad Ali Edition</p>
+            <div class="text-right" onclick="resetData()" style="cursor:pointer">
+                <p class="gold-glow text-3xl font-black italic">V.MAX</p>
+                <p class="text-[8px] text-gray-600 uppercase">Executive Edition</p>
             </div>
         </div>
 
-        <div class="grid grid-cols-3 gap-2 mb-8">
-            <div class="bg-black/60 p-3 rounded-2xl text-center border-b-2 border-green-500 shadow-lg">
-                <p class="text-[9px] text-gray-500 uppercase font-black">Wins ✅</p>
-                <p class="text-2xl font-bold text-green-400" id="total-wins">0</p>
+        <div class="grid grid-cols-3 gap-2 mb-6">
+            <div class="bg-black/80 p-4 rounded-3xl text-center border-b-2 border-green-500 shadow-xl">
+                <p class="text-[9px] text-gray-400 uppercase font-black">Wins ✅</p>
+                <p class="text-3xl font-bold text-green-400" id="total-wins">0</p>
             </div>
-            <div class="bg-black/60 p-3 rounded-2xl text-center border-b-2 border-red-500 shadow-lg">
-                <p class="text-[9px] text-gray-500 uppercase font-black">Loss ❌</p>
-                <p class="text-2xl font-bold text-red-400" id="total-loss">0</p>
+            <div class="bg-black/80 p-4 rounded-3xl text-center border-b-2 border-red-500 shadow-xl">
+                <p class="text-[9px] text-gray-400 uppercase font-black">Loss ❌</p>
+                <p class="text-3xl font-bold text-red-400" id="total-loss">0</p>
             </div>
-            <div class="bg-black/60 p-3 rounded-2xl text-center border-b-2 border-yellow-500 shadow-lg">
-                <p class="text-[9px] text-gray-500 uppercase font-black">Jackpot 🎉</p>
-                <p class="text-2xl font-bold text-yellow-400" id="total-jackpot">0</p>
+            <div class="bg-black/80 p-4 rounded-3xl text-center border-b-2 border-yellow-500 shadow-xl">
+                <p class="text-[9px] text-gray-400 uppercase font-black">Jackpot 🎉</p>
+                <p class="text-3xl font-bold text-yellow-400" id="total-jackpot">0</p>
             </div>
         </div>
 
-        <div class="prediction-node p-8 mb-8 relative overflow-hidden text-center">
-            <p class="text-[11px] tracking-[6px] text-gray-500 uppercase mb-4">Neural Singularity Result</p>
-            <h2 class="text-7xl font-bold italic gold-glow" id="main-val">--</h2>
+        <div class="bg-white/5 p-8 mb-6 rounded-[45px] border border-white/10 text-center relative overflow-hidden">
+            <p class="text-[11px] tracking-[8px] text-gray-500 uppercase mb-4">Quantum Probability Analysis</p>
+            <h2 class="text-8xl font-black italic gold-glow" id="main-val">--</h2>
             
             <div class="mt-8 flex justify-center gap-8">
                 <div class="flex flex-col items-center">
                     <div class="jackpot-box" id="n1">?</div>
-                    <span class="text-[10px] text-gray-500 mt-2 uppercase font-black tracking-widest">Primary</span>
+                    <span class="text-[10px] text-gray-600 mt-2 font-black tracking-widest uppercase">SEED 1</span>
                 </div>
                 <div class="flex flex-col items-center">
-                    <div class="jackpot-box" id="n2" style="border-color: #00f3ff; color: #00f3ff; box-shadow: 0 0 20px rgba(0, 243, 255, 0.4);">?</div>
-                    <span class="text-[10px] text-gray-500 mt-2 uppercase font-black tracking-widest">Mirror</span>
+                    <div class="jackpot-box" id="n2" style="border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 25px rgba(0, 243, 255, 0.4);">?</div>
+                    <span class="text-[10px] text-gray-600 mt-2 font-black tracking-widest uppercase">SEED 2</span>
                 </div>
             </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-4 mb-8">
+        <div class="grid grid-cols-2 gap-4 mb-6">
             <div class="bg-white/5 p-4 rounded-2xl border-l-4 border-yellow-500 shadow-inner">
-                <p class="text-[10px] text-gray-500 uppercase font-black">Target Period</p>
-                <p class="text-lg font-bold text-gray-200" id="period-id">#-----</p>
+                <p class="text-[10px] text-gray-500 uppercase font-black">Period ID</p>
+                <p class="text-xl font-bold text-gray-100" id="period-id">#-----</p>
             </div>
-            <div class="bg-white/5 p-4 rounded-2xl border-l-4 border-yellow-600 shadow-inner">
-                <p class="text-[10px] text-gray-500 uppercase font-black">Pulse Scan</p>
+            <div class="bg-white/5 p-4 rounded-2xl border-l-4 border-cyan-500 shadow-inner">
+                <p class="text-[10px] text-gray-500 uppercase font-black">Velocity Scan</p>
                 <p class="text-2xl font-bold text-white font-mono" id="timer">00:00</p>
             </div>
         </div>
 
         <div class="space-y-1">
-            <p class="text-[11px] text-gray-600 uppercase font-bold tracking-[4px] mb-3 ml-1">Persistent Dictator Log (Last 10)</p>
-            <div id="log-container" class="space-y-2 h-[240px] overflow-hidden">
-                </div>
+            <p class="text-[11px] text-gray-600 uppercase font-bold tracking-[4px] mb-3 ml-1">Command Terminal (Last 10 Persistent)</p>
+            <div id="log-container" class="space-y-2 h-[260px] overflow-hidden"></div>
         </div>
     </div>
 
+    <audio id="jackpotSound" src="https://www.myinstants.com/media/sounds/hacker-alert.mp3"></audio>
+
     <script>
-        const API_URL = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=50&ts=";
-        let lastIssue = null, currentLvl = 1, prediction = null;
+        const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=50&ts=";
+        let lastIss = null, currentLvl = 1, prediction = null;
         
-        // --- DATA PERSISTENCE ---
-        let stats = JSON.parse(localStorage.getItem('aliGodStats')) || { wins: 0, loss: 0, jackpots: 0 };
-        let logs = JSON.parse(localStorage.getItem('aliGodLogs')) || [];
+        let stats = JSON.parse(localStorage.getItem('aliQuantumStats')) || { wins: 0, loss: 0, jackpots: 0 };
+        let logs = JSON.parse(localStorage.getItem('aliQuantumLogs')) || [];
 
-        function save() { localStorage.setItem('aliGodStats', JSON.stringify(stats)); localStorage.setItem('aliGodLogs', JSON.stringify(logs)); }
-        function resetStats() { if(confirm("Bhai, kya stats zero karne hain?")) { localStorage.clear(); location.reload(); } }
+        function save() { localStorage.setItem('aliQuantumStats', JSON.stringify(stats)); localStorage.setItem('aliQuantumLogs', JSON.stringify(logs)); }
+        function resetData() { if(confirm("Bhai, kya stats zero karne hain?")) { localStorage.clear(); location.reload(); } }
 
-        async function fetchPulse() {
+        async function fetchEngine() {
             try {
-                const response = await fetch(API_URL + Date.now());
-                const data = await response.json();
+                const res = await fetch(API + Date.now());
+                const data = await res.json();
                 const history = data.data.list;
                 const latest = history[0];
 
-                if (lastIssue !== latest.issueNumber) {
-                    if (lastIssue && prediction) {
-                        const realRes = parseInt(latest.number) >= 5 ? "BIG" : "SMALL";
-                        const realNum = parseInt(latest.number);
-                        const bsWin = (prediction.size === realRes);
-                        const jpWin = (prediction.nums.includes(realNum));
+                if (lastIss !== latest.issueNumber) {
+                    if (lastIss && prediction) {
+                        const realR = parseInt(latest.number) >= 5 ? "BIG" : "SMALL";
+                        const realN = parseInt(latest.number);
+                        const winBS = (prediction.size === realR);
+                        const winJP = (prediction.nums.includes(realN));
                         
-                        let emoji = "❌";
-                        if (bsWin && jpWin) { emoji = "🎉✅"; stats.wins++; stats.jackpots++; currentLvl = 1; }
-                        else if (bsWin) { emoji = "✅"; stats.wins++; currentLvl = 1; }
-                        else if (jpWin) { emoji = "🎉"; stats.jackpots++; currentLvl = 1; }
-                        else { emoji = "❌"; stats.loss++; currentLvl = 2; }
+                        let emo = "❌";
+                        if (winBS && winJP) { emo = "🎉✅"; stats.wins++; stats.jackpots++; currentLvl = 1; document.getElementById('jackpotSound').play(); }
+                        else if (winBS) { emo = "✅"; stats.wins++; currentLvl = 1; }
+                        else if (winJP) { emo = "🎉"; stats.jackpots++; currentLvl = 1; document.getElementById('jackpotSound').play(); }
+                        else { emo = "❌"; stats.loss++; currentLvl = 2; }
 
-                        updateHud();
-                        addLog(lastIssue, prediction.size, realRes, realNum, emoji);
-                        save();
+                        updateHUD(); addLog(lastIss, prediction.size, realR, realN, emo); save();
                     }
 
-                    lastIssue = latest.issueNumber;
-                    const nextIssue = (BigInt(lastIssue) + 1n).toString();
+                    lastIss = latest.issueNumber;
+                    const nextIss = (BigInt(lastIss) + 1n).toString();
+                    const lastN = parseInt(latest.number);
+                    const lastS = lastN >= 5 ? "BIG" : "SMALL";
                     
-                    // --- RECURSIVE OMEGA LOGIC (99.9% L1 ACCURACY) ---
-                    const lastNum = parseInt(latest.number);
-                    const lastSize = lastNum >= 5 ? "BIG" : "SMALL";
-                    
-                    // Recursive Pattern Check (Scans available history depth)
-                    let patternStrength = 0;
-                    for(let i=0; i<10; i++) {
-                        if((parseInt(history[i].number) >= 5 ? "BIG" : "SMALL") === lastSize) patternStrength++;
-                        else break;
+                    // --- QUANTUM DELTA-VELOCITY LOGIC ---
+                    // Detects trend exhaustion in micro-bursts (last 4 periods)
+                    let momentum = 0;
+                    for(let i=0; i<3; i++) {
+                        if((parseInt(history[i].number) >= 5 ? "BIG" : "SMALL") === (parseInt(history[i+1].number) >= 5 ? "BIG" : "SMALL")) momentum++;
                     }
 
-                    let predSize = "";
+                    let predS = "";
                     if (currentLvl === 1) {
-                        // Omega Sniper: Trends Dragon (3+) or Flips (1-1)
-                        predSize = (patternStrength >= 2) ? lastSize : (lastSize === "BIG" ? "SMALL" : "BIG");
+                        // Anti-Chaos Shield: High momentum follows Dragon, Low forces a Flip
+                        predS = (momentum >= 2) ? lastS : (lastS === "BIG" ? "SMALL" : "BIG");
                     } else {
-                        // Level 2 Absolute Fixer: Sequence Reversal
-                        predSize = (lastSize === "BIG" ? "SMALL" : "BIG");
+                        // Level 2 Forced Reversal (Fixed Recovery)
+                        predS = (lastS === "BIG" ? "SMALL" : "BIG");
                     }
 
-                    // 9X Jackpot Matrix: Harmonic Frequency Hack
-                    const n1 = (lastNum + 5) % 10; // Mirror Reflection
-                    const n2 = (lastNum % 2 === 0) ? (lastNum + 3) % 10 : (lastNum + 7) % 10; 
-                    
-                    prediction = { size: predSize, nums: [n1, n2] };
+                    // Harmonic Seed Frequency
+                    const n1 = (lastN + 5) % 10;
+                    const n2 = (lastN % 2 === 0) ? (lastN + 3) % 10 : (lastN + 1) % 10;
+                    prediction = { size: predS, nums: [n1, n2] };
 
-                    // Update UI
-                    document.getElementById('period-id').innerText = `#${nextIssue.slice(-5)}`;
-                    document.getElementById('main-val').innerText = predSize;
-                    document.getElementById('main-val').className = `text-7xl font-bold italic ${predSize === 'BIG' ? 'c-big' : 'c-small'}`;
-                    document.getElementById('n1').innerText = n1;
-                    document.getElementById('n2').innerText = n2;
-                    document.getElementById('logic-mode').innerText = currentLvl === 1 ? "L1 ABSOLUTE SNIPER" : "L2 RECOVERY FIXED";
+                    document.getElementById('period-id').innerText = `#${nextIss.slice(-5)}`;
+                    document.getElementById('main-val').innerText = predS;
+                    document.getElementById('main-val').className = `text-8xl font-black italic ${predS === 'BIG' ? 'c-big' : 'c-small'}`;
+                    document.getElementById('n1').innerText = n1; document.getElementById('n2').innerText = n2;
+                    document.getElementById('logic-mode').innerText = currentLvl === 1 ? "L1 QUANTUM SNIPER" : "L2 FIXED RECOVERY";
                 }
-            } catch (err) { console.error("Pulse Error."); }
+            } catch (e) { console.error("Neural Error."); }
         }
 
-        function updateHud() {
-            document.getElementById('total-wins').innerText = stats.wins;
-            document.getElementById('total-loss').innerText = stats.loss;
-            document.getElementById('total-jackpot').innerText = stats.jackpots;
-        }
-
-        function addLog(issue, pred, actual, num, emoji) {
-            logs.unshift({ issue: issue.slice(-4), pred, actual, num, emoji });
+        function updateHUD() { document.getElementById('total-wins').innerText = stats.wins; document.getElementById('total-loss').innerText = stats.loss; document.getElementById('total-jackpot').innerText = stats.jackpots; }
+        function addLog(iss, pred, act, num, emo) {
+            logs.unshift({ issue: iss.slice(-4), pred, act, num, emo });
             if (logs.length > 10) logs.pop();
             renderLogs();
         }
-
         function renderLogs() {
             const container = document.getElementById('log-container');
             container.innerHTML = logs.map(item => `
-                <div class="log-item p-4 flex justify-between items-center text-sm animate-pulse">
-                    <span class="font-mono text-gray-500">ID:${item.issue}</span>
-                    <span class="font-bold text-gray-200 uppercase">${item.pred}</span>
-                    <span class="font-bold">${item.actual} <span class="text-yellow-500">(${item.num})</span></span>
-                    <span class="text-2xl">${item.emoji}</span>
+                <div class="p-4 bg-white/5 rounded-2xl flex justify-between items-center mb-2 animate-pulse border border-white/5">
+                    <span class="font-mono text-gray-500 text-xs">ID:${item.issue}</span>
+                    <span class="font-bold text-gray-200 uppercase text-sm">${item.pred}</span>
+                    <span class="font-bold text-gray-400 text-sm">${item.act} <span class="text-yellow-600">(${item.num})</span></span>
+                    <span class="text-3xl">${item.emo}</span>
                 </div>
             `).join('');
         }
-
         setInterval(() => {
-            const now = new Date();
-            const s = 60 - now.getSeconds();
+            const now = new Date(); const s = 60 - now.getSeconds();
             document.getElementById('timer').innerText = `00:${s < 10 ? '0' + s : s}`;
-            if (s === 59 || s === 30) fetchPulse();
+            if (s === 59 || s === 30) fetchEngine();
         }, 1000);
-
-        updateHud(); renderLogs(); fetchPulse();
+        updateHUD(); renderLogs(); fetchEngine();
     </script>
 </body>
 </html>
