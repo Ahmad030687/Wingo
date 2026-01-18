@@ -1,125 +1,189 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SUPREME COMMANDER v999+ | UNIVERSAL WINGO ENGINE</title>
+    <title>SUPREME COMMANDER | UNIVERSAL OMEGA ENGINE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --neon: #00ff41; --bg: #050505; --panel: #111; --glow: rgba(0, 255, 65, 0.5); }
-        body { background: var(--bg); color: var(--neon); font-family: 'Courier New', monospace; display: flex; flex-direction: column; align-items: center; margin: 0; padding-bottom: 50px; }
-        .header { width: 100%; text-align: center; padding: 25px; border-bottom: 3px solid var(--neon); background: var(--panel); box-shadow: 0 0 30px var(--glow); }
-        .container { width: 95%; max-width: 900px; margin-top: 20px; }
-        .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
-        .stat-card { background: var(--panel); border: 1px solid var(--neon); padding: 15px; text-align: center; font-size: 12px; border-radius: 5px; }
-        .main-engine { background: var(--panel); border: 4px solid var(--neon); padding: 40px; text-align: center; border-radius: 15px; position: relative; box-shadow: inset 0 0 20px var(--glow); }
-        .period-info { color: #888; font-size: 16px; margin-bottom: 10px; }
-        .prediction-number { font-size: 100px; font-weight: bold; text-shadow: 0 0 30px var(--neon); margin: 20px 0; color: #fff; }
-        .prediction-bs { font-size: 35px; background: #222; padding: 10px 40px; border-radius: 50px; border: 1px solid var(--neon); display: inline-block; letter-spacing: 5px; }
-        #logs { height: 180px; background: #000; border: 1px solid #333; overflow-y: scroll; padding: 15px; font-size: 12px; margin-top: 20px; color: #00ccff; border-radius: 5px; }
-        .btn-activate { background: var(--neon); color: #000; border: none; padding: 20px; width: 100%; font-weight: bold; cursor: pointer; font-size: 20px; margin-top: 15px; text-transform: uppercase; box-shadow: 0 0 15px var(--neon); }
-        .win { color: var(--neon); font-weight: bold; }
-        .jackpot { color: #ffcc00; text-shadow: 0 0 10px #ffcc00; }
+        :root { --panel-bg: rgba(5, 5, 10, 0.99); --smart-gold: #FFD700; --neon-green: #39ff14; --neon-red: #ff003c; }
+        body {
+            background: radial-gradient(circle at center, #0a0a20 0%, #020205 100%);
+            font-family: 'Rajdhani', sans-serif; color: #fff; min-height: 100vh; display: flex; justify-content: center; align-items: center; margin: 0;
+        }
+        .smart-panel {
+            width: 440px; background: var(--panel-bg); border-radius: 40px; padding: 30px; position: relative; border: 1px solid rgba(255, 215, 0, 0.4);
+            box-shadow: 0 0 100px rgba(0, 0, 0, 1), inset 0 0 30px rgba(255, 215, 0, 0.05); backdrop-filter: blur(30px);
+        }
+        .smart-panel::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: var(--smart-gold); animation: scan 3s linear infinite; opacity: 0.6; }
+        @keyframes scan { 0% { top: 0%; } 100% { top: 100%; } }
+        .gold-glow { font-family: 'Orbitron', sans-serif; color: var(--smart-gold); text-shadow: 0 0 25px rgba(255, 215, 0, 0.9); }
+        .prediction-node { background: radial-gradient(circle at top right, rgba(218, 165, 32, 0.2), transparent); border: 1px solid rgba(255, 215, 0, 0.25); border-radius: 35px; }
+        .jackpot-box {
+            width: 65px; height: 65px; background: #000; border: 2px solid var(--smart-gold); border-radius: 18px;
+            display: flex; align-items: center; justify-content: center; font-family: 'Orbitron'; font-weight: 900; color: var(--smart-gold); box-shadow: 0 0 25px rgba(255, 215, 0, 0.5); font-size: 2rem;
+        }
+        .log-item { background: rgba(255, 255, 255, 0.05); border-radius: 15px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.08); }
+        .c-big { color: var(--neon-green); text-shadow: 0 0 30px var(--neon-green); }
+        .c-small { color: var(--neon-red); text-shadow: 0 0 30px var(--neon-red); }
+        .status-pulse { width: 10px; height: 10px; border-radius: 50%; background: var(--smart-gold); animation: blink 1s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
     </style>
 </head>
 <body>
 
-<div class="header">
-    <h1 style="margin:0; letter-spacing: 10px;">SUPREME COMMANDER v999+</h1>
-    <div id="status-tag">AUTO-LEARNING ENGINE: ONLINE</div>
-</div>
+    <div class="smart-panel shadow-2xl">
+        <div class="flex justify-between items-start mb-8">
+            <div>
+                <h1 class="text-xs tracking-[5px] text-gray-500 font-bold uppercase">Universal DNA Scanner</h1>
+                <div class="flex items-center gap-2 mt-1">
+                    <span class="status-pulse"></span>
+                    <span class="text-[11px] font-bold text-white tracking-widest uppercase" id="logic-mode">DNA_AUTO_SYNC</span>
+                </div>
+            </div>
+            <div class="text-right">
+                <p class="gold-glow text-2xl font-black">OMEGA</p>
+                <p class="text-[8px] text-gray-500 uppercase tracking-widest">Supreme Commander v999+</p>
+            </div>
+        </div>
 
-<div class="container">
-    <div class="stats">
-        <div class="stat-card">ENGINE MODE<br><b id="mode">UNIVERSAL_DNA</b></div>
-        <div class="stat-card">AI ACCURACY<br><b id="acc">99.98%</b></div>
-        <div class="stat-card">AUTO-TUNING<br><b style="color:cyan">ACTIVE</b></div>
+        <div class="grid grid-cols-3 gap-2 mb-8">
+            <div class="bg-black/60 p-3 rounded-2xl text-center border-b-2 border-green-500 shadow-lg">
+                <p class="text-[9px] text-gray-500 uppercase font-black">Winning ✅</p>
+                <p class="text-2xl font-bold text-green-400" id="total-wins">0</p>
+            </div>
+            <div class="bg-black/60 p-3 rounded-2xl text-center border-b-2 border-red-500 shadow-lg">
+                <p class="text-[9px] text-gray-500 uppercase font-black">Adaptive 🔄</p>
+                <p class="text-2xl font-bold text-red-400" id="total-loss">0</p>
+            </div>
+            <div class="bg-black/60 p-3 rounded-2xl text-center border-b-2 border-yellow-500 shadow-lg">
+                <p class="text-[9px] text-gray-500 uppercase font-black">Jackpot 🎉</p>
+                <p class="text-2xl font-bold text-yellow-400" id="total-jackpot">0</p>
+            </div>
+        </div>
+
+        <div class="prediction-node p-8 mb-8 relative overflow-hidden text-center">
+            <p class="text-[11px] tracking-[6px] text-gray-500 uppercase mb-4">Neural Jackpot Target</p>
+            <h2 class="text-7xl font-bold italic gold-glow" id="main-val">--</h2>
+            
+            <div class="mt-8 flex justify-center gap-8">
+                <div class="flex flex-col items-center">
+                    <div class="jackpot-box" id="n1">?</div>
+                    <span class="text-[10px] text-gray-500 mt-2 uppercase font-black tracking-widest">Primary</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="jackpot-box" id="n2" style="border-color: #00f3ff; color: #00f3ff; box-shadow: 0 0 20px rgba(0, 243, 243, 0.4);">?</div>
+                    <span class="text-[10px] text-gray-500 mt-2 uppercase font-black tracking-widest">Mirror</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 mb-8">
+            <div class="bg-white/5 p-4 rounded-2xl border-l-4 border-yellow-500 shadow-inner">
+                <p class="text-[10px] text-gray-500 uppercase font-black">Target Period</p>
+                <p class="text-lg font-bold text-gray-200" id="period-id">SYNCING...</p>
+            </div>
+            <div class="bg-white/5 p-4 rounded-2xl border-l-4 border-yellow-600 shadow-inner">
+                <p class="text-[10px] text-gray-500 uppercase font-black">Auto-Sync Pulse</p>
+                <p class="text-2xl font-bold text-white font-mono" id="timer">00:00</p>
+            </div>
+        </div>
+
+        <div class="space-y-1">
+            <p class="text-[11px] text-gray-600 uppercase font-bold tracking-[4px] mb-3 ml-1">Universal Activity Log</p>
+            <div id="log-container" class="space-y-2 h-[180px] overflow-y-auto">
+                <p class="text-center text-[10px] text-gray-700">Connecting to Wingo API Core...</p>
+            </div>
+        </div>
     </div>
 
-    <div class="main-engine">
-        <div class="period-info" id="issue-num">WAITING FOR API SYNC...</div>
-        <div style="font-size: 14px; opacity: 0.6;">JACKPOT NUMBER PREDICTION</div>
-        <div class="prediction-number" id="pred-number">?</div>
-        <div class="prediction-bs" id="pred-bs">---</div>
-        <button class="btn-activate" onclick="initiateSupremeCore()">Activate Universal Engine</button>
-    </div>
+    <script>
+        const API_URL = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json";
+        let lastIssue = null, prediction = null;
+        let stats = { wins: 0, loss: 0, jackpots: 0 };
+        let weights = Array(10).fill(1.0); // Universal DNA Weights
 
-    <div id="logs">[SYSTEM]: Supreme Core Loaded. Ready to intercept API data...</div>
-</div>
+        async function fetchLiveAPI() {
+            try {
+                const response = await fetch(`${API_URL}?ts=${Date.now()}`);
+                const data = await response.json();
+                const latest = data.data.list[0];
 
-<script>
-    const API_URL = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json";
-    let weights = Array(10).fill(1.0); // Neural Weights for numbers 0-9
-    let lastProcessedIssue = "";
-
-    function log(msg, type = "") {
-        const logBox = document.getElementById('logs');
-        const time = new Date().toLocaleTimeString();
-        logBox.innerHTML += `<div>[${time}] <span class="${type}">${msg}</span></div>`;
-        logBox.scrollTop = logBox.scrollHeight;
-    }
-
-    // AUTO-LEARNING CORE: Market patterns ko analyze karke weights adjust karta hai
-    function updateNeuralWeights(history) {
-        if (!history || history.length === 0) return;
-        
-        history.forEach((item, index) => {
-            const num = parseInt(item.number);
-            const decay = 1 / (index + 1); // Recent results ko zyada weight milta hai
-            weights[num] += 0.2 * decay;
-        });
-
-        // Normalize weights to prevent overflow
-        const maxW = Math.max(...weights);
-        if (maxW > 10) weights = weights.map(w => w / 2);
-        
-        log("Auto-Tuning Complete: Neural weights recalibrated for current algorithm.", "win");
-    }
-
-    async function fetchLiveResults() {
-        try {
-            // Note: Use a CORS proxy if running directly on GitHub Pages
-            const response = await fetch(`${API_URL}?ts=${Date.now()}`);
-            const data = await response.json();
-            return data.data.list;
-        } catch (e) {
-            log("API Sync Error: Retrying pattern recognition...", "");
-            return null;
+                if (lastIssue !== latest.issueNumber) {
+                    processResult(latest);
+                    lastIssue = latest.issueNumber;
+                    generateUniversalPrediction(data.data.list);
+                }
+            } catch (err) { console.error("API Blocked or Offline."); }
         }
-    }
 
-    async function processCycle() {
-        const history = await fetchLiveResults();
-        if (history && history.length > 0) {
-            const latest = history[0];
-            if (latest.issue !== lastProcessedIssue) {
-                lastProcessedIssue = latest.issue;
-                updateNeuralWeights(history);
-                
-                // Prediction Logic
-                const nextIssue = parseInt(latest.issue) + 1;
-                document.getElementById('issue-num').innerText = "TARGET PERIOD: " + nextIssue;
+        function processResult(latest) {
+            if (prediction) {
+                const realNum = parseInt(latest.number);
+                const realSize = realNum >= 5 ? "BIG" : "SMALL";
+                const isWin = (prediction.size === realSize);
+                const isJp = (prediction.nums.includes(realNum));
 
-                // Neural Prediction (Highest weight selection)
-                const predictedNum = weights.indexOf(Math.max(...weights));
-                const predictedBS = predictedNum >= 5 ? "BIG" : "SMALL";
+                if (isWin) stats.wins++;
+                if (isJp) stats.jackpots++;
+                if (!isWin && !isJp) stats.loss++;
 
-                document.getElementById('pred-number').innerText = predictedNum;
-                document.getElementById('pred-bs').innerText = predictedBS;
-                
-                log(`JACKPOT LOCK: Period ${nextIssue} | Predicted ${predictedNum} (${predictedBS})`, "jackpot");
+                addLog(latest.issueNumber, prediction.size, realSize, realNum, isWin ? "✅" : "❌");
+                updateStats();
             }
         }
-    }
 
-    function initiateSupremeCore() {
-        log("Supreme Commander Engine Activated. 24/7 Universal Mode ON.", "win");
-        document.getElementById('mode').innerText = "AUTO_ADAPTIVE";
-        
-        // Start the infinite loop
-        processCycle();
-        setInterval(processCycle, 5000); // Har 5 second mein API check
-    }
-</script>
+        function generateUniversalPrediction(history) {
+            // AUTO-LEARNING: Scan pichle 50 patterns
+            history.forEach((item, i) => {
+                let n = parseInt(item.number);
+                weights[n] += (1 / (i + 1)); // Recent patterns get higher priority
+            });
 
+            const nextIssue = (BigInt(lastIssue) + 1n).toString();
+            const bestNum = weights.indexOf(Math.max(...weights));
+            const bestSize = bestNum >= 5 ? "BIG" : "SMALL";
+            
+            // Mirror Logic for Jackpot
+            const mirrorNum = (bestNum + 5) % 10;
+
+            prediction = { size: bestSize, nums: [bestNum, mirrorNum] };
+
+            // Update HUD
+            document.getElementById('period-id').innerText = `#${nextIssue.slice(-5)}`;
+            document.getElementById('main-val').innerText = bestSize;
+            document.getElementById('main-val').className = `text-7xl font-bold italic ${bestSize === 'BIG' ? 'c-big' : 'c-small'}`;
+            document.getElementById('n1').innerText = bestNum;
+            document.getElementById('n2').innerText = mirrorNum;
+        }
+
+        function updateStats() {
+            document.getElementById('total-wins').innerText = stats.wins;
+            document.getElementById('total-loss').innerText = stats.loss;
+            document.getElementById('total-jackpot').innerText = stats.jackpots;
+        }
+
+        function addLog(issue, pred, actual, num, emoji) {
+            const container = document.getElementById('log-container');
+            const logDiv = document.createElement('div');
+            logDiv.className = "log-item p-3 flex justify-between items-center text-[12px]";
+            logDiv.innerHTML = `
+                <span class="text-gray-500">#${issue.slice(-4)}</span>
+                <span class="font-bold ${pred === 'BIG' ? 'text-green-500' : 'text-red-500'}">${pred}</span>
+                <span class="text-white">${actual} (${num})</span>
+                <span>${emoji}</span>
+            `;
+            container.prepend(logDiv);
+        }
+
+        setInterval(() => {
+            const s = new Date().getSeconds();
+            document.getElementById('timer').innerText = `00:${60 - s < 10 ? '0' + (60 - s) : (60 - s)}`;
+            if (s === 1 || s === 30) fetchLiveAPI();
+        }, 1000);
+
+        fetchLiveAPI();
+    </script>
 </body>
 </html>
