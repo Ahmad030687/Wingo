@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Supreme v21 | Diagnostic Edition</title>
+    <title>Supreme v22 | Stable v1 Engine</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
@@ -13,7 +13,6 @@
         .gold-glow { font-family: 'Orbitron'; color: var(--gold); text-shadow: 0 0 20px var(--gold); }
         .j-box { width: 75px; height: 75px; background: #000; border: 2px solid var(--gold); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; font-weight: 900; color: var(--gold); }
         #console { height: 160px; overflow-y: auto; font-size: 10px; font-family: monospace; border-top: 1px solid #333; padding-top: 10px; color: #777; scroll-behavior: smooth; }
-        .diag-btn { background: #222; color: #555; border: 1px solid #444; font-size: 9px; padding: 2px 10px; rounded: 50px; }
     </style>
 </head>
 <body>
@@ -21,49 +20,46 @@
     <div class="panel">
         <div class="flex justify-between items-start mb-8">
             <div>
-                <p class="text-[9px] tracking-[4px] text-gray-500 font-bold uppercase">Singularity v21.0 Diagnostic</p>
+                <p class="text-[9px] tracking-[4px] text-gray-500 font-bold uppercase">Singularity v22.0 Stable</p>
                 <div class="flex items-center gap-2 mt-1">
                     <span id="ai-dot" class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
-                    <span id="ai-status" class="text-[10px] text-red-500 font-bold uppercase">System Offline</span>
+                    <span id="ai-status" class="text-[10px] text-red-500 font-bold uppercase">v1_LINK_WAITING</span>
                 </div>
             </div>
             <div class="text-right">
                 <p class="gold-glow text-2xl font-black">V.MAX</p>
-                <button onclick="testKeyOnly()" class="diag-btn hover:text-white">TEST KEY</button>
             </div>
         </div>
 
-        <div class="bg-white/5 p-8 rounded-[40px] border border-white/10 text-center mb-6">
+        <div class="bg-white/5 p-8 rounded-[40px] border border-white/10 text-center mb-6 shadow-inner">
             <h2 class="text-7xl font-bold italic gold-glow" id="main-val">--</h2>
             <div class="flex justify-center gap-8 mt-8">
-                <div class="flex flex-col items-center"><div class="j-box" id="n1">?</div><p class="text-[9px] text-gray-500 mt-2 font-bold uppercase">Primary</p></div>
+                <div class="flex flex-col items-center"><div class="jackpot-box j-box" id="n1">?</div><p class="text-[9px] text-gray-500 mt-2 font-bold uppercase">Primary</p></div>
                 <div class="flex flex-col items-center"><div class="j-box" id="n2" style="border-color: var(--cyan); color: var(--cyan);">?</div><p class="text-[9px] text-gray-500 mt-2 font-bold uppercase">Mirror</p></div>
             </div>
         </div>
 
         <div class="grid grid-cols-2 gap-4 mb-6">
             <div class="bg-black/50 p-4 rounded-3xl border-b-2 border-yellow-500 text-center">
-                <p class="text-[10px] text-gray-500 font-black">Period ID</p>
+                <p class="text-[10px] text-gray-500 font-black">Target Issue</p>
                 <p class="text-lg font-bold" id="issue-id">#-----</p>
             </div>
             <div class="bg-black/50 p-4 rounded-3xl border-b-2 border-cyan-500 text-center">
-                <p class="text-[10px] text-gray-500 font-black">Shield Status</p>
-                <p class="text-lg font-bold text-cyan-400" id="shield">READY</p>
+                <p class="text-[10px] text-gray-500 font-black">Neural State</p>
+                <p class="text-lg font-bold text-cyan-400" id="shield">v1_READY</p>
             </div>
         </div>
 
-        <button onclick="startNeuralScan()" class="w-full bg-yellow-500 text-black font-black py-4 rounded-2xl mb-6 uppercase text-sm shadow-lg hover:bg-yellow-400">Force Neural Sync</button>
+        <button onclick="startNeuralScan()" class="w-full bg-yellow-500 text-black font-black py-4 rounded-2xl mb-6 uppercase text-sm shadow-lg hover:bg-yellow-400">Execute v1 Neural Scan</button>
 
         <div>
             <p class="text-[10px] text-gray-600 font-bold tracking-[4px] mb-2 uppercase ml-1">Traffic Monitor</p>
-            <div id="console"><div>[SYSTEM]: Singularity Kernel v21 Ready.</div></div>
+            <div id="console"><div>[SYSTEM]: Stable v1 Engine Loaded. Handshake Initialized.</div></div>
         </div>
     </div>
 
     <script>
-        // --- APNI KEY YAHAN DALEN (CHECK SPACES) ---
         const GEMINI_KEY = "AIzaSyBE8T8-cibRfRoxm0ag0ZHMsjTRB8H4bUk"; 
-        
         const PROXY = "https://api.codetabs.com/v1/proxy?quest=";
         const WINGO_API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=10";
         
@@ -76,29 +72,9 @@
             con.innerHTML = `<div class="mb-1 ${cls}"><span class="opacity-40">[${time}]</span> > ${msg}</div>` + con.innerHTML;
         }
 
-        async function testKeyOnly() {
-            log("DIAGNOSTIC: Testing Key with simple ping...", "text-blue-400");
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`;
-            try {
-                const res = await fetch(url, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ contents: [{ parts: [{ text: "ping" }] }] })
-                });
-                const data = await res.json();
-                if (data.error) {
-                    log(`KEY FAILED: ${data.error.status} - ${data.error.message}`, "text-red-500 font-bold");
-                } else {
-                    log("KEY SUCCESS: Google Handshake complete!", "text-green-500 font-bold");
-                }
-            } catch (e) {
-                log("FETCH ERROR: Key cannot reach Google.", "text-red-600");
-            }
-        }
-
         async function startNeuralScan() {
             if(isLock) return;
-            log("NETWORK: Fetching last 10 rounds...", "text-white");
+            log("NETWORK: Accessing market DNA via Secure Tunnel...", "text-white");
             try {
                 const res = await fetch(PROXY + encodeURIComponent(WINGO_API + "&ts=" + Date.now()));
                 const data = await res.json();
@@ -106,21 +82,23 @@
 
                 if (lastIssue !== latest.issueNumber) {
                     lastIssue = latest.issueNumber;
-                    log(`SYNC: New data for #${lastIssue.slice(-4)}.`, "text-yellow-500");
-                    const aiPred = await callGeminiAI(data.data.list);
+                    log(`SYNC: History locked for #${lastIssue.slice(-4)}. Calling AI...`, "text-yellow-500");
+                    const aiPred = await callGeminiV1(data.data.list);
                     if (aiPred) updateHUD(aiPred, lastIssue);
                 }
             } catch (err) {
-                log("PROXY ERROR: Switching tunnel...", "text-red-400");
+                log("FETCH ERROR: Tunnel busy. Retrying in next cycle.", "text-red-400");
             }
         }
 
-        async function callGeminiAI(history) {
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`;
+        async function callGeminiV1(history) {
+            // UPDATED: Switching to v1 stable endpoint
+            const url = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`;
+            
             const prompt = `Analyze history: ${JSON.stringify(history)}. Predict next BIG/SMALL and 2 jackpot numbers. Output JSON ONLY: {"p":"BIG","n":[x,y],"c":"95%"}`;
             
             try {
-                log("AI: Decoding market DNA...", "text-purple-400");
+                log("AI: Transmitting to Stable v1 Cloud...", "text-purple-400");
                 const response = await fetch(url, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
@@ -128,8 +106,9 @@
                 });
 
                 const result = await response.json();
+                
                 if (result.error) {
-                    log(`AI ERROR: ${result.error.message}`, "text-red-500");
+                    log(`STABLE ERROR: ${result.error.message}`, "text-red-500");
                     return null;
                 }
 
@@ -137,12 +116,12 @@
                 const pred = JSON.parse(aiText.replace(/```json|```/g, ""));
                 
                 document.getElementById('ai-dot').className = "w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_#39ff14]";
-                document.getElementById('ai-status').innerText = "AI ONLINE";
+                document.getElementById('ai-status').innerText = "AI STABLE ONLINE";
                 document.getElementById('ai-status').className = "text-[10px] text-green-500 font-bold uppercase";
                 
                 return pred;
             } catch (err) {
-                log("AI FATAL: Key rejected or rate limited.", "text-red-600");
+                log("AI FATAL: Handshake rejected by v1 Server.", "text-red-600");
                 return null;
             }
         }
@@ -154,11 +133,10 @@
             document.getElementById('n1').innerText = data.n[0];
             document.getElementById('n2').innerText = data.n[1];
             document.getElementById('issue-id').innerText = "#" + (BigInt(issue) + 1n).toString().slice(-5);
+            document.getElementById('conf').innerText = data.c; // Confidence display update logic
             
-            // Cooldown 30s
             isLock = true;
-            document.getElementById('shield').innerText = "COOLDOWN";
-            setTimeout(() => { isLock = false; document.getElementById('shield').innerText = "READY"; }, 30000);
+            setTimeout(() => { isLock = false; }, 30000);
         }
 
         setInterval(() => {
