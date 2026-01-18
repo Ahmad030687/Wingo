@@ -49,15 +49,15 @@
         </div>
 
         <div class="grid grid-cols-3 gap-2 mb-8">
-            <div class="bg-black/60 p-3 rounded-2xl text-center border-b-2 border-green-500 shadow-lg">
+            <div class="bg-black/60 p-3 rounded-2xl text-center border-b-2 border-green-500">
                 <p class="text-[9px] text-gray-500 uppercase font-black">Wins ✅</p>
                 <p class="text-2xl font-bold text-green-400" id="total-wins">0</p>
             </div>
-            <div class="bg-black/60 p-3 rounded-2xl text-center border-b-2 border-red-500 shadow-lg">
+            <div class="bg-black/60 p-3 rounded-2xl text-center border-b-2 border-red-500">
                 <p class="text-[9px] text-gray-500 uppercase font-black">Loss ❌</p>
                 <p class="text-2xl font-bold text-red-400" id="total-loss">0</p>
             </div>
-            <div class="bg-black/60 p-3 rounded-2xl text-center border-b-2 border-yellow-500 shadow-lg">
+            <div class="bg-black/60 p-3 rounded-2xl text-center border-b-2 border-yellow-500">
                 <p class="text-[9px] text-gray-500 uppercase font-black">Jackpot 🎉</p>
                 <p class="text-2xl font-bold text-yellow-400" id="total-jackpot">0</p>
             </div>
@@ -92,8 +92,7 @@
 
         <div class="space-y-1">
             <p class="text-[11px] text-gray-600 uppercase font-bold tracking-[4px] mb-3 ml-1">Persistent Dictator Log (Last 10)</p>
-            <div id="log-container" class="space-y-2 h-[240px] overflow-hidden">
-                </div>
+            <div id="log-container" class="space-y-2 h-[240px] overflow-hidden"></div>
         </div>
     </div>
 
@@ -140,7 +139,6 @@
                     const lastNum = parseInt(latest.number);
                     const lastSize = lastNum >= 5 ? "BIG" : "SMALL";
                     
-                    // Recursive Pattern Check (Scans available history depth)
                     let patternStrength = 0;
                     for(let i=0; i<10; i++) {
                         if((parseInt(history[i].number) >= 5 ? "BIG" : "SMALL") === lastSize) patternStrength++;
@@ -149,20 +147,17 @@
 
                     let predSize = "";
                     if (currentLvl === 1) {
-                        // Omega Sniper: Trends Dragon (3+) or Flips (1-1)
                         predSize = (patternStrength >= 2) ? lastSize : (lastSize === "BIG" ? "SMALL" : "BIG");
                     } else {
-                        // Level 2 Absolute Fixer: Sequence Reversal
                         predSize = (lastSize === "BIG" ? "SMALL" : "BIG");
                     }
 
                     // 9X Jackpot Matrix: Harmonic Frequency Hack
-                    const n1 = (lastNum + 5) % 10; // Mirror Reflection
+                    const n1 = (lastNum + 5) % 10;
                     const n2 = (lastNum % 2 === 0) ? (lastNum + 3) % 10 : (lastNum + 7) % 10; 
                     
                     prediction = { size: predSize, nums: [n1, n2] };
 
-                    // Update UI
                     document.getElementById('period-id').innerText = `#${nextIssue.slice(-5)}`;
                     document.getElementById('main-val').innerText = predSize;
                     document.getElementById('main-val').className = `text-7xl font-bold italic ${predSize === 'BIG' ? 'c-big' : 'c-small'}`;
@@ -188,7 +183,7 @@
         function renderLogs() {
             const container = document.getElementById('log-container');
             container.innerHTML = logs.map(item => `
-                <div class="log-item p-4 flex justify-between items-center text-sm animate-pulse">
+                <div class="log-item p-4 flex justify-between items-center text-sm">
                     <span class="font-mono text-gray-500">ID:${item.issue}</span>
                     <span class="font-bold text-gray-200 uppercase">${item.pred}</span>
                     <span class="font-bold">${item.actual} <span class="text-yellow-500">(${item.num})</span></span>
