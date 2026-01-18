@@ -3,29 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Supreme v25 | Proxy Sniper</title>
+    <title>Supreme v32 | Ahmad Ali Singularity</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #FFD700; --cyan: #00f3ff; }
-        body { background: radial-gradient(circle, #050510 0%, #000 100%); font-family: 'Rajdhani', sans-serif; color: #fff; min-height: 100vh; display: flex; justify-content: center; align-items: center; margin: 0; }
-        .panel { width: 440px; background: rgba(5, 5, 15, 0.98); border: 1px solid rgba(255, 215, 0, 0.5); border-radius: 40px; padding: 25px; box-shadow: 0 0 100px #000; position: relative; }
-        .gold-glow { font-family: 'Orbitron'; color: var(--gold); text-shadow: 0 0 20px var(--gold); }
-        .j-box { width: 75px; height: 75px; background: #000; border: 2px solid var(--gold); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; font-weight: 900; color: var(--gold); }
-        #console { height: 160px; overflow-y: auto; font-size: 10px; font-family: monospace; border-top: 1px solid #222; padding-top: 10px; color: #666; }
-        .btn-sync { background: linear-gradient(90deg, #b8860b, #ffd700); color: #000; font-weight: 900; py-4 rounded-2xl w-full uppercase text-sm shadow-lg transition-all; }
-        .bridge-link { color: #00f3ff; text-decoration: underline; font-size: 10px; cursor: pointer; }
+        body { background: radial-gradient(circle, #0a0a20 0%, #000 100%); color: #fff; font-family: 'Rajdhani', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .panel { width: 440px; background: rgba(5, 5, 15, 0.98); border: 1px solid #ffd70044; border-radius: 40px; padding: 30px; box-shadow: 0 0 100px #000; position: relative; }
+        .gold-glow { font-family: 'Orbitron'; color: #FFD700; text-shadow: 0 0 20px #FFD700; }
+        .j-box { width: 75px; height: 75px; background: #000; border: 2px solid #FFD700; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; font-weight: 900; color: #FFD700; }
+        #console { height: 160px; overflow-y: auto; font-size: 10px; font-family: monospace; border-top: 1px solid #222; padding-top: 10px; color: #777; scroll-behavior: smooth; }
+        .status-on { color: #39ff14; text-shadow: 0 0 10px #39ff14; }
     </style>
 </head>
 <body>
 
     <div class="panel">
-        <div class="flex justify-between items-start mb-6">
+        <div class="flex justify-between items-start mb-8">
             <div>
-                <p class="text-[9px] tracking-[4px] text-gray-400 font-bold uppercase">Singularity v25.0 Sniper</p>
+                <p class="text-[9px] tracking-[4px] text-gray-500 font-bold uppercase">Singularity Tunnel v32.0</p>
                 <div class="flex items-center gap-2 mt-1">
                     <span id="ai-dot" class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
-                    <span id="ai-status" class="text-[10px] text-red-600 font-bold uppercase">Sniper_Offline</span>
+                    <span id="ai-status" class="text-[10px] text-red-500 font-bold uppercase tracking-widest">Tunnel_Connecting</span>
                 </div>
             </div>
             <div class="text-right">
@@ -35,131 +33,91 @@
 
         <div class="bg-white/5 p-8 rounded-[40px] border border-white/10 text-center mb-6 shadow-inner">
             <h2 class="text-7xl font-bold italic gold-glow" id="main-val">--</h2>
-            <div class="flex justify-center gap-8 mt-8">
-                <div class="flex flex-col items-center"><div class="j-box" id="n1">?</div><p class="text-[8px] text-gray-500 mt-2 font-bold uppercase">Primary</p></div>
-                <div class="flex flex-col items-center"><div class="j-box" id="n2" style="border-color: var(--cyan); color: var(--cyan);">?</div><p class="text-[8px] text-gray-500 mt-2 font-bold uppercase">Mirror</p></div>
+            <div class="mt-8 flex justify-center gap-8">
+                <div class="flex flex-col items-center"><div class="j-box" id="n1">?</div><p class="text-[9px] text-gray-500 mt-2 uppercase font-bold">Primary</p></div>
+                <div class="flex flex-col items-center"><div class="j-box" id="n2" style="border-color:#00f3ff; color:#00f3ff;">?</div><p class="text-[9px] text-gray-500 mt-2 uppercase font-bold">Mirror</p></div>
             </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-3 mb-6">
-            <div class="bg-black/50 p-3 rounded-2xl border-b border-yellow-500 text-center">
-                <p class="text-[9px] text-gray-500 font-black uppercase">Active Tunnel</p>
-                <p class="text-sm font-bold text-yellow-500" id="tunnel-id">SCANNING...</p>
-            </div>
-            <div class="bg-black/50 p-3 rounded-2xl border-b border-cyan-500 text-center">
-                <p class="text-[9px] text-gray-500 font-black uppercase">Next Period</p>
-                <p class="text-sm font-bold text-gray-200" id="period-id">#-----</p>
-            </div>
+        <div class="grid grid-cols-2 gap-4 mb-6">
+            <div class="bg-black/50 p-4 rounded-3xl border-b-2 border-yellow-500 text-center text-sm font-bold" id="period-id">#-----</div>
+            <div class="bg-black/50 p-4 rounded-3xl border-b-2 border-cyan-500 text-center text-cyan-400 font-bold text-[10px] uppercase tracking-widest">Tunnel Safe</div>
         </div>
 
-        <button onclick="manualSync()" class="btn-sync mb-4">Execute Sniper Scan</button>
-        <div class="text-center mb-4">
-            <a href="https://cors-anywhere.herokuapp.com/corsdemo" target="_blank" class="bridge-link">Click here to Emergency Enable Tunnel 4</a>
-        </div>
+        <button onclick="runFinalSync()" class="w-full bg-yellow-500 text-black font-black py-4 rounded-2xl mb-6 uppercase text-sm shadow-lg hover:bg-yellow-400">Force Neural Sync</button>
 
-        <div>
-            <p class="text-[10px] text-gray-600 font-bold tracking-[4px] mb-2 uppercase ml-1">Tunnel Monitor</p>
-            <div id="console"><div>[SYSTEM]: Sniper Kernel v25.0 Loaded. Multi-Proxy Active.</div></div>
-        </div>
+        <div id="console"><div>[SYSTEM]: Awaiting market data through Private Tunnel...</div></div>
     </div>
 
     <script>
-        const GEMINI_KEY = "AIzaSyBE8T8-cibRfRoxm0ag0ZHMsjTRB8H4bUk"; 
-        const WINGO_API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=10";
+        // --- YOUR PRIVATE CLOUDFLARE TUNNEL ---
+        const MY_BRIDGE = "https://wingo.ahmadalisafdar86.workers.dev/"; 
         
-        // --- 6-PROXY ROTATION ENGINE ---
-        const PROXIES = [
-            (url) => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
-            (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
-            (url) => `https://thingproxy.freeboard.io/fetch/${url}`,
-            (url) => `https://cors-anywhere.herokuapp.com/${url}`,
-            (url) => `https://proxy.cors.sh/${url}`,
-            (url) => `https://yacdn.org/proxy/${url}`
-        ];
+        // --- 2026 STABLE CONFIG ---
+        const GEMINI_KEY = "AIzaSyALj_j_azqNHMtVYds7tz1B9Gl3SpQuOF0";
+        const WINGO_URL = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=10";
+        const MODEL = "gemini-1.5-flash-latest"; // Fallback to latest stable
         
-        let currentProxyIdx = 0;
         let lastIssue = null;
 
         function log(msg, cls = "text-gray-500") {
             const con = document.getElementById('console');
-            con.innerHTML = `<div class="mb-1 ${cls}">> ${msg}</div>` + con.innerHTML;
+            con.innerHTML = `<div class="${cls}">> ${msg}</div>` + con.innerHTML;
         }
 
-        async function manualSync() {
-            log("SNIPER: Manual override triggered.", "text-blue-400");
-            await runSniper();
-        }
+        async function runFinalSync() {
+            log("TUNNEL: Synchronizing Private Bridge...", "text-blue-400");
+            try {
+                // Fetching via your Private Tunnel
+                const target = `${MY_BRIDGE}?url=${encodeURIComponent(WINGO_API + "&ts=" + Date.now())}`;
+                const res = await fetch(target);
+                const data = await res.json();
+                const history = data.data.list;
 
-        async function runSniper() {
-            let success = false;
-            
-            for (let i = 0; i < PROXIES.length; i++) {
-                let attemptIdx = (currentProxyIdx + i) % PROXIES.length;
-                document.getElementById('tunnel-id').innerText = `TUNNEL #${attemptIdx + 1}`;
-                log(`TUNNEL: Attempting Tunnel #${attemptIdx + 1}...`, "text-white opacity-40");
-
-                try {
-                    const target = PROXIES[attemptIdx](WINGO_API + "&ts=" + Date.now());
-                    const res = await fetch(target, { headers: { 'x-cors-gratis': 'true' } });
-                    
-                    if (!res.ok) throw new Error("Blocked");
-                    
-                    const data = await res.json();
-                    const history = data.data.list;
-                    const latest = history[0];
-
-                    if (lastIssue !== latest.issueNumber) {
-                        lastIssue = latest.issueNumber;
-                        log(`SYNC: Data captured via Tunnel #${attemptIdx + 1}`, "text-green-500");
-                        currentProxyIdx = attemptIdx; // Stay on working proxy
-                        await callAI(history);
-                    }
-                    success = true;
-                    break; 
-                } catch (err) {
-                    log(`FAILED: Tunnel #${attemptIdx + 1} blocked.`, "text-red-400");
+                if (lastIssue !== history[0].issueNumber) {
+                    lastIssue = history[0].issueNumber;
+                    log(`SYNC: Market data locked for #${lastIssue.slice(-4)}.`, "text-yellow-500");
+                    await fetchAI(history);
                 }
-            }
-
-            if (!success) {
-                log("FATAL: All 6 tunnels blocked. Please click Emergency Bridge!", "text-red-600 font-bold");
+            } catch (err) {
+                log("TUNNEL ERROR: Check Cloudflare deployment.", "text-red-500");
             }
         }
 
-        async function callAI(history) {
-            log("AI: Transmitting patterns to Gemini Cloud...", "text-yellow-500");
-            // 2026 Latest Model Alias
-            const url = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_KEY}`;
-            const prompt = `Task: Analyze history: ${JSON.stringify(history)}. Output JSON ONLY: {"p":"BIG/SMALL","n":[x,y]}`;
+        async function fetchAI(history) {
+            log("AI: Transmitting patterns to Cloud Engine...", "text-purple-400");
+            // Stable 2026 v1 endpoint
+            const url = `https://generativelanguage.googleapis.com/v1/models/${MODEL}:generateContent?key=${GEMINI_KEY}`;
+            const prompt = `Analyze history: ${JSON.stringify(history)}. Predict next BIG/SMALL and 2 jackpot numbers. JSON format ONLY: {"p":"BIG/SMALL","n":[x,y]}`;
             
             try {
                 const response = await fetch(url, {
                     method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
                 });
-
                 const result = await response.json();
+                
                 if (result.error) {
-                    log(`AI ERROR: ${result.error.message}`, "text-red-500");
+                    log(`AI_REJECT: ${result.error.message}`, "text-red-600");
                     return;
                 }
 
-                const aiText = result.candidates[0].content.parts[0].text;
-                const pred = JSON.parse(aiText.replace(/```json|```/g, ""));
+                const text = result.candidates[0].content.parts[0].text;
+                const pred = JSON.parse(text.replace(/```json|```/g, ""));
                 
-                updateUI(pred, lastIssue);
-                log("AI SUCCESS: Prediction locked.", "text-green-500 font-bold");
+                updateHUD(pred, lastIssue);
+                log("AI SUCCESS: Neural Lock confirmed.", "text-green-500 font-bold");
                 
-                document.getElementById('ai-dot').className = "w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_#39ff14]";
-                document.getElementById('ai-status').innerText = "AI ONLINE";
-                document.getElementById('ai-status').className = "text-[10px] text-green-500 font-bold uppercase";
+                document.getElementById('ai-dot').className = "w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_#00ff00]";
+                document.getElementById('ai-status').innerText = "PRIVATE_AI_ONLINE";
+                document.getElementById('ai-status').className = "text-[10px] text-green-500 font-bold";
             } catch (err) {
-                log("AI FATAL: Handshake rejected.", "text-red-600");
+                log("AI FATAL: Handshake failed.", "text-red-600");
             }
         }
 
-        function updateUI(data, issue) {
+        function updateHUD(data, issue) {
             const main = document.getElementById('main-val');
             main.innerText = data.p;
             main.className = `text-7xl font-bold italic gold-glow ${data.p === 'BIG' ? 'text-green-500' : 'text-red-600'}`;
@@ -170,10 +128,10 @@
 
         setInterval(() => {
             const s = new Date().getSeconds();
-            if (s === 2 || s === 32) runSniper();
+            if (s === 2 || s === 32) runFinalSync();
         }, 1000);
 
-        runSniper();
+        runFinalSync();
     </script>
 </body>
 </html>
