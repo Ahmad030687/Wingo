@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Supreme v24 | Ghost Protocol</title>
+    <title>Supreme v25 | Proxy Sniper</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root { --gold: #FFD700; --cyan: #00f3ff; }
         body { background: radial-gradient(circle, #050510 0%, #000 100%); font-family: 'Rajdhani', sans-serif; color: #fff; min-height: 100vh; display: flex; justify-content: center; align-items: center; margin: 0; }
-        .panel { width: 440px; background: rgba(5, 5, 15, 0.98); border: 1px solid rgba(255, 215, 0, 0.4); border-radius: 40px; padding: 25px; box-shadow: 0 0 100px #000; position: relative; }
+        .panel { width: 440px; background: rgba(5, 5, 15, 0.98); border: 1px solid rgba(255, 215, 0, 0.5); border-radius: 40px; padding: 25px; box-shadow: 0 0 100px #000; position: relative; }
         .gold-glow { font-family: 'Orbitron'; color: var(--gold); text-shadow: 0 0 20px var(--gold); }
         .j-box { width: 75px; height: 75px; background: #000; border: 2px solid var(--gold); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; font-weight: 900; color: var(--gold); }
         #console { height: 160px; overflow-y: auto; font-size: 10px; font-family: monospace; border-top: 1px solid #222; padding-top: 10px; color: #666; }
-        .status-on { color: #39ff14; text-shadow: 0 0 10px #39ff14; }
+        .btn-sync { background: linear-gradient(90deg, #b8860b, #ffd700); color: #000; font-weight: 900; py-4 rounded-2xl w-full uppercase text-sm shadow-lg transition-all; }
+        .bridge-link { color: #00f3ff; text-decoration: underline; font-size: 10px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -21,10 +22,10 @@
     <div class="panel">
         <div class="flex justify-between items-start mb-6">
             <div>
-                <p class="text-[9px] tracking-[4px] text-gray-400 font-bold uppercase">Singularity v24.0 Ghost</p>
+                <p class="text-[9px] tracking-[4px] text-gray-400 font-bold uppercase">Singularity v25.0 Sniper</p>
                 <div class="flex items-center gap-2 mt-1">
                     <span id="ai-dot" class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
-                    <span id="ai-status" class="text-[10px] text-red-600 font-bold uppercase">Ghost_Offline</span>
+                    <span id="ai-status" class="text-[10px] text-red-600 font-bold uppercase">Sniper_Offline</span>
                 </div>
             </div>
             <div class="text-right">
@@ -42,34 +43,41 @@
 
         <div class="grid grid-cols-2 gap-3 mb-6">
             <div class="bg-black/50 p-3 rounded-2xl border-b border-yellow-500 text-center">
-                <p class="text-[9px] text-gray-500 font-black">Target ID</p>
-                <p class="text-lg font-bold" id="period-id">#-----</p>
+                <p class="text-[9px] text-gray-500 font-black uppercase">Active Tunnel</p>
+                <p class="text-sm font-bold text-yellow-500" id="tunnel-id">SCANNING...</p>
             </div>
             <div class="bg-black/50 p-3 rounded-2xl border-b border-cyan-500 text-center">
-                <p class="text-[9px] text-gray-500 font-black">AI Protocol</p>
-                <p class="text-lg font-bold text-cyan-400" id="protocol">READY</p>
+                <p class="text-[9px] text-gray-500 font-black uppercase">Next Period</p>
+                <p class="text-sm font-bold text-gray-200" id="period-id">#-----</p>
             </div>
         </div>
 
-        <button onclick="ghostSync()" class="w-full bg-yellow-500 text-black font-black py-4 rounded-2xl mb-6 uppercase text-sm shadow-lg hover:bg-yellow-400">Execute Ghost Sync</button>
+        <button onclick="manualSync()" class="btn-sync mb-4">Execute Sniper Scan</button>
+        <div class="text-center mb-4">
+            <a href="https://cors-anywhere.herokuapp.com/corsdemo" target="_blank" class="bridge-link">Click here to Emergency Enable Tunnel 4</a>
+        </div>
 
         <div>
-            <p class="text-[10px] text-gray-600 font-bold tracking-[4px] mb-2 uppercase ml-1">Traffic Monitor</p>
-            <div id="console"><div>[SYSTEM]: Ghost Protocol v24.0 Loaded.</div></div>
+            <p class="text-[10px] text-gray-600 font-bold tracking-[4px] mb-2 uppercase ml-1">Tunnel Monitor</p>
+            <div id="console"><div>[SYSTEM]: Sniper Kernel v25.0 Loaded. Multi-Proxy Active.</div></div>
         </div>
     </div>
 
     <script>
-        const GEMINI_KEY = "AIzaSyD-WE7SdSUYHQGHtF9NJDvEaM8tVWFVrLk"; 
-        const PROXY = "https://api.allorigins.win/raw?url=";
-        const WINGO_API = encodeURIComponent("https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=10");
+        const GEMINI_KEY = "AIzaSyBE8T8-cibRfRoxm0ag0ZHMsjTRB8H4bUk"; 
+        const WINGO_API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=10";
         
-        // 2026 Modern Model Aliases
-        const MODELS = [
-            "gemini-2.0-flash-latest",
-            "gemini-1.5-flash-latest",
-            "gemini-pro"
+        // --- 6-PROXY ROTATION ENGINE ---
+        const PROXIES = [
+            (url) => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
+            (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+            (url) => `https://thingproxy.freeboard.io/fetch/${url}`,
+            (url) => `https://cors-anywhere.herokuapp.com/${url}`,
+            (url) => `https://proxy.cors.sh/${url}`,
+            (url) => `https://yacdn.org/proxy/${url}`
         ];
+        
+        let currentProxyIdx = 0;
         let lastIssue = null;
 
         function log(msg, cls = "text-gray-500") {
@@ -77,44 +85,51 @@
             con.innerHTML = `<div class="mb-1 ${cls}">> ${msg}</div>` + con.innerHTML;
         }
 
-        async function ghostSync() {
-            log("PROTOCOL: Initiating Ghost Handshake...", "text-blue-400");
-            try {
-                const res = await fetch(PROXY + WINGO_API + "&ts=" + Date.now());
-                const data = await res.json();
-                const history = data.data.list;
+        async function manualSync() {
+            log("SNIPER: Manual override triggered.", "text-blue-400");
+            await runSniper();
+        }
 
-                if (lastIssue !== history[0].issueNumber) {
-                    lastIssue = history[0].issueNumber;
-                    log(`SYNC: Data locked for #${lastIssue.slice(-4)}. Connecting Cloud...`, "text-yellow-500");
-                    await tryAllModels(history);
+        async function runSniper() {
+            let success = false;
+            
+            for (let i = 0; i < PROXIES.length; i++) {
+                let attemptIdx = (currentProxyIdx + i) % PROXIES.length;
+                document.getElementById('tunnel-id').innerText = `TUNNEL #${attemptIdx + 1}`;
+                log(`TUNNEL: Attempting Tunnel #${attemptIdx + 1}...`, "text-white opacity-40");
+
+                try {
+                    const target = PROXIES[attemptIdx](WINGO_API + "&ts=" + Date.now());
+                    const res = await fetch(target, { headers: { 'x-cors-gratis': 'true' } });
+                    
+                    if (!res.ok) throw new Error("Blocked");
+                    
+                    const data = await res.json();
+                    const history = data.data.list;
+                    const latest = history[0];
+
+                    if (lastIssue !== latest.issueNumber) {
+                        lastIssue = latest.issueNumber;
+                        log(`SYNC: Data captured via Tunnel #${attemptIdx + 1}`, "text-green-500");
+                        currentProxyIdx = attemptIdx; // Stay on working proxy
+                        await callAI(history);
+                    }
+                    success = true;
+                    break; 
+                } catch (err) {
+                    log(`FAILED: Tunnel #${attemptIdx + 1} blocked.`, "text-red-400");
                 }
-            } catch (err) {
-                log("FETCH ERROR: All tunnels blocked.", "text-red-500");
+            }
+
+            if (!success) {
+                log("FATAL: All 6 tunnels blocked. Please click Emergency Bridge!", "text-red-600 font-bold");
             }
         }
 
-        async function tryAllModels(history) {
-            for (let model of MODELS) {
-                log(`ATTEMPT: Testing ${model}...`, "text-white opacity-50");
-                
-                // Trying v1 Stable first, then v1beta as fallback
-                const success = await callGemini(model, "v1", history) || await callGemini(model, "v1beta", history);
-                
-                if (success) {
-                    log(`SUCCESS: Connected via ${model}`, "text-green-500 font-bold");
-                    document.getElementById('ai-dot').className = "w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_#39ff14]";
-                    document.getElementById('ai-status').innerText = "GHOST_ONLINE";
-                    document.getElementById('ai-status').className = "text-[10px] status-on font-bold uppercase";
-                    document.getElementById('protocol').innerText = model.split('-')[1].toUpperCase();
-                    return;
-                }
-            }
-            log("FATAL: All models rejected the key. Check API Key Permissions!", "text-red-600 font-bold");
-        }
-
-        async function callGemini(model, version, history) {
-            const url = `https://generativelanguage.googleapis.com/${version}/models/${model}:generateContent?key=${GEMINI_KEY}`;
+        async function callAI(history) {
+            log("AI: Transmitting patterns to Gemini Cloud...", "text-yellow-500");
+            // 2026 Latest Model Alias
+            const url = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_KEY}`;
             const prompt = `Task: Analyze history: ${JSON.stringify(history)}. Output JSON ONLY: {"p":"BIG/SMALL","n":[x,y]}`;
             
             try {
@@ -125,19 +140,26 @@
                 });
 
                 const result = await response.json();
-                if (result.error) return false;
+                if (result.error) {
+                    log(`AI ERROR: ${result.error.message}`, "text-red-500");
+                    return;
+                }
 
-                const text = result.candidates[0].content.parts[0].text;
-                const pred = JSON.parse(text.replace(/```json|```/g, ""));
+                const aiText = result.candidates[0].content.parts[0].text;
+                const pred = JSON.parse(aiText.replace(/```json|```/g, ""));
                 
-                updateHUD(pred, lastIssue);
-                return true;
+                updateUI(pred, lastIssue);
+                log("AI SUCCESS: Prediction locked.", "text-green-500 font-bold");
+                
+                document.getElementById('ai-dot').className = "w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_#39ff14]";
+                document.getElementById('ai-status').innerText = "AI ONLINE";
+                document.getElementById('ai-status').className = "text-[10px] text-green-500 font-bold uppercase";
             } catch (err) {
-                return false;
+                log("AI FATAL: Handshake rejected.", "text-red-600");
             }
         }
 
-        function updateHUD(data, issue) {
+        function updateUI(data, issue) {
             const main = document.getElementById('main-val');
             main.innerText = data.p;
             main.className = `text-7xl font-bold italic gold-glow ${data.p === 'BIG' ? 'text-green-500' : 'text-red-600'}`;
@@ -148,10 +170,10 @@
 
         setInterval(() => {
             const s = new Date().getSeconds();
-            if (s === 1 || s === 31) ghostSync();
+            if (s === 2 || s === 32) runSniper();
         }, 1000);
 
-        ghostSync();
+        runSniper();
     </script>
 </body>
 </html>
