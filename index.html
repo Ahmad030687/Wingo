@@ -3,19 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Singularity v41 | Pro Tracker</title>
+    <title>Universal v42 | Life-Time AI</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@500;700;800&display=swap" rel="stylesheet">
     <style>
-        body { background: #000; color: #fff; font-family: 'Rajdhani', sans-serif; margin: 0; padding: 10px; }
-        .panel { width: 100%; max-width: 450px; background: #0a0a0a; border: 2px solid #333; border-radius: 20px; padding: 20px; margin: auto; }
-        .big-val { font-family: 'Orbitron'; font-size: 5rem; font-weight: 900; line-height: 1; }
-        .j-box { width: 60px; height: 60px; background: #111; border: 2px solid #FFD700; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: bold; color: #FFD700; }
-        table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 15px; }
-        th, td { border: 1px solid #222; padding: 8px; text-align: center; }
-        th { background: #1a1a1a; color: #777; }
-        .win { color: #00ff00; font-weight: bold; }
-        .loss { color: #ff0000; font-weight: bold; }
+        body { background: #020202; color: #fff; font-family: 'Rajdhani', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .panel { width: 100%; max-width: 480px; background: #080808; border: 1px solid #222; border-radius: 25px; padding: 20px; box-shadow: 0 0 40px rgba(0,0,0,0.8); }
+        .pred-box { background: linear-gradient(145deg, #111, #0a0a0a); border: 1px solid #333; border-radius: 20px; padding: 20px; text-align: center; margin-bottom: 20px; position: relative; }
+        .main-pred { font-family: 'Orbitron'; font-size: 4.5rem; font-weight: 900; line-height: 1; text-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        .num-box { width: 50px; height: 50px; background: #151515; border: 1px solid #444; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; color: #FFD700; }
+        .timer-badge { position: absolute; top: 10px; right: 10px; background: #222; padding: 2px 8px; border-radius: 5px; font-family: monospace; font-size: 12px; color: #FFD700; border: 1px solid #FFD700; }
+        
+        /* Table Styling */
+        .history-table { width: 100%; border-collapse: separate; border-spacing: 0 4px; font-size: 11px; }
+        .history-table th { color: #666; font-weight: 800; text-transform: uppercase; padding: 5px; }
+        .history-table td { background: #111; padding: 10px; border-top: 1px solid #222; border-bottom: 1px solid #222; }
+        .history-table tr td:first-child { border-left: 1px solid #222; border-radius: 10px 0 0 10px; }
+        .history-table tr td:last-child { border-right: 1px solid #222; border-radius: 0 10px 10px 0; font-weight: bold; }
+        
+        .win-row { border-left: 3px solid #00ff00 !important; }
+        .loss-row { border-left: 3px solid #ff0000 !important; }
+        
+        .status-dot { height: 8px; width: 8px; border-radius: 50%; display: inline-block; margin-right: 5px; }
     </style>
 </head>
 <body>
@@ -23,167 +32,248 @@
     <div class="panel">
         <div class="flex justify-between items-center mb-6">
             <div>
-                <h1 class="text-xs tracking-[4px] text-gray-500 font-bold uppercase">Singularity v41.0</h1>
-                <div class="flex items-center gap-2 mt-1">
-                    <span id="ai-dot" class="w-2 h-2 rounded-full bg-red-600"></span>
-                    <span id="ai-status" class="text-[10px] text-gray-500 font-bold uppercase">Ready</span>
+                <h1 class="text-xs tracking-[3px] text-gray-400 font-black uppercase">Universal v42.0</h1>
+                <div class="flex items-center mt-1">
+                    <span id="sys-dot" class="status-dot bg-red-600"></span>
+                    <span id="sys-status" class="text-[9px] text-gray-500 font-bold uppercase">System Init...</span>
                 </div>
             </div>
             <div class="text-right">
-                <span class="text-yellow-500 font-black text-xl">Ω</span>
-                <p class="text-[8px] text-gray-600">PRIVATE_TUNNEL</p>
+                <span class="text-[#FFD700] font-black text-xl">Ω</span>
             </div>
         </div>
 
-        <div class="bg-white/5 p-6 rounded-3xl border border-white/5 text-center mb-6">
-            <p id="prediction-val" class="big-val text-gray-400">--</p>
-            <div class="flex justify-center gap-6 mt-4">
-                <div class="j-box" id="n1">?</div>
-                <div class="j-box" id="n2" style="border-color:#00f3ff; color:#00f3ff;">?</div>
+        <div class="pred-box">
+            <div class="timer-badge" id="live-timer">00s</div>
+            <p class="text-[9px] text-gray-500 uppercase font-bold tracking-widest mb-2">Neural Prediction</p>
+            <h2 id="p-main" class="main-pred text-gray-600">--</h2>
+            
+            <div class="flex justify-center gap-4 mt-4">
+                <div class="flex flex-col items-center">
+                    <div class="num-box" id="n1">?</div>
+                    <span class="text-[8px] text-gray-600 mt-1 uppercase">Core</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="num-box" id="n2" style="color: #00f3ff; border-color: #00f3ff;">?</div>
+                    <span class="text-[8px] text-gray-600 mt-1 uppercase">Mirror</span>
+                </div>
             </div>
         </div>
 
-        <div class="grid grid-cols-3 gap-2 mb-6 text-center">
-            <div class="bg-black p-2 rounded-xl border-b-2 border-green-500">
-                <p class="text-[9px] text-gray-500">WINS</p>
-                <p class="text-lg font-bold" id="total-wins">0</p>
+        <div class="grid grid-cols-2 gap-3 mb-6">
+            <div class="bg-[#111] p-3 rounded-xl border border-[#222] flex justify-between items-center">
+                <span class="text-[10px] text-gray-500 font-bold uppercase">Target</span>
+                <span class="text-sm font-bold text-white" id="period-id">#----</span>
             </div>
-            <div class="bg-black p-2 rounded-xl border-b-2 border-red-500">
-                <p class="text-[9px] text-gray-500">LOSS</p>
-                <p class="text-lg font-bold" id="total-loss">0</p>
-            </div>
-            <div class="bg-black p-2 rounded-xl border-b-2 border-yellow-500">
-                <p class="text-[9px] text-gray-500">JACKPOT</p>
-                <p class="text-lg font-bold" id="total-jp">0</p>
+            <div class="bg-[#111] p-3 rounded-xl border border-[#222] flex justify-between items-center">
+                <span class="text-[10px] text-gray-500 font-bold uppercase">Accuracy</span>
+                <span class="text-sm font-bold text-green-400" id="accuracy-rate">0%</span>
             </div>
         </div>
 
-        <div class="flex justify-between items-center px-2 mb-4">
-            <span class="text-xs font-bold text-gray-400 uppercase">Target Period: <span id="period-id" class="text-white">#----</span></span>
-            <span id="timer" class="text-xs font-mono text-yellow-500">60s</span>
+        <div class="mb-2 flex justify-between items-end">
+            <p class="text-[10px] text-gray-500 font-bold uppercase">Live Market Ledger</p>
+            <p class="text-[9px] text-gray-600">Auto-Learning Active</p>
         </div>
-
-        <p class="text-[10px] text-gray-600 font-bold uppercase mb-2">Last 10 Rounds Analysis</p>
-        <div class="overflow-hidden rounded-xl border border-[#222]">
-            <table>
+        
+        <div class="overflow-hidden">
+            <table class="history-table">
                 <thead>
-                    <tr><th>Period</th><th>Prediction</th><th>Numbers</th><th>Result</th></tr>
+                    <tr>
+                        <th>Period</th>
+                        <th>Pred</th>
+                        <th>Result</th>
+                        <th>Status</th>
+                    </tr>
                 </thead>
-                <tbody id="history-body">
-                    <tr><td colspan="4" class="text-gray-700">Waiting for data pulse...</td></tr>
+                <tbody id="log-body">
+                    <tr><td colspan="4" class="text-center text-gray-700 py-4">Waiting for first signal...</td></tr>
                 </tbody>
             </table>
         </div>
     </div>
 
     <script>
-        const TUNNEL = "https://wingo.ahmadalisafdar86.workers.dev/"; 
-        const KEY = "AIzaSyB1NnBfAgcsqh7RGs8o_aJFJz7D2ROFgqc";
-        const API = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=20";
+        // --- CONFIGURATION ---
+        const TUNNEL_URL = "https://wingo.ahmadalisafdar86.workers.dev/"; 
+        const GEMINI_API_KEY = "AIzaSyD8xaD8BynNDJq7X-cKTsfyj14wCakz6JI";
+        const WINGO_SOURCE = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=20";
+        
+        // --- STATE ---
+        let historyLog = [];
+        let lastPeriod = null;
+        let isProcessing = false;
+        let stats = { total: 0, wins: 0 };
 
-        let lastIssue = null;
-        let isLocked = false;
-        let stats = { w: 0, l: 0, j: 0 };
-        let history = [];
+        // --- UTILS ---
+        const logStatus = (msg, color) => {
+            document.getElementById('sys-status').innerText = msg;
+            document.getElementById('sys-status').className = `text-[9px] font-bold uppercase text-${color}-500`;
+            document.getElementById('sys-dot').className = `status-dot bg-${color}-500 ${color === 'green' ? 'animate-pulse' : ''}`;
+        };
 
-        async function syncEngine() {
-            if(isLocked) return;
+        // --- TIMER ---
+        setInterval(() => {
+            const s = new Date().getSeconds();
+            const remaining = 60 - s;
+            document.getElementById('live-timer').innerText = remaining + "s";
+            
+            // Auto-Trigger at start of new minute
+            if (s === 1 && !isProcessing) runUniversalScan();
+        }, 1000);
+
+        // --- CORE ENGINE ---
+        async function runUniversalScan() {
+            isProcessing = true;
+            logStatus("Scanning Market...", "yellow");
+            
             try {
-                const res = await fetch(`${TUNNEL}?url=${encodeURIComponent(API)}`);
+                // 1. Fetch Market Data via Private Tunnel
+                const res = await fetch(`${TUNNEL_URL}?url=${encodeURIComponent(WINGO_SOURCE + "&ts=" + Date.now())}`);
                 const data = await res.json();
-                const latest = data.data.list[0];
+                const list = data.data.list;
+                const currentIssue = list[0].issueNumber;
 
-                if (lastIssue !== latest.issueNumber) {
-                    // Check pichla result logic (simplified)
-                    if(lastIssue) analyzeResult(latest, history[0]);
-                    
-                    lastIssue = latest.issueNumber;
-                    document.getElementById('period-id').innerText = "#" + (BigInt(lastIssue) + 1n).toString().slice(-4);
-                    await callAI(data.data.list);
+                // 2. Check Result of Previous Prediction
+                if (lastPeriod && lastPeriod !== currentIssue) {
+                    validateResult(list[0]);
                 }
-            } catch (e) { console.log("Tunnel Wait..."); }
+
+                // 3. Generate New Prediction if Period Changed
+                if (lastPeriod !== currentIssue) {
+                    lastPeriod = currentIssue;
+                    const nextIssue = (BigInt(currentIssue) + 1n).toString();
+                    document.getElementById('period-id').innerText = "#" + nextIssue.slice(-4);
+                    
+                    await consultGemini(list);
+                } else {
+                    isProcessing = false;
+                    logStatus("Waiting Next...", "green");
+                }
+
+            } catch (err) {
+                console.error(err);
+                logStatus("Tunnel Error", "red");
+                isProcessing = false;
+            }
         }
 
-        async function callAI(marketData) {
-            isLocked = true; // Rate Limit Protection
-            document.getElementById('ai-status').innerText = "LOCKING...";
-            
-            const url = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${KEY}`;
-            const prompt = `Analyze: ${JSON.stringify(marketData)}. Predict next BIG/SMALL and 2 jackpot numbers. JSON ONLY: {"p":"BIG/SMALL","n":[x,y]}`;
-            
+        async function consultGemini(marketHistory) {
+            logStatus("Neural Analysis...", "blue");
+
+            // --- THE UNIVERSAL PROMPT (AUTO-LEARNING) ---
+            const prompt = `
+                Act as an Advanced Wingo Pattern AI.
+                Analyze last 20 rounds: ${JSON.stringify(marketHistory.map(i => ({i: i.issueNumber, n: i.totalNumber})))}.
+                
+                YOUR GOAL: Level 1 Sureshot Win.
+                STRATEGY: 
+                1. Identify Trend (ZigZag, AABB, ABAB).
+                2. Check Number Frequency.
+                3. Apply Correction based on recent volatility.
+                
+                OUTPUT JSON ONLY: {"p":"BIG/SMALL","n":[x,y]}
+                (BIG=5-9, SMALL=0-4)
+            `;
+
             try {
+                const url = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
                 const response = await fetch(url, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
                 });
-                const result = await response.json();
-                const pred = JSON.parse(result.candidates[0].content.parts[0].text.replace(/```json|```/g, ""));
-                
-                updateUI(pred);
-                
-                // Cooldown for 45 seconds to prevent Rate Limit
-                let cd = 45;
-                const t = setInterval(() => {
-                    document.getElementById('timer').innerText = cd + "s";
-                    if(cd <= 0) { clearInterval(t); isLocked = false; document.getElementById('ai-status').innerText = "READY"; }
-                    cd--;
-                }, 1000);
 
+                const result = await response.json();
+                const text = result.candidates[0].content.parts[0].text.replace(/```json|```/g, "").trim();
+                const pred = JSON.parse(text);
+
+                // Update UI
+                renderPrediction(pred);
+                
+                // Add to temporary log (Waiting for result)
+                addToLog({ 
+                    period: (BigInt(lastPeriod) + 1n).toString(), 
+                    pred: pred.p, 
+                    nums: pred.n,
+                    result: "WAIT",
+                    status: "⏳"
+                });
+
+                logStatus("Locked & Ready", "green");
             } catch (err) {
-                isLocked = false;
-                document.getElementById('ai-status').innerText = "RETRYING...";
+                logStatus("AI Handshake Fail", "red");
+            } finally {
+                isProcessing = false;
             }
         }
 
-        function updateUI(data) {
-            const p = document.getElementById('prediction-val');
-            p.innerText = data.p;
-            p.className = `big-val ${data.p === 'BIG' ? 'text-green-500' : 'text-red-600'}`;
+        // --- UI RENDERERS ---
+        function renderPrediction(data) {
+            const pEl = document.getElementById('p-main');
+            pEl.innerText = data.p;
+            pEl.className = `main-pred ${data.p === 'BIG' ? 'text-green-500' : 'text-red-500'}`;
+            
             document.getElementById('n1').innerText = data.n[0];
             document.getElementById('n2').innerText = data.n[1];
-            document.getElementById('ai-dot').className = "w-2 h-2 rounded-full bg-green-500";
-            
-            // Add to history
-            history.unshift({ p: data.p, n: data.n, issue: (BigInt(lastIssue) + 1n).toString().slice(-4) });
-            if(history.length > 10) history.pop();
-            renderHistory();
         }
 
-        function renderHistory() {
-            const body = document.getElementById('history-body');
-            body.innerHTML = history.map(h => `
-                <tr>
-                    <td>${h.issue}</td>
-                    <td class="${h.p === 'BIG' ? 'text-green-500' : 'text-red-500'}">${h.p}</td>
-                    <td class="text-yellow-500">${h.n.join(',')}</td>
-                    <td class="text-gray-500">WAIT</td>
+        function addToLog(entry) {
+            // Add new entry to top
+            historyLog.unshift(entry);
+            if (historyLog.length > 10) historyLog.pop();
+            renderTable();
+        }
+
+        function validateResult(actualData) {
+            // Find the entry for this period
+            const targetPeriod = actualData.issueNumber;
+            const logIndex = historyLog.findIndex(x => x.period === targetPeriod);
+
+            if (logIndex !== -1) {
+                const entry = historyLog[logIndex];
+                const actualSize = actualData.totalNumber >= 5 ? "BIG" : "SMALL";
+                const isWin = entry.pred === actualSize;
+                const isJackpot = entry.nums.includes(parseInt(actualData.totalNumber));
+
+                // UPDATE STATUS WITH EMOJIS
+                if (isWin && isJackpot) {
+                    entry.status = "✅ 🎉"; // Double Win
+                    entry.result = "JACKPOT";
+                } else if (isWin) {
+                    entry.status = "✅"; // Normal Win
+                    entry.result = "WIN";
+                } else {
+                    entry.status = "❌"; // Loss
+                    entry.result = "LOSS";
+                }
+                
+                // Update Stats
+                stats.total++;
+                if (isWin) stats.wins++;
+                const acc = Math.round((stats.wins / stats.total) * 100);
+                document.getElementById('accuracy-rate').innerText = acc + "%";
+
+                historyLog[logIndex] = entry;
+                renderTable();
+            }
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('log-body');
+            tbody.innerHTML = historyLog.map(row => `
+                <tr class="${row.result === 'WIN' || row.result === 'JACKPOT' ? 'win-row' : (row.result === 'LOSS' ? 'loss-row' : '')}">
+                    <td class="text-gray-300">#${row.period.slice(-4)}</td>
+                    <td class="${row.pred === 'BIG' ? 'text-green-400' : 'text-red-400'} font-bold">${row.pred}</td>
+                    <td class="text-gray-400">${row.result === 'WAIT' ? '---' : row.result}</td>
+                    <td class="text-lg">${row.status}</td>
                 </tr>
             `).join('');
         }
 
-        // Logic to update Win/Loss after result comes
-        function analyzeResult(actual, pred) {
-            if(!pred) return;
-            const actualSize = actual.totalNumber <= 4 ? "SMALL" : "BIG";
-            const row = document.getElementById('history-body').children[0];
-            
-            if(actualSize === pred.p) {
-                stats.w++;
-                document.getElementById('total-wins').innerText = stats.w;
-            } else {
-                stats.l++;
-                document.getElementById('total-loss').innerText = stats.l;
-            }
-            if(pred.n.includes(parseInt(actual.totalNumber))) {
-                stats.j++;
-                document.getElementById('total-jp').innerText = stats.j;
-            }
-        }
+        // Init
+        runUniversalScan();
 
-        setInterval(syncEngine, 2000);
-        syncEngine();
     </script>
 </body>
 </html>
-
