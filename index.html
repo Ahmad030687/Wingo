@@ -3,278 +3,233 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Universal 2.5 Flash | v46</title>
+    <title>Universal Hybrid v47</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;800;900&display=swap" rel="stylesheet">
     <style>
         body { background-color: #000; color: #fff; font-family: 'Rajdhani', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 10px; }
-        .god-panel { width: 100%; max-width: 480px; background: #050505; border: 1px solid #222; border-radius: 24px; padding: 20px; box-shadow: 0 0 40px rgba(0, 255, 0, 0.05); }
+        .panel { width: 100%; max-width: 480px; background: #050505; border: 1px solid #222; border-radius: 20px; padding: 20px; box-shadow: 0 0 50px rgba(255, 215, 0, 0.05); }
         
-        /* Prediction Core */
-        .crystal-box {
-            background: radial-gradient(circle at center, #0a0a0a 0%, #000 100%);
-            border: 2px solid #333; border-radius: 20px; padding: 25px; text-align: center; margin-bottom: 20px; position: relative;
-        }
-        .main-pred { font-size: 4.5rem; font-weight: 900; line-height: 1; text-shadow: 0 0 20px rgba(255, 255, 255, 0.1); }
-        .period-badge { position: absolute; top: 10px; left: 10px; background: #222; color: #fff; padding: 2px 8px; border-radius: 6px; font-size: 12px; border: 1px solid #444; }
-        .timer-badge { position: absolute; top: 10px; right: 10px; color: #FFD700; font-weight: bold; font-family: monospace; font-size: 14px; }
+        .status-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #1a1a1a; padding-bottom: 10px; }
+        .model-badge { font-size: 10px; font-weight: bold; background: #111; padding: 4px 8px; border-radius: 4px; border: 1px solid #333; color: #888; }
         
-        /* Numbers */
-        .num-container { display: flex; justify-content: center; gap: 10px; margin-top: 15px; }
-        .n-cell { width: 45px; height: 45px; background: #111; border: 1px solid #444; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: bold; color: #aaa; }
-
-        /* Stats Bar */
-        .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; text-align: center; }
-        .stat-box { background: #0f0f0f; border: 1px solid #222; padding: 8px; border-radius: 10px; }
-        .stat-label { display: block; font-size: 9px; color: #666; font-weight: bold; }
-        .stat-val { font-size: 16px; font-weight: bold; }
-
-        /* History */
+        .pred-display { background: #0a0a0a; border: 2px solid #333; border-radius: 15px; padding: 30px; text-align: center; margin-bottom: 20px; position: relative; }
+        .main-text { font-size: 5rem; font-weight: 900; line-height: 1; }
+        .sub-nums { display: flex; justify-content: center; gap: 10px; margin-top: 15px; }
+        .num-box { width: 50px; height: 50px; background: #151515; border: 1px solid #444; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; color: #ffd700; }
+        
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 20px; }
+        .stat-card { background: #0f0f0f; padding: 10px; text-align: center; border-radius: 8px; border: 1px solid #222; }
+        .stat-val { font-size: 18px; font-weight: bold; }
+        
         table { width: 100%; font-size: 11px; border-collapse: collapse; }
         th { text-align: left; color: #555; padding: 8px; border-bottom: 1px solid #222; }
         td { padding: 10px 5px; border-bottom: 1px solid #1a1a1a; font-weight: bold; }
-        .status-wait { color: #888; animation: pulse 1s infinite; }
-        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+        
+        .failover-active { border-color: #ff0000; animation: flashRed 1s; }
+        @keyframes flashRed { 0% { border-color: #333; } 50% { border-color: #ff0000; } 100% { border-color: #333; } }
     </style>
 </head>
 <body>
 
-    <div class="god-panel">
-        <div class="flex justify-between items-center mb-4">
-            <h1 class="text-sm font-black text-gray-400 tracking-widest">GEMINI 2.5 EXCLUSIVE</h1>
-            <div class="flex items-center gap-2">
-                <span id="sys-status" class="text-[9px] font-bold text-gray-500 uppercase">SYSTEM READY</span>
-                <div id="sys-dot" class="w-2 h-2 rounded-full bg-gray-500"></div>
+    <div class="panel">
+        <div class="status-header">
+            <div>
+                <h1 class="text-sm font-black text-gray-300">SUPREME v47</h1>
+                <div class="flex items-center gap-2 mt-1">
+                    <div id="live-dot" class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                    <span id="sys-msg" class="text-[9px] font-bold text-green-500 uppercase">ONLINE</span>
+                </div>
+            </div>
+            <div class="text-right">
+                <div class="model-badge" id="active-model">AUTO-HYBRID</div>
+                <div class="text-[10px] font-bold text-yellow-500 mt-1" id="timer">00s</div>
             </div>
         </div>
 
-        <div class="crystal-box">
-            <div class="period-badge" id="target-id">#Loading</div>
-            <div class="timer-badge" id="timer">00s</div>
-            
-            <p class="text-[10px] text-gray-600 font-bold uppercase tracking-[4px] mb-2">NEURAL SIGNAL</p>
-            <h2 id="p-main" class="main-pred text-gray-700">--</h2>
-            
-            <div class="num-container">
-                <div class="n-cell" id="n1">?</div>
-                <div class="n-cell" id="n2" style="border-color:#00f3ff; color:#00f3ff;">?</div>
+        <div class="pred-display" id="main-box">
+            <div class="absolute top-2 left-2 text-[10px] font-bold text-gray-600">TARGET: <span id="target-display" class="text-white">#----</span></div>
+            <h2 id="p-text" class="main-text text-gray-700">--</h2>
+            <div class="sub-nums">
+                <div class="num-box" id="n1">?</div>
+                <div class="num-box" id="n2" style="border-color:#00f3ff; color:#00f3ff;">?</div>
             </div>
         </div>
 
-        <div class="stats-row">
-            <div class="stat-box border-b-2 border-green-500">
-                <span class="stat-label">WIN</span>
-                <span class="stat-val text-green-500" id="s-win">0</span>
-            </div>
-            <div class="stat-box border-b-2 border-red-500">
-                <span class="stat-label">LOSS</span>
-                <span class="stat-val text-red-500" id="s-loss">0</span>
-            </div>
-            <div class="stat-box border-b-2 border-yellow-500">
-                <span class="stat-label">JACKPOT</span>
-                <span class="stat-val text-yellow-500" id="s-jp">0</span>
-            </div>
+        <div class="stats-grid">
+            <div class="stat-card border-b-2 border-green-500"><span class="block text-[9px] text-gray-500">WINS</span><span id="w-val" class="stat-val text-green-500">0</span></div>
+            <div class="stat-card border-b-2 border-red-500"><span class="block text-[9px] text-gray-500">LOSS</span><span id="l-val" class="stat-val text-red-500">0</span></div>
+            <div class="stat-card border-b-2 border-yellow-500"><span class="block text-[9px] text-gray-500">JACKPOT</span><span id="j-val" class="stat-val text-yellow-500">0</span></div>
         </div>
 
-        <div class="bg-[#080808] rounded-xl border border-[#1a1a1a] p-2" style="min-height: 200px;">
+        <div class="bg-[#080808] rounded-xl border border-[#1a1a1a] p-2" style="max-height: 200px; overflow-y: auto;">
             <table>
-                <thead>
-                    <tr><th>Issue</th><th>Pred</th><th>Result</th><th>Status</th></tr>
-                </thead>
-                <tbody id="history-body">
-                    </tbody>
+                <thead><tr><th>Issue</th><th>Pred</th><th>Result</th><th>Log</th></tr></thead>
+                <tbody id="history-rows"></tbody>
             </table>
         </div>
     </div>
 
     <script>
-        // --- CONFIGURATION ---
+        // --- 1. CONFIGURATION ---
         const CONFIG = {
             tunnel: "https://wingo.ahmadalisafdar86.workers.dev/",
             key: "AIzaSyBhKbxUkpHHyo08b0EDJe_M1zymG9l7tP4",
             api: "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=30",
-            model: "gemini-2.5-flash" // SIRF 2.5 FLASH
+            // PRIORITY LIST: Try 2.5 first, if fails, fallback to 1.5
+            models: ["gemini-2.5-flash", "gemini-1.5-flash"] 
         };
 
-        // --- VARIABLES ---
+        // --- 2. STATE VARIABLES ---
         let historyData = [];
         let lastProcessed = null;
         let stats = { w: 0, l: 0, j: 0 };
-        let isRetryActive = false;
+        let isRunning = false;
 
-        // --- MAIN LOOP ---
-        async function universalLoop() {
+        // --- 3. MAIN ENGINE ---
+        async function startEngine() {
+            if(isRunning) return;
+            isRunning = true;
+            
             try {
-                // 1. Fetch Market Data
+                updateStatus("FETCHING DATA...", "yellow");
                 const res = await fetch(`${CONFIG.tunnel}?url=${encodeURIComponent(CONFIG.api + "&ts=" + Date.now())}`);
                 const json = await res.json();
                 const list = json.data.list;
                 const latest = list[0].issueNumber;
 
-                // 2. Validate Previous Predictions
-                if (historyData.length > 0) {
-                    const lastEntry = historyData[0];
-                    if (lastEntry.status === "wait") {
-                        const result = list.find(r => r.issueNumber === lastEntry.issue);
-                        if (result) finalizeRow(lastEntry, result);
-                    }
+                // Validate Previous
+                if(historyData.length > 0 && historyData[0].status === "WAIT") {
+                    const result = list.find(r => r.issueNumber === historyData[0].issue);
+                    if(result) checkWin(historyData[0], result);
                 }
 
-                // 3. Calculate Target (Latest + 1)
+                // Calculate Target
                 const target = (BigInt(latest) + 1n).toString();
-                
-                // 4. Update UI
-                document.getElementById('target-id').innerText = "#" + target.slice(-4);
+                document.getElementById('target-display').innerText = "#" + target.slice(-4);
 
-                // 5. Predict Only if New
+                // Predict if New
                 if (lastProcessed !== target) {
                     lastProcessed = target;
-                    await fetchGemini25(list, target, 1); // Attempt #1
+                    // Start Hybrid AI Call
+                    await attemptPrediction(list, target);
+                } else {
+                    updateStatus("WAITING NEXT...", "green");
                 }
 
             } catch (e) {
-                setStatus("TUNNEL ERROR", "red");
+                updateStatus("TUNNEL ERROR", "red");
+            } finally {
+                isRunning = false;
             }
         }
 
-        // --- AI FUNCTION (With Auto-Retry) ---
-        async function fetchGemini25(history, targetIssue, attempt) {
-            setStatus(attempt > 1 ? `RETRYING (${attempt})...` : "AI SCANNING...", "yellow");
+        // --- 4. HYBRID AI CALL (The Fix) ---
+        async function attemptPrediction(list, target) {
+            document.getElementById('p-text').innerText = "...";
+            document.getElementById('p-text').className = "main-text text-gray-600 animate-pulse";
+
+            const prompt = `Analyze Wingo History: ${JSON.stringify(list.slice(0, 15).map(x=>x.totalNumber))}. Next Period ${target}. Output JSON: {"p":"BIG/SMALL","n":[x,y]}`;
+
+            // Try Models in Order
+            for (let model of CONFIG.models) {
+                try {
+                    updateStatus(`TRYING ${model.toUpperCase()}...`, "blue");
+                    
+                    const url = `https://generativelanguage.googleapis.com/v1/models/${model}:generateContent?key=${CONFIG.key}`;
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                    });
+
+                    if (!response.ok) throw new Error("Busy");
+
+                    const data = await response.json();
+                    const text = data.candidates[0].content.parts[0].text.replace(/```json|```/g, "").trim();
+                    const pred = JSON.parse(text);
+
+                    // SUCCESS
+                    document.getElementById('active-model').innerText = model.includes('2.5') ? "2.5 FLASH (MAX)" : "1.5 FLASH (SAFE)";
+                    document.getElementById('active-model').className = model.includes('2.5') ? "model-badge text-green-400" : "model-badge text-yellow-400";
+                    
+                    showResult(pred);
+                    addToTable(target, pred);
+                    updateStatus("PREDICTION LOCKED", "green");
+                    return; // Stop loop on success
+
+                } catch (err) {
+                    console.log(`${model} Failed, switching...`);
+                    // If failed, loop continues to next model
+                }
+            }
             
-            document.getElementById('p-main').innerText = "...";
-            document.getElementById('p-main').className = "main-pred text-gray-600 text-6xl animate-pulse";
-
-            const prompt = `
-                Role: Wingo Expert.
-                Data: ${JSON.stringify(history.slice(0, 15).map(x=>({i:x.issueNumber, n:x.totalNumber})))}.
-                Target: PREDICT PERIOD ${targetIssue}.
-                
-                Logic:
-                - Analyze last 5 outputs.
-                - If Trend is ZigZag, predict Flip.
-                - If Trend is Streak, predict Same.
-                
-                JSON Output: {"p":"BIG/SMALL","n":[x,y]}
-            `;
-
-            try {
-                const url = `https://generativelanguage.googleapis.com/v1/models/${CONFIG.model}:generateContent?key=${CONFIG.key}`;
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Server Status: ${response.status}`);
-                }
-
-                const data = await response.json();
-                const text = data.candidates[0].content.parts[0].text.replace(/```json|```/g, "").trim();
-                const pred = JSON.parse(text);
-
-                // Success
-                displayPred(pred);
-                addHistoryRow(targetIssue, pred);
-                setStatus("2.5 FLASH LOCKED", "green");
-
-            } catch (err) {
-                console.error("AI Error:", err);
-                
-                if (attempt < 5) { // Retry up to 5 times
-                    setStatus(`AI BUSY... WAIT ${attempt}s`, "red");
-                    setTimeout(() => fetchGemini25(history, targetIssue, attempt + 1), 2000 * attempt);
-                } else {
-                    setStatus("AI FAILED", "red");
-                }
-            }
+            updateStatus("ALL AI BUSY - RETRYING", "red");
+            setTimeout(() => { lastProcessed = null; startEngine(); }, 2000); // Auto Retry
         }
 
-        // --- UI FUNCTIONS ---
-        function displayPred(data) {
-            const el = document.getElementById('p-main');
+        // --- 5. UI LOGIC ---
+        function showResult(data) {
+            const el = document.getElementById('p-text');
             el.innerText = data.p;
-            el.className = `main-pred ${data.p === 'BIG' ? 'text-green-500' : 'text-red-500'}`;
+            el.className = `main-text ${data.p === 'BIG' ? 'text-green-500' : 'text-red-500'}`;
             document.getElementById('n1').innerText = data.n[0];
             document.getElementById('n2').innerText = data.n[1];
         }
 
-        function addHistoryRow(issue, pred) {
-            historyData.unshift({
-                issue: issue,
-                pType: pred.p,
-                pNum: pred.n,
-                status: "wait",
-                resultVal: "..."
-            });
+        function addToTable(issue, pred) {
+            historyData.unshift({ issue: issue, p: pred.p, n: pred.n, status: "WAIT", res: "?" });
             if(historyData.length > 8) historyData.pop();
             renderTable();
         }
 
-        function finalizeRow(entry, result) {
-            const actualNum = parseInt(result.totalNumber);
-            const actualSize = actualNum >= 5 ? "BIG" : "SMALL";
-            const isWin = entry.pType === actualSize;
-            const isJackpot = entry.pNum.includes(actualNum);
+        function checkWin(entry, actual) {
+            const num = parseInt(actual.totalNumber);
+            const size = num >= 5 ? "BIG" : "SMALL";
+            const win = entry.p === size;
+            const jp = entry.n.includes(num);
 
-            entry.resultVal = `${actualNum} (${actualSize[0]})`;
+            entry.res = `${num} (${size[0]})`;
             
-            if (isWin && isJackpot) {
-                entry.status = "✅ 🎉";
-                stats.j++;
-                stats.w++;
-            } else if (isWin) {
-                entry.status = "✅";
-                stats.w++;
-            } else {
-                entry.status = "❌";
-                stats.l++;
-            }
+            if(win && jp) { entry.status = "✅ 🎉"; stats.w++; stats.j++; }
+            else if(win) { entry.status = "✅"; stats.w++; }
+            else { entry.status = "❌"; stats.l++; }
+
+            document.getElementById('w-val').innerText = stats.w;
+            document.getElementById('l-val').innerText = stats.l;
+            document.getElementById('j-val').innerText = stats.j;
             
-            updateStatsUI();
             renderTable();
         }
 
         function renderTable() {
-            const tbody = document.getElementById('history-body');
-            tbody.innerHTML = historyData.map(row => `
+            document.getElementById('history-rows').innerHTML = historyData.map(h => `
                 <tr class="border-b border-[#1a1a1a]">
-                    <td class="text-gray-400">#${row.issue.slice(-4)}</td>
-                    <td class="${row.pType === 'BIG' ? 'text-green-500' : 'text-red-500'} font-bold">${row.pType}</td>
-                    <td class="text-yellow-600 font-bold">${row.resultVal}</td>
-                    <td class="${row.status === 'wait' ? 'status-wait' : 'text-white'}">${row.status === 'wait' ? '⏳' : row.status}</td>
+                    <td class="text-gray-400">#${h.issue.slice(-4)}</td>
+                    <td class="${h.p === 'BIG' ? 'text-green-500' : 'text-red-500'} font-bold">${h.p}</td>
+                    <td class="text-yellow-500 font-bold">${h.res}</td>
+                    <td>${h.status}</td>
                 </tr>
             `).join('');
         }
 
-        function updateStatsUI() {
-            document.getElementById('s-win').innerText = stats.w;
-            document.getElementById('s-loss').innerText = stats.l;
-            document.getElementById('s-jp').innerText = stats.j;
-        }
-
-        function setStatus(msg, color) {
-            const dot = document.getElementById('sys-dot');
-            const txt = document.getElementById('sys-status');
-            txt.innerText = msg;
-            
-            // Color logic
-            let bg = 'bg-gray-500';
-            if(color === 'green') bg = 'bg-green-500 shadow-[0_0_10px_#00ff00]';
-            if(color === 'red') bg = 'bg-red-500';
-            if(color === 'yellow') bg = 'bg-yellow-500 animate-pulse';
-            
-            dot.className = `w-2 h-2 rounded-full ${bg}`;
+        function updateStatus(msg, color) {
+            const t = document.getElementById('sys-msg');
+            const d = document.getElementById('live-dot');
+            t.innerText = msg;
+            t.className = `text-[9px] font-bold text-${color}-500 uppercase`;
+            d.className = `w-2 h-2 rounded-full bg-${color}-500 ${color === 'green' || color === 'yellow' ? 'animate-pulse' : ''}`;
         }
 
         // Timer
         setInterval(() => {
             const s = new Date().getSeconds();
-            document.getElementById('timer').innerText = (60 - s) + "s";
-            if (s === 2) universalLoop(); // Auto-Sync at :02
+            document.getElementById('timer').innerText = (60-s)+"s";
+            if(s === 2) startEngine();
         }, 1000);
 
-        universalLoop(); // Start
+        startEngine();
+
     </script>
 </body>
 </html>
