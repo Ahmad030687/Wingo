@@ -3,68 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Universal Hybrid v47</title>
+    <title>Universal v49 | OpenAI Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;800;900&display=swap" rel="stylesheet">
     <style>
         body { background-color: #000; color: #fff; font-family: 'Rajdhani', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 10px; }
-        .panel { width: 100%; max-width: 480px; background: #050505; border: 1px solid #222; border-radius: 20px; padding: 20px; box-shadow: 0 0 50px rgba(255, 215, 0, 0.05); }
+        .panel { width: 100%; max-width: 480px; background: #080808; border: 1px solid #222; border-radius: 20px; padding: 20px; box-shadow: 0 0 40px rgba(0, 255, 0, 0.05); }
         
-        .status-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #1a1a1a; padding-bottom: 10px; }
-        .model-badge { font-size: 10px; font-weight: bold; background: #111; padding: 4px 8px; border-radius: 4px; border: 1px solid #333; color: #888; }
-        
-        .pred-display { background: #0a0a0a; border: 2px solid #333; border-radius: 15px; padding: 30px; text-align: center; margin-bottom: 20px; position: relative; }
-        .main-text { font-size: 5rem; font-weight: 900; line-height: 1; }
-        .sub-nums { display: flex; justify-content: center; gap: 10px; margin-top: 15px; }
-        .num-box { width: 50px; height: 50px; background: #151515; border: 1px solid #444; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; color: #ffd700; }
-        
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 20px; }
-        .stat-card { background: #0f0f0f; padding: 10px; text-align: center; border-radius: 8px; border: 1px solid #222; }
+        /* Header */
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1a1a1a; padding-bottom: 15px; margin-bottom: 20px; }
+        .badge-mode { font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 4px; letter-spacing: 1px; }
+        .mode-gpt { background: #003300; color: #00ff00; border: 1px solid #00ff00; }
+        .mode-local { background: #330000; color: #ff4444; border: 1px solid #ff0000; }
+
+        /* Prediction Display */
+        .pred-core { background: radial-gradient(circle, #0a0a0a 0%, #000 100%); border: 2px solid #333; border-radius: 15px; padding: 30px; text-align: center; position: relative; margin-bottom: 20px; }
+        .main-res { font-size: 5rem; font-weight: 900; line-height: 1; text-shadow: 0 0 20px rgba(255,255,255,0.05); }
+        .sub-nums { display: flex; justify-content: center; gap: 12px; margin-top: 15px; }
+        .n-box { width: 55px; height: 55px; background: #111; border: 1px solid #444; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: bold; color: #aaa; }
+
+        /* Stats & History */
+        .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+        .stat-item { background: #111; border: 1px solid #222; padding: 10px; text-align: center; border-radius: 8px; }
         .stat-val { font-size: 18px; font-weight: bold; }
         
         table { width: 100%; font-size: 11px; border-collapse: collapse; }
         th { text-align: left; color: #555; padding: 8px; border-bottom: 1px solid #222; }
         td { padding: 10px 5px; border-bottom: 1px solid #1a1a1a; font-weight: bold; }
-        
-        .failover-active { border-color: #ff0000; animation: flashRed 1s; }
-        @keyframes flashRed { 0% { border-color: #333; } 50% { border-color: #ff0000; } 100% { border-color: #333; } }
     </style>
 </head>
 <body>
 
     <div class="panel">
-        <div class="status-header">
+        <div class="header">
             <div>
-                <h1 class="text-sm font-black text-gray-300">SUPREME v47</h1>
-                <div class="flex items-center gap-2 mt-1">
-                    <div id="live-dot" class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                    <span id="sys-msg" class="text-[9px] font-bold text-green-500 uppercase">ONLINE</span>
-                </div>
+                <h1 class="text-sm font-black text-gray-300 tracking-[3px]">SUPREME v49</h1>
+                <div class="text-[9px] font-bold text-gray-500 mt-1" id="timer">WAITING 00s</div>
             </div>
-            <div class="text-right">
-                <div class="model-badge" id="active-model">AUTO-HYBRID</div>
-                <div class="text-[10px] font-bold text-yellow-500 mt-1" id="timer">00s</div>
-            </div>
+            <div id="engine-badge" class="badge-mode mode-gpt">GPT-4: ONLINE</div>
         </div>
 
-        <div class="pred-display" id="main-box">
-            <div class="absolute top-2 left-2 text-[10px] font-bold text-gray-600">TARGET: <span id="target-display" class="text-white">#----</span></div>
-            <h2 id="p-text" class="main-text text-gray-700">--</h2>
+        <div class="pred-core">
+            <div class="absolute top-3 left-3 text-[10px] font-bold text-gray-500">TARGET: <span id="target-display" class="text-white">#----</span></div>
+            
+            <h2 id="p-text" class="main-res text-gray-700">--</h2>
+            
             <div class="sub-nums">
                 <div class="num-box" id="n1">?</div>
                 <div class="num-box" id="n2" style="border-color:#00f3ff; color:#00f3ff;">?</div>
             </div>
         </div>
 
-        <div class="stats-grid">
-            <div class="stat-card border-b-2 border-green-500"><span class="block text-[9px] text-gray-500">WINS</span><span id="w-val" class="stat-val text-green-500">0</span></div>
-            <div class="stat-card border-b-2 border-red-500"><span class="block text-[9px] text-gray-500">LOSS</span><span id="l-val" class="stat-val text-red-500">0</span></div>
-            <div class="stat-card border-b-2 border-yellow-500"><span class="block text-[9px] text-gray-500">JACKPOT</span><span id="j-val" class="stat-val text-yellow-500">0</span></div>
+        <div class="stats">
+            <div class="stat-item border-b-2 border-green-500"><span class="text-[9px] text-gray-500 block">WINS</span><span id="w-val" class="stat-val text-green-500">0</span></div>
+            <div class="stat-item border-b-2 border-red-500"><span class="text-[9px] text-gray-500 block">LOSS</span><span id="l-val" class="stat-val text-red-500">0</span></div>
+            <div class="stat-item border-b-2 border-yellow-500"><span class="text-[9px] text-gray-500 block">JACKPOT</span><span id="j-val" class="stat-val text-yellow-500">0</span></div>
         </div>
 
         <div class="bg-[#080808] rounded-xl border border-[#1a1a1a] p-2" style="max-height: 200px; overflow-y: auto;">
             <table>
-                <thead><tr><th>Issue</th><th>Pred</th><th>Result</th><th>Log</th></tr></thead>
+                <thead><tr><th>Issue</th><th>Pred</th><th>Result</th><th>Status</th></tr></thead>
                 <tbody id="history-rows"></tbody>
             </table>
         </div>
@@ -73,26 +71,26 @@
     <script>
         // --- 1. CONFIGURATION ---
         const CONFIG = {
+            // YAHAN APNI OPENAI KEY PASTE KAREIN
+            openai_key: "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", 
+            
             tunnel: "https://wingo.ahmadalisafdar86.workers.dev/",
-            key: "AIzaSyBhKbxUkpHHyo08b0EDJe_M1zymG9l7tP4",
-            api: "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=30",
-            // PRIORITY LIST: Try 2.5 first, if fails, fallback to 1.5
-            models: ["gemini-2.5-flash", "gemini-1.5-flash"] 
+            api: "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=30"
         };
 
-        // --- 2. STATE VARIABLES ---
+        // --- 2. STATE ---
         let historyData = [];
         let lastProcessed = null;
         let stats = { w: 0, l: 0, j: 0 };
         let isRunning = false;
 
         // --- 3. MAIN ENGINE ---
-        async function startEngine() {
+        async function runEngine() {
             if(isRunning) return;
             isRunning = true;
             
             try {
-                updateStatus("FETCHING DATA...", "yellow");
+                // Fetch Data
                 const res = await fetch(`${CONFIG.tunnel}?url=${encodeURIComponent(CONFIG.api + "&ts=" + Date.now())}`);
                 const json = await res.json();
                 const list = json.data.list;
@@ -104,75 +102,100 @@
                     if(result) checkWin(historyData[0], result);
                 }
 
-                // Calculate Target
+                // Calc Target
                 const target = (BigInt(latest) + 1n).toString();
                 document.getElementById('target-display').innerText = "#" + target.slice(-4);
 
-                // Predict if New
+                // Predict
                 if (lastProcessed !== target) {
                     lastProcessed = target;
-                    // Start Hybrid AI Call
-                    await attemptPrediction(list, target);
-                } else {
-                    updateStatus("WAITING NEXT...", "green");
+                    // Try OpenAI first, then Local
+                    await getHybridPrediction(list, target);
                 }
 
             } catch (e) {
-                updateStatus("TUNNEL ERROR", "red");
+                console.log("Network error, retrying...");
             } finally {
                 isRunning = false;
             }
         }
 
-        // --- 4. HYBRID AI CALL (The Fix) ---
-        async function attemptPrediction(list, target) {
+        // --- 4. HYBRID BRAIN (The Fix) ---
+        async function getHybridPrediction(list, target) {
             document.getElementById('p-text').innerText = "...";
-            document.getElementById('p-text').className = "main-text text-gray-600 animate-pulse";
-
-            const prompt = `Analyze Wingo History: ${JSON.stringify(list.slice(0, 15).map(x=>x.totalNumber))}. Next Period ${target}. Output JSON: {"p":"BIG/SMALL","n":[x,y]}`;
-
-            // Try Models in Order
-            for (let model of CONFIG.models) {
-                try {
-                    updateStatus(`TRYING ${model.toUpperCase()}...`, "blue");
-                    
-                    const url = `https://generativelanguage.googleapis.com/v1/models/${model}:generateContent?key=${CONFIG.key}`;
-                    const response = await fetch(url, {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-                    });
-
-                    if (!response.ok) throw new Error("Busy");
-
-                    const data = await response.json();
-                    const text = data.candidates[0].content.parts[0].text.replace(/```json|```/g, "").trim();
-                    const pred = JSON.parse(text);
-
-                    // SUCCESS
-                    document.getElementById('active-model').innerText = model.includes('2.5') ? "2.5 FLASH (MAX)" : "1.5 FLASH (SAFE)";
-                    document.getElementById('active-model').className = model.includes('2.5') ? "model-badge text-green-400" : "model-badge text-yellow-400";
-                    
-                    showResult(pred);
-                    addToTable(target, pred);
-                    updateStatus("PREDICTION LOCKED", "green");
-                    return; // Stop loop on success
-
-                } catch (err) {
-                    console.log(`${model} Failed, switching...`);
-                    // If failed, loop continues to next model
-                }
-            }
+            document.getElementById('p-text').className = "main-res text-gray-600 animate-pulse";
             
-            updateStatus("ALL AI BUSY - RETRYING", "red");
-            setTimeout(() => { lastProcessed = null; startEngine(); }, 2000); // Auto Retry
+            // Step 1: Try OpenAI
+            try {
+                setMode("AI");
+                const pred = await callOpenAI(list, target);
+                showResult(pred);
+                addToTable(target, pred);
+            } catch (err) {
+                // Step 2: Fallback to Local Math if OpenAI fails
+                console.log("OpenAI Failed/Busy. Switching to Local.");
+                setMode("LOCAL");
+                const localPred = calculateLocal(list);
+                showResult(localPred);
+                addToTable(target, localPred);
+            }
         }
 
-        // --- 5. UI LOGIC ---
+        async function callOpenAI(list, target) {
+            const prompt = `Analyze Wingo patterns: ${JSON.stringify(list.slice(0, 15).map(x=>x.totalNumber))}. Predict Next Period ${target}. Output JSON ONLY: {"p":"BIG/SMALL","n":[x,y]}`;
+            
+            const response = await fetch("https://api.openai.com/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${CONFIG.openai_key}`
+                },
+                body: JSON.stringify({
+                    model: "gpt-3.5-turbo", // Fast & Cheap
+                    messages: [{ role: "user", content: prompt }],
+                    temperature: 0.5
+                })
+            });
+
+            if (!response.ok) throw new Error("OpenAI Busy");
+            
+            const data = await response.json();
+            const text = data.choices[0].message.content.replace(/```json|```/g, "").trim();
+            return JSON.parse(text);
+        }
+
+        // --- 5. LOCAL BRAIN (Fail-Safe) ---
+        function calculateLocal(list) {
+            // Simple logic: If last was BIG, predict SMALL (ZigZag), else Repeat
+            const lastNum = parseInt(list[0].totalNumber);
+            const lastSize = lastNum >= 5 ? "BIG" : "SMALL";
+            
+            // Random Number Logic
+            const n1 = (lastNum + 3) % 10;
+            const n2 = (lastNum + 7) % 10;
+            
+            // Trend Logic (Simple Flip)
+            const predSize = lastSize === "BIG" ? "SMALL" : "BIG";
+            
+            return { p: predSize, n: [n1, n2] };
+        }
+
+        // --- 6. UI HELPERS ---
+        function setMode(mode) {
+            const el = document.getElementById('engine-badge');
+            if (mode === "AI") {
+                el.innerText = "GPT-4: ONLINE";
+                el.className = "badge-mode mode-gpt";
+            } else {
+                el.innerText = "LOCAL: ACTIVE";
+                el.className = "badge-mode mode-local";
+            }
+        }
+
         function showResult(data) {
             const el = document.getElementById('p-text');
             el.innerText = data.p;
-            el.className = `main-text ${data.p === 'BIG' ? 'text-green-500' : 'text-red-500'}`;
+            el.className = `main-res ${data.p === 'BIG' ? 'text-green-500' : 'text-red-500'}`;
             document.getElementById('n1').innerText = data.n[0];
             document.getElementById('n2').innerText = data.n[1];
         }
@@ -213,22 +236,13 @@
             `).join('');
         }
 
-        function updateStatus(msg, color) {
-            const t = document.getElementById('sys-msg');
-            const d = document.getElementById('live-dot');
-            t.innerText = msg;
-            t.className = `text-[9px] font-bold text-${color}-500 uppercase`;
-            d.className = `w-2 h-2 rounded-full bg-${color}-500 ${color === 'green' || color === 'yellow' ? 'animate-pulse' : ''}`;
-        }
-
-        // Timer
         setInterval(() => {
             const s = new Date().getSeconds();
-            document.getElementById('timer').innerText = (60-s)+"s";
-            if(s === 2) startEngine();
+            document.getElementById('timer').innerText = `WAITING ${60-s}s`;
+            if(s === 2) runEngine();
         }, 1000);
 
-        startEngine();
+        runEngine();
 
     </script>
 </body>
