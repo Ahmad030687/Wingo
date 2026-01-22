@@ -2,81 +2,115 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>DARKNET | TURBO SNIPER</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DARKNET COMMANDER | 2K PRO EDITION</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
-:root { --green: #00ff9c; --red: #ff2b2b; --bg: #050505; --card: #111; }
-body { background: var(--bg); color: #fff; font-family: 'Segoe UI', sans-serif; text-align: center; margin: 0; padding-bottom: 80px; }
+:root { --primary: #00ff9c; --red: #ff3e3e; --bg: #050505; --card: #0d0d0d; --glow: 0 0 20px rgba(0,255,156,0.3); }
+* { margin:0; padding:0; box-sizing:border-box; font-family: 'Rajdhani', sans-serif; }
+body { background: var(--bg); color: #fff; text-align: center; padding-bottom: 100px; overflow-x: hidden; }
 
-header { padding: 15px; background: #000; border-bottom: 2px solid var(--green); font-weight: 900; letter-spacing: 2px; box-shadow: 0 0 20px rgba(0,255,156,0.3); }
+/* ADMIN UI HEADER */
+header { padding: 20px; background: #000; border-bottom: 2px solid var(--primary); font-family: 'Orbitron'; letter-spacing: 3px; font-weight: 900; box-shadow: 0 0 25px rgba(0,255,156,0.2); font-size: 20px; text-transform: uppercase; }
 
-.turbo-card {
-    margin: 15px; padding: 25px; border-radius: 20px;
-    background: linear-gradient(135deg, #111, #000);
-    border: 1px solid var(--green); position: relative;
-    box-shadow: 0 0 15px rgba(0,255,156,0.1);
+/* SUPREME DASHBOARD */
+.commander-box {
+    margin: 20px; padding: 30px 15px; border-radius: 25px;
+    background: radial-gradient(circle at center, #151515, #000);
+    border: 1px solid rgba(0,255,156,0.5); position: relative;
+    box-shadow: 0 0 40px rgba(0,0,0,1);
 }
+.timer-chip { position: absolute; top: 15px; right: 20px; background: #000; border: 1px solid #fff; padding: 2px 10px; border-radius: 8px; font-weight: 900; font-family: 'Orbitron'; font-size: 18px; }
 
-.timer-ring { position: absolute; top: 10px; right: 15px; border: 2px solid #fff; padding: 2px 8px; border-radius: 8px; font-weight: bold; }
+.status-label { font-size: 10px; color: var(--primary); letter-spacing: 3px; font-weight: bold; margin-bottom: 10px; text-transform: uppercase; }
 
-.signal-main { font-size: 55px; font-weight: 900; margin: 15px 0; text-transform: uppercase; }
-.signal-main.BIG, .signal-main.GREEN { color: var(--green); text-shadow: 0 0 25px var(--green); }
-.signal-main.SMALL, .signal-main.RED { color: var(--red); text-shadow: 0 0 25px var(--red); }
+/* PREDICTION MAIN */
+.signal-type { font-size: 14px; color: #888; margin-top: 20px; font-weight: 700; letter-spacing: 2px; }
+.signal-main { font-family: 'Orbitron'; font-size: 60px; font-weight: 900; margin: 10px 0; text-transform: uppercase; line-height: 1; transition: 0.3s; }
+.signal-main.BIG, .signal-main.GREEN { color: var(--primary); text-shadow: 0 0 30px var(--primary); }
+.signal-main.SMALL, .signal-main.RED { color: var(--red); text-shadow: 0 0 30px var(--red); }
 
-.mode-info { font-size: 10px; color: var(--green); letter-spacing: 2px; font-weight: bold; }
+/* STAGE INDICATOR */
+.stage-tag { display: inline-block; background: #222; padding: 5px 20px; border-radius: 50px; font-size: 12px; font-weight: 900; color: #fff; margin-bottom: 20px; border: 1px solid #444; }
+.stage-tag.L2 { background: #ff9800; border-color: #fff; animation: blink 1s infinite; }
 
-.history-strip { padding: 0 15px; }
-.h-item { background: var(--card); padding: 12px; margin-bottom: 8px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid #333; }
-.h-item.win { border-left-color: var(--green); }
-.h-item.loss { border-left-color: var(--red); }
+/* JACKPOT ROW */
+.jackpot-row { display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 15px; padding-top: 15px; border-top: 1px solid #222; }
+.ball { width: 35px; height: 35px; border-radius: 50%; background: #fff; color: #000; line-height: 35px; font-weight: 900; font-family: 'Orbitron'; box-shadow: 0 0 10px #fff; }
 
-nav { position: fixed; bottom: 0; width: 100%; background: #000; display: flex; justify-content: space-around; padding: 18px 0; border-top: 1px solid #222; }
-nav i { font-size: 24px; color: #444; }
-nav i.active { color: var(--green); }
+/* HISTORY CARDS */
+.history-container { padding: 0 15px; }
+.h-card { background: var(--card); padding: 15px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border-left: 6px solid #333; }
+.h-card.win { border-left-color: var(--primary); background: linear-gradient(90deg, rgba(0,255,156,0.1), transparent); }
+.h-card.loss { border-left-color: var(--red); background: linear-gradient(90deg, rgba(255,62,62,0.1), transparent); }
+
+/* NAVIGATION */
+nav { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 1px solid #333; display: flex; justify-content: space-around; padding: 20px 0; z-index: 1000; }
+nav i { font-size: 24px; color: #444; cursor: pointer; transition: 0.3s; }
+nav i.active { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
+
+@keyframes blink { 50% { opacity: 0.5; } }
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
 </style>
 </head>
 <body>
 
-<header>DARKNET TURBO</header>
+<header>COMMANDER SUPREME</header>
 
-<div class="turbo-card">
-    <div class="timer-ring"><span id="timer">00</span>s</div>
-    <div style="font-size: 11px; color: #666; margin-bottom: 15px;">TARGET PERIOD: <span id="target-id">----</span></div>
+<div class="commander-box" id="main-ui">
+    <div class="timer-chip" id="timer">00</div>
+    <div class="status-label">DATA SOURCE: SECURE API</div>
     
-    <div class="mode-info" id="mode-text">LIVE STREAM ACTIVE</div>
-    <div class="signal-main" id="signal">SCANNING</div>
+    <div style="font-size: 12px; color: #555; margin-top: 10px;">PERIOD: <span id="period">----</span></div>
     
-    <div style="font-size: 13px; color: #888; border-top: 1px solid #222; padding-top: 15px;">
-        JACKPOT: <b id="seeds" style="color:#fff">-- , --</b>
+    <div class="signal-type" id="sig-type">ANALYZING TREND...</div>
+    <div class="signal-main" id="prediction">SCANNING</div>
+    
+    <div class="stage-tag" id="stage-info">STAGE 1: SAFE</div>
+    
+    <div class="jackpot-row">
+        <span style="font-size: 11px; font-weight: 900; color: #888;">JACKPOT NUMBERS</span>
+        <div class="ball" id="n1">-</div>
+        <div class="ball" id="n2">-</div>
     </div>
 </div>
 
-<div style="display:flex; justify-content: space-between; margin: 0 20px 15px; font-size: 13px;">
-    <span style="color:var(--green)">SUCCESS: <span id="wins">0</span></span>
-    <span style="color:var(--red)">FAILED: <span id="loss">0</span></span>
+<div style="display: flex; justify-content: space-between; margin: 0 20px 15px; font-weight: 900; font-size: 14px;">
+    <span style="color:var(--primary)">WINS: <span id="w-stat">0</span></span>
+    <span style="color:var(--red)">LOSS: <span id="l-stat">0</span></span>
 </div>
 
-<div class="history-strip" id="history"></div>
+<div class="history-container" id="history-area"></div>
 
 <nav>
-    <i class="fa-solid fa-bolt-lightning active"></i>
-    <i class="fa-solid fa-rotate-right" onclick="location.reload()"></i>
-    <i class="fa-solid fa-shield-halved" onclick="localStorage.clear(); location.reload();"></i>
+    <i class="fa-solid fa-crown active"></i>
+    <i class="fa-solid fa-rotate" onclick="location.reload()"></i>
+    <i class="fa-solid fa-shield-check" onclick="localStorage.clear(); location.reload();"></i>
+    <i class="fa-solid fa-user-group"></i>
 </nav>
 
 <script>
+    // --- FIREBASE CONFIG ---
     const firebaseConfig = { apiKey: "AIzaSyA8qJ3qJl5fzbOBKopx99zsACkEGofbfyY", authDomain: "admin-91a73.firebaseapp.com", databaseURL: "https://admin-91a73-default-rtdb.firebaseio.com", projectId: "admin-91a73", storageBucket: "admin-91a73.firebasestorage.app", messagingSenderId: "153529788738", appId: "1:153529788738:web:65363636579881912940db", measurementId: "G-N4T0HV7ER1" };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    let historyData = JSON.parse(localStorage.getItem('turbo_hist')) || [];
-    let stats = JSON.parse(localStorage.getItem('turbo_stats')) || { w:0, l:0 };
-    let lastIssue = null;
+    // --- SYSTEM STATE ---
+    let history = JSON.parse(localStorage.getItem('cmd_hist')) || [];
+    let stats = JSON.parse(localStorage.getItem('cmd_stats')) || { w:0, l:0 };
+    let lossStreak = parseInt(localStorage.getItem('cmd_streak')) || 0;
+    let lastProcessedIssue = null;
+
+    function save() {
+        localStorage.setItem('cmd_hist', JSON.stringify(history));
+        localStorage.setItem('cmd_stats', JSON.stringify(stats));
+        localStorage.setItem('cmd_streak', lossStreak);
+    }
 
     async function engine() {
         try {
@@ -89,63 +123,113 @@ nav i.active { color: var(--green); }
             const size = num >= 5 ? 'BIG' : 'SMALL';
             const color = (num === 0 || num === 2 || num === 4 || num === 6 || num === 8) ? 'RED' : 'GREEN';
 
-            if (historyData.length > 0 && historyData[0].status === 'pending' && historyData[0].issue === issue) {
-                const win = (historyData[0].pred === size || historyData[0].pred === color);
-                historyData[0].status = win ? 'win' : 'loss';
-                historyData[0].res = `${num} (${size.charAt(0)})`;
-                if(win) stats.w++; else stats.l++;
+            // 1. CONFIRM RESULT
+            if (history.length > 0 && history[0].status === 'pending' && history[0].issue === issue) {
+                let win = false;
+                if(history[0].type === 'SIZE') win = (history[0].pred === size);
+                else win = (history[0].pred === color);
+
+                if(win) {
+                    history[0].status = 'win';
+                    stats.w++;
+                    lossStreak = 0;
+                } else {
+                    history[0].status = 'loss';
+                    stats.l++;
+                    lossStreak++;
+                }
+                history[0].res = `${num} (${size.charAt(0)})`;
                 save(); render();
             }
 
-            if (lastIssue !== issue) {
-                lastIssue = issue;
+            // 2. GENERATE OMNI SIGNAL
+            if (lastProcessedIssue !== issue) {
+                lastProcessedIssue = issue;
                 const nextIssue = (BigInt(issue)+1n).toString();
                 
-                // TURBO LOGIC: Direct Trend Sync
-                // Agar pichla round loss tha, to strategy reverse kardo (Cut)
-                let prevWin = historyData.length > 0 ? (historyData[0].status === 'win') : true;
-                let pred = "";
-                let mode = "";
-
-                if(prevWin) {
-                    pred = size; // Follow trend
-                    mode = "TREND FLOWING";
-                } else {
-                    pred = (size === 'BIG') ? 'SMALL' : 'BIG'; // Cut trend
-                    mode = "L2 RECOVERY ACTIVE";
+                // --- THE ADMIN ALGORITHM ---
+                // Identify the strongest trend in last 10 rounds
+                let sizeCount = 0; let colorCount = 0;
+                for(let i=0; i<5; i++) {
+                    if((parseInt(list[i].number) >= 5 ? 'BIG':'SMALL') === (num >= 5 ? 'BIG':'SMALL')) sizeCount++;
+                    if(((parseInt(list[i].number) % 2 === 0) ? 'RED':'GREEN') === color) colorCount++;
                 }
 
-                historyData.unshift({ issue: nextIssue, pred: pred, status: 'pending' });
+                let finalPred = ""; let finalType = "";
                 
-                document.getElementById('signal').innerText = pred;
-                document.getElementById('signal').className = "signal-main " + pred;
-                document.getElementById('mode-text').innerText = mode;
-                document.getElementById('target-id').innerText = nextIssue.slice(-4);
-                document.getElementById('seeds').innerText = `${(num+5)%10} , ${(num+3)%10}`;
+                // If 2 loss streak, activate L3 Fixer (Force Flip)
+                if (lossStreak >= 2) {
+                    finalPred = (size === 'BIG') ? 'SMALL' : 'BIG';
+                    finalType = 'SIZE';
+                } else {
+                    // Hybrid Selection: Which trend is more stable?
+                    if (colorCount >= sizeCount) {
+                        finalPred = color;
+                        finalType = 'COLOR';
+                    } else {
+                        finalPred = size;
+                        finalType = 'SIZE';
+                    }
+                }
 
-                if(historyData.length > 25) historyData.pop();
+                history.unshift({ issue: nextIssue, pred: finalPred, type: finalType, status: 'pending' });
+                if(history.length > 30) history.pop();
+                
+                updateMainUI(finalPred, finalType, nextIssue, num);
                 save(); render();
             }
         } catch(e) {}
     }
 
+    function updateMainUI(pred, type, issue, lastNum) {
+        const pEl = document.getElementById('prediction');
+        const tEl = document.getElementById('period');
+        const sEl = document.getElementById('sig-type');
+        const stEl = document.getElementById('stage-info');
+
+        tEl.innerText = issue.slice(-4);
+        pEl.innerText = pred;
+        pEl.className = "signal-main " + pred;
+        sEl.innerText = "COMMANDER " + type + " SIGNAL";
+
+        // Update Stage for confidence
+        if(lossStreak === 0) {
+            stEl.innerText = "STAGE 1: HIGH CONFIDENCE";
+            stEl.className = "stage-tag";
+        } else {
+            stEl.innerText = `STAGE ${lossStreak + 1}: RECOVERY MODE`;
+            stEl.className = "stage-tag L2";
+        }
+
+        document.getElementById('n1').innerText = (lastNum + 5) % 10;
+        document.getElementById('n2').innerText = (lastNum + 3) % 10;
+    }
+
     function render() {
-        document.getElementById('wins').innerText = stats.w;
-        document.getElementById('loss').innerText = stats.l;
-        document.getElementById('history').innerHTML = historyData.map(h => {
+        document.getElementById('w-stat').innerText = stats.w;
+        document.getElementById('l-stat').innerText = stats.l;
+        document.getElementById('history-area').innerHTML = history.map(h => {
             if(h.status === 'pending') return '';
-            return `<div class="h-item ${h.status}"><span>#${h.issue.slice(-4)}</span><b>${h.pred}</b><span>${h.res}</span></div>`;
+            const clr = h.status === 'win' ? 'var(--primary)' : 'var(--red)';
+            return `
+                <div class="h-card ${h.status}">
+                    <div style="text-align:left">
+                        <div style="font-size:10px; color:#555">#${h.issue.slice(-4)}</div>
+                        <div style="font-weight:900; color:${clr}">${h.pred}</div>
+                    </div>
+                    <div style="font-weight:bold; font-size:14px">${h.res || '?'}</div>
+                </div>
+            `;
         }).join('');
     }
 
-    function save() { localStorage.setItem('turbo_hist', JSON.stringify(historyData)); localStorage.setItem('turbo_stats', JSON.stringify(stats)); }
-
     setInterval(() => {
         const s = 60 - new Date().getSeconds();
-        document.getElementById('timer').innerText = s < 10 ? '0'+s : s;
+        document.getElementById('timer').innerText = s.toString().padStart(2, '0');
         if(s === 1 || s === 59) engine();
     }, 1000);
-    engine();
+
+    engine(); render();
 </script>
 </body>
 </html>
