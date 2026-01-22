@@ -99,11 +99,21 @@
         const db = firebase.database();
 
         let activeTab = 'terminal';
-        let history = []; 
-        let stats = { win: 0, loss: 0, jack: 0, double: 0 };
+
+        // --- LOAD DATA FROM LOCALSTORAGE ---
+        // Agar pehle se data saved hai to wahan se uthao, warna naya banao
+        let history = JSON.parse(localStorage.getItem('bot_history')) || []; 
+        let stats = JSON.parse(localStorage.getItem('bot_stats')) || { win: 0, loss: 0, jack: 0, double: 0 };
+        
         let lastFetchedIssue = null;
         let lastSavedIssue = null;
         let currentPred = { p: "WAIT", n: ["?", "?"], period: "----", m: "SYNCING" };
+
+        // --- AUTO SAVE FUNCTION ---
+        function saveData() {
+            localStorage.setItem('bot_history', JSON.stringify(history));
+            localStorage.setItem('bot_stats', JSON.stringify(stats));
+        }
 
         async function syncToFirebase(data) {
             try {
@@ -119,30 +129,22 @@
             const lastNum = parseInt(recent[0].number);
             const lastSize = lastNum >= 5 ? 'BIG' : 'SMALL';
             
-            // 1. TIME SEED (The Secret)
             const d = new Date();
-            const timeSeed = d.getHours() + d.getMinutes(); // Simple time factor
+            const timeSeed = d.getHours() + d.getMinutes(); 
             
-            // 2. CHECK L1 STATUS
-            // Agar pichla loss tha, to strategy aggressive karo (L2 Fixer)
             let isL2 = !lastWin;
-
             let pred = "";
             let method = "";
 
             if(isL2) {
-                // *** L2 FIXER (TIME INVERSE) ***
-                // Time based reversal logic
                 if (timeSeed % 2 === 0) {
-                     pred = lastSize === 'BIG' ? 'SMALL' : 'BIG'; // Reverse Trend
+                     pred = lastSize === 'BIG' ? 'SMALL' : 'BIG'; 
                      method = "TIME REVERSE L2";
                 } else {
-                     pred = lastSize; // Follow Trend
+                     pred = lastSize; 
                      method = "TIME FLOW L2";
                 }
             } else {
-                // *** L1 STANDARD (TIME SYNC) ***
-                // Sirf tab trade lo jab Time aur Trend match karein
                 let trendDirection = lastSize; 
                 let timeDirection = (timeSeed % 2 !== 0) ? 'BIG' : 'SMALL';
                 
@@ -150,11 +152,10 @@
                     pred = trendDirection;
                     method = "TIME+TREND SYNC";
                 } else {
-                    return null; // SKIP ROUND (WAIT)
+                    return null; 
                 }
             }
 
-            // JACKPOT (Time Offset)
             let n1 = (lastNum + d.getMinutes()) % 10; 
             let n2 = (lastNum + 7) % 10;
 
@@ -170,7 +171,6 @@
                 const issue = latest.issueNumber;
                 const num = parseInt(latest.number);
 
-                // Auto Write
                 if(lastSavedIssue !== issue) {
                     lastSavedIssue = issue;
                     syncToFirebase({ issueNumber: issue, number: num, size: num>=5?'BIG':'SMALL', time: Date.now() });
@@ -192,6 +192,9 @@
                         history[0].status = 'loss'; stats.loss++;
                     }
                     history[0].result = num;
+                    
+                    // --- SAVE DATA AFTER RESULT ---
+                    saveData();
                     renderView();
                 }
 
@@ -200,7 +203,6 @@
                     lastFetchedIssue = issue;
                     const next = (BigInt(issue) + 1n).toString();
                     
-                    // Pass Win/Loss status to Engine for L2 Fixer
                     let prevWinState = history.length > 0 ? (history[0].status === 'win' || history[0].status === 'double') : true;
                     
                     const logic = calculateTimeStrategy(list, prevWinState);
@@ -213,6 +215,9 @@
                     }
                     
                     if(history.length > 20) history.pop();
+                    
+                    // --- SAVE DATA AFTER PREDICTION ---
+                    saveData();
                     renderView();
                 }
             } catch(e) {}
@@ -297,6 +302,12 @@
         }
 
         function setTheme(t) { document.body.className = t; }
+        
+        // Reset Function (Optional: Console mein run karein 'clearData()' agar data delete karna ho)
+        function clearData() {
+            localStorage.clear();
+            location.reload();
+        }
 
         setInterval(() => {
             const s = 60 - new Date().getSeconds();
