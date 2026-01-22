@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>DARKNET COMMANDER | 2K PRO EDITION</title>
+<title>COMMANDER SUPREME | V2 ANTI-CHOP</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -15,12 +15,15 @@
 * { margin:0; padding:0; box-sizing:border-box; font-family: 'Rajdhani', sans-serif; }
 body { background: var(--bg); color: #fff; text-align: center; padding-bottom: 100px; overflow-x: hidden; }
 
-/* ADMIN UI HEADER */
-header { padding: 20px; background: #000; border-bottom: 2px solid var(--primary); font-family: 'Orbitron'; letter-spacing: 3px; font-weight: 900; box-shadow: 0 0 25px rgba(0,255,156,0.2); font-size: 20px; text-transform: uppercase; }
+header { padding: 20px; background: #000; border-bottom: 2px solid var(--primary); font-family: 'Orbitron'; letter-spacing: 3px; font-weight: 900; box-shadow: 0 0 25px rgba(0,255,156,0.2); font-size: 20px; }
 
-/* SUPREME DASHBOARD */
+/* SCANNING BAR */
+.scan-container { width: 100%; height: 4px; background: #111; position: relative; overflow: hidden; }
+.scan-bar { height: 100%; width: 30%; background: var(--primary); position: absolute; animation: scanMove 2s linear infinite; box-shadow: 0 0 10px var(--primary); }
+@keyframes scanMove { 0% { left: -30%; } 100% { left: 100%; } }
+
 .commander-box {
-    margin: 20px; padding: 30px 15px; border-radius: 25px;
+    margin: 20px; padding: 35px 15px; border-radius: 25px;
     background: radial-gradient(circle at center, #151515, #000);
     border: 1px solid rgba(0,255,156,0.5); position: relative;
     box-shadow: 0 0 40px rgba(0,0,0,1);
@@ -29,46 +32,40 @@ header { padding: 20px; background: #000; border-bottom: 2px solid var(--primary
 
 .status-label { font-size: 10px; color: var(--primary); letter-spacing: 3px; font-weight: bold; margin-bottom: 10px; text-transform: uppercase; }
 
-/* PREDICTION MAIN */
 .signal-type { font-size: 14px; color: #888; margin-top: 20px; font-weight: 700; letter-spacing: 2px; }
-.signal-main { font-family: 'Orbitron'; font-size: 60px; font-weight: 900; margin: 10px 0; text-transform: uppercase; line-height: 1; transition: 0.3s; }
+.signal-main { font-family: 'Orbitron'; font-size: 65px; font-weight: 900; margin: 10px 0; text-transform: uppercase; line-height: 1; transition: 0.3s; }
 .signal-main.BIG, .signal-main.GREEN { color: var(--primary); text-shadow: 0 0 30px var(--primary); }
 .signal-main.SMALL, .signal-main.RED { color: var(--red); text-shadow: 0 0 30px var(--red); }
 
-/* STAGE INDICATOR */
 .stage-tag { display: inline-block; background: #222; padding: 5px 20px; border-radius: 50px; font-size: 12px; font-weight: 900; color: #fff; margin-bottom: 20px; border: 1px solid #444; }
 .stage-tag.L2 { background: #ff9800; border-color: #fff; animation: blink 1s infinite; }
 
-/* JACKPOT ROW */
 .jackpot-row { display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 15px; padding-top: 15px; border-top: 1px solid #222; }
 .ball { width: 35px; height: 35px; border-radius: 50%; background: #fff; color: #000; line-height: 35px; font-weight: 900; font-family: 'Orbitron'; box-shadow: 0 0 10px #fff; }
 
-/* HISTORY CARDS */
-.history-container { padding: 0 15px; }
-.h-card { background: var(--card); padding: 15px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border-left: 6px solid #333; }
+.h-card { background: var(--card); padding: 15px; border-radius: 15px; margin: 10px 15px; display: flex; justify-content: space-between; align-items: center; border-left: 6px solid #333; }
 .h-card.win { border-left-color: var(--primary); background: linear-gradient(90deg, rgba(0,255,156,0.1), transparent); }
 .h-card.loss { border-left-color: var(--red); background: linear-gradient(90deg, rgba(255,62,62,0.1), transparent); }
 
-/* NAVIGATION */
 nav { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 1px solid #333; display: flex; justify-content: space-around; padding: 20px 0; z-index: 1000; }
-nav i { font-size: 24px; color: #444; cursor: pointer; transition: 0.3s; }
+nav i { font-size: 24px; color: #444; }
 nav i.active { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
 
 @keyframes blink { 50% { opacity: 0.5; } }
-@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
 </style>
 </head>
 <body>
 
-<header>COMMANDER SUPREME</header>
+<header>COMMANDER SUPREME V2</header>
+<div class="scan-container"><div class="scan-bar"></div></div>
 
-<div class="commander-box" id="main-ui">
+<div class="commander-box">
     <div class="timer-chip" id="timer">00</div>
-    <div class="status-label">DATA SOURCE: SECURE API</div>
+    <div class="status-label">AI ENGINE: ANTI-CHOP ACTIVE</div>
     
     <div style="font-size: 12px; color: #555; margin-top: 10px;">PERIOD: <span id="period">----</span></div>
     
-    <div class="signal-type" id="sig-type">ANALYZING TREND...</div>
+    <div class="signal-type" id="sig-type">SCANNING TREND...</div>
     <div class="signal-main" id="prediction">SCANNING</div>
     
     <div class="stage-tag" id="stage-info">STAGE 1: SAFE</div>
@@ -80,36 +77,33 @@ nav i.active { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
     </div>
 </div>
 
-<div style="display: flex; justify-content: space-between; margin: 0 20px 15px; font-weight: 900; font-size: 14px;">
+<div style="display: flex; justify-content: space-between; margin: 0 20px 15px; font-weight: 900;">
     <span style="color:var(--primary)">WINS: <span id="w-stat">0</span></span>
     <span style="color:var(--red)">LOSS: <span id="l-stat">0</span></span>
 </div>
 
-<div class="history-container" id="history-area"></div>
+<div id="history-area"></div>
 
 <nav>
     <i class="fa-solid fa-crown active"></i>
     <i class="fa-solid fa-rotate" onclick="location.reload()"></i>
     <i class="fa-solid fa-shield-check" onclick="localStorage.clear(); location.reload();"></i>
-    <i class="fa-solid fa-user-group"></i>
 </nav>
 
 <script>
-    // --- FIREBASE CONFIG ---
     const firebaseConfig = { apiKey: "AIzaSyA8qJ3qJl5fzbOBKopx99zsACkEGofbfyY", authDomain: "admin-91a73.firebaseapp.com", databaseURL: "https://admin-91a73-default-rtdb.firebaseio.com", projectId: "admin-91a73", storageBucket: "admin-91a73.firebasestorage.app", messagingSenderId: "153529788738", appId: "1:153529788738:web:65363636579881912940db", measurementId: "G-N4T0HV7ER1" };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // --- SYSTEM STATE ---
-    let history = JSON.parse(localStorage.getItem('cmd_hist')) || [];
-    let stats = JSON.parse(localStorage.getItem('cmd_stats')) || { w:0, l:0 };
-    let lossStreak = parseInt(localStorage.getItem('cmd_streak')) || 0;
+    let history = JSON.parse(localStorage.getItem('cmd_v2_hist')) || [];
+    let stats = JSON.parse(localStorage.getItem('cmd_v2_stats')) || { w:0, l:0 };
+    let lossStreak = parseInt(localStorage.getItem('cmd_v2_streak')) || 0;
     let lastProcessedIssue = null;
 
     function save() {
-        localStorage.setItem('cmd_hist', JSON.stringify(history));
-        localStorage.setItem('cmd_stats', JSON.stringify(stats));
-        localStorage.setItem('cmd_streak', lossStreak);
+        localStorage.setItem('cmd_v2_hist', JSON.stringify(history));
+        localStorage.setItem('cmd_v2_stats', JSON.stringify(stats));
+        localStorage.setItem('cmd_v2_streak', lossStreak);
     }
 
     async function engine() {
@@ -123,57 +117,44 @@ nav i.active { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
             const size = num >= 5 ? 'BIG' : 'SMALL';
             const color = (num === 0 || num === 2 || num === 4 || num === 6 || num === 8) ? 'RED' : 'GREEN';
 
-            // 1. CONFIRM RESULT
             if (history.length > 0 && history[0].status === 'pending' && history[0].issue === issue) {
-                let win = false;
-                if(history[0].type === 'SIZE') win = (history[0].pred === size);
-                else win = (history[0].pred === color);
-
-                if(win) {
-                    history[0].status = 'win';
-                    stats.w++;
-                    lossStreak = 0;
-                } else {
-                    history[0].status = 'loss';
-                    stats.l++;
-                    lossStreak++;
-                }
+                let win = history[0].type === 'SIZE' ? (history[0].pred === size) : (history[0].pred === color);
+                if(win) { history[0].status = 'win'; stats.w++; lossStreak = 0; }
+                else { history[0].status = 'loss'; stats.l++; lossStreak++; }
                 history[0].res = `${num} (${size.charAt(0)})`;
                 save(); render();
             }
 
-            // 2. GENERATE OMNI SIGNAL
             if (lastProcessedIssue !== issue) {
                 lastProcessedIssue = issue;
                 const nextIssue = (BigInt(issue)+1n).toString();
                 
-                // --- THE ADMIN ALGORITHM ---
-                // Identify the strongest trend in last 10 rounds
-                let sizeCount = 0; let colorCount = 0;
+                // --- ANTI-CHOP LOGIC ---
+                let sCount = 0; let cCount = 0;
                 for(let i=0; i<5; i++) {
-                    if((parseInt(list[i].number) >= 5 ? 'BIG':'SMALL') === (num >= 5 ? 'BIG':'SMALL')) sizeCount++;
-                    if(((parseInt(list[i].number) % 2 === 0) ? 'RED':'GREEN') === color) colorCount++;
+                    if((parseInt(list[i].number) >= 5 ? 'BIG':'SMALL') === (num >= 5 ? 'BIG':'SMALL')) sCount++;
+                    if(((parseInt(list[i].number) % 2 === 0) ? 'RED':'GREEN') === color) cCount++;
                 }
 
                 let finalPred = ""; let finalType = "";
                 
-                // If 2 loss streak, activate L3 Fixer (Force Flip)
-                if (lossStreak >= 2) {
-                    finalPred = (size === 'BIG') ? 'SMALL' : 'BIG';
+                // Advanced Stage Control
+                if (lossStreak >= 1) {
+                    // Level 2+ Recovery: Force flip if zigzag detected
+                    let isZigzag = (parseInt(list[0].number) >= 5) !== (parseInt(list[1].number) >= 5);
+                    if(isZigzag) {
+                        finalPred = (size === 'BIG') ? 'BIG' : 'SMALL'; // Follow the flip
+                    } else {
+                        finalPred = (size === 'BIG') ? 'SMALL' : 'BIG'; // Break the dragon
+                    }
                     finalType = 'SIZE';
                 } else {
-                    // Hybrid Selection: Which trend is more stable?
-                    if (colorCount >= sizeCount) {
-                        finalPred = color;
-                        finalType = 'COLOR';
-                    } else {
-                        finalPred = size;
-                        finalType = 'SIZE';
-                    }
+                    if (cCount >= sCount) { finalPred = color; finalType = 'COLOR'; }
+                    else { finalPred = size; finalType = 'SIZE'; }
                 }
 
                 history.unshift({ issue: nextIssue, pred: finalPred, type: finalType, status: 'pending' });
-                if(history.length > 30) history.pop();
+                if(history.length > 20) history.pop();
                 
                 updateMainUI(finalPred, finalType, nextIssue, num);
                 save(); render();
@@ -183,26 +164,17 @@ nav i.active { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
 
     function updateMainUI(pred, type, issue, lastNum) {
         const pEl = document.getElementById('prediction');
-        const tEl = document.getElementById('period');
-        const sEl = document.getElementById('sig-type');
         const stEl = document.getElementById('stage-info');
-
-        tEl.innerText = issue.slice(-4);
+        document.getElementById('period').innerText = issue.slice(-4);
         pEl.innerText = pred;
         pEl.className = "signal-main " + pred;
-        sEl.innerText = "COMMANDER " + type + " SIGNAL";
+        document.getElementById('sig-type').innerText = "ANTI-CHOP " + type + " SIGNAL";
 
-        // Update Stage for confidence
-        if(lossStreak === 0) {
-            stEl.innerText = "STAGE 1: HIGH CONFIDENCE";
-            stEl.className = "stage-tag";
-        } else {
-            stEl.innerText = `STAGE ${lossStreak + 1}: RECOVERY MODE`;
-            stEl.className = "stage-tag L2";
-        }
+        if(lossStreak === 0) { stEl.innerText = "STAGE 1: SAFE"; stEl.className = "stage-tag"; }
+        else { stEl.innerText = `STAGE ${lossStreak + 1}: RECOVERY`; stEl.className = "stage-tag L2"; }
 
         document.getElementById('n1').innerText = (lastNum + 5) % 10;
-        document.getElementById('n2').innerText = (lastNum + 3) % 10;
+        document.getElementById('n2').innerText = (lastNum + 4) % 10;
     }
 
     function render() {
@@ -217,9 +189,8 @@ nav i.active { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
                         <div style="font-size:10px; color:#555">#${h.issue.slice(-4)}</div>
                         <div style="font-weight:900; color:${clr}">${h.pred}</div>
                     </div>
-                    <div style="font-weight:bold; font-size:14px">${h.res || '?'}</div>
-                </div>
-            `;
+                    <div style="font-weight:bold;">${h.res || '?'}</div>
+                </div>`;
         }).join('');
     }
 
@@ -228,7 +199,6 @@ nav i.active { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
         document.getElementById('timer').innerText = s.toString().padStart(2, '0');
         if(s === 1 || s === 59) engine();
     }, 1000);
-
     engine(); render();
 </script>
 </body>
