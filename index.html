@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>DARKNET SUPREME | AUTO-SELECT</title>
+<title>DARKNET SUPREME | AUTO-SWITCH</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -101,6 +101,10 @@ header{
     border-top: 1px solid rgba(255,255,255,0.1);
     padding-top: 10px;
 }
+.seed-ball {
+    display: inline-block; width: 35px; height: 35px; line-height: 35px;
+    background: #fff; color: #000; border-radius: 50%; font-weight: bold; margin: 0 5px;
+}
 
 /* STATS */
 .streak{
@@ -121,6 +125,7 @@ header{
   border-radius:10px;
   position:relative;
   display: flex; justify-content: space-between; align-items: center;
+  animation: slideIn 0.3s ease;
 }
 .card.win { border-left-color: var(--green); background: linear-gradient(90deg, rgba(0,255,0,0.1), transparent); }
 .card.loss { border-left-color: var(--red); background: linear-gradient(90deg, rgba(255,0,0,0.1), transparent); }
@@ -141,6 +146,8 @@ nav{
 nav i{ font-size:24px; color:#555; transition:0.3s; }
 nav .active{ color:var(--green); transform:translateY(-5px); text-shadow:0 0 10px var(--green); }
 
+@keyframes slideIn { from{transform:translateY(10px);opacity:0} to{transform:translateY(0);opacity:1} }
+
 </style>
 </head>
 <body>
@@ -153,12 +160,15 @@ nav .active{ color:var(--green); transform:translateY(-5px); text-shadow:0 0 10p
     
     <div style="font-size:12px; opacity:0.7; margin-top:10px;">TARGET: <span id="target">----</span></div>
     
-    <div class="pred-type" id="signal-type">ANALYZING...</div>
+    <div class="pred-type" id="signal-type">SCANNING...</div>
     <div class="pred-main" id="prediction">WAIT</div>
     
     <div class="jackpot-seeds">
-        <small style="color:#aaa; letter-spacing:1px;">JACKPOT HINT</small><br>
-        <b id="seeds" style="font-size:18px;">--, --</b>
+        <small style="color:#aaa; letter-spacing:1px;">JACKPOT SEEDS</small><br>
+        <div style="margin-top:5px;">
+            <span class="seed-ball" id="n1">-</span>
+            <span class="seed-ball" id="n2">-</span>
+        </div>
     </div>
 </div>
 
@@ -215,7 +225,9 @@ nav .active{ color:var(--green); transform:translateY(-5px); text-shadow:0 0 10p
         const recent = list.slice(0, 10);
         const lastNum = parseInt(recent[0].number);
         const lastSize = lastNum >= 5 ? 'BIG' : 'SMALL';
-        const lastColor = (lastNum % 2 === 0) ? 'RED' : 'GREEN'; // Simple color logic
+        // Simplified Color Logic (Standard WinGo)
+        // 1,3,5,7,9 = Green | 0,2,4,6,8 = Red
+        const lastColor = (lastNum % 2 !== 0) ? 'GREEN' : 'RED'; 
         
         // 1. Analyze Size Trend (Streak)
         let sizeStreak = 0;
@@ -227,7 +239,7 @@ nav .active{ color:var(--green); transform:translateY(-5px); text-shadow:0 0 10p
         // 2. Analyze Color Trend (Streak)
         let colorStreak = 0;
         for(let i=0; i<recent.length; i++){
-            let cl = (parseInt(recent[i].number) % 2 === 0) ? 'RED':'GREEN';
+            let cl = (parseInt(recent[i].number) % 2 !== 0) ? 'GREEN':'RED';
             if(cl === lastColor) colorStreak++; else break;
         }
 
@@ -238,26 +250,21 @@ nav .active{ color:var(--green); transform:translateY(-5px); text-shadow:0 0 10p
         // Agar Color ki streak Size se bari hai, to Color predict karo.
         // Agar Size ki streak bari hai, to Size predict karo.
         
+        // Logic: Agar pichla round hara, to "Trend Break" (Cut) karo
+        
         if (colorStreak > sizeStreak) {
-            // Predict COLOR (Follow Trend)
-            signalText = lastColor;
+            // Predict COLOR (Stronger Trend)
+            if(lastWin) signalText = lastColor; // Follow
+            else signalText = (lastColor === 'RED' ? 'GREEN' : 'RED'); // Cut
             signalType = "COLOR";
-        } else if (sizeStreak > colorStreak) {
-            // Predict SIZE (Follow Trend)
-            signalText = lastSize;
-            signalType = "SIZE";
         } else {
-            // TIE: Default to Time-Based Size (Most reliable)
-            const d = new Date();
-            const seed = d.getMinutes() + d.getSeconds();
+            // Predict SIZE (Default or Stronger Trend)
+            if(lastWin) signalText = lastSize; // Follow
+            else signalText = (lastSize === 'BIG' ? 'SMALL' : 'BIG'); // Cut
             signalType = "SIZE";
-            
-            // If previous loss, cut pattern (L2 Logic)
-            if(!lastWin) signalText = (lastSize === 'BIG' ? 'SMALL' : 'BIG');
-            else signalText = lastSize;
         }
 
-        // Jackpot Hint
+        // Jackpot Hint (Mirror Math)
         let n1 = (lastNum + 5) % 10;
         let n2 = (lastNum + 8) % 10;
 
@@ -274,7 +281,7 @@ nav .active{ color:var(--green); transform:translateY(-5px); text-shadow:0 0 10p
             const issue = latest.issueNumber;
             const num = parseInt(latest.number);
             const size = num >= 5 ? 'BIG' : 'SMALL';
-            const color = (num % 2 === 0) ? 'RED' : 'GREEN';
+            const color = (num % 2 !== 0) ? 'GREEN' : 'RED';
 
             // 1. CHECK RESULT
             if (history.length > 0 && history[0].status === 'pending' && history[0].issue === issue) {
@@ -337,22 +344,20 @@ nav .active{ color:var(--green); transform:translateY(-5px); text-shadow:0 0 10p
         const pEl = document.getElementById('prediction');
         const aura = document.getElementById('main-aura');
         const typeEl = document.getElementById('signal-type');
-        const seedEl = document.getElementById('seeds');
-
+        
         pEl.innerText = currentSignal.text;
-        typeEl.innerText = currentSignal.type + " SIGNAL";
-        seedEl.innerText = currentSignal.seeds.join(', ');
+        typeEl.innerText = "BEST SIGNAL: " + currentSignal.type;
+        document.getElementById('n1').innerText = currentSignal.seeds[0];
+        document.getElementById('n2').innerText = currentSignal.seeds[1];
 
-        // Dynamic Colors
+        // Dynamic Colors & Theme
         aura.className = 'aura'; // Reset
-        pEl.className = 'pred-main ' + currentSignal.text; // Add color class
+        pEl.className = 'pred-main ' + currentSignal.text; 
 
         if(currentSignal.text === 'RED' || currentSignal.text === 'SMALL') {
             aura.classList.add('red-theme');
-        } else {
-            // Green/Big default to green theme
-        }
-
+        } 
+        
         // Render Cards
         const container = document.getElementById('cards-area');
         container.innerHTML = history.map(h => {
