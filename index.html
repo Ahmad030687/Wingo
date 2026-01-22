@@ -2,218 +2,182 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>DARKNET SUPREME COMMANDER</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>DARKNET SUPREME | AUTO-SELECT</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@500;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-    :root {
-        --primary: #00ff9c;
-        --red: #ff2b2b;
-        --bg: #050708;
-        --card: #0b0f12;
-        --glow-green: 0 0 15px rgba(0,255,156,.7);
-        --glow-red: 0 0 15px rgba(255,43,43,.7);
-    }
+:root{
+  --green:#00ff9c;
+  --red:#ff2b2b;
+  --violet:#bf00ff;
+  --bg:#050708;
+  --card:#0b0f12;
+  --glow-green:0 0 15px rgba(0,255,156,.7);
+  --glow-red:0 0 15px rgba(255,43,43,.7);
+  --glow-violet:0 0 15px rgba(191,0,255,.7);
+  font-family: 'Segoe UI', sans-serif;
+}
 
-    * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
-    
-    body {
-        background-color: var(--bg);
-        color: #fff;
-        font-family: 'Share Tech Mono', monospace;
-        height: 100vh;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-    }
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:var(--bg);
+  color:#fff;
+  padding-bottom: 80px;
+}
 
-    /* --- HEADER --- */
-    header {
-        padding: 15px;
-        text-align: center;
-        border-bottom: 2px solid var(--primary);
-        font-family: 'Orbitron';
-        letter-spacing: 2px;
-        font-size: 18px;
-        background: rgba(0,0,0,0.8);
-    }
+/* HEADER */
+header{
+  padding:15px;
+  text-align:center;
+  border-bottom:2px solid #333;
+  font-weight:800;
+  letter-spacing:1px;
+  background:#000;
+  text-transform: uppercase;
+}
 
-    /* --- MAIN AREA --- */
-    #main-content {
-        flex: 1;
-        overflow-y: auto;
-        padding: 20px;
-        padding-bottom: 80px;
-    }
+/* MAIN AURA */
+.aura{
+  margin:15px;
+  padding:25px 20px;
+  border-radius:20px;
+  background:linear-gradient(135deg,#003b26,#000);
+  border:2px solid var(--green);
+  box-shadow:var(--glow-green);
+  text-align:center;
+  position:relative;
+  transition:0.3s;
+  overflow: hidden;
+}
 
-    /* --- AURA (TERMINAL) --- */
-    .aura {
-        background: linear-gradient(135deg,#003b26,#000);
-        border: 2px solid var(--primary);
-        box-shadow: var(--glow-green);
-        padding: 20px;
-        border-radius: 15px;
-        text-align: center;
-        position: relative;
-        margin-bottom: 20px;
-        transition: 0.3s;
-    }
-    .aura.red {
-        background: linear-gradient(135deg,#3b0000,#000);
-        border-color: var(--red);
-        box-shadow: var(--glow-red);
-    }
-    .aura.wait {
-        background: #111;
-        border-color: #555;
-        box-shadow: none;
-    }
+/* DYNAMIC THEMES FOR AURA */
+.aura.red-theme {
+  background:linear-gradient(135deg,#3b0000,#000);
+  border-color:var(--red);
+  box-shadow:var(--glow-red);
+}
+.aura.violet-theme {
+  background:linear-gradient(135deg,#2a003b,#000);
+  border-color:var(--violet);
+  box-shadow:var(--glow-violet);
+}
 
-    .sec-box {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        border: 2px solid #fff;
-        padding: 5px 10px;
-        border-radius: 8px;
-        font-weight: bold;
-    }
+.scan-line {
+    position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+    background: rgba(255,255,255,0.5);
+    animation: scan 2s linear infinite;
+}
+@keyframes scan { 0%{top:0} 100%{top:100%} }
 
-    .pred-text {
-        font-family: 'Orbitron';
-        font-size: 48px;
-        font-weight: 900;
-        margin: 15px 0;
-        text-shadow: 0 0 20px currentColor;
-    }
-    .pred-text.BIG { color: var(--primary); }
-    .pred-text.SMALL { color: var(--red); }
-    .pred-text.WAIT { color: #888; font-size: 32px; animation: blink 1s infinite; }
+.sec-box{
+  position:absolute; top:15px; right:15px;
+  border:2px solid #fff; padding:2px 8px; border-radius:8px; font-weight:bold; font-size:14px;
+}
 
-    /* --- STREAK BAR --- */
-    .streak-bar {
-        background: #0a0a0a;
-        border: 1px solid #333;
-        padding: 10px;
-        border-radius: 10px;
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 20px;
-        font-size: 14px;
-    }
+/* PREDICTION TEXT */
+.pred-type {
+    font-size: 12px; letter-spacing: 2px; opacity: 0.8; margin-bottom: 5px;
+}
+.pred-main {
+    font-size: 42px; font-weight: 900;
+    text-transform: uppercase;
+    text-shadow: 0 0 20px currentColor;
+    margin: 10px 0;
+}
+.pred-main.GREEN { color: var(--green); }
+.pred-main.RED { color: var(--red); }
+.pred-main.VIOLET { color: var(--violet); }
+.pred-main.BIG { color: #f1c40f; text-shadow: 0 0 20px #f1c40f; } /* Gold for Big */
+.pred-main.SMALL { color: #3498db; text-shadow: 0 0 20px #3498db; } /* Blue for Small */
 
-    /* --- CARDS --- */
-    .card {
-        background: var(--card);
-        border: 1px solid var(--primary);
-        box-shadow: 0 0 10px rgba(0,255,156,0.2);
-        padding: 15px;
-        border-radius: 12px;
-        margin-bottom: 12px;
-        position: relative;
-        animation: slideIn 0.3s ease;
-    }
-    .card.loss {
-        border-color: var(--red);
-        box-shadow: 0 0 10px rgba(255,43,43,0.2);
-    }
-    .card-icon {
-        position: absolute;
-        right: 15px;
-        top: 15px;
-        font-size: 24px;
-    }
+.jackpot-seeds {
+    margin-top: 15px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 10px;
+}
 
-    /* --- NAV --- */
-    nav {
-        position: fixed;
-        bottom: 0;
-        width: 100%;
-        background: #000;
-        border-top: 2px solid var(--primary);
-        padding: 15px 0;
-        display: flex;
-        justify-content: space-around;
-        z-index: 100;
-    }
-    nav i {
-        font-size: 22px;
-        color: #555;
-        cursor: pointer;
-        transition: 0.3s;
-    }
-    nav i.active {
-        color: var(--primary);
-        text-shadow: 0 0 10px var(--primary);
-        transform: translateY(-3px);
-    }
+/* STATS */
+.streak{
+  margin:0 15px 15px;
+  padding:12px;
+  background:#0e0e0e;
+  border:1px solid #333;
+  border-radius:12px;
+  display:flex; justify-content:space-between; font-weight:700; font-size:14px;
+}
 
-    /* --- UTILS --- */
-    @keyframes blink { 50% { opacity: 0.5; } }
-    @keyframes slideIn { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
-    
-    #confetti { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999; }
-    .particle { position: absolute; width: 8px; height: 8px; border-radius: 50%; animation: rain 3s linear forwards; }
-    @keyframes rain { to { transform: translateY(100vh) rotate(720deg); } }
+/* HISTORY CARDS */
+.card{
+  margin:10px 15px;
+  padding:15px;
+  background:var(--card);
+  border-left:5px solid #333;
+  border-radius:10px;
+  position:relative;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.card.win { border-left-color: var(--green); background: linear-gradient(90deg, rgba(0,255,0,0.1), transparent); }
+.card.loss { border-left-color: var(--red); background: linear-gradient(90deg, rgba(255,0,0,0.1), transparent); }
 
-    .view-section { display: none; }
-    .view-section.active { display: block; }
+.res-icon {
+    font-size: 20px; width: 40px; height: 40px; border-radius: 50%;
+    background: #000; border: 2px solid #333; display: flex; align-items: center; justify-content: center;
+}
+.card.win .res-icon { border-color: var(--green); color: var(--green); }
+.card.loss .res-icon { border-color: var(--red); color: var(--red); }
+
+/* NAV */
+nav{
+  position:fixed; bottom:0; width:100%;
+  background:#000; border-top:2px solid #333;
+  padding:15px 0; display:flex; justify-content:space-around; z-index:100;
+}
+nav i{ font-size:24px; color:#555; transition:0.3s; }
+nav .active{ color:var(--green); transform:translateY(-5px); text-shadow:0 0 10px var(--green); }
+
 </style>
 </head>
 <body>
 
-    <div id="confetti"></div>
+<header>DARKNET SUPREME</header>
 
-    <header>DARKNET SUPREME</header>
-
-    <div id="main-content">
-        
-        <div id="view-terminal" class="view-section active">
-            <div id="main-aura" class="aura">
-                <div class="sec-box">SEC <span id="timer">00</span></div>
-                <div style="font-size:12px; color:#aaa; margin-top:5px;">TARGET: <span id="target-id">----</span></div>
-                
-                <div id="prediction" class="pred-text WAIT">WAIT</div>
-                
-                <div style="font-size:14px; letter-spacing:1px;" id="method">SYSTEM READY</div>
-                
-                <div style="margin-top:15px; border-top:1px solid rgba(255,255,255,0.1); padding-top:10px;">
-                    <small>JACKPOT SEEDS</small><br>
-                    <b id="seeds" style="font-size:18px; color:#fff">--, --</b>
-                </div>
-            </div>
-
-            <div class="streak-bar">
-                <span><i class="fa-solid fa-trophy" style="color:var(--primary)"></i> WINS: <b id="win-count">0</b></span>
-                <span><i class="fa-solid fa-triangle-exclamation" style="color:var(--red)"></i> LOSS: <b id="loss-count">0</b></span>
-            </div>
-
-            <div id="logs-container">
-                </div>
-        </div>
-
-        <div id="view-archive" class="view-section">
-            <h3 style="text-align:center; margin-bottom:15px; color:var(--primary)">FULL HISTORY</h3>
-            <div id="full-history"></div>
-        </div>
-
+<div id="main-aura" class="aura">
+    <div class="scan-line"></div>
+    <div class="sec-box">SEC <span id="timer">00</span></div>
+    
+    <div style="font-size:12px; opacity:0.7; margin-top:10px;">TARGET: <span id="target">----</span></div>
+    
+    <div class="pred-type" id="signal-type">ANALYZING...</div>
+    <div class="pred-main" id="prediction">WAIT</div>
+    
+    <div class="jackpot-seeds">
+        <small style="color:#aaa; letter-spacing:1px;">JACKPOT HINT</small><br>
+        <b id="seeds" style="font-size:18px;">--, --</b>
     </div>
+</div>
 
-    <nav>
-        <i class="fa-solid fa-terminal active" onclick="switchTab('terminal', this)"></i>
-        <i class="fa-solid fa-clock-rotate-left" onclick="switchTab('archive', this)"></i>
-        <i class="fa-solid fa-chart-line"></i>
-        <i class="fa-solid fa-user-secret" onclick="clearData()"></i>
-    </nav>
+<div class="streak">
+    <span style="color:var(--green)"><i class="fa-solid fa-check-circle"></i> WIN: <b id="w-stat">0</b></span>
+    <span style="color:var(--red)"><i class="fa-solid fa-times-circle"></i> LOSS: <b id="l-stat">0</b></span>
+</div>
+
+<div id="cards-area"></div>
+
+<nav>
+    <i class="fa-solid fa-radar active"></i>
+    <i class="fa-solid fa-rotate" onclick="window.location.reload()"></i>
+    <i class="fa-solid fa-trash" onclick="clearData()"></i>
+    <i class="fa-solid fa-user-secret"></i>
+</nav>
 
 <script>
-    // --- FIREBASE CONFIG ---
+    // --- FIREBASE SETUP ---
     const firebaseConfig = {
         apiKey: "AIzaSyA8qJ3qJl5fzbOBKopx99zsACkEGofbfyY",
         authDomain: "admin-91a73.firebaseapp.com",
@@ -227,225 +191,200 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // --- STATE MANAGEMENT (With LocalStorage) ---
-    let history = JSON.parse(localStorage.getItem('dns_history')) || [];
-    let stats = JSON.parse(localStorage.getItem('dns_stats')) || { w: 0, l: 0 };
-    let lossStreak = parseInt(localStorage.getItem('dns_streak')) || 0;
-    
+    // --- MEMORY ---
+    let history = JSON.parse(localStorage.getItem('select_hist')) || [];
+    let stats = JSON.parse(localStorage.getItem('select_stats')) || { w:0, l:0 };
     let lastIssue = null;
-    let currentPred = { p: "WAIT", n: ["-","-"], m: "SCANNING" };
+    let currentSignal = { text: "WAIT", type: "WAIT", seeds: ["-","-"] };
 
     function saveData() {
-        localStorage.setItem('dns_history', JSON.stringify(history));
-        localStorage.setItem('dns_stats', JSON.stringify(stats));
-        localStorage.setItem('dns_streak', lossStreak);
+        localStorage.setItem('select_hist', JSON.stringify(history));
+        localStorage.setItem('select_stats', JSON.stringify(stats));
     }
 
     async function sync(data) {
         try {
-            const ref = db.ref('rounds/' + data.issue);
+            const ref = db.ref('rounds/'+data.issue);
             const snap = await ref.once('value');
             if(!snap.exists()) ref.set(data);
-        } catch(e) {}
+        } catch(e){}
     }
 
-    // --- THE GIDDAR SINGHI (ALGORITHM) ---
-    function getStrategy(list, lastWin) {
+    // --- AUTO-SELECTOR ENGINE (THE BRAIN) ---
+    function getBestSignal(list, lastWin) {
         const recent = list.slice(0, 10);
         const lastNum = parseInt(recent[0].number);
         const lastSize = lastNum >= 5 ? 'BIG' : 'SMALL';
+        const lastColor = (lastNum % 2 === 0) ? 'RED' : 'GREEN'; // Simple color logic
         
-        // 1. Time Seed
-        const d = new Date();
-        const seed = d.getMinutes() + d.getSeconds();
-        
-        // 2. Determine Mode
-        let pred = "";
-        let method = "";
-        
-        // *** EMERGENCY BREAKER (If Streak >= 2) ***
-        if (lossStreak >= 2) {
-            // Agar 2 baar lagatar haar gaye, to algorithm choro, TREND pakro.
-            // Kyunki market "Dragon" bana rahi hogi.
-            pred = lastSize; 
-            method = `🚨 L${lossStreak+1} FORCE RECOVERY`;
-        } 
-        else if (!lastWin) {
-            // *** L2 FIXER (Smart Inverse) ***
-            // Agar L1 hara, to Time Logic ka ulat karo (Cut Strategy)
-            if (seed % 2 === 0) {
-                pred = lastSize === 'BIG' ? 'SMALL' : 'BIG';
-                method = "L2 TIME CUT";
-            } else {
-                pred = lastSize;
-                method = "L2 TIME FLOW";
-            }
-        } 
-        else {
-            // *** L1 SNIPER (Safe Entry) ***
-            // Sirf tab trade lo jab Time aur Trend same hon
-            let trendDir = lastSize;
-            let timeDir = (seed % 2 !== 0) ? 'BIG' : 'SMALL';
-            
-            if(trendDir === timeDir) {
-                pred = trendDir;
-                method = "TIME+TREND SYNC";
-            } else {
-                return null; // WAIT
-            }
+        // 1. Analyze Size Trend (Streak)
+        let sizeStreak = 0;
+        for(let i=0; i<recent.length; i++){
+            let sz = parseInt(recent[i].number) >=5 ? 'BIG':'SMALL';
+            if(sz === lastSize) sizeStreak++; else break;
         }
 
-        // Jackpot Mirror (0=5, 1=6)
-        let n1 = (lastNum + 5) % 10;
-        let n2 = (lastNum + 7) % 10;
+        // 2. Analyze Color Trend (Streak)
+        let colorStreak = 0;
+        for(let i=0; i<recent.length; i++){
+            let cl = (parseInt(recent[i].number) % 2 === 0) ? 'RED':'GREEN';
+            if(cl === lastColor) colorStreak++; else break;
+        }
+
+        let signalText = "";
+        let signalType = ""; // 'COLOR' or 'SIZE'
+
+        // 3. DECISION: WHICH IS STRONGER?
+        // Agar Color ki streak Size se bari hai, to Color predict karo.
+        // Agar Size ki streak bari hai, to Size predict karo.
         
-        return { p: pred, n: [n1, n2], m: method };
+        if (colorStreak > sizeStreak) {
+            // Predict COLOR (Follow Trend)
+            signalText = lastColor;
+            signalType = "COLOR";
+        } else if (sizeStreak > colorStreak) {
+            // Predict SIZE (Follow Trend)
+            signalText = lastSize;
+            signalType = "SIZE";
+        } else {
+            // TIE: Default to Time-Based Size (Most reliable)
+            const d = new Date();
+            const seed = d.getMinutes() + d.getSeconds();
+            signalType = "SIZE";
+            
+            // If previous loss, cut pattern (L2 Logic)
+            if(!lastWin) signalText = (lastSize === 'BIG' ? 'SMALL' : 'BIG');
+            else signalText = lastSize;
+        }
+
+        // Jackpot Hint
+        let n1 = (lastNum + 5) % 10;
+        let n2 = (lastNum + 8) % 10;
+
+        return { text: signalText, type: signalType, seeds: [n1, n2] };
     }
 
-    // --- CORE LOOP ---
+    // --- ENGINE LOOP ---
     async function engine() {
         try {
-            const res = await fetch("https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=20&ts=" + Date.now());
+            const res = await fetch("https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=20&ts="+Date.now());
             const json = await res.json();
             const list = json.data.list;
             const latest = list[0];
             const issue = latest.issueNumber;
-            const resNum = parseInt(latest.number);
-            const resSize = resNum >= 5 ? 'BIG' : 'SMALL';
+            const num = parseInt(latest.number);
+            const size = num >= 5 ? 'BIG' : 'SMALL';
+            const color = (num % 2 === 0) ? 'RED' : 'GREEN';
 
-            // 1. CHECK PREVIOUS RESULT
+            // 1. CHECK RESULT
             if (history.length > 0 && history[0].status === 'pending' && history[0].issue === issue) {
-                const win = history[0].pred === resSize;
+                let win = false;
                 
+                // Validate based on what we predicted
+                if(history[0].type === "SIZE") {
+                    win = (history[0].pred === size);
+                } else {
+                    win = (history[0].pred === color); // Validating Color
+                }
+
                 if(win) {
                     history[0].status = 'win';
                     stats.w++;
-                    lossStreak = 0; // Reset streak
-                    fireConfetti();
                 } else {
                     history[0].status = 'loss';
                     stats.l++;
-                    lossStreak++; // Increase streak
                 }
-                history[0].result = `${resNum} (${resSize})`;
-                
+                history[0].result = `${num} (${size}/${color.charAt(0)})`;
                 saveData();
                 render();
             }
 
-            // 2. PREDICT NEXT
+            // 2. PREDICT
             if (lastIssue !== issue) {
                 lastIssue = issue;
-                const nextIssue = (BigInt(issue) + 1n).toString();
-                
-                // Determine L2 status
+                const nextIssue = (BigInt(issue)+1n).toString();
                 let prevWin = history.length > 0 ? (history[0].status === 'win') : true;
-                
-                const strat = getStrategy(list, prevWin);
-                
-                // Sync data
-                sync({ issue: issue, number: resNum, size: resSize, time: Date.now() });
 
-                if (strat) {
-                    currentPred = strat;
-                    history.unshift({
-                        issue: nextIssue,
-                        pred: strat.p,
-                        seeds: strat.n,
-                        method: strat.m,
-                        status: 'pending',
-                        result: '?'
-                    });
-                } else {
-                    currentPred = { p: "WAIT", n: ["-","-"], m: "SAFE MODE" };
-                }
+                const logic = getBestSignal(list, prevWin);
+                currentSignal = logic;
+
+                history.unshift({
+                    issue: nextIssue,
+                    pred: logic.text,
+                    type: logic.type,
+                    seeds: logic.seeds,
+                    status: 'pending',
+                    result: '?'
+                });
+
+                if(history.length>20) history.pop();
                 
-                if(history.length > 30) history.pop();
+                sync({issue:issue, num:num, size:size, color:color});
                 saveData();
                 render();
             }
 
-        } catch(e) {}
+        } catch(e){}
     }
 
-    // --- UI RENDERER ---
+    // --- RENDER UI ---
     function render() {
-        // Main Display
-        document.getElementById('target-id').innerText = (BigInt(lastIssue||0) + 1n).toString().slice(-4);
+        document.getElementById('target').innerText = (BigInt(lastIssue||0)+1n).toString().slice(-4);
+        document.getElementById('w-stat').innerText = stats.w;
+        document.getElementById('l-stat').innerText = stats.l;
+
+        // Display Prediction
         const pEl = document.getElementById('prediction');
-        pEl.innerText = currentPred.p;
-        pEl.className = `pred-text ${currentPred.p}`;
-        
-        document.getElementById('method').innerText = currentPred.m;
-        document.getElementById('seeds').innerText = currentPred.n.join(', ');
-        
-        // Aura Color
         const aura = document.getElementById('main-aura');
-        aura.className = 'aura';
-        if(currentPred.p === 'SMALL') aura.classList.add('red');
-        if(currentPred.p === 'WAIT') aura.classList.add('wait');
+        const typeEl = document.getElementById('signal-type');
+        const seedEl = document.getElementById('seeds');
 
-        // Stats
-        document.getElementById('win-count').innerText = stats.w;
-        document.getElementById('loss-count').innerText = stats.l;
+        pEl.innerText = currentSignal.text;
+        typeEl.innerText = currentSignal.type + " SIGNAL";
+        seedEl.innerText = currentSignal.seeds.join(', ');
 
-        // Cards
-        const html = history.map(h => {
+        // Dynamic Colors
+        aura.className = 'aura'; // Reset
+        pEl.className = 'pred-main ' + currentSignal.text; // Add color class
+
+        if(currentSignal.text === 'RED' || currentSignal.text === 'SMALL') {
+            aura.classList.add('red-theme');
+        } else {
+            // Green/Big default to green theme
+        }
+
+        // Render Cards
+        const container = document.getElementById('cards-area');
+        container.innerHTML = history.map(h => {
             if(h.status === 'pending') return '';
+            
             const isWin = h.status === 'win';
-            const color = isWin ? 'var(--primary)' : 'var(--red)';
-            const icon = isWin ? 'fa-trophy' : 'fa-xmark';
+            const icon = isWin ? 'fa-check' : 'fa-xmark';
             
             return `
             <div class="card ${h.status}">
-                <i class="fa-solid ${icon} card-icon" style="color:${color}"></i>
-                <div style="font-size:12px; color:#aaa">PERIOD ${h.issue.slice(-4)}</div>
-                <h2 style="color:${color}">${h.pred}</h2>
-                <div style="font-size:12px; margin-top:5px;">STRATEGY: ${h.method}</div>
-                <div style="margin-top:5px; font-weight:bold; color:${color}">RESULT: ${h.result}</div>
+                <div>
+                    <div style="font-size:12px; color:#aaa; margin-bottom:5px;">${h.issue.slice(-4)} • ${h.type}</div>
+                    <div style="font-size:24px; font-weight:900; color:${h.status==='win'?'var(--green)':'var(--red)'}">${h.pred}</div>
+                    <div style="font-size:12px; margin-top:5px;">Seeds: ${h.seeds.join(', ')}</div>
+                </div>
+                <div class="res-icon">
+                    <i class="fa-solid ${icon}"></i>
+                </div>
             </div>`;
         }).join('');
-
-        document.getElementById('logs-container').innerHTML = html;
-        document.getElementById('full-history').innerHTML = html;
-    }
-
-    // --- SYSTEM ---
-    function switchTab(tab, el) {
-        document.querySelectorAll('.view-section').forEach(d => d.classList.remove('active'));
-        document.getElementById('view-'+tab).classList.add('active');
-        
-        document.querySelectorAll('nav i').forEach(i => i.classList.remove('active'));
-        el.classList.add('active');
-    }
-
-    function fireConfetti() {
-        const c = document.getElementById('confetti');
-        for(let i=0; i<50; i++) {
-            let p = document.createElement('div');
-            p.className = 'particle';
-            p.style.left = Math.random()*100+'%';
-            p.style.background = `hsl(${Math.random()*360},100%,50%)`;
-            p.style.animationDuration = Math.random()*2+1+'s';
-            c.appendChild(p);
-            setTimeout(()=>p.remove(), 3000);
-        }
     }
 
     function clearData() {
-        if(confirm('Reset Data?')) {
-            localStorage.clear();
-            location.reload();
-        }
+        if(confirm('Clear All Data?')) { localStorage.clear(); location.reload(); }
     }
 
     setInterval(() => {
         const s = 60 - new Date().getSeconds();
-        document.getElementById('timer').innerText = s.toString().padStart(2, '0');
-        if(s === 1 || s === 59) engine();
+        document.getElementById('timer').innerText = s<10?'0'+s:s;
+        if(s===1 || s===59) engine();
     }, 1000);
 
-    // Init
     engine();
     render();
 
