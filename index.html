@@ -2,269 +2,82 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>DARKNET SUPREME | AUTO-SELECT</title>
+<title>DARKNET | TURBO SNIPER</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-:root{
-  --green:#00ff9c;
-  --red:#ff2b2b;
-  --violet:#bf00ff;
-  --bg:#050708;
-  --card:#0b0f12;
-  --glow-green:0 0 15px rgba(0,255,156,.7);
-  --glow-red:0 0 15px rgba(255,43,43,.7);
-  --glow-violet:0 0 15px rgba(191,0,255,.7);
-  font-family: 'Segoe UI', sans-serif;
+:root { --green: #00ff9c; --red: #ff2b2b; --bg: #050505; --card: #111; }
+body { background: var(--bg); color: #fff; font-family: 'Segoe UI', sans-serif; text-align: center; margin: 0; padding-bottom: 80px; }
+
+header { padding: 15px; background: #000; border-bottom: 2px solid var(--green); font-weight: 900; letter-spacing: 2px; box-shadow: 0 0 20px rgba(0,255,156,0.3); }
+
+.turbo-card {
+    margin: 15px; padding: 25px; border-radius: 20px;
+    background: linear-gradient(135deg, #111, #000);
+    border: 1px solid var(--green); position: relative;
+    box-shadow: 0 0 15px rgba(0,255,156,0.1);
 }
 
-*{margin:0;padding:0;box-sizing:border-box;}
-body{
-  background:var(--bg);
-  color:#fff;
-  padding-bottom: 80px;
-}
+.timer-ring { position: absolute; top: 10px; right: 15px; border: 2px solid #fff; padding: 2px 8px; border-radius: 8px; font-weight: bold; }
 
-/* HEADER */
-header{
-  padding:15px;
-  text-align:center;
-  border-bottom:2px solid #333;
-  font-weight:800;
-  letter-spacing:1px;
-  background:#000;
-  text-transform: uppercase;
-}
+.signal-main { font-size: 55px; font-weight: 900; margin: 15px 0; text-transform: uppercase; }
+.signal-main.BIG, .signal-main.GREEN { color: var(--green); text-shadow: 0 0 25px var(--green); }
+.signal-main.SMALL, .signal-main.RED { color: var(--red); text-shadow: 0 0 25px var(--red); }
 
-/* MAIN AURA */
-.aura{
-  margin:15px;
-  padding:25px 20px;
-  border-radius:20px;
-  background:linear-gradient(135deg,#003b26,#000);
-  border:2px solid var(--green);
-  box-shadow:var(--glow-green);
-  text-align:center;
-  position:relative;
-  transition:0.3s;
-  overflow: hidden;
-}
+.mode-info { font-size: 10px; color: var(--green); letter-spacing: 2px; font-weight: bold; }
 
-/* DYNAMIC THEMES FOR AURA */
-.aura.red-theme {
-  background:linear-gradient(135deg,#3b0000,#000);
-  border-color:var(--red);
-  box-shadow:var(--glow-red);
-}
-.aura.violet-theme {
-  background:linear-gradient(135deg,#2a003b,#000);
-  border-color:var(--violet);
-  box-shadow:var(--glow-violet);
-}
+.history-strip { padding: 0 15px; }
+.h-item { background: var(--card); padding: 12px; margin-bottom: 8px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid #333; }
+.h-item.win { border-left-color: var(--green); }
+.h-item.loss { border-left-color: var(--red); }
 
-.scan-line {
-    position: absolute; top: 0; left: 0; width: 100%; height: 2px;
-    background: rgba(255,255,255,0.5);
-    animation: scan 2s linear infinite;
-}
-@keyframes scan { 0%{top:0} 100%{top:100%} }
-
-.sec-box{
-  position:absolute; top:15px; right:15px;
-  border:2px solid #fff; padding:2px 8px; border-radius:8px; font-weight:bold; font-size:14px;
-}
-
-/* PREDICTION TEXT */
-.pred-type {
-    font-size: 12px; letter-spacing: 2px; opacity: 0.8; margin-bottom: 5px;
-}
-.pred-main {
-    font-size: 42px; font-weight: 900;
-    text-transform: uppercase;
-    text-shadow: 0 0 20px currentColor;
-    margin: 10px 0;
-}
-.pred-main.GREEN { color: var(--green); }
-.pred-main.RED { color: var(--red); }
-.pred-main.VIOLET { color: var(--violet); }
-.pred-main.BIG { color: #f1c40f; text-shadow: 0 0 20px #f1c40f; } /* Gold for Big */
-.pred-main.SMALL { color: #3498db; text-shadow: 0 0 20px #3498db; } /* Blue for Small */
-
-.jackpot-seeds {
-    margin-top: 15px;
-    border-top: 1px solid rgba(255,255,255,0.1);
-    padding-top: 10px;
-}
-
-/* STATS */
-.streak{
-  margin:0 15px 15px;
-  padding:12px;
-  background:#0e0e0e;
-  border:1px solid #333;
-  border-radius:12px;
-  display:flex; justify-content:space-between; font-weight:700; font-size:14px;
-}
-
-/* HISTORY CARDS */
-.card{
-  margin:10px 15px;
-  padding:15px;
-  background:var(--card);
-  border-left:5px solid #333;
-  border-radius:10px;
-  position:relative;
-  display: flex; justify-content: space-between; align-items: center;
-}
-.card.win { border-left-color: var(--green); background: linear-gradient(90deg, rgba(0,255,0,0.1), transparent); }
-.card.loss { border-left-color: var(--red); background: linear-gradient(90deg, rgba(255,0,0,0.1), transparent); }
-
-.res-icon {
-    font-size: 20px; width: 40px; height: 40px; border-radius: 50%;
-    background: #000; border: 2px solid #333; display: flex; align-items: center; justify-content: center;
-}
-.card.win .res-icon { border-color: var(--green); color: var(--green); }
-.card.loss .res-icon { border-color: var(--red); color: var(--red); }
-
-/* NAV */
-nav{
-  position:fixed; bottom:0; width:100%;
-  background:#000; border-top:2px solid #333;
-  padding:15px 0; display:flex; justify-content:space-around; z-index:100;
-}
-nav i{ font-size:24px; color:#555; transition:0.3s; }
-nav .active{ color:var(--green); transform:translateY(-5px); text-shadow:0 0 10px var(--green); }
-
+nav { position: fixed; bottom: 0; width: 100%; background: #000; display: flex; justify-content: space-around; padding: 18px 0; border-top: 1px solid #222; }
+nav i { font-size: 24px; color: #444; }
+nav i.active { color: var(--green); }
 </style>
 </head>
 <body>
 
-<header>DARKNET SUPREME</header>
+<header>DARKNET TURBO</header>
 
-<div id="main-aura" class="aura">
-    <div class="scan-line"></div>
-    <div class="sec-box">SEC <span id="timer">00</span></div>
+<div class="turbo-card">
+    <div class="timer-ring"><span id="timer">00</span>s</div>
+    <div style="font-size: 11px; color: #666; margin-bottom: 15px;">TARGET PERIOD: <span id="target-id">----</span></div>
     
-    <div style="font-size:12px; opacity:0.7; margin-top:10px;">TARGET: <span id="target">----</span></div>
+    <div class="mode-info" id="mode-text">LIVE STREAM ACTIVE</div>
+    <div class="signal-main" id="signal">SCANNING</div>
     
-    <div class="pred-type" id="signal-type">ANALYZING...</div>
-    <div class="pred-main" id="prediction">WAIT</div>
-    
-    <div class="jackpot-seeds">
-        <small style="color:#aaa; letter-spacing:1px;">JACKPOT HINT</small><br>
-        <b id="seeds" style="font-size:18px;">--, --</b>
+    <div style="font-size: 13px; color: #888; border-top: 1px solid #222; padding-top: 15px;">
+        JACKPOT: <b id="seeds" style="color:#fff">-- , --</b>
     </div>
 </div>
 
-<div class="streak">
-    <span style="color:var(--green)"><i class="fa-solid fa-check-circle"></i> WIN: <b id="w-stat">0</b></span>
-    <span style="color:var(--red)"><i class="fa-solid fa-times-circle"></i> LOSS: <b id="l-stat">0</b></span>
+<div style="display:flex; justify-content: space-between; margin: 0 20px 15px; font-size: 13px;">
+    <span style="color:var(--green)">SUCCESS: <span id="wins">0</span></span>
+    <span style="color:var(--red)">FAILED: <span id="loss">0</span></span>
 </div>
 
-<div id="cards-area"></div>
+<div class="history-strip" id="history"></div>
 
 <nav>
-    <i class="fa-solid fa-radar active"></i>
-    <i class="fa-solid fa-rotate" onclick="window.location.reload()"></i>
-    <i class="fa-solid fa-trash" onclick="clearData()"></i>
-    <i class="fa-solid fa-user-secret"></i>
+    <i class="fa-solid fa-bolt-lightning active"></i>
+    <i class="fa-solid fa-rotate-right" onclick="location.reload()"></i>
+    <i class="fa-solid fa-shield-halved" onclick="localStorage.clear(); location.reload();"></i>
 </nav>
 
 <script>
-    // --- FIREBASE SETUP ---
-    const firebaseConfig = {
-        apiKey: "AIzaSyA8qJ3qJl5fzbOBKopx99zsACkEGofbfyY",
-        authDomain: "admin-91a73.firebaseapp.com",
-        databaseURL: "https://admin-91a73-default-rtdb.firebaseio.com",
-        projectId: "admin-91a73",
-        storageBucket: "admin-91a73.firebasestorage.app",
-        messagingSenderId: "153529788738",
-        appId: "1:153529788738:web:65363636579881912940db",
-        measurementId: "G-N4T0HV7ER1"
-    };
+    const firebaseConfig = { apiKey: "AIzaSyA8qJ3qJl5fzbOBKopx99zsACkEGofbfyY", authDomain: "admin-91a73.firebaseapp.com", databaseURL: "https://admin-91a73-default-rtdb.firebaseio.com", projectId: "admin-91a73", storageBucket: "admin-91a73.firebasestorage.app", messagingSenderId: "153529788738", appId: "1:153529788738:web:65363636579881912940db", measurementId: "G-N4T0HV7ER1" };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // --- MEMORY ---
-    let history = JSON.parse(localStorage.getItem('select_hist')) || [];
-    let stats = JSON.parse(localStorage.getItem('select_stats')) || { w:0, l:0 };
+    let historyData = JSON.parse(localStorage.getItem('turbo_hist')) || [];
+    let stats = JSON.parse(localStorage.getItem('turbo_stats')) || { w:0, l:0 };
     let lastIssue = null;
-    let currentSignal = { text: "WAIT", type: "WAIT", seeds: ["-","-"] };
 
-    function saveData() {
-        localStorage.setItem('select_hist', JSON.stringify(history));
-        localStorage.setItem('select_stats', JSON.stringify(stats));
-    }
-
-    async function sync(data) {
-        try {
-            const ref = db.ref('rounds/'+data.issue);
-            const snap = await ref.once('value');
-            if(!snap.exists()) ref.set(data);
-        } catch(e){}
-    }
-
-    // --- AUTO-SELECTOR ENGINE (THE BRAIN) ---
-    function getBestSignal(list, lastWin) {
-        const recent = list.slice(0, 10);
-        const lastNum = parseInt(recent[0].number);
-        const lastSize = lastNum >= 5 ? 'BIG' : 'SMALL';
-        const lastColor = (lastNum % 2 === 0) ? 'RED' : 'GREEN'; // Simple color logic
-        
-        // 1. Analyze Size Trend (Streak)
-        let sizeStreak = 0;
-        for(let i=0; i<recent.length; i++){
-            let sz = parseInt(recent[i].number) >=5 ? 'BIG':'SMALL';
-            if(sz === lastSize) sizeStreak++; else break;
-        }
-
-        // 2. Analyze Color Trend (Streak)
-        let colorStreak = 0;
-        for(let i=0; i<recent.length; i++){
-            let cl = (parseInt(recent[i].number) % 2 === 0) ? 'RED':'GREEN';
-            if(cl === lastColor) colorStreak++; else break;
-        }
-
-        let signalText = "";
-        let signalType = ""; // 'COLOR' or 'SIZE'
-
-        // 3. DECISION: WHICH IS STRONGER?
-        // Agar Color ki streak Size se bari hai, to Color predict karo.
-        // Agar Size ki streak bari hai, to Size predict karo.
-        
-        if (colorStreak > sizeStreak) {
-            // Predict COLOR (Follow Trend)
-            signalText = lastColor;
-            signalType = "COLOR";
-        } else if (sizeStreak > colorStreak) {
-            // Predict SIZE (Follow Trend)
-            signalText = lastSize;
-            signalType = "SIZE";
-        } else {
-            // TIE: Default to Time-Based Size (Most reliable)
-            const d = new Date();
-            const seed = d.getMinutes() + d.getSeconds();
-            signalType = "SIZE";
-            
-            // If previous loss, cut pattern (L2 Logic)
-            if(!lastWin) signalText = (lastSize === 'BIG' ? 'SMALL' : 'BIG');
-            else signalText = lastSize;
-        }
-
-        // Jackpot Hint
-        let n1 = (lastNum + 5) % 10;
-        let n2 = (lastNum + 8) % 10;
-
-        return { text: signalText, type: signalType, seeds: [n1, n2] };
-    }
-
-    // --- ENGINE LOOP ---
     async function engine() {
         try {
             const res = await fetch("https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=20&ts="+Date.now());
@@ -274,120 +87,65 @@ nav .active{ color:var(--green); transform:translateY(-5px); text-shadow:0 0 10p
             const issue = latest.issueNumber;
             const num = parseInt(latest.number);
             const size = num >= 5 ? 'BIG' : 'SMALL';
-            const color = (num % 2 === 0) ? 'RED' : 'GREEN';
+            const color = (num === 0 || num === 2 || num === 4 || num === 6 || num === 8) ? 'RED' : 'GREEN';
 
-            // 1. CHECK RESULT
-            if (history.length > 0 && history[0].status === 'pending' && history[0].issue === issue) {
-                let win = false;
-                
-                // Validate based on what we predicted
-                if(history[0].type === "SIZE") {
-                    win = (history[0].pred === size);
-                } else {
-                    win = (history[0].pred === color); // Validating Color
-                }
-
-                if(win) {
-                    history[0].status = 'win';
-                    stats.w++;
-                } else {
-                    history[0].status = 'loss';
-                    stats.l++;
-                }
-                history[0].result = `${num} (${size}/${color.charAt(0)})`;
-                saveData();
-                render();
+            if (historyData.length > 0 && historyData[0].status === 'pending' && historyData[0].issue === issue) {
+                const win = (historyData[0].pred === size || historyData[0].pred === color);
+                historyData[0].status = win ? 'win' : 'loss';
+                historyData[0].res = `${num} (${size.charAt(0)})`;
+                if(win) stats.w++; else stats.l++;
+                save(); render();
             }
 
-            // 2. PREDICT
             if (lastIssue !== issue) {
                 lastIssue = issue;
                 const nextIssue = (BigInt(issue)+1n).toString();
-                let prevWin = history.length > 0 ? (history[0].status === 'win') : true;
-
-                const logic = getBestSignal(list, prevWin);
-                currentSignal = logic;
-
-                history.unshift({
-                    issue: nextIssue,
-                    pred: logic.text,
-                    type: logic.type,
-                    seeds: logic.seeds,
-                    status: 'pending',
-                    result: '?'
-                });
-
-                if(history.length>20) history.pop();
                 
-                sync({issue:issue, num:num, size:size, color:color});
-                saveData();
-                render();
-            }
+                // TURBO LOGIC: Direct Trend Sync
+                // Agar pichla round loss tha, to strategy reverse kardo (Cut)
+                let prevWin = historyData.length > 0 ? (historyData[0].status === 'win') : true;
+                let pred = "";
+                let mode = "";
 
-        } catch(e){}
+                if(prevWin) {
+                    pred = size; // Follow trend
+                    mode = "TREND FLOWING";
+                } else {
+                    pred = (size === 'BIG') ? 'SMALL' : 'BIG'; // Cut trend
+                    mode = "L2 RECOVERY ACTIVE";
+                }
+
+                historyData.unshift({ issue: nextIssue, pred: pred, status: 'pending' });
+                
+                document.getElementById('signal').innerText = pred;
+                document.getElementById('signal').className = "signal-main " + pred;
+                document.getElementById('mode-text').innerText = mode;
+                document.getElementById('target-id').innerText = nextIssue.slice(-4);
+                document.getElementById('seeds').innerText = `${(num+5)%10} , ${(num+3)%10}`;
+
+                if(historyData.length > 25) historyData.pop();
+                save(); render();
+            }
+        } catch(e) {}
     }
 
-    // --- RENDER UI ---
     function render() {
-        document.getElementById('target').innerText = (BigInt(lastIssue||0)+1n).toString().slice(-4);
-        document.getElementById('w-stat').innerText = stats.w;
-        document.getElementById('l-stat').innerText = stats.l;
-
-        // Display Prediction
-        const pEl = document.getElementById('prediction');
-        const aura = document.getElementById('main-aura');
-        const typeEl = document.getElementById('signal-type');
-        const seedEl = document.getElementById('seeds');
-
-        pEl.innerText = currentSignal.text;
-        typeEl.innerText = currentSignal.type + " SIGNAL";
-        seedEl.innerText = currentSignal.seeds.join(', ');
-
-        // Dynamic Colors
-        aura.className = 'aura'; // Reset
-        pEl.className = 'pred-main ' + currentSignal.text; // Add color class
-
-        if(currentSignal.text === 'RED' || currentSignal.text === 'SMALL') {
-            aura.classList.add('red-theme');
-        } else {
-            // Green/Big default to green theme
-        }
-
-        // Render Cards
-        const container = document.getElementById('cards-area');
-        container.innerHTML = history.map(h => {
+        document.getElementById('wins').innerText = stats.w;
+        document.getElementById('loss').innerText = stats.l;
+        document.getElementById('history').innerHTML = historyData.map(h => {
             if(h.status === 'pending') return '';
-            
-            const isWin = h.status === 'win';
-            const icon = isWin ? 'fa-check' : 'fa-xmark';
-            
-            return `
-            <div class="card ${h.status}">
-                <div>
-                    <div style="font-size:12px; color:#aaa; margin-bottom:5px;">${h.issue.slice(-4)} • ${h.type}</div>
-                    <div style="font-size:24px; font-weight:900; color:${h.status==='win'?'var(--green)':'var(--red)'}">${h.pred}</div>
-                    <div style="font-size:12px; margin-top:5px;">Seeds: ${h.seeds.join(', ')}</div>
-                </div>
-                <div class="res-icon">
-                    <i class="fa-solid ${icon}"></i>
-                </div>
-            </div>`;
+            return `<div class="h-item ${h.status}"><span>#${h.issue.slice(-4)}</span><b>${h.pred}</b><span>${h.res}</span></div>`;
         }).join('');
     }
 
-    function clearData() {
-        if(confirm('Clear All Data?')) { localStorage.clear(); location.reload(); }
-    }
+    function save() { localStorage.setItem('turbo_hist', JSON.stringify(historyData)); localStorage.setItem('turbo_stats', JSON.stringify(stats)); }
 
     setInterval(() => {
         const s = 60 - new Date().getSeconds();
-        document.getElementById('timer').innerText = s<10?'0'+s:s;
-        if(s===1 || s===59) engine();
+        document.getElementById('timer').innerText = s < 10 ? '0'+s : s;
+        if(s === 1 || s === 59) engine();
     }, 1000);
-
     engine();
-    render();
-
 </script>
 </body>
 </html>
