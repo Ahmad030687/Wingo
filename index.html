@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>DARKNET OMNI-GOD</title>
+<title>DARKNET SUPREME | AUTO-SELECT</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -13,13 +13,14 @@
 
 <style>
 :root{
-  --green:#00c853;
-  --red:#d50000;
-  --violet:#aa00ff;
-  --bg:#000000;
-  --card:#111;
-  --glow-green:0 0 20px rgba(0,200,83,0.6);
-  --glow-red:0 0 20px rgba(213,0,0,0.6);
+  --green:#00ff9c;
+  --red:#ff2b2b;
+  --violet:#bf00ff;
+  --bg:#050708;
+  --card:#0b0f12;
+  --glow-green:0 0 15px rgba(0,255,156,.7);
+  --glow-red:0 0 15px rgba(255,43,43,.7);
+  --glow-violet:0 0 15px rgba(191,0,255,.7);
   font-family: 'Segoe UI', sans-serif;
 }
 
@@ -27,158 +28,156 @@
 body{
   background:var(--bg);
   color:#fff;
-  padding-bottom: 90px;
+  padding-bottom: 80px;
 }
 
 /* HEADER */
 header{
   padding:15px;
   text-align:center;
-  border-bottom:2px solid #222;
-  font-weight:900;
+  border-bottom:2px solid #333;
+  font-weight:800;
   letter-spacing:1px;
-  background:#050505;
-  color: #fff;
-  font-size: 18px;
+  background:#000;
+  text-transform: uppercase;
 }
 
-/* MAIN DASHBOARD */
-.dashboard {
-    margin: 15px;
-    padding: 20px;
-    background: linear-gradient(160deg, #1a1a1a, #000);
-    border: 1px solid #333;
-    border-radius: 20px;
-    text-align: center;
-    position: relative;
-    box-shadow: 0 0 30px rgba(255,255,255,0.05);
+/* MAIN AURA */
+.aura{
+  margin:15px;
+  padding:25px 20px;
+  border-radius:20px;
+  background:linear-gradient(135deg,#003b26,#000);
+  border:2px solid var(--green);
+  box-shadow:var(--glow-green);
+  text-align:center;
+  position:relative;
+  transition:0.3s;
+  overflow: hidden;
 }
+
+/* DYNAMIC THEMES FOR AURA */
+.aura.red-theme {
+  background:linear-gradient(135deg,#3b0000,#000);
+  border-color:var(--red);
+  box-shadow:var(--glow-red);
+}
+.aura.violet-theme {
+  background:linear-gradient(135deg,#2a003b,#000);
+  border-color:var(--violet);
+  box-shadow:var(--glow-violet);
+}
+
+.scan-line {
+    position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+    background: rgba(255,255,255,0.5);
+    animation: scan 2s linear infinite;
+}
+@keyframes scan { 0%{top:0} 100%{top:100%} }
 
 .sec-box{
   position:absolute; top:15px; right:15px;
-  background: #333; padding:2px 8px; border-radius:6px; font-weight:bold; font-size:12px;
+  border:2px solid #fff; padding:2px 8px; border-radius:8px; font-weight:bold; font-size:14px;
 }
 
-.target-box {
-    font-size: 12px; color: #888; margin-bottom: 20px; letter-spacing: 1px;
+/* PREDICTION TEXT */
+.pred-type {
+    font-size: 12px; letter-spacing: 2px; opacity: 0.8; margin-bottom: 5px;
+}
+.pred-main {
+    font-size: 42px; font-weight: 900;
+    text-transform: uppercase;
+    text-shadow: 0 0 20px currentColor;
+    margin: 10px 0;
+}
+.pred-main.GREEN { color: var(--green); }
+.pred-main.RED { color: var(--red); }
+.pred-main.VIOLET { color: var(--violet); }
+.pred-main.BIG { color: #f1c40f; text-shadow: 0 0 20px #f1c40f; } /* Gold for Big */
+.pred-main.SMALL { color: #3498db; text-shadow: 0 0 20px #3498db; } /* Blue for Small */
+
+.jackpot-seeds {
+    margin-top: 15px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 10px;
 }
 
-/* DUAL PREDICTION BOXES */
-.pred-row {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 20px;
-}
-
-.p-box {
-    flex: 1;
-    background: #080808;
-    border: 2px solid #333;
-    border-radius: 12px;
-    padding: 15px 5px;
-    transition: 0.3s;
-}
-
-.p-label { font-size: 10px; color: #666; font-weight: bold; letter-spacing: 1px; margin-bottom: 5px; }
-.p-val { font-size: 24px; font-weight: 900; text-transform: uppercase; }
-
-/* DYNAMIC COLORS */
-.p-box.GREEN { border-color: var(--green); box-shadow: var(--glow-green); }
-.p-box.RED { border-color: var(--red); box-shadow: var(--glow-red); }
-.p-box.VIOLET { border-color: var(--violet); box-shadow: 0 0 15px var(--violet); }
-
-.txt-green { color: var(--green); }
-.txt-red { color: var(--red); }
-.txt-violet { color: var(--violet); }
-
-/* JACKPOT STRIP */
-.jackpot-strip {
-    background: rgba(255,255,255,0.05);
-    padding: 10px;
-    border-radius: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-}
-.ball {
-    width: 30px; height: 30px; line-height: 30px;
-    background: #fff; color: #000; border-radius: 50%;
-    font-weight: bold; font-size: 16px;
-}
-
-/* HISTORY */
-.card{
-  margin:8px 15px;
+/* STATS */
+.streak{
+  margin:0 15px 15px;
   padding:12px;
-  background:var(--card);
-  border-left:4px solid #333;
-  border-radius:8px;
-  display: flex; justify-content: space-between; align-items: center;
-  animation: slideIn 0.3s ease;
+  background:#0e0e0e;
+  border:1px solid #333;
+  border-radius:12px;
+  display:flex; justify-content:space-between; font-weight:700; font-size:14px;
 }
-.card.win { border-left-color: var(--green); background: linear-gradient(90deg, rgba(0,200,83,0.1), transparent); }
-.card.loss { border-left-color: var(--red); background: linear-gradient(90deg, rgba(213,0,0,0.1), transparent); }
 
-.win-badge { background: var(--green); color: #000; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold; }
-.loss-badge { background: var(--red); color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold; }
+/* HISTORY CARDS */
+.card{
+  margin:10px 15px;
+  padding:15px;
+  background:var(--card);
+  border-left:5px solid #333;
+  border-radius:10px;
+  position:relative;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.card.win { border-left-color: var(--green); background: linear-gradient(90deg, rgba(0,255,0,0.1), transparent); }
+.card.loss { border-left-color: var(--red); background: linear-gradient(90deg, rgba(255,0,0,0.1), transparent); }
+
+.res-icon {
+    font-size: 20px; width: 40px; height: 40px; border-radius: 50%;
+    background: #000; border: 2px solid #333; display: flex; align-items: center; justify-content: center;
+}
+.card.win .res-icon { border-color: var(--green); color: var(--green); }
+.card.loss .res-icon { border-color: var(--red); color: var(--red); }
 
 /* NAV */
 nav{
   position:fixed; bottom:0; width:100%;
-  background:#050505; border-top:1px solid #333;
+  background:#000; border-top:2px solid #333;
   padding:15px 0; display:flex; justify-content:space-around; z-index:100;
 }
-nav i{ font-size:22px; color:#555; transition:0.3s; }
-nav .active{ color:#fff; transform:translateY(-5px); text-shadow:0 0 10px #fff; }
-
-@keyframes slideIn { from{transform:translateY(10px);opacity:0} to{transform:translateY(0);opacity:1} }
+nav i{ font-size:24px; color:#555; transition:0.3s; }
+nav .active{ color:var(--green); transform:translateY(-5px); text-shadow:0 0 10px var(--green); }
 
 </style>
 </head>
 <body>
 
-<header>DARKNET OMNI-GOD</header>
+<header>DARKNET SUPREME</header>
 
-<div class="dashboard">
-    <div class="sec-box"><span id="timer">00</span>s</div>
-    <div class="target-box">PERIOD: <b id="target" style="color:#fff; font-size:16px;">----</b></div>
-
-    <div class="pred-row">
-        <div class="p-box" id="box-size">
-            <div class="p-label">SIZE POSITION</div>
-            <div class="p-val" id="pred-size">...</div>
-        </div>
-        
-        <div class="p-box" id="box-color">
-            <div class="p-label">COLOR SCOPE</div>
-            <div class="p-val" id="pred-color">...</div>
-        </div>
-    </div>
-
-    <div class="jackpot-strip">
-        <span style="font-size:10px; color:#aaa;">SEEDS</span>
-        <div class="ball" id="n1">-</div>
-        <div class="ball" id="n2">-</div>
+<div id="main-aura" class="aura">
+    <div class="scan-line"></div>
+    <div class="sec-box">SEC <span id="timer">00</span></div>
+    
+    <div style="font-size:12px; opacity:0.7; margin-top:10px;">TARGET: <span id="target">----</span></div>
+    
+    <div class="pred-type" id="signal-type">ANALYZING...</div>
+    <div class="pred-main" id="prediction">WAIT</div>
+    
+    <div class="jackpot-seeds">
+        <small style="color:#aaa; letter-spacing:1px;">JACKPOT HINT</small><br>
+        <b id="seeds" style="font-size:18px;">--, --</b>
     </div>
 </div>
 
-<div style="margin:0 15px; display:flex; justify-content:space-between; color:#888; font-size:12px;">
-    <span>WIN: <b id="w-stat" style="color:var(--green)">0</b></span>
-    <span>LOSS: <b id="l-stat" style="color:var(--red)">0</b></span>
+<div class="streak">
+    <span style="color:var(--green)"><i class="fa-solid fa-check-circle"></i> WIN: <b id="w-stat">0</b></span>
+    <span style="color:var(--red)"><i class="fa-solid fa-times-circle"></i> LOSS: <b id="l-stat">0</b></span>
 </div>
 
 <div id="cards-area"></div>
 
 <nav>
-    <i class="fa-solid fa-gamepad active"></i>
+    <i class="fa-solid fa-radar active"></i>
     <i class="fa-solid fa-rotate" onclick="window.location.reload()"></i>
     <i class="fa-solid fa-trash" onclick="clearData()"></i>
-    <i class="fa-solid fa-chart-simple"></i>
+    <i class="fa-solid fa-user-secret"></i>
 </nav>
 
 <script>
+    // --- FIREBASE SETUP ---
     const firebaseConfig = {
         apiKey: "AIzaSyA8qJ3qJl5fzbOBKopx99zsACkEGofbfyY",
         authDomain: "admin-91a73.firebaseapp.com",
@@ -192,15 +191,15 @@ nav .active{ color:#fff; transform:translateY(-5px); text-shadow:0 0 10px #fff; 
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // --- DATA STORE ---
-    let history = JSON.parse(localStorage.getItem('god_hist')) || [];
-    let stats = JSON.parse(localStorage.getItem('god_stats')) || { w:0, l:0 };
+    // --- MEMORY ---
+    let history = JSON.parse(localStorage.getItem('select_hist')) || [];
+    let stats = JSON.parse(localStorage.getItem('select_stats')) || { w:0, l:0 };
     let lastIssue = null;
-    let currentPred = { size: "WAIT", color: "WAIT", n: ["-","-"] };
+    let currentSignal = { text: "WAIT", type: "WAIT", seeds: ["-","-"] };
 
     function saveData() {
-        localStorage.setItem('god_hist', JSON.stringify(history));
-        localStorage.setItem('god_stats', JSON.stringify(stats));
+        localStorage.setItem('select_hist', JSON.stringify(history));
+        localStorage.setItem('select_stats', JSON.stringify(stats));
     }
 
     async function sync(data) {
@@ -211,47 +210,61 @@ nav .active{ color:#fff; transform:translateY(-5px); text-shadow:0 0 10px #fff; 
         } catch(e){}
     }
 
-    // --- OMNI-GOD ENGINE (COLOR + SIZE + FIXER) ---
-    function getGodPrediction(list, lastWin) {
+    // --- AUTO-SELECTOR ENGINE (THE BRAIN) ---
+    function getBestSignal(list, lastWin) {
         const recent = list.slice(0, 10);
         const lastNum = parseInt(recent[0].number);
         const lastSize = lastNum >= 5 ? 'BIG' : 'SMALL';
+        const lastColor = (lastNum % 2 === 0) ? 'RED' : 'GREEN'; // Simple color logic
         
-        // STANDARD COLOR LOGIC
-        // 1,3,5,7,9 = Green | 0,2,4,6,8 = Red
-        // Special: 0 (Red+Vio), 5 (Green+Vio)
-        let lastColor = 'RED';
-        if ([1,3,7,9].includes(lastNum)) lastColor = 'GREEN';
-        else if ([5].includes(lastNum)) lastColor = 'GREEN'; // treat 5 as green base
-        
-        // VIOLET RISK CHECK
-        let isVioletRisk = (lastNum === 0 || lastNum === 5);
-
-        let pSize = "";
-        let pColor = "";
-
-        // ** LEVEL 2 FIXER LOGIC **
-        // Agar pichla round WIN tha -> TREND FOLLOW (Jo aya wahi lagao)
-        // Agar pichla round LOSS tha -> PATTERN CUT (Jo aya uska ULTA lagao)
-        
-        if (lastWin) {
-            // WINNING STREAK MODE
-            pSize = lastSize; 
-            pColor = lastColor;
-        } else {
-            // RECOVERY MODE (Cut the pattern)
-            pSize = (lastSize === 'BIG') ? 'SMALL' : 'BIG';
-            pColor = (lastColor === 'RED') ? 'GREEN' : 'RED';
+        // 1. Analyze Size Trend (Streak)
+        let sizeStreak = 0;
+        for(let i=0; i<recent.length; i++){
+            let sz = parseInt(recent[i].number) >=5 ? 'BIG':'SMALL';
+            if(sz === lastSize) sizeStreak++; else break;
         }
 
-        // Jackpot Seeds (Mirror + Gap)
-        let n1 = (lastNum + 4) % 10;
-        let n2 = (lastNum + 6) % 10;
+        // 2. Analyze Color Trend (Streak)
+        let colorStreak = 0;
+        for(let i=0; i<recent.length; i++){
+            let cl = (parseInt(recent[i].number) % 2 === 0) ? 'RED':'GREEN';
+            if(cl === lastColor) colorStreak++; else break;
+        }
 
-        return { size: pSize, color: pColor, n: [n1, n2], vio: isVioletRisk };
+        let signalText = "";
+        let signalType = ""; // 'COLOR' or 'SIZE'
+
+        // 3. DECISION: WHICH IS STRONGER?
+        // Agar Color ki streak Size se bari hai, to Color predict karo.
+        // Agar Size ki streak bari hai, to Size predict karo.
+        
+        if (colorStreak > sizeStreak) {
+            // Predict COLOR (Follow Trend)
+            signalText = lastColor;
+            signalType = "COLOR";
+        } else if (sizeStreak > colorStreak) {
+            // Predict SIZE (Follow Trend)
+            signalText = lastSize;
+            signalType = "SIZE";
+        } else {
+            // TIE: Default to Time-Based Size (Most reliable)
+            const d = new Date();
+            const seed = d.getMinutes() + d.getSeconds();
+            signalType = "SIZE";
+            
+            // If previous loss, cut pattern (L2 Logic)
+            if(!lastWin) signalText = (lastSize === 'BIG' ? 'SMALL' : 'BIG');
+            else signalText = lastSize;
+        }
+
+        // Jackpot Hint
+        let n1 = (lastNum + 5) % 10;
+        let n2 = (lastNum + 8) % 10;
+
+        return { text: signalText, type: signalType, seeds: [n1, n2] };
     }
 
-    // --- MAIN LOOP ---
+    // --- ENGINE LOOP ---
     async function engine() {
         try {
             const res = await fetch("https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=20&ts="+Date.now());
@@ -261,28 +274,27 @@ nav .active{ color:#fff; transform:translateY(-5px); text-shadow:0 0 10px #fff; 
             const issue = latest.issueNumber;
             const num = parseInt(latest.number);
             const size = num >= 5 ? 'BIG' : 'SMALL';
-            
-            let colorReal = 'RED';
-            if([1,3,7,9].includes(num)) colorReal = 'GREEN';
-            if(num === 5) colorReal = 'GREEN'; // Simplify for check
-            if(num === 0) colorReal = 'RED';
+            const color = (num % 2 === 0) ? 'RED' : 'GREEN';
 
             // 1. CHECK RESULT
             if (history.length > 0 && history[0].status === 'pending' && history[0].issue === issue) {
-                // Win Condition: Either Size matches OR Color matches
-                // We prioritize Size for Win Status in history
-                const winSize = (history[0].size === size);
-                const winColor = (history[0].color === colorReal);
+                let win = false;
                 
-                // If Size wins, we count it as win (Safer)
-                if(winSize) {
+                // Validate based on what we predicted
+                if(history[0].type === "SIZE") {
+                    win = (history[0].pred === size);
+                } else {
+                    win = (history[0].pred === color); // Validating Color
+                }
+
+                if(win) {
                     history[0].status = 'win';
                     stats.w++;
                 } else {
                     history[0].status = 'loss';
                     stats.l++;
                 }
-                history[0].result = `${num} ${size.charAt(0)}`;
+                history[0].result = `${num} (${size}/${color.charAt(0)})`;
                 saveData();
                 render();
             }
@@ -293,21 +305,21 @@ nav .active{ color:#fff; transform:translateY(-5px); text-shadow:0 0 10px #fff; 
                 const nextIssue = (BigInt(issue)+1n).toString();
                 let prevWin = history.length > 0 ? (history[0].status === 'win') : true;
 
-                const logic = getGodPrediction(list, prevWin);
-                currentPred = logic;
+                const logic = getBestSignal(list, prevWin);
+                currentSignal = logic;
 
                 history.unshift({
                     issue: nextIssue,
-                    size: logic.size,
-                    color: logic.color,
-                    n: logic.n,
+                    pred: logic.text,
+                    type: logic.type,
+                    seeds: logic.seeds,
                     status: 'pending',
                     result: '?'
                 });
 
-                if(history.length>25) history.pop();
+                if(history.length>20) history.pop();
                 
-                sync({issue:issue, num:num, size:size, color:colorReal, time:Date.now()});
+                sync({issue:issue, num:num, size:size, color:color});
                 saveData();
                 render();
             }
@@ -315,58 +327,57 @@ nav .active{ color:#fff; transform:translateY(-5px); text-shadow:0 0 10px #fff; 
         } catch(e){}
     }
 
-    // --- RENDER ---
+    // --- RENDER UI ---
     function render() {
         document.getElementById('target').innerText = (BigInt(lastIssue||0)+1n).toString().slice(-4);
         document.getElementById('w-stat').innerText = stats.w;
         document.getElementById('l-stat').innerText = stats.l;
 
-        // Display
-        const boxSize = document.getElementById('box-size');
-        const boxColor = document.getElementById('box-color');
-        
-        document.getElementById('pred-size').innerText = currentPred.size;
-        document.getElementById('pred-color').innerText = currentPred.color;
-        document.getElementById('n1').innerText = currentPred.n[0];
-        document.getElementById('n2').innerText = currentPred.n[1];
+        // Display Prediction
+        const pEl = document.getElementById('prediction');
+        const aura = document.getElementById('main-aura');
+        const typeEl = document.getElementById('signal-type');
+        const seedEl = document.getElementById('seeds');
 
-        // Styling
-        boxSize.className = 'p-box'; // reset
-        if(currentPred.size === 'BIG') {
-            boxSize.style.borderColor = "#f1c40f"; // Gold
-            boxSize.style.color = "#f1c40f";
-        } else if (currentPred.size === 'SMALL') {
-            boxSize.style.borderColor = "#3498db"; // Blue
-            boxSize.style.color = "#3498db";
+        pEl.innerText = currentSignal.text;
+        typeEl.innerText = currentSignal.type + " SIGNAL";
+        seedEl.innerText = currentSignal.seeds.join(', ');
+
+        // Dynamic Colors
+        aura.className = 'aura'; // Reset
+        pEl.className = 'pred-main ' + currentSignal.text; // Add color class
+
+        if(currentSignal.text === 'RED' || currentSignal.text === 'SMALL') {
+            aura.classList.add('red-theme');
+        } else {
+            // Green/Big default to green theme
         }
 
-        boxColor.className = 'p-box ' + currentPred.color; // Add RED/GREEN class
-        
-        // Cards
-        const area = document.getElementById('cards-area');
-        area.innerHTML = history.map(h => {
+        // Render Cards
+        const container = document.getElementById('cards-area');
+        container.innerHTML = history.map(h => {
             if(h.status === 'pending') return '';
+            
             const isWin = h.status === 'win';
-            const badge = isWin ? '<span class="win-badge">WIN</span>' : '<span class="loss-badge">LOSS</span>';
-            const clr = isWin ? 'var(--green)' : 'var(--red)';
+            const icon = isWin ? 'fa-check' : 'fa-xmark';
             
             return `
             <div class="card ${h.status}">
                 <div>
-                    <div style="font-size:10px; color:#666;">#${h.issue.slice(-4)}</div>
-                    <div style="font-size:18px; font-weight:900; color:#fff;">
-                        ${h.size} <span style="font-size:14px; color:${h.color==='RED'?'var(--red)':'var(--green)'}">${h.color}</span>
-                    </div>
+                    <div style="font-size:12px; color:#aaa; margin-bottom:5px;">${h.issue.slice(-4)} • ${h.type}</div>
+                    <div style="font-size:24px; font-weight:900; color:${h.status==='win'?'var(--green)':'var(--red)'}">${h.pred}</div>
+                    <div style="font-size:12px; margin-top:5px;">Seeds: ${h.seeds.join(', ')}</div>
                 </div>
-                <div style="text-align:right;">
-                    ${badge}
-                    <div style="font-size:12px; margin-top:2px;">Res: ${h.result}</div>
+                <div class="res-icon">
+                    <i class="fa-solid ${icon}"></i>
                 </div>
             </div>`;
         }).join('');
     }
 
-    function clearData() { if(confirm('Clear?')) { localStorage.clear(); location.reload(); } }
+    function clearData() {
+        if(confirm('Clear All Data?')) { localStorage.clear(); location.reload(); }
+    }
 
     setInterval(() => {
         const s = 60 - new Date().getSeconds();
