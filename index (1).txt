@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>TRX SUPREME | REAL-TIME</title>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+    :root {
+        --neon: #00ff4c;
+        --red: #ff3e3e;
+        --bg: #020502;
+        --card: #0b120b;
+        --text-gray: #8f9f8f;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background-color: var(--bg); color: #fff; font-family: 'Rajdhani', sans-serif; padding-bottom: 90px; -webkit-font-smoothing: antialiased; }
+    
+    /* --- LOADING OVERLAY --- */
+    #loader {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9);
+        z-index: 2000; display: flex; flex-direction: column; justify-content: center; align-items: center;
+        transition: opacity 0.5s; pointer-events: none; opacity: 0;
+    }
+    #loader.active { opacity: 1; pointer-events: all; }
+    .spinner { width: 50px; height: 50px; border: 3px solid #333; border-top: 3px solid var(--neon); border-radius: 50%; animation: spin 0.8s linear infinite; }
+
+    /* --- HEADER --- */
+    .app-header {
+        background: rgba(10, 20, 10, 0.95); padding: 15px 20px; border-bottom: 2px solid var(--neon);
+        display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100;
+        backdrop-filter: blur(10px);
+    }
+    .brand h1 { font-family: 'Orbitron'; font-size: 20px; color: var(--neon); text-shadow: 0 0 10px var(--neon); letter-spacing: 1px; margin: 0; }
+    .brand p { font-size: 10px; color: var(--text-gray); font-weight: 700; letter-spacing: 3px; margin: 0; }
+    
+    .timer-badge {
+        background: #000; border: 1px solid var(--neon); padding: 5px 12px; border-radius: 8px;
+        text-align: center; box-shadow: 0 0 15px rgba(0, 255, 76, 0.2) inset;
+    }
+    .timer-badge div { font-family: 'Orbitron'; font-size: 24px; font-weight: 900; line-height: 1; }
+    .timer-badge span { font-size: 9px; color: var(--neon); font-weight: 700; }
+
+    /* --- TABS --- */
+    .tab-view { display: none; padding: 20px; animation: slideUp 0.4s ease; }
+    .tab-view.active { display: block; }
+
+    /* --- MAIN DASHBOARD CARD --- */
+    .cyber-card {
+        background: var(--card); border: 1px solid #222; border-radius: 20px; padding: 25px 20px;
+        position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 20px;
+    }
+    .cyber-card::before {
+        content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+        background: linear-gradient(90deg, transparent, var(--neon), transparent);
+        animation: scan 2s infinite;
+    }
+
+    .info-row { display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 13px; font-weight: 700; color: var(--text-gray); }
+    .info-row span:last-child { color: #fff; font-family: 'Orbitron'; }
+
+    .pred-display { text-align: center; margin: 30px 0; }
+    .main-pred { font-family: 'Orbitron'; font-size: 70px; font-weight: 900; line-height: 1; text-transform: uppercase; margin: 10px 0; }
+    .main-pred.BIG, .main-pred.GREEN { color: var(--neon); text-shadow: 0 0 40px rgba(0, 255, 76, 0.4); }
+    .main-pred.SMALL, .main-pred.RED { color: var(--red); text-shadow: 0 0 40px rgba(255, 62, 62, 0.4); }
+    .sub-pred { font-size: 12px; letter-spacing: 4px; font-weight: 700; color: var(--text-gray); }
+
+    /* --- REAL-TIME GRID --- */
+    .grid-label { font-size: 11px; color: var(--text-gray); font-weight: 700; margin-bottom: 8px; display: flex; justify-content: space-between; }
+    .num-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; margin-bottom: 25px; }
+    .grid-box {
+        background: #111; border: 1px solid #333; border-radius: 8px; height: 45px;
+        display: flex; align-items: center; justify-content: center;
+        font-family: 'Orbitron'; font-weight: 700; font-size: 18px; color: #fff;
+        transition: 0.3s;
+    }
+    .grid-box.g-green { color: var(--neon); border-color: rgba(0,255,76,0.3); box-shadow: 0 0 10px rgba(0,255,76,0.1) inset; }
+    .grid-box.g-red { color: var(--red); border-color: rgba(255,62,62,0.3); box-shadow: 0 0 10px rgba(255,62,62,0.1) inset; }
+
+    /* --- METERS --- */
+    .meter-container { display: flex; gap: 15px; margin-bottom: 10px; }
+    .meter-wrap { flex: 1; background: #080808; padding: 12px; border-radius: 12px; border: 1px solid #222; }
+    .meter-head { display: flex; justify-content: space-between; font-size: 10px; font-weight: 700; color: var(--text-gray); margin-bottom: 8px; }
+    .meter-val { font-family: 'Orbitron'; font-weight: 900; font-size: 16px; color: #fff; }
+    .bar-bg { width: 100%; height: 4px; background: #222; border-radius: 2px; overflow: hidden; margin-top: 5px; }
+    .bar-fill { height: 100%; width: 0%; transition: width 0.5s ease; }
+
+    /* --- ARCHIVE LIST --- */
+    .archive-header { display: flex; background: #111; padding: 12px 15px; border-radius: 10px 10px 0 0; font-size: 11px; font-weight: 800; color: var(--text-gray); border-bottom: 1px solid #333; }
+    .col-1 { width: 25%; } .col-2 { width: 30%; text-align: center; } .col-3 { width: 25%; text-align: center; } .col-4 { width: 20%; text-align: right; }
+    
+    .archive-list { background: var(--card); border-radius: 0 0 10px 10px; border: 1px solid #222; border-top: none; min-height: 200px; }
+    .archive-item {
+        display: flex; padding: 15px; border-bottom: 1px solid #1a1a1a; align-items: center;
+        font-size: 13px; font-weight: 600; animation: fadeIn 0.3s;
+    }
+    .archive-item:last-child { border: none; }
+    .res-badge { padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 800; }
+    .win-text { color: var(--neon); } .loss-text { color: var(--red); }
+
+    /* --- BOTTOM NAV --- */
+    .nav-bar {
+        position: fixed; bottom: 0; width: 100%; background: #000; border-top: 1px solid #222;
+        display: flex; justify-content: space-around; padding: 12px 0; z-index: 900;
+        box-shadow: 0 -10px 30px rgba(0,0,0,0.8);
+    }
+    .nav-btn { display: flex; flex-direction: column; align-items: center; color: #444; transition: 0.3s; }
+    .nav-btn i { font-size: 22px; margin-bottom: 4px; }
+    .nav-btn span { font-size: 10px; font-weight: 800; letter-spacing: 1px; }
+    .nav-btn.active { color: var(--neon); text-shadow: 0 0 15px var(--neon); transform: translateY(-3px); }
+
+    /* ANIMATIONS */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes scan { 0% { left: -100%; } 100% { left: 100%; } }
+    @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+</style>
+</head>
+<body>
+
+    <div id="loader"><div class="spinner"></div><p style="margin-top:10px; font-weight:700; letter-spacing:2px; color:#fff">SYNCING DATA...</p></div>
+
+    <header class="app-header">
+        <div class="brand">
+            <h1>TRX SUPREME</h1>
+            <p>V4.0 REAL-TIME ENGINE</p>
+        </div>
+        <div class="timer-badge">
+            <span>SEC TO DRAW</span>
+            <div id="timer">00</div>
+        </div>
+    </header>
+
+    <div id="tab-terminal" class="tab-view active">
+        <div class="cyber-card">
+            <div class="info-row">
+                <span>TARGET PERIOD</span>
+                <span id="period-display">Loading...</span>
+            </div>
+
+            <div class="pred-display">
+                <div class="sub-pred">AI PREDICTION</div>
+                <div class="main-pred" id="main-signal">WAIT</div>
+                <div class="sub-pred" id="sub-signal">CALCULATING PROBABILITY</div>
+            </div>
+
+            <div class="grid-label">
+                <span>LIVE NUMBER STREAM</span>
+                <span style="color:var(--neon)">LIVE</span>
+            </div>
+            <div class="num-grid" id="grid-container">
+                <div class="grid-box">-</div><div class="grid-box">-</div><div class="grid-box">-</div>
+                <div class="grid-box">-</div><div class="grid-box">-</div><div class="grid-box">-</div>
+            </div>
+
+            <div class="meter-container">
+                <div class="meter-wrap">
+                    <div class="meter-head"><span>VOLATILITY</span><span id="vol-txt">0%</span></div>
+                    <div class="meter-val" id="vol-val">LOW</div>
+                    <div class="bar-bg"><div class="bar-fill" id="vol-bar" style="background:var(--red); width:0%"></div></div>
+                </div>
+                <div class="meter-wrap">
+                    <div class="meter-head"><span>TREND STRENGTH</span><span id="str-txt">0%</span></div>
+                    <div class="meter-val" id="str-val">WEAK</div>
+                    <div class="bar-bg"><div class="bar-fill" id="str-bar" style="background:var(--neon); width:0%"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cyber-card" style="padding: 15px;">
+            <div class="info-row" style="margin-bottom:10px">
+                <span>SESSION STATS</span>
+                <span>AUTO-SAVE ON</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-weight:800; font-size:14px;">
+                <span style="color:var(--neon)">WIN: <span id="w-count">0</span></span>
+                <span style="color:var(--red)">LOSS: <span id="l-count">0</span></span>
+                <span>ACC: <span id="acc-rate">0%</span></span>
+            </div>
+        </div>
+    </div>
+
+    <div id="tab-archive" class="tab-view">
+        <h3 style="text-align:center; font-family:'Orbitron'; margin-bottom:15px; color:#fff">HISTORY LOG</h3>
+        <div class="archive-header">
+            <div class="col-1">PERIOD</div>
+            <div class="col-2">PRED</div>
+            <div class="col-3">RESULT</div>
+            <div class="col-4">STATUS</div>
+        </div>
+        <div class="archive-list" id="history-container">
+            </div>
+    </div>
+
+    <div id="tab-themes" class="tab-view">
+         <div class="cyber-card">
+             <h3 style="text-align:center; margin-bottom:20px; font-family:'Orbitron'">INTERFACE THEMES</h3>
+             <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px">
+                 <button onclick="setTheme('green')" style="padding:20px; background:#000; border:1px solid #333; color:#fff; border-radius:10px;">NEON GREEN</button>
+                 <button onclick="setTheme('red')" style="padding:20px; background:#000; border:1px solid #333; color:#fff; border-radius:10px;">CYBER RED</button>
+                 <button onclick="setTheme('gold')" style="padding:20px; background:#000; border:1px solid #333; color:#fff; border-radius:10px;">VIP GOLD</button>
+                 <button onclick="setTheme('blue')" style="padding:20px; background:#000; border:1px solid #333; color:#fff; border-radius:10px;">DEEP BLUE</button>
+             </div>
+         </div>
+    </div>
+
+    <div id="tab-profile" class="tab-view">
+        <div class="cyber-card">
+            <div style="text-align:center;">
+                <i class="fa-solid fa-user-astronaut" style="font-size:40px; color:var(--neon); margin-bottom:10px;"></i>
+                <h2 style="font-family:'Orbitron'">COMMANDER</h2>
+                <p style="color:var(--text-gray); font-size:12px;">PRO LICENSE ACTIVE</p>
+            </div>
+            <div style="margin-top:20px; border-top:1px solid #222; padding-top:20px;">
+                <div class="info-row"><span>ACCESS LEVEL</span><span style="color:var(--neon)">VIP</span></div>
+                <div class="info-row"><span>EXPIRY</span><span>LIFETIME</span></div>
+                <div class="info-row"><span>SERVER</span><span>ASIA-HK-01</span></div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="nav-bar">
+        <div class="nav-btn active" onclick="switchTab('terminal', this)">
+            <i class="fa-solid fa-microchip"></i><span>TERMINAL</span>
+        </div>
+        <div class="nav-btn" onclick="switchTab('archive', this)">
+            <i class="fa-solid fa-list-check"></i><span>ARCHIVE</span>
+        </div>
+        <div class="nav-btn" onclick="switchTab('themes', this)">
+            <i class="fa-solid fa-swatchbook"></i><span>THEMES</span>
+        </div>
+        <div class="nav-btn" onclick="switchTab('profile', this)">
+            <i class="fa-solid fa-fingerprint"></i><span>PROFILE</span>
+        </div>
+    </nav>
+
+<script>
+    // --- SETUP ---
+    const firebaseConfig = { apiKey: "AIzaSyA8qJ3qJl5fzbOBKopx99zsACkEGofbfyY", authDomain: "admin-91a73.firebaseapp.com", databaseURL: "https://admin-91a73-default-rtdb.firebaseio.com", projectId: "admin-91a73", storageBucket: "admin-91a73.firebasestorage.app", messagingSenderId: "153529788738", appId: "1:153529788738:web:65363636579881912940db", measurementId: "G-N4T0HV7ER1" };
+    firebase.initializeApp(firebaseConfig);
+
+    let history = JSON.parse(localStorage.getItem('realtime_hist')) || [];
+    let stats = JSON.parse(localStorage.getItem('realtime_stats')) || { w:0, l:0 };
+    let lastProcessed = null;
+
+    function save() {
+        localStorage.setItem('realtime_hist', JSON.stringify(history));
+        localStorage.setItem('realtime_stats', JSON.stringify(stats));
+    }
+
+    // --- ENGINE ---
+    async function engine() {
+        showLoader(true); // Show fake loading for realism
+        try {
+            const res = await fetch("https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=20&ts="+Date.now());
+            const json = await res.json();
+            const list = json.data.list;
+            const latest = list[0];
+            const issue = latest.issueNumber;
+            const num = parseInt(latest.number);
+            const size = num >= 5 ? 'BIG' : 'SMALL';
+            const color = [1,3,7,9].includes(num) ? 'GREEN' : (num === 5 ? 'GREEN' : 'RED');
+
+            updateGrid(list); // Update Real-Time Grid
+            calculateMeters(list); // Update Volatility/Strength
+
+            // Check Win/Loss
+            if (history.length > 0 && history[0].status === 'pending' && history[0].issue === issue) {
+                let win = history[0].type === 'SIZE' ? (history[0].pred === size) : (history[0].pred === color);
+                if(win) { history[0].status = 'win'; stats.w++; }
+                else { history[0].status = 'loss'; stats.l++; }
+                history[0].res = `${num} (${size.charAt(0)})`;
+                save(); renderHistory(); renderStats();
+            }
+
+            // New Prediction
+            if (lastProcessed !== issue) {
+                lastProcessed = issue;
+                const nextIssue = (BigInt(issue)+1n).toString();
+                
+                // Logic
+                let sCount = 0; let cCount = 0;
+                for(let i=0; i<10; i++) {
+                    if((parseInt(list[i].number) >= 5 ? 'BIG':'SMALL') === size) sCount++;
+                    let c = [1,3,7,9].includes(parseInt(list[i].number)) ? 'GREEN' : 'RED';
+                    if(c === color) cCount++;
+                }
+
+                let pred = "", type = "";
+                // If ZigZag (High Volatility), Flip logic
+                let isZigZag = (list[0].number >= 5) !== (list[1].number >= 5);
+                
+                if(cCount >= sCount && !isZigZag) { pred = color; type = 'COLOR'; }
+                else { pred = size; type = 'SIZE'; }
+
+                history.unshift({ issue: nextIssue, pred: pred, type: type, status: 'pending', res: '...' });
+                if(history.length > 30) history.pop();
+                
+                updateMainUI(pred, nextIssue);
+                save(); renderHistory();
+            }
+        } catch(e) { console.log(e); }
+        setTimeout(() => showLoader(false), 500); // Hide loader
+    }
+
+    // --- UI UPDATERS ---
+    function updateGrid(list) {
+        const grid = document.getElementById('grid-container');
+        grid.innerHTML = '';
+        // Take last 6 numbers
+        for(let i=0; i<6; i++) {
+            let num = list[i].number;
+            let colClass = [1,3,5,7,9].includes(parseInt(num)) ? 'g-green' : 'g-red';
+            grid.innerHTML += `<div class="grid-box ${colClass}">${num}</div>`;
+        }
+    }
+
+    function calculateMeters(list) {
+        // Volatility: Count switches in last 10
+        let switches = 0;
+        for(let i=0; i<9; i++) {
+            let curr = parseInt(list[i].number) >= 5;
+            let next = parseInt(list[i+1].number) >= 5;
+            if(curr !== next) switches++;
+        }
+        let vol = switches * 10; // 0 to 90%
+        document.getElementById('vol-txt').innerText = vol + "%";
+        document.getElementById('vol-bar').style.width = vol + "%";
+        document.getElementById('vol-val').innerText = vol > 60 ? "HIGH" : "STABLE";
+
+        // Strength: Max streak
+        let streak = 0;
+        let sType = parseInt(list[0].number) >= 5;
+        for(let i=0; i<10; i++) {
+            if((parseInt(list[i].number) >= 5) === sType) streak++; else break;
+        }
+        let str = streak * 10;
+        if(str > 100) str = 100;
+        document.getElementById('str-txt').innerText = str + "%";
+        document.getElementById('str-bar').style.width = str + "%";
+        document.getElementById('str-val').innerText = str > 60 ? "STRONG" : "WEAK";
+    }
+
+    function updateMainUI(pred, issue) {
+        document.getElementById('period-display').innerText = issue.slice(-4);
+        const pEl = document.getElementById('main-signal');
+        pEl.innerText = pred;
+        pEl.className = "main-pred " + pred;
+        document.getElementById('sub-signal').innerText = "HIGH CONFIDENCE SIGNAL";
+    }
+
+    function renderHistory() {
+        const cont = document.getElementById('history-container');
+        cont.innerHTML = history.map(h => {
+            let resClass = h.status === 'win' ? 'win-text' : (h.status === 'loss' ? 'loss-text' : '');
+            let stText = h.status === 'pending' ? '...' : (h.status === 'win' ? 'WIN' : 'LOSS');
+            return `
+            <div class="archive-item">
+                <div class="col-1">${h.issue.slice(-4)}</div>
+                <div class="col-2 ${h.pred}">${h.pred}</div>
+                <div class="col-3">${h.res}</div>
+                <div class="col-4 ${resClass}">${stText}</div>
+            </div>`;
+        }).join('');
+    }
+
+    function renderStats() {
+        document.getElementById('w-count').innerText = stats.w;
+        document.getElementById('l-count').innerText = stats.l;
+        let total = stats.w + stats.l;
+        document.getElementById('acc-rate').innerText = total===0 ? "0%" : Math.round((stats.w/total)*100) + "%";
+    }
+
+    function showLoader(show) {
+        const l = document.getElementById('loader');
+        if(show) l.classList.add('active');
+        else l.classList.remove('active');
+    }
+
+    // --- NAVIGATION & THEME ---
+    function switchTab(tab, el) {
+        document.querySelectorAll('.tab-view').forEach(t => t.classList.remove('active'));
+        document.getElementById('tab-' + tab).classList.add('active');
+        document.querySelectorAll('.nav-btn').forEach(n => n.classList.remove('active'));
+        el.classList.add('active');
+    }
+
+    function setTheme(color) {
+        const root = document.documentElement;
+        if(color === 'red') { root.style.setProperty('--neon', '#ff3e3e'); }
+        else if(color === 'gold') { root.style.setProperty('--neon', '#ffd700'); }
+        else if(color === 'blue') { root.style.setProperty('--neon', '#00eeff'); }
+        else { root.style.setProperty('--neon', '#00ff4c'); }
+    }
+
+    // --- INIT ---
+    setInterval(() => {
+        const s = 60 - new Date().getSeconds();
+        document.getElementById('timer').innerText = s.toString().padStart(2, '0');
+        if(s === 1) engine();
+    }, 1000);
+    engine(); renderStats();
+
+</script>
+</body>
+</html>
