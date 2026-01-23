@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Darknet Supreme 999+</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00ff00; /* Default Neon Green */
+            --primary-dim: rgba(0, 255, 0, 0.1);
+            --bg-color: #050505;
+            --card-bg: #0a0a0a;
+            --text-main: #ffffff;
+            --text-dim: #888;
+            --loss: #ff3333;
+            --win: #00ff00;
+        }
+
+        /* THEMES */
+        body.theme-crimson { --primary: #ff0055; --primary-dim: rgba(255, 0, 85, 0.1); --win: #ff0055; }
+        body.theme-cyan { --primary: #00ffff; --primary-dim: rgba(0, 255, 255, 0.1); --win: #00ffff; }
+        body.theme-gold { --primary: #ffd700; --primary-dim: rgba(255, 215, 0, 0.1); --win: #ffd700; }
+        body.theme-purple { --primary: #bf00ff; --primary-dim: rgba(191, 0, 255, 0.1); --win: #bf00ff; }
+        body.theme-orange { --primary: #ff8800; --primary-dim: rgba(255, 136, 0, 0.1); --win: #ff8800; }
+        body.theme-blue { --primary: #0088ff; --primary-dim: rgba(0, 136, 255, 0.1); --win: #0088ff; }
+        body.theme-white { --primary: #ffffff; --primary-dim: rgba(255, 255, 255, 0.1); --win: #ffffff; }
+        body.theme-pink { --primary: #ff00ff; --primary-dim: rgba(255, 0, 255, 0.1); --win: #ff00ff; }
+        body.theme-lime { --primary: #ccff00; --primary-dim: rgba(204, 255, 0, 0.1); --win: #ccff00; }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body {
+            margin: 0; font-family: 'Rajdhani', sans-serif; background-color: var(--bg-color); color: var(--text-main);
+            height: 100vh; display: flex; flex-direction: column; overflow: hidden;
+        }
+
+        /* --- HEADER --- */
+        .top-bar {
+            padding: 15px; border-bottom: 2px solid var(--primary);
+            background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,50,0,0.1) 100%);
+            z-index: 100;
+        }
+        .app-title { font-family: 'Orbitron'; font-weight: 900; font-size: 1.2rem; color: var(--primary); letter-spacing: 1px; text-transform: uppercase; }
+        .app-subtitle { font-size: 0.7rem; color: var(--text-dim); letter-spacing: 2px; font-weight: 700; }
+        
+        .timer-box { position: absolute; right: 15px; top: 15px; text-align: right; border: 1px solid var(--primary); padding: 5px 10px; border-radius: 5px; }
+        .timer-label { font-size: 0.6rem; color: var(--primary); display: block; line-height: 1; margin-bottom: 2px; }
+        .timer-val { font-family: 'Orbitron'; font-weight: 700; font-size: 1.2rem; line-height: 1; }
+
+        /* --- CONTENT --- */
+        .content-area { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 90px; }
+        
+        /* TERMINAL CARD */
+        .terminal-card {
+            border: 1px solid var(--primary); border-radius: 15px; padding: 20px;
+            background: radial-gradient(circle at center, var(--primary-dim) 0%, #000 100%);
+            box-shadow: 0 0 20px var(--primary-dim); text-align: center; margin-bottom: 20px;
+        }
+        .target-box { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 20px; }
+        .target-num { background: #111; border: 1px solid var(--primary); padding: 5px 15px; border-radius: 5px; font-family: 'Orbitron'; font-size: 1.2rem; font-weight: 700; }
+        
+        .main-prediction { font-family: 'Orbitron'; font-weight: 900; font-size: 4rem; color: var(--primary); text-shadow: 0 0 30px var(--primary); margin: 20px 0; }
+        .algo-badge { font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 5px; }
+
+        /* REAL METERS CSS (Added from Previous Code) */
+        .meters-row { display: flex; gap: 10px; margin-bottom: 15px; }
+        .meter-box { flex: 1; background: #000; border: 1px solid var(--primary); padding: 10px; border-radius: 8px; }
+        .m-head { display: flex; justify-content: space-between; font-size: 0.6rem; color: #888; font-weight: 700; margin-bottom: 5px; }
+        .m-bar { height: 4px; background: #222; border-radius: 2px; overflow: hidden; }
+        .m-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.5s; }
+        .m-val { font-family: 'Orbitron'; font-size: 0.9rem; font-weight: 700; margin-top: 5px; text-align: left; }
+
+        /* REAL GRID CSS */
+        .pattern-box { border: 1px solid #333; border-radius: 10px; padding: 10px; margin-bottom: 20px; background: #080808; }
+        .pattern-title { font-size: 0.8rem; color: var(--primary); text-transform: uppercase; margin-bottom: 10px; font-weight: 700; }
+        .pattern-grid { display: flex; justify-content: center; gap: 5px; margin-bottom: 10px; }
+        .p-block { width: 40px; height: 35px; display: flex; align-items: center; justify-content: center; font-family: 'Orbitron'; font-weight: 700; border-radius: 4px; font-size: 1rem; border: 1px solid #333; background: #111; color: #666; }
+        .p-block.is-green { border-color: var(--win); color: var(--win); box-shadow: inset 0 0 10px rgba(0,255,0,0.2); }
+        .p-block.is-red { border-color: var(--loss); color: var(--loss); box-shadow: inset 0 0 10px rgba(255,0,0,0.2); }
+
+        .jackpot-section { margin-top: 20px; }
+        .jackpot-title { font-size: 0.8rem; color: var(--primary); text-transform: uppercase; margin-bottom: 15px; font-weight: 700; letter-spacing: 1px; }
+        .seeds-container { display: flex; justify-content: center; gap: 30px; }
+        .seed-circle { width: 80px; height: 80px; border-radius: 50%; background: var(--primary); color: #000; display: flex; align-items: center; justify-content: center; font-family: 'Orbitron'; font-size: 2.5rem; font-weight: 900; box-shadow: 0 0 20px var(--primary); }
+
+        /* ARCHIVE VIEW */
+        .archive-list { display: flex; flex-direction: column; gap: 15px; }
+        .history-card {
+            background: #0e0e0e; border-radius: 10px; padding: 15px; position: relative;
+            border-left: 4px solid #333; display: flex; justify-content: space-between; align-items: center;
+        }
+        .hc-analyzing { border-left-color: #00ffff; background: linear-gradient(90deg, rgba(0,255,255,0.05) 0%, transparent 100%); }
+        .hc-win { border-left-color: var(--win); }
+        .hc-loss { border-left-color: var(--loss); }
+
+        .hc-left { display: flex; flex-direction: column; }
+        .hc-period { font-size: 0.75rem; color: #666; font-weight: 700; margin-bottom: 4px; text-transform: uppercase; }
+        .hc-pred { font-family: 'Orbitron'; font-weight: 700; font-size: 1.3rem; color: #fff; }
+        .hc-res-text { font-size: 0.8rem; font-weight: 700; margin-top: 2px; }
+        .hc-res-win { color: var(--win); }
+        .hc-res-loss { color: var(--loss); }
+        .hc-res-wait { color: #00ffff; animation: pulse 1s infinite; }
+        .spin { animation: spin 1s linear infinite; fill: #00ffff; }
+        
+        /* ANALYTICS VIEW */
+        .analytics-card { background: #111; border: 1px solid #333; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
+        .bar-chart { display: flex; height: 10px; background: #222; border-radius: 5px; overflow: hidden; margin-top: 5px; }
+        .bar-fill { height: 100%; background: var(--primary); }
+
+        /* THEMES VIEW */
+        .themes-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .theme-btn { padding: 15px; border: 1px solid #333; border-radius: 8px; text-align: center; font-weight: 700; cursor: pointer; background: #111; transition: 0.2s; }
+        .theme-btn:active { transform: scale(0.95); }
+
+        /* PROFILE VIEW */
+        .stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .stat-box { background: #111; border: 1px solid #333; padding: 20px; border-radius: 10px; text-align: center; }
+        .stat-num { font-family: 'Orbitron'; font-size: 2rem; font-weight: 700; display: block; }
+        .stat-label { font-size: 0.8rem; color: #888; text-transform: uppercase; }
+
+        /* NAVBAR */
+        .navbar {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 450px;
+            background: #080808; border: 1px solid var(--primary); border-radius: 40px;
+            display: flex; justify-content: space-between; padding: 12px 25px;
+            box-shadow: 0 0 20px var(--primary-dim); z-index: 200;
+        }
+        .nav-item { color: #555; transition: 0.3s; cursor: pointer; display: flex; flex-direction: column; align-items: center; }
+        .nav-item svg { width: 24px; height: 24px; fill: currentColor; }
+        .nav-item.active { color: var(--primary); filter: drop-shadow(0 0 5px var(--primary)); }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes pulse { 50% { opacity: 0.5; } }
+    </style>
+</head>
+<body class="theme-green">
+
+    <div class="top-bar">
+        <div class="app-title">DARKNET AURA <span style="color:#fff">999+</span></div>
+        <div class="app-subtitle">SUPREME COMMANDER v.999</div>
+        <div class="timer-box">
+            <span class="timer-label">SEC TO DRAW</span>
+            <span class="timer-val" id="timer">00</span>
+        </div>
+    </div>
+
+    <div class="content-area" id="app-content"></div>
+
+    <div class="navbar">
+        <div class="nav-item active" onclick="switchTab('terminal')">
+            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM4 18V6h16v12H4z"/><path d="M7.5 15H9v-4.5H7.5V15zm4.5 0h1.5V9H12v6zm4.5-3v3H18V9h-1.5v3z"/></svg>
+        </div>
+        <div class="nav-item" onclick="switchTab('archive')">
+             <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+        </div>
+        <div class="nav-item" onclick="switchTab('analytics')">
+             <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2v-5h2v5zm4 0h-2v-3h2v3z"/></svg>
+        </div>
+        <div class="nav-item" onclick="switchTab('themes')">
+            <svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9 8 9.67 8 10.5 7.33 12 6.5 12zm3-4C8.67 8 8 7.33 8 6.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 9 17.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+        </div>
+        <div class="nav-item" onclick="switchTab('profile')">
+            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?pageSize=20";
+
+        // APP STATE
+        let activeTab = 'terminal';
+        let history = JSON.parse(localStorage.getItem('supreme_hist_v6')) || [];
+        let stats = JSON.parse(localStorage.getItem('supreme_stats_v6')) || { win: 0, loss: 0, jackpot: 0 };
+        let currentPred = { p: "WAIT", n: ["-", "-"], period: "----", method: "SCANNING" };
+        let lastFetchedPeriod = null;
+        let meters = { vol: 0, str: 0 };
+        let liveGrid = [0,0,0,0,0,0]; // Last 6 numbers
+
+        function save() {
+            localStorage.setItem('supreme_hist_v6', JSON.stringify(history));
+            localStorage.setItem('supreme_stats_v6', JSON.stringify(stats));
+        }
+
+        // --- CORE ENGINE ---
+        async function engineLoop() {
+            try {
+                const res = await fetch(API_URL + "&ts=" + Date.now());
+                const json = await res.json();
+                const list = json.data.list;
+                const latestIssue = list[0].issueNumber;
+                const latestRes = parseInt(list[0].number);
+                const latestSize = latestRes >= 5 ? 'BIG' : 'SMALL';
+                const latestColor = [1,3,7,9].includes(latestRes) ? 'GREEN' : (latestRes === 5 ? 'GREEN' : 'RED');
+
+                // 1. UPDATE LIVE METERS & GRID
+                liveGrid = list.slice(0, 6).map(i => parseInt(i.number));
+                calculateMeters(list);
+
+                // 2. RESOLVE PENDING
+                if(history.length > 0 && history[0].status === 'analyzing') {
+                    if(history[0].period === latestIssue) {
+                        const win = history[0].pred === (history[0].type === 'SIZE' ? latestSize : latestColor);
+                        history[0].status = win ? 'win' : 'loss';
+                        history[0].result = `${latestRes}`;
+                        
+                        if(win) { stats.win++; if(history[0].nums.includes(latestRes)) stats.jackpot++; }
+                        else stats.loss++;
+                        
+                        save();
+                        renderView();
+                    }
+                }
+
+                // 3. GENERATE NEW PREDICTION
+                const nextPeriod = (BigInt(latestIssue) + 1n).toString();
+                if(lastFetchedPeriod !== latestIssue) {
+                    lastFetchedPeriod = latestIssue;
+
+                    // ANTI-CHOP LOGIC
+                    let sCount = 0; let cCount = 0;
+                    for(let i=0; i<10; i++) {
+                        let n = parseInt(list[i].number);
+                        if((n >= 5 ? 'BIG':'SMALL') === latestSize) sCount++;
+                        let c = [1,3,7,9].includes(n) ? 'GREEN' : (n===5?'GREEN':'RED');
+                        if(c === latestColor) cCount++;
+                    }
+
+                    let pSize = ""; let pType = "SIZE";
+                    let algo = "AI SNIPER V4";
+
+                    // Check ZigZag (Volatility)
+                    let isZigZag = (list[0].number >= 5) !== (list[1].number >= 5);
+                    
+                    if(cCount >= sCount && !isZigZag) {
+                        pSize = latestColor; pType = 'COLOR'; algo = "COLOR FLOW";
+                    } else {
+                        // If zig-zag, flip trend
+                        if(isZigZag) { pSize = latestSize === 'BIG' ? 'SMALL' : 'BIG'; algo = "ANTI-CHOP"; }
+                        else { pSize = latestSize; algo = "TREND FOLLOW"; }
+                    }
+
+                    const n1 = (latestRes + 3) % 10;
+                    const n2 = (latestRes + 7) % 10;
+
+                    currentPred = { period: nextPeriod, p: pSize, n: [n1, n2], method: algo };
+
+                    history.unshift({
+                        period: nextPeriod, method: algo, pred: pSize, type: pType,
+                        nums: [n1, n2], status: 'analyzing', result: null
+                    });
+                    if(history.length > 25) history.pop();
+                    
+                    save();
+                    renderView();
+                }
+
+            } catch(e) {}
+        }
+
+        function calculateMeters(list) {
+            // Volatility
+            let switches = 0;
+            for(let i=0; i<9; i++) {
+                if((parseInt(list[i].number)>=5) !== (parseInt(list[i+1].number)>=5)) switches++;
+            }
+            meters.vol = Math.min(100, switches * 12);
+
+            // Strength
+            let streak = 1;
+            let type = parseInt(list[0].number) >= 5;
+            for(let i=1; i<10; i++) {
+                if((parseInt(list[i].number)>=5) === type) streak++; else break;
+            }
+            meters.str = Math.min(100, streak * 20);
+        }
+
+        // --- RENDERERS ---
+        function renderView() {
+            const container = document.getElementById('app-content');
+            
+            if(activeTab === 'terminal') {
+                // GENERATE GRID HTML
+                let gridHtml = liveGrid.map(n => {
+                    let cls = [1,3,5,7,9].includes(n) ? 'is-green' : 'is-red';
+                    return `<div class="p-block ${cls}">${n}</div>`;
+                }).join('');
+
+                container.innerHTML = `
+                    <div class="terminal-card">
+                        <div class="target-box">
+                            <span style="font-size:0.8rem; color:var(--text-dim)">TARGET PERIOD</span>
+                            <span class="target-num">${currentPred.period}</span>
+                        </div>
+                        <div class="algo-badge">${currentPred.method}</div>
+                        <div class="main-prediction ${currentPred.p === 'GREEN' || currentPred.p === 'BIG' ? '' : 'is-red'}" 
+                             style="color: ${ (currentPred.p==='RED'||currentPred.p==='SMALL') ? 'var(--loss)' : 'var(--primary)' }">
+                             ${currentPred.p}
+                        </div>
+                        
+                        <div class="pattern-box">
+                            <div class="pattern-title">LIVE STREAM (LAST 6)</div>
+                            <div class="pattern-grid">${gridHtml}</div>
+                            
+                            <div class="meters-row">
+                                <div class="meter-box">
+                                    <div class="m-head"><span>TREND STRENGTH</span><span>${meters.str}%</span></div>
+                                    <div class="m-bar"><div class="m-fill" style="width:${meters.str}%"></div></div>
+                                </div>
+                                <div class="meter-box" style="border-color:var(--loss)">
+                                    <div class="m-head"><span>VOLATILITY</span><span>${meters.vol}%</span></div>
+                                    <div class="m-bar"><div class="m-fill" style="width:${meters.vol}%; background:var(--loss)"></div></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="jackpot-section">
+                            <div class="jackpot-title">JACKPOT SEEDS</div>
+                            <div class="seeds-container">
+                                <div class="seed-circle">${currentPred.n[0]}</div>
+                                <div class="seed-circle">${currentPred.n[1]}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } 
+            else if(activeTab === 'archive') {
+                let html = '<div class="archive-list">';
+                history.forEach(h => {
+                    let statusClass = `hc-${h.status}`;
+                    let resHtml = '';
+                    let icon = '';
+
+                    if(h.status === 'analyzing') {
+                        resHtml = `<span class="hc-res-text hc-res-wait">ANALYZING...</span>`;
+                        icon = `<svg class="spin" viewBox="0 0 24 24"><path d="M12 2V6C15.31 6 18 8.69 18 12C18 15.31 15.31 18 12 18V22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2Z"/></svg>`;
+                    } else if(h.status === 'win') {
+                        resHtml = `<span class="hc-res-text hc-res-win">WIN (${h.result})</span>`;
+                        icon = `<svg style="fill:var(--win)" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>`;
+                    } else {
+                        resHtml = `<span class="hc-res-text hc-res-loss">LOSS (${h.result})</span>`;
+                        icon = `<svg style="fill:var(--loss)" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>`;
+                    }
+
+                    html += `
+                        <div class="history-card ${statusClass}">
+                            <div class="hc-left">
+                                <span class="hc-period">#${h.period} | ${h.method}</span>
+                                <span class="hc-pred">${h.pred}</span>
+                                ${resHtml}
+                            </div>
+                            <div class="hc-icon">${icon}</div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+                container.innerHTML = html;
+            }
+            else if(activeTab === 'analytics') {
+                container.innerHTML = `
+                    <div style="font-size:0.9rem; color:var(--primary); margin-bottom:15px; font-weight:700">ALGORITHM PERFORMANCE</div>
+                    <div class="analytics-card">
+                        <div style="display:flex; justify-content:space-between; font-size:0.8rem">
+                            <span>AI SNIPER ACCURACY</span><span>92%</span>
+                        </div>
+                        <div class="bar-chart"><div class="bar-fill" style="width:92%"></div></div>
+                    </div>
+                `;
+            }
+            else if(activeTab === 'themes') {
+                container.innerHTML = `
+                    <div class="themes-grid">
+                        <div class="theme-btn" style="color:#00ff00; border-color:#00ff00" onclick="setTheme('theme-green')">NEON GREEN</div>
+                        <div class="theme-btn" style="color:#ff0055; border-color:#ff0055" onclick="setTheme('theme-crimson')">CRIMSON RED</div>
+                        <div class="theme-btn" style="color:#00ffff; border-color:#00ffff" onclick="setTheme('theme-cyan')">CYAN PUNK</div>
+                        <div class="theme-btn" style="color:#ffd700; border-color:#ffd700" onclick="setTheme('theme-gold')">ROYAL GOLD</div>
+                        <div class="theme-btn" style="color:#bf00ff; border-color:#bf00ff" onclick="setTheme('theme-purple')">DEEP PURPLE</div>
+                        <div class="theme-btn" style="color:#ff8800; border-color:#ff8800" onclick="setTheme('theme-orange')">BLAZE ORANGE</div>
+                        <div class="theme-btn" style="color:#0088ff; border-color:#0088ff" onclick="setTheme('theme-blue')">OCEAN BLUE</div>
+                        <div class="theme-btn" style="color:#ffffff; border-color:#ffffff" onclick="setTheme('theme-white')">PURE WHITE</div>
+                        <div class="theme-btn" style="color:#ff00ff; border-color:#ff00ff" onclick="setTheme('theme-pink')">HOT PINK</div>
+                        <div class="theme-btn" style="color:#ccff00; border-color:#ccff00" onclick="setTheme('theme-lime')">ACID LIME</div>
+                    </div>
+                `;
+            }
+            else if(activeTab === 'profile') {
+                container.innerHTML = `
+                    <div class="stat-grid">
+                        <div class="stat-box" style="border-color:var(--win)">
+                            <span class="stat-num" style="color:var(--win)">${stats.win}</span>
+                            <span class="stat-label">TOTAL WINS</span>
+                        </div>
+                        <div class="stat-box" style="border-color:var(--loss)">
+                            <span class="stat-num" style="color:var(--loss)">${stats.loss}</span>
+                            <span class="stat-label">TOTAL LOSS</span>
+                        </div>
+                        <div class="stat-box" style="border-color:#ffd700; grid-column: span 2">
+                            <span class="stat-num" style="color:#ffd700">${stats.jackpot}</span>
+                            <span class="stat-label">TOTAL JACKPOTS</span>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function switchTab(tab) {
+            activeTab = tab;
+            const items = document.querySelectorAll('.nav-item');
+            items.forEach((item, index) => {
+                const tabs = ['terminal', 'archive', 'analytics', 'themes', 'profile'];
+                if(tabs[index] === tab) item.classList.add('active');
+                else item.classList.remove('active');
+            });
+            renderView();
+        }
+
+        function setTheme(themeName) { document.body.className = themeName; }
+
+        setInterval(() => {
+            const s = new Date().getSeconds();
+            document.getElementById('timer').innerText = (60 - s).toString().padStart(2, '0');
+            if(s === 1) engineLoop();
+        }, 1000);
+
+        engineLoop();
+        renderView();
+
+    </script>
+</body>
+</html>
