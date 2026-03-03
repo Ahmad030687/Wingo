@@ -3,24 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AHMAD ALI | Pro Downloader</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <title>AHMAD ALI - Premium Video Downloader</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --black: #000000;
-            --surface: #0a0a0b;
-            --accent-blue: #00d2ff;
-            --accent-pink: #ff007a;
-            --gold: #ffac00;
-            --border: rgba(255,255,255,0.1);
+            --gold: #D4AF37;
+            --dark-gold: #996515;
+            --black: #0a0a0a;
+            --glass: rgba(255, 255, 255, 0.1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
-
         body {
-            background-color: var(--black);
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(circle, #1a1a1a 0%, #000000 100%);
             color: white;
             min-height: 100vh;
             display: flex;
@@ -28,266 +26,302 @@
             align-items: center;
         }
 
-        /* Top Bar */
-        .header-top {
+        header {
             width: 100%;
-            padding: 15px;
+            padding: 20px;
             text-align: center;
-            background: var(--surface);
-            border-bottom: 1px solid var(--border);
-            font-weight: 800;
-            letter-spacing: 4px;
+            border-bottom: 2px solid var(--gold);
+            background: rgba(0,0,0,0.8);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .brand-name {
+            font-size: 2.5rem;
+            font-weight: bold;
+            letter-spacing: 5px;
             color: var(--gold);
-            font-size: 14px;
+            text-shadow: 0 0 10px var(--gold);
+            margin: 0;
         }
 
         .container {
-            width: 92%;
-            max-width: 600px;
-            margin: 40px 0;
+            max-width: 900px;
+            width: 95%;
+            margin: 40px auto;
             text-align: center;
         }
 
-        h1 { font-size: 2.2rem; margin-bottom: 5px; color: #fff; }
-        .sub-txt { color: #666; font-size: 14px; margin-bottom: 30px; }
-
-        /* Search Box - Luxury Style */
-        .search-area {
+        .search-box {
             position: relative;
-            background: var(--surface);
-            border-radius: 20px;
-            padding: 6px;
-            display: flex;
-            border: 1px solid var(--border);
-            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            margin-bottom: 30px;
         }
 
-        .search-area input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            outline: none;
+        input[type="text"] {
+            width: 80%;
+            padding: 15px 25px;
+            border-radius: 50px;
+            border: 2px solid var(--gold);
+            background: var(--black);
             color: white;
-            padding: 15px 20px;
-            font-size: 16px;
+            font-size: 1.1rem;
+            outline: none;
+            transition: 0.3s;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.1);
+        }
+
+        input[type="text"]:focus {
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.5);
         }
 
         .btn-search {
-            background: var(--gold);
+            padding: 15px 30px;
+            border-radius: 50px;
             border: none;
-            width: 55px;
-            height: 55px;
-            border-radius: 15px;
+            background: linear-gradient(45deg, var(--gold), var(--dark-gold));
             color: black;
-            font-size: 1.2rem;
+            font-weight: bold;
             cursor: pointer;
+            margin-left: -60px;
             transition: 0.3s;
         }
 
-        .btn-search:active { transform: scale(0.9); }
-
-        /* Loader */
-        .loader {
-            display: none;
-            margin: 20px auto;
-            border: 3px solid #111;
-            border-top: 3px solid var(--gold);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
+        .btn-search:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--gold);
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* Result Section */
-        #result-box {
-            margin-top: 30px;
-            background: var(--surface);
-            border-radius: 25px;
-            border: 1px solid var(--border);
-            overflow: hidden;
+        /* Result Card Area */
+        #resultArea {
             display: none;
-            animation: fadeIn 0.5s ease-out;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-top: 20px;
+            animation: fadeIn 0.5s ease;
         }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        #thumb-display { width: 100%; border-bottom: 1px solid var(--border); }
-        .v-info { padding: 15px; font-weight: 500; font-size: 15px; color: #eee; }
-
-        /* Download Hub - Two Columns */
-        .download-hub {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            padding: 20px;
-            background: #050505;
+        .thumbnail {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 15px;
+            border: 2px solid var(--gold);
+            margin-bottom: 15px;
         }
 
-        .col-header {
-            font-size: 11px;
-            text-transform: uppercase;
+        .video-title {
             color: var(--gold);
-            margin-bottom: 10px;
-            letter-spacing: 1px;
-            font-weight: 800;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
         }
+
+        /* Split Section */
+        .download-options {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 20px;
+        }
+
+        .download-options::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 10%;
+            bottom: 10%;
+            width: 2px;
+            background: white;
+        }
+
+        .side {
+            width: 45%;
+        }
+
+        .side h4 { color: var(--gold); margin-bottom: 15px; }
 
         .dl-btn {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 14px 12px;
-            background: #111;
-            border: 1px solid var(--border);
-            border-radius: 12px;
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
             text-decoration: none;
-            margin-bottom: 10px;
-            transition: 0.2s;
-            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            font-size: 0.9rem;
         }
 
-        /* Video Buttons Style */
-        .btn-v { color: var(--accent-blue); }
-        .btn-v:hover { background: var(--accent-blue); color: #000; border-color: var(--accent-blue); }
+        .btn-video { background: var(--gold); color: black; }
+        .btn-audio { border: 1px solid var(--gold); color: var(--gold); }
 
-        /* Audio Buttons Style */
-        .btn-a { color: var(--accent-pink); }
-        .btn-a:hover { background: var(--accent-pink); color: #fff; border-color: var(--accent-pink); }
+        .dl-btn:hover { filter: brightness(1.2); transform: translateY(-2px); }
 
-        .dl-btn span { font-weight: 600; font-size: 13px; }
-        .dl-btn i { font-size: 14px; }
-
-        /* WhatsApp */
-        .wa-float {
+        /* Floating WhatsApp */
+        .whatsapp-float {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            width: 60px; height: 60px;
             background: #25d366;
-            border-radius: 18px;
-            display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 30px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 35px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             z-index: 100;
         }
 
         footer {
             margin-top: auto;
-            padding: 30px;
-            color: #444;
-            font-size: 12px;
-            letter-spacing: 1px;
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+            color: var(--gold);
+            font-weight: bold;
+            background: rgba(0,0,0,0.5);
         }
+
+        .loader {
+            display: none;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--gold);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <div class="header-top">BY AHMAD ALI</div>
+    <header>
+        <h1 class="brand-name">AHMAD ALI</h1>
+    </header>
 
     <div class="container">
-        <h1>PREMIUM DL</h1>
-        <p class="sub-txt">All-in-one Professional Media Downloader</p>
+        <h2 style="color: #fff; text-shadow: 2px 2px 4px #000;">Premium All-in-One Downloader</h2>
+        <p style="color: #ccc;">Download High Quality Videos & Music Instantly</p>
 
-        <div class="search-area">
-            <input type="text" id="urlInput" placeholder="Paste link here...">
-            <button class="btn-search" onclick="fetchContent()"><i class="fas fa-arrow-down"></i></button>
+        <div class="search-box">
+            <input type="text" id="videoUrl" placeholder="Paste video link here (YouTube, FB, TikTok, Insta...)" />
+            <button class="btn-search" onclick="fetchVideo()">
+                <i class="fas fa-download"></i> DOWNLOAD
+            </button>
         </div>
 
-        <div class="loader" id="loader"></div>
+        <div id="loader" class="loader"></div>
 
-        <div id="result-box">
-            <img src="" id="thumb-display">
-            <div class="v-info" id="title-display">Video Title</div>
-
-            <div class="download-hub">
-                <div>
-                    <div class="col-header">Video (MP4)</div>
-                    <div onclick="forceDownload('1080p')" class="dl-btn btn-v"><span>1080p HD</span> <i class="fas fa-download"></i></div>
-                    <div onclick="forceDownload('720p')" class="dl-btn btn-v"><span>720p HD</span> <i class="fas fa-download"></i></div>
-                    <div onclick="forceDownload('480p')" class="dl-btn btn-v"><span>480p SD</span> <i class="fas fa-download"></i></div>
+        <div id="resultArea">
+            <img id="thumb" class="thumbnail" src="" alt="Thumbnail">
+            <div id="title" class="video-title">Video Title Goes Here</div>
+            
+            <div class="download-options">
+                <div class="side">
+                    <h4><i class="fas fa-music"></i> AUDIO (MP3)</h4>
+                    <div id="audioLinks">
+                        </div>
                 </div>
 
-                <div>
-                    <div class="col-header">Audio (MP3)</div>
-                    <div onclick="forceDownload('mp3')" class="dl-btn btn-a"><span>MP3 Music</span> <i class="fas fa-music"></i></div>
-                    <div onclick="forceDownload('audio')" class="dl-btn btn-a"><span>HQ Audio</span> <i class="fas fa-volume-up"></i></div>
+                <div class="side">
+                    <h4><i class="fas fa-video"></i> VIDEO (MP4)</h4>
+                    <div id="videoLinks">
+                        </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <a href="https://wa.me/923068796622" class="wa-float"><i class="fab fa-whatsapp"></i></a>
+    <a href="https://wa.me/923068796622" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
 
-    <footer>CREATED BY <span style="color:var(--gold)">AHMAD ALI</span> &copy; 2026</footer>
+    <footer>
+        &copy; 2026 Designed by AHMAD ALI | Professional Premium Experience
+    </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-        let currentLinks = { video: '', audio: '', title: '' };
-
-        async function fetchContent() {
-            const url = document.getElementById('urlInput').value;
-            const resBox = document.getElementById('result-box');
+        async function fetchVideo() {
+            const url = document.getElementById('videoUrl').value;
             const loader = document.getElementById('loader');
+            const resultArea = document.getElementById('resultArea');
+            const audioBox = document.getElementById('audioLinks');
+            const videoBox = document.getElementById('videoLinks');
 
-            if (!url) return alert("Please paste a link!");
+            if (!url) {
+                alert("Please paste a URL first!");
+                return;
+            }
 
-            resBox.style.display = 'none';
+            // Reset UI
             loader.style.display = 'block';
+            resultArea.style.display = 'none';
+            audioBox.innerHTML = '';
+            videoBox.innerHTML = '';
 
             try {
-                let apiUrl = "";
-                
-                if (url.includes('youtube') || url.includes('youtu.be')) {
-                    apiUrl = `https://raza-api-taupe.vercel.app/download/ytdl?url=${encodeURIComponent(url)}`;
-                    const res = await axios.get(apiUrl);
-                    currentLinks.video = res.data.result.mp4;
-                    currentLinks.audio = res.data.result.mp3;
-                    currentLinks.title = res.data.result.title;
-                    document.getElementById('thumb-display').src = "https://img.youtube.com/vi/" + (url.split('v=')[1]?.split('&')[0] || url.split('/').pop()) + "/mqdefault.jpg";
-                } 
-                else if (url.includes('instagram.com')) {
-                    apiUrl = `https://api.princetechn.com/api/download/instadl?apikey=prince&url=${encodeURIComponent(url)}`;
-                    const res = await axios.get(apiUrl);
-                    currentLinks.video = res.data.result.download_url;
-                    currentLinks.audio = res.data.result.download_url;
-                    currentLinks.title = "Instagram Video";
-                    document.getElementById('thumb-display').src = res.data.result.thumbnail;
-                }
-                else {
-                    apiUrl = `https://ahmad-rdx-api-7x1p.onrender.com/downloader/aiodl?apikey=AhmadRDX&url=${encodeURIComponent(url)}`;
-                    const res = await axios.get(apiUrl);
-                    currentLinks.video = res.data.result.links.video[0].url;
-                    currentLinks.audio = res.data.result.links.video[0].url;
-                    currentLinks.title = res.data.result.title || "Social Video";
-                    document.getElementById('thumb-display').src = res.data.result.thumbnail;
+                let response;
+                let data;
+
+                // API Logic Selection
+                if (url.includes('youtube.com') || url.includes('youtu.be')) {
+                    response = await axios.get(`https://raza-api-taupe.vercel.app/download/ytdl?url=${encodeURIComponent(url)}`);
+                    data = response.data.result;
+                    
+                    document.getElementById('thumb').src = "https://img.youtube.com/vi/" + url.split('v=')[1]?.split('&')[0] + "/hqdefault.jpg";
+                    document.getElementById('title').innerText = data.title;
+                    
+                    // Add Audio
+                    audioBox.innerHTML = `<a href="${data.mp3}" class="dl-btn btn-audio" target="_blank">Download MP3 (High)</a>`;
+                    // Add Video
+                    videoBox.innerHTML = `<a href="${data.mp4}" class="dl-btn btn-video" target="_blank">Download MP4 (720p/1080p)</a>`;
+
+                } else if (url.includes('instagram.com')) {
+                    response = await axios.get(`https://api.princetechn.com/api/download/instadl?apikey=prince&url=${encodeURIComponent(url)}`);
+                    data = response.data.result;
+                    
+                    document.getElementById('thumb').src = data.thumbnail;
+                    document.getElementById('title').innerText = "Instagram Video";
+                    videoBox.innerHTML = `<a href="${data.download_url}" class="dl-btn btn-video" target="_blank">Download MP4 (HD)</a>`;
+                    audioBox.innerHTML = `<p style='font-size:0.8rem; color:gray;'>Audio not available for Insta</p>`;
+
+                } else {
+                    // Universal API for FB, TikTok, Snapchat
+                    response = await axios.get(`https://ahmad-rdx-api-7x1p.onrender.com/downloader/aiodl?apikey=AhmadRDX&url=${encodeURIComponent(url)}`);
+                    data = response.data.result;
+                    
+                    document.getElementById('thumb').src = data.thumbnail || 'https://via.placeholder.com/400x200?text=Premium+Video';
+                    document.getElementById('title').innerText = data.title || "Social Media Video";
+                    
+                    // Loop through video links
+                    if(data.links && data.links.video){
+                        data.links.video.forEach(vid => {
+                            videoBox.innerHTML += `<a href="${vid.url}" class="dl-btn btn-video" target="_blank">Download ${vid.resolution || 'MP4'}</a>`;
+                        });
+                    } else {
+                        videoBox.innerHTML = `<a href="${data.url}" class="dl-btn btn-video" target="_blank">Download Video</a>`;
+                    }
+                    audioBox.innerHTML = `<p style='font-size:0.8rem; color:gray;'>Extracting MP3...</p>`;
                 }
 
-                document.getElementById('title-display').innerText = currentLinks.title;
                 loader.style.display = 'none';
-                resBox.style.display = 'block';
+                resultArea.style.display = 'block';
 
-            } catch (e) {
+            } catch (error) {
+                console.error(error);
+                alert("Error: API down or link invalid. Please try again.");
                 loader.style.display = 'none';
-                alert("API Error. Please try again later.");
             }
-        }
-
-        // Logic to force download directly to gallery/storage
-        function forceDownload(type) {
-            const link = (type === 'mp3' || type === 'audio') ? currentLinks.audio : currentLinks.video;
-            const fileName = currentLinks.title.replace(/[^a-z0-9]/gi, '_').toLowerCase() + (type === 'mp3' ? ".mp3" : ".mp4");
-
-            // Notification for user
-            alert("Downloading started... It will save to your Gallery shortly.");
-
-            const anchor = document.createElement('a');
-            anchor.href = link;
-            anchor.download = fileName;
-            anchor.target = "_blank"; // Fallsback for mobile
-            document.body.appendChild(anchor);
-            anchor.click();
-            document.body.removeChild(anchor);
         }
     </script>
 </body>
